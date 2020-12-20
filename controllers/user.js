@@ -24,7 +24,8 @@ const userSignup = async (req, res, next) => {
                 });
                 const CLIENT_URL = 'http://' + req.headers.host;
                 const message = {
-                    to: req.body.email,
+                    from: process.env.MAIL_AUTH_EMAIL,
+                    to: user.email,
                     subject: 'Account Verification.',
                     html: `<h4>Hello ${user.email} welcome to Karap shop! 
                                 please follow via "link" link to verify your account.</h4>
@@ -34,9 +35,7 @@ const userSignup = async (req, res, next) => {
                                 Karap Manager Team
                                 </div> `,
                 }
-                if (sendMessageToMail(message)) {
-                    return res.status(500).json(err('Something went wrong. Please register again.', res.statusCode));
-                }
+                sendMessageToMail(message);
                 return res.status(200).json(success('Activation link sent to email. Please activate to log in.', res.statusCode))
             });
         } catch (e) {
