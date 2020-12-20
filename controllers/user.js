@@ -16,9 +16,10 @@ const userSignup = async (req, res, next) => {
                     return next(error);
                 }
                 const token = jwt.sign({
+                    firstName:user.firstName,
+                    lastName:user.lastName,
                     email: user.email,
                     password: user.password,
-                    status: user.status,
                 }, process.env.SECRET_KEY, {
                     expiresIn: 24 * 3600,
                 });
@@ -29,7 +30,7 @@ const userSignup = async (req, res, next) => {
                     subject: 'Account Verification.',
                     html: `<h4>Hello ${user.email} welcome to Karap shop! 
                                 please follow via "link" link to verify your account.</h4>
-                               <p>${CLIENT_URL}/api/activate/${token}</p>
+                               <p>${CLIENT_URL}/api/activate-account/${token}</p>
                                <div>
                                 Kind Regards,
                                 Karap Manager Team
@@ -45,23 +46,28 @@ const userSignup = async (req, res, next) => {
 };
 
 const activateHandle = async (req, res) => {
+    console.log('Start activate Handle - - -')
+    console.log(req.params)
     try {
         const {token} = req.params;
         if (token) {
-            const {status, email, password} = jwt.verify(token, process.env.SECRET_KEY);
+            const { email, password ,firstName ,lastName} = jwt.verify(token, process.env.SECRET_KEY);
             const user = new User({
+                firstName:firstName,
+                lastName:lastName,
                 email: email,
                 password: password,
-                status: status,
+                status: true,
             });
+            console.log(user)
             await user.save();
-            const userId = user._id;
-            const createToken = jwt.sign({user: userId}, process.env.SECRET_KEY, {
+            // const userId = user._id;
+            const createToken = jwt.sign({user: user._id}, process.env.SECRET_KEY, {
                 expiresIn: 24 * 3600,
             },);
             return res.status(200).json(success('Account activated. You can now log in.', {
                 createToken,
-                userId,
+                user
             }, res.statusCode));
         } else {
             return res.status(422).json(validation('Account activation error!.'));
@@ -73,6 +79,7 @@ const activateHandle = async (req, res) => {
 };
 
 const userLogin = async (req, res, next) => {
+    console.log('User Start Login - - -')
     passport.authenticate('login', {}, async (error, user) => {
         try {
             if (error || !user) {
@@ -82,11 +89,10 @@ const userLogin = async (req, res, next) => {
                 if (error) {
                     return next(error);
                 }
-                const userId = user._id;
-                const token = jwt.sign({user: userId}, process.env.SECRET_KEY, {
+                const token = jwt.sign({user: user._id}, process.env.SECRET_KEY, {
                     expiresIn: 24 * 3600,
                 });
-                return res.status(200).json(success('Success', {token, userId}, res.statusCode));
+                return res.status(200).json(success('Success', {token, user}, res.statusCode));
             });
         } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
