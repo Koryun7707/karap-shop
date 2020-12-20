@@ -1,21 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
+const {logger} = require('./utils/logger');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const apiRoutes = require('./routes');
 
 require('./auth/auth');
+require("./utils/mongo");
 
-mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-}, () => {
-    console.log('Database connected.');
-});
+logger.info("APP START ----------");
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
