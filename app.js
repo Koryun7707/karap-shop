@@ -32,7 +32,7 @@ app.get('/about',(req,res)=>{
     res.render('aboutUs',{URL:'/about'});
 });
 app.get('/blog',(req,res)=>{
-    res.render('blog',{URL:'blog'});
+    res.render('blog',{URL:'/blog'});
 });
 app.get('/brand',(req,res)=>{
     res.render('brand',{URL:'/brand'});
