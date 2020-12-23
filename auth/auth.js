@@ -44,14 +44,13 @@ passport.use('login', new LocalStrategy({
     passwordField: 'password',
 }, async function (email, password, done) {
     try {
-        console.log('1111');
         const user = await User.findOne({email});
         if (!user) {
-            return done('Email is not correct.');
+            return done('This email is not registered!');
         }
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return done('Wrong Password.');
+            return done('Incorrect password!');
         }
         return done(null, user);
     } catch (e) {

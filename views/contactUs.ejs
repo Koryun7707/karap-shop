@@ -1,0 +1,90 @@
+<%-include ('header')-%>
+
+<main  style="padding-top: 100px" class="contact-section">
+    <section class="contact-section-bg mb-5">
+        <div class="container">
+            <h1 class="text-center">Contact Us</h1>
+        </div>
+    </section>
+    <section class="py-5 my-5 contact-form">
+        <div class="container ">
+            <div class="row p-5 btn-green-gradient align-items-center">
+                <div class="offset-1 col-5 py-5 pr-5 border-right">
+                    <form action="#" class="py-5">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">E - mail address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E - mail address">
+<!--                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInput">First name</label>
+                            <input type="text" class="form-control" id="exampleInput" placeholder="First name">
+                        </div>
+                        <div class="form-group d-flex flex-column">
+                            <label>Massage</label>
+                            <textarea name="" id="" rows="6"  class="form-control">Massage</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Send</button>
+                    </form>
+                </div>
+                <div class="col-6 form-info px-5">
+                    <ul class="list-unstyled pb-5 mb-5">
+                        <li class="d-flex justify-content-between align-items-end mb-2">
+                            <span>Tel:</span>
+                            <a href="tel:+374898000325">+374898000325</a>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-end mb-2">
+                            <span>Email:</span>
+                            <a href="karapshop@gmail.com">
+                                karapshop@gmail.com
+                            </a>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-end mb-2">
+                            <span>Address:</span>
+                            <a href="#">
+                                Armenia, Yerevan
+                            </a>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-end mb-2">
+                            <span>WORKING  HOURS:</span>
+                            <a href="#">
+                                10:00 - 20:00
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled pt-5 mt-5 d-flex justify-content-end">
+                        <li class="px-3"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li class="px-3"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                    </ul>
+                    <hr style="background-color: #fff">
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<%-include ('footer')-%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".owl-carousel-about").owlCarousel({
+            autoplay: true,
+            lazyLoad: true,
+            loop: true,
+            responsiveClass: true,
+            autoHeight: true,
+            autoplayTimeout: 7000,
+            smartSpeed: 800,
+            dots: true,
+            nav: false,
+            items: 1,
+        });
+    });
+</script>
+<script src="js/script.js"></script>
+
+</body>
+</html>
