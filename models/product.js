@@ -7,6 +7,9 @@ const productSchema = new Schema({
         type: ObjectId,
         auto: true
     },
+    brandId: {
+        type:mongoose.Schema.Types.ObjectId,
+    },
     type: {
         type: String,
         required: true,

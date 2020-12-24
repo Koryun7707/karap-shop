@@ -47,6 +47,10 @@ app.get('/shop',(req,res)=>{
     res.render('shop',{URL:'/shop'});
 })
 
+app.get('/admin',(req,res)=>{
+    res.render('admin');
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
 });
