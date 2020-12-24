@@ -73,3 +73,16 @@
         </div>
     </div>
 </footer>
+<script>
+    $(document).ready(function() {
+        $(".modal.fade").click(function(){
+            $(".modal.fade").removeClass('show');
+            $(".modal-backdrop.fade").removeClass('show');
+            $("this").addClass('show');
+        });
+    })
+    $('#closemodal').click(function() {
+        $('#loginModal').modal('hide');
+    });
+
+</script>
