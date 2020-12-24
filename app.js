@@ -23,6 +23,12 @@ logger.info("APP START ----------");
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
 app.use('/api', apiRoutes);
 
 app.get('/',(req,res)=>{

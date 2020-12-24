@@ -44,7 +44,7 @@ const updateBrand = async (req, res) => {
         logger.error(`Validate Error: ${error}`);
         return res.status(422).json(validation(error));
     }
-        await User.findByIdAndUpdate({_id}, value).lean();
+        await Brand.findByIdAndUpdate({_id}, value).lean();
         return res.status(200).json(success('Brand Update Complete!', {
             value
         }, res.statusCode));
@@ -55,7 +55,6 @@ const updateBrand = async (req, res) => {
 }
 const addProduct = async (req,res) =>{
     logger.info('Start addProduct - - -');
-    console.log(typeof req.body.images)
     try{
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
@@ -71,11 +70,42 @@ const addProduct = async (req,res) =>{
         logger.error(`Added Product Error: ${e}`);
         return res.status(500).json(err(e.message,res.statusCode));
     }
-
+}
+const deleteProduct = async (req,res) => {
+    logger.info('Start deleteProduct - - -');
+    const params = req.params;
+    try {
+        await Product.findByIdAndRemove({_id: params.id}).lean();
+        return res.status(200).json({success: true, message: 'Delete Product Completed'});
+    } catch (error) {
+        logger.error(`Product Delete Error: ${error}`);
+        return res.status(500).json(err(e.message, res.statusCode));
+    }
+}
+const updateProduct = async (req,res) => {
+    logger.info('Start updateProduct - - -');
+    try {
+        const _id = req.body._id;
+        delete req.body._id;
+        const {error, value} = validateProduct(req.body);
+        if (error && error.details) {
+            logger.error(`Validate Error: ${error}`);
+            return res.status(422).json(validation(error));
+        }
+        await Product.findByIdAndUpdate({_id}, value).lean();
+        return res.status(200).json(success('Product Update Complete!', {
+            value
+        }, res.statusCode));
+    } catch(error) {
+        logger.error(`Product Update Error: ${error}`);
+        return res.status(500).json(err(e.message, res.statusCode));
+    }
 }
 module.exports = {
     addBrand: addBrand,
     deleteBrand: deleteBrand,
     updateBrand:updateBrand,
-    addProduct: addProduct
+    addProduct: addProduct,
+    deleteProduct: deleteProduct,
+    updateProduct: updateProduct,
 };
