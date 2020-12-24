@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {userLogin, userSignup ,activateHandle} = require('./controllers/user');
-const {addBrand,addProduct} = require('./controllers/admin')
+const {addBrand, deleteBrand, updateBrand, addProduct} = require('./controllers/admin')
 
 /**
  * User
@@ -13,7 +13,14 @@ router.get('/activate-account/:token',activateHandle);
 
 /*admin*/
 
-router.post('/add-brand',addBrand);
-router.post('/add-product',addProduct);
+//brand
+router.post('/brand',addBrand);
+router.delete('/brand',deleteBrand);
+router.put('/brand',updateBrand);
+
+
+//product
+router.post('/product',addProduct);
+
 
 module.exports = router;
