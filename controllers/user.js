@@ -11,7 +11,8 @@ const userSignup = async (req, res, next) => {
     passport.authenticate('signup', {}, async (error, user) => {
         try {
             if (error || !user) {
-                logger.error(`User Signup Error: ${error}`);
+                logger.error(`User Signup Error: ${error}`)
+                //all our messages must be send ejs
                 return res.status(500).json(err(error, res.statusCode));
             }
             req.login(user, {session: false}, async (error) => {
@@ -33,7 +34,7 @@ const userSignup = async (req, res, next) => {
                     subject: 'Account Verification.',
                     html: `<h4>Hello ${user.email} welcome to Karap shop! 
                                 please follow via "link" link to verify your account.</h4>
-                               <p>${CLIENT_URL}/activate-account/${token}</p>
+                               <p>${CLIENT_URL}/${token}</p>
                                <div>
                                 Kind Regards,
                                 Karap Manager Team
@@ -43,9 +44,8 @@ const userSignup = async (req, res, next) => {
                 return res.render('index', {
                     message: 'Activation link sent to email. Please activate to log in.',
                     error: null,
-                    data: null
+                    data: [],
                 });
-                // return res.status(200).json(success('Activation link sent to email. Please activate to log in.', res.statusCode))
             });
         } catch (e) {
             logger.error(`User Signup Error: ${e}`);
@@ -73,10 +73,19 @@ const activateHandle = async (req, res) => {
             const createToken = jwt.sign({user: user._id}, process.env.SECRET_KEY, {
                 expiresIn: 24 * 3600,
             },);
-            return res.status(200).json(success('Account activated. You can now log in.', {
-                createToken,
-                user
-            }, res.statusCode));
+            delete user.password;
+            return res.render('index', {
+                error: null,
+                message: 'Account activated. You can now log in.',
+                data: [{
+                    createToken,
+                    user
+                }],
+            })
+            // return res.status(200).json(success('Account activated. You can now log in.', {
+            //     createToken,
+            //     user
+            // }, res.statusCode));
         } else {
             return res.status(422).json(validation('Account activation error!.'));
         }

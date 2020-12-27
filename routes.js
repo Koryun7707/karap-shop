@@ -10,7 +10,7 @@ const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 
 router.post('/signup', userSignup);
 router.post('/login', userLogin);
-router.get('/activate-account/:token', activateHandle);
+router.get('/:token', activateHandle);
 
 /**
  * Brand
@@ -30,28 +30,28 @@ router.put('/product', updateProduct);
 
 
 router.get('/', (req, res) => {
-    res.render('index', {URL: '/'});
+    res.render('index', {URL: '/', data: []});
 });
 router.get('/about', (req, res) => {
-    res.render('aboutUs', {URL: '/about'});
+    res.render('aboutUs', {URL: '/about', data: []});
 });
 router.get('/blog', (req, res) => {
-    res.render('blog', {URL: '/blog'});
+    res.render('blog', {URL: '/blog', data: []});
 });
 router.get('/brand', (req, res) => {
-    res.render('brand', {URL: '/brand'});
+    res.render('brand', {URL: '/brand', data: []});
 });
 router.get('/contact', (req, res) => {
-    res.render('contactUs', {URL: '/contact'});
+    res.render('contactUs', {URL: '/contact', data: []});
 });
 router.get('/join-our-team', (req, res) => {
-    res.render('joinOurTeam', {URL: '/join-our-team'});
+    res.render('joinOurTeam', {URL: '/join-our-team', data: []});
 });
 router.get('/shop', (req, res) => {
-    res.render('shop', {URL: '/shop'});
+    res.render('shop', {URL: '/shop', data: []});
 });
 router.get('/admin', (req, res) => {
-    res.render('admin');
+    res.render('admin',{data:[]});
 });
 
 module.exports = router;
