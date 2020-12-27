@@ -676,3 +676,32 @@ button:focus {
     font-size: 16px;
     color: #c4aa9d;
 }
+
+
+/*admin css*/
+.back-side{
+    background-color: wheat;
+}
+.admin-header{
+    background-color: #c4aa9d;
+    color: white;
+    font-size: 16px;
+    font-family: fantasy;
+    cursor: pointer;
+    padding-top: 5px;
+}
+
+.admin-dash-title{
+    font-size: 30px;
+    font-family: fantasy;
+    margin-left: 50px;
+    padding-top: 10px;
+    text-shadow:1px 1px;
+    color: darkred;
+}
+.page-titles{
+    font-size: 25px;
+    color: #050505;
+    text-shadow:2px 1px;
+
+}

@@ -26,7 +26,7 @@
     "joi-objectid": "^3.0.1",
     "joi-password-complexity": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.15",
+    "mongoose": "^5.11.8",
     "nodemailer": "^6.4.17",
     "nodemon": "^2.0.6",
     "passport": "^0.4.1",
