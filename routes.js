@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {userLogin, userSignup ,activateHandle} = require('./controllers/user');
-const {addBrand, deleteBrand, updateBrand, addProduct ,deleteProduct ,updateProduct} = require('./controllers/admin')
+const {userLogin, userSignup, activateHandle} = require('./controllers/user');
+const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
+const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 
 /**
  * User
@@ -9,20 +10,23 @@ const {addBrand, deleteBrand, updateBrand, addProduct ,deleteProduct ,updateProd
 
 router.post('/signup', userSignup);
 router.post('/login', userLogin);
-router.get('/activate-account/:token',activateHandle);
+router.get('/activate-account/:token', activateHandle);
 
-/*admin*/
+/**
+ * Brand
+ */
 
-//brand
-router.post('/brand',addBrand);
-router.delete('/brand/:id',deleteBrand);
-router.put('/brand',updateBrand);
+router.post('/brand', createBrand);
+router.delete('/brand/:id', deleteBrand);
+router.put('/brand', updateBrand);
 
+/**
+ * Product
+ */
 
-//product
-router.post('/product',addProduct);
-router.delete('/product/:id',deleteProduct);
-router.put('/product',updateProduct);
+router.post('/product', createProduct);
+router.delete('/product/:id', deleteProduct);
+router.put('/product', updateProduct);
 
 
 module.exports = router;
