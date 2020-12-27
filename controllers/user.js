@@ -40,7 +40,12 @@ const userSignup = async (req, res, next) => {
                                 </div> `,
                 }
                 sendMessageToMail(message);
-                return res.status(200).json(success('Activation link sent to email. Please activate to log in.', res.statusCode))
+                return res.render('index', {
+                    message: 'Activation link sent to email. Please activate to log in.',
+                    error: null,
+                    data: null
+                });
+                // return res.status(200).json(success('Activation link sent to email. Please activate to log in.', res.statusCode))
             });
         } catch (e) {
             logger.error(`User Signup Error: ${e}`);

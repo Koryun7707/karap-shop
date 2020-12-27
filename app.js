@@ -13,8 +13,6 @@ mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology:
 
 require('./auth/auth');
 
-
-
 app.set("views", "./views");
 app.set("view engine", "ejs");
 

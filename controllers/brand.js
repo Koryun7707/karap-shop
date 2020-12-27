@@ -1,10 +1,10 @@
 const Brand = require('../models/product');
 const {logger} = require('../utils/logger');
-const {validateBrand} = require('../validations/admin')
+const {validateBrand} = require('../validations/brand')
 const {success, validation, err} = require('../utils/responseApi');
 
 const createBrand = async (req, res) => {
-    logger.info('Start addBrand - - -');
+    logger.info('Start createBrand - - -');
     try {
         const {error, value} = validateBrand(req.body);
         if (error && error.details) {
@@ -21,7 +21,8 @@ const createBrand = async (req, res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 };
-const deleteBrand = async (req,res) =>{
+
+const deleteBrand = async (req, res) => {
     logger.info('Start deleteBrand - - -');
     const params = req.params;
     try {
@@ -32,6 +33,7 @@ const deleteBrand = async (req,res) =>{
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+
 const updateBrand = async (req, res) => {
     logger.info('Start Brand update - - -');
     try {
@@ -46,7 +48,7 @@ const updateBrand = async (req, res) => {
         return res.status(200).json(success('Brand Update Complete!', {
             value
         }, res.statusCode));
-    } catch(error) {
+    } catch (error) {
         logger.error(`Brand Update Error: ${error}`);
         return res.status(500).json(err(e.message, res.statusCode));
     }
@@ -55,5 +57,5 @@ const updateBrand = async (req, res) => {
 module.exports = {
     createBrand: createBrand,
     deleteBrand: deleteBrand,
-    updateBrand:updateBrand,
+    updateBrand: updateBrand,
 };

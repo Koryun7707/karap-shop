@@ -1,11 +1,11 @@
 const Product = require('../models/product');
 const {logger} = require('../utils/logger');
-const {validateProduct} = require('../validations/admin')
+const {validateProduct} = require('../validations/product')
 const {success, validation, err} = require('../utils/responseApi');
 
-const createProduct = async (req,res) =>{
-    logger.info('Start addProduct - - -');
-    try{
+const createProduct = async (req, res) => {
+    logger.info('Start createProduct - - -');
+    try {
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
             logger.error(`Validate Error: ${error}`);
@@ -16,12 +16,12 @@ const createProduct = async (req,res) =>{
         return res.status(200).json(success('Product Add Complete!', {
             newProduct
         }, res.statusCode));
-    } catch(e){
+    } catch (e) {
         logger.error(`Added Product Error: ${e}`);
-        return res.status(500).json(err(e.message,res.statusCode));
+        return res.status(500).json(err(e.message, res.statusCode));
     }
 }
-const deleteProduct = async (req,res) => {
+const deleteProduct = async (req, res) => {
     logger.info('Start deleteProduct - - -');
     const params = req.params;
     try {
@@ -32,7 +32,7 @@ const deleteProduct = async (req,res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
-const updateProduct = async (req,res) => {
+const updateProduct = async (req, res) => {
     logger.info('Start updateProduct - - -');
     try {
         const _id = req.body._id;
@@ -46,7 +46,7 @@ const updateProduct = async (req,res) => {
         return res.status(200).json(success('Product Update Complete!', {
             value
         }, res.statusCode));
-    } catch(error) {
+    } catch (error) {
         logger.error(`Product Update Error: ${error}`);
         return res.status(500).json(err(e.message, res.statusCode));
     }
