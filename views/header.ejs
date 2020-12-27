@@ -144,33 +144,32 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/api/signup" method="post" class="offset-1 col-10">
+                <form action="/signup" method="POST" class="offset-1 col-10">
                     <div class="form-group">
                         <label for="firstName" class="label">Name<sup>*</sup></label>
                         <input name="firstName" type="text" class="form-control" id="firstname" placeholder="Name">
                     </div>
                     <div class="form-group">
                         <label for="lastName" class="label">Last Name<sup>*</sup></label>
-                        <input type="text" class="form-control" id="lastName" placeholder="Full Name">
+                        <input name="lastName" type="text" class="form-control" id="lastName" placeholder="Full Name">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="label">Email Address<sup>*</sup></label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email Address">
+                        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email Address">
                     </div>
                     <div class="form-group">
                         <label for="InputPassword1" class="label">Password<sup>*</sup></label>
-                        <input type="password" class="form-control" id="InputPassword1" placeholder="**********">
+                        <input name="password" type="password" class="form-control" id="password" placeholder="**********">
                     </div>
                     <div class="form-group">
                         <label for="InputPassword2" class="label">Retype Password<sup>*</sup></label>
-                        <input type="password" class="form-control" id="InputPassword2" placeholder="**********">
+                        <input name="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="**********">
                     </div>
                     <!--                       <div class="form-group form-check">-->
                     <!--                           <input type="checkbox" class="form-check-input" id="Check1">-->
                     <!--                           <label class="form-check-label fs-14" for="Check1">I read and accept <a href="#" class="ml-2">Terms and Conditions</a></label>-->
                     <!--                       </div>-->
                     <button type="submit" class="btn btn-green-gradient">Create account</button>
-
                 </form>
             </div>
             <div class="modal-footer">

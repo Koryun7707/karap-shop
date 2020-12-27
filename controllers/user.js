@@ -8,11 +8,8 @@ const {sendMessageToMail} = require('../services/mailService');
 const {logger} = require('../utils/logger');
 
 const userSignup = async (req, res, next) => {
-    // console.log(req)
-    logger.info('Start Signup User - - -');
     passport.authenticate('signup', {}, async (error, user) => {
         try {
-            console.log(user)
             if (error || !user) {
                 logger.error(`User Signup Error: ${error}`);
                 return res.status(500).json(err(error, res.statusCode));
@@ -22,8 +19,8 @@ const userSignup = async (req, res, next) => {
                     return next(error);
                 }
                 const token = jwt.sign({
-                    firstName:user.firstName,
-                    lastName:user.lastName,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     email: user.email,
                     password: user.password,
                 }, process.env.SECRET_KEY, {
@@ -36,7 +33,7 @@ const userSignup = async (req, res, next) => {
                     subject: 'Account Verification.',
                     html: `<h4>Hello ${user.email} welcome to Karap shop! 
                                 please follow via "link" link to verify your account.</h4>
-                               <p>${CLIENT_URL}/api/activate-account/${token}</p>
+                               <p>${CLIENT_URL}/activate-account/${token}</p>
                                <div>
                                 Kind Regards,
                                 Karap Manager Team
@@ -53,15 +50,15 @@ const userSignup = async (req, res, next) => {
 };
 
 const activateHandle = async (req, res) => {
-   logger.info('Start activate Handle - - -');
+    logger.info('Start activate Handle - - -');
     console.log(req.params)
     try {
         const {token} = req.params;
         if (token) {
-            const { email, password ,firstName ,lastName} = jwt.verify(token, process.env.SECRET_KEY);
+            const {email, password, firstName, lastName} = jwt.verify(token, process.env.SECRET_KEY);
             const user = new User({
-                firstName:firstName,
-                lastName:lastName,
+                firstName: firstName,
+                lastName: lastName,
                 email: email,
                 password: password,
                 status: true,
@@ -86,7 +83,7 @@ const activateHandle = async (req, res) => {
 };
 
 const userLogin = async (req, res, next) => {
-   logger.info('User Start Login - - -');
+    logger.info('User Start Login - - -');
     passport.authenticate('login', {}, async (error, user) => {
         try {
             if (error || !user) {

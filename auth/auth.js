@@ -34,7 +34,6 @@ passport.use('signup', new LocalStrategy({
         };
         return done(null, userObj);
     } catch (e) {
-        console.log(e);
         return done(e);
     }
 }));

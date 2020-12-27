@@ -29,4 +29,29 @@ router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
 
 
+router.get('/', (req, res) => {
+    res.render('index', {URL: '/'});
+});
+router.get('/about', (req, res) => {
+    res.render('aboutUs', {URL: '/about'});
+});
+router.get('/blog', (req, res) => {
+    res.render('blog', {URL: '/blog'});
+});
+router.get('/brand', (req, res) => {
+    res.render('brand', {URL: '/brand'});
+});
+router.get('/contact', (req, res) => {
+    res.render('contactUs', {URL: '/contact'});
+});
+router.get('/join-our-team', (req, res) => {
+    res.render('joinOurTeam', {URL: '/join-our-team'});
+});
+router.get('/shop', (req, res) => {
+    res.render('shop', {URL: '/shop'});
+});
+router.get('/admin', (req, res) => {
+    res.render('admin');
+});
+
 module.exports = router;
