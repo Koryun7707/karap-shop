@@ -8,10 +8,13 @@ const {sendMessageToMail} = require('../services/mailService');
 const {logger} = require('../utils/logger');
 
 const userSignup = async (req, res, next) => {
+    // console.log(req)
     logger.info('Start Signup User - - -');
     passport.authenticate('signup', {}, async (error, user) => {
         try {
+            console.log(user)
             if (error || !user) {
+                logger.error(`User Signup Error: ${error}`);
                 return res.status(500).json(err(error, res.statusCode));
             }
             req.login(user, {session: false}, async (error) => {
