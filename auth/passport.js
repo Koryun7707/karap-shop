@@ -21,20 +21,20 @@ module.exports = function(passport) {
             if (value.password !== value.confirmPassword) {
                 return done(null,false,{message:'Password and confirm password fields doesn\'t match'});
             }
-            const user = await User.findOne({email: value.email});
-            if (user) {
+            const findUser = await User.findOne({email: value.email});
+            if (findUser) {
                 return done(null,false,{message:'This email is already in use. Please use another one.'});
             }
-            const newUser = new User( {
+            const user = new User( {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: email,
                 password: password,
                 status:true
             });
-            await newUser.save();
-
-            return done(null, newUser);
+            await user.save();
+            delete user.password;
+            return done(null, user);
         } catch (e) {
             console.log(e);
             return done(e);
@@ -58,31 +58,6 @@ module.exports = function(passport) {
             return done(e);
         }
     }));
-    // passport.use('login',new LocalStrategy({
-    //     usernameField: 'email' ,
-    //     passwordField: 'password',
-    //
-    //     }, (email, password, done) => {
-    //         // Match user
-    //         User.findOne({
-    //             email: email
-    //         }).then(user => {
-    //             if (!user) {
-    //                 return done(null, false, { message: 'That email is not registered' });
-    //             }
-    //
-    //             // Match password
-    //             bcrypt.compare(password, user.password, (err, isMatch) => {
-    //                 if (err) throw err;
-    //                 if (isMatch) {
-    //                     return done(null, user);
-    //                 } else {
-    //                     return done(null, false, { message: 'Password incorrect' });
-    //                 }
-    //             });
-    //         });
-    //     })
-    // );
 
     passport.serializeUser(function(user, done) {
         done(null, user.id);

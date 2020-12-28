@@ -4,7 +4,7 @@ const router = express.Router();
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 const passport = require('passport');
-const {ensureAuthenticated} = require('./auth/auth')
+const {checkIsAuthenticated} = require('./auth/auth')
 /**
  * User
  */
@@ -12,30 +12,35 @@ const {ensureAuthenticated} = require('./auth/auth')
 
 router.post('/login',
     (req, res, next) => {
-    passport.authenticate('login', {
-        successRedirect: '/',
-        // failureRedirect: '/',
-        failureFlash: true
-    })(req, res, next);
-});
+        passport.authenticate('login', {
+            successRedirect: '/',
+            // failureRedirect: '/',
+            failureFlash: true
+        })(req, res, next);
+    });
+
 router.post('/signup',
     (req, res, next) => {
-    console.log(req);
-    passport.authenticate('signup', {
-        successRedirect: '/',
-        // failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
-});
+        passport.authenticate('signup', {
+            successRedirect: '/',
+            // failureRedirect: '/users/login',
+            failureFlash: true
+        })(req, res, next);
+    });
 
 // Logout
 router.get('/logout', (req, res) => {
     req.logout();
     req.flash('success_msg', 'You are logged out');
-    res.redirect('/');
+    res.render('index',{URL:'/'});
 });
 
 
+router.get('/', checkIsAuthenticated, (req, res) => {
+    req.session.user = req.user;
+    console.log(11111111, req.session.user);
+    res.render('index', {URL: '/', user: req.session.user});
+});
 
 /**
  * Brand
@@ -52,13 +57,6 @@ router.put('/brand', updateBrand);
 router.post('/product', createProduct);
 router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
-
-
-
-router.get('/', (req, res) => {
-    res.render('index', {URL: '/', user:req.newUser || ''});
-});
-
 
 router.get('/about', (req, res) => {
     res.render('aboutUs', {URL: '/about', data: []});
@@ -79,7 +77,7 @@ router.get('/shop', (req, res) => {
     res.render('shop', {URL: '/shop', data: []});
 });
 router.get('/admin', (req, res) => {
-    res.render('admin',{data:[]});
+    res.render('admin', {data: []});
 });
 
 module.exports = router;
