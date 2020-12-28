@@ -1,16 +1,41 @@
 const express = require('express');
 const router = express.Router();
-const {userLogin, userSignup, activateHandle} = require('./controllers/user');
+// const {userLogin, userSignup, activateHandle} = require('./controllers/user');
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
-
+const passport = require('passport');
+const {ensureAuthenticated} = require('./auth/auth')
 /**
  * User
  */
 
-router.post('/signup', userSignup);
-router.post('/login', userLogin);
-router.get('/:token', activateHandle);
+
+router.post('/login',
+    (req, res, next) => {
+    passport.authenticate('login', {
+        successRedirect: '/',
+        // failureRedirect: '/',
+        failureFlash: true
+    })(req, res, next);
+});
+router.post('/signup',
+    (req, res, next) => {
+    console.log(req);
+    passport.authenticate('signup', {
+        successRedirect: '/',
+        // failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+});
+
+// Logout
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/');
+});
+
+
 
 /**
  * Brand
@@ -29,9 +54,12 @@ router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
 
 
+
 router.get('/', (req, res) => {
-    res.render('index', {URL: '/', data: []});
+    res.render('index', {URL: '/', user:req.newUser || ''});
 });
+
+
 router.get('/about', (req, res) => {
     res.render('aboutUs', {URL: '/about', data: []});
 });

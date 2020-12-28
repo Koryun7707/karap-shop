@@ -7,6 +7,7 @@ const {sendMessageToMail} = require('../services/mailService');
 
 const {logger} = require('../utils/logger');
 
+
 const userSignup = async (req, res, next) => {
     passport.authenticate('signup', {}, async (error, user) => {
         try {

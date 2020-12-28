@@ -83,8 +83,9 @@
                                     <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
                                 </div>
                             </div>
-                        </li>
-                    <% if(!data.length || !data.token){ %>
+
+
+
                             <li class="nav-item mr-2 mr-xl-4">
                                 <a class="nav-link" type="button" data-toggle="modal"
                                    data-target="#loginModal">Login</a>
@@ -92,12 +93,9 @@
                             <li class="nav-item mr-2 mr-xl-4">
                                 <a class="nav-link" type="button" data-toggle="modal" data-target="#RegistrationModal">Registration</a>
                             </li>
-                        <% } else{ %>
-                            <script>
-                                localStorage.setItem('token', "<%= JSON.stringify(data.token) %>");
-                                localStorage.setItem('user', "<%= JSON.stringify(data.user) %>");
-                            </script>
-                        <% } %>
+
+
+
                         <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block ">
                             <a class="nav-link" href="#"><i class="fa fa-cart-arrow-down"></i></a>
                         </li>
