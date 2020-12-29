@@ -1,0 +1,41 @@
+<%- include ('header') -%>
+<main style="padding-top: 100px;">
+    <div id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header rose-bg">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <%- include ('partials/messages')%>
+                    <form action="/login" method="POST" id="newModalForm" class="offset-1 col-10">
+                        <div class="form-group">
+                            <label  for="loginInputEmail" class="label">E-mail Address<sup>*</sup></label>
+                            <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                   required name="email" type="email" class="form-control" id="loginInputEmail"
+                                   aria-describedby="emailHelp"
+                                   placeholder="E-mail Address">
+
+                        </div>
+                        <div class="form-group">
+                            <label  for="loginPassword" class="label">Password<sup>*</sup></label>
+                            <input required minlength="8" name="password" type="password" class="form-control" id="loginPassword" placeholder="**********">
+                        </div>
+                        <button type="submit" class="btn btn-green-gradient">Log In</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex justify-content-between mt-4 w-100">
+                        <a type="button" data-dismiss="modal" data-toggle="modal" data-target="#forgotPasswordModal"
+                           class="ml-2">Forgot Password?</a>
+                        <a type="button" class="ml-2" href="/signup">
+                          Registration</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</main>
+<%- include ('footer') -%>

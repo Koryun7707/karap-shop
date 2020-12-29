@@ -17,6 +17,7 @@ module.exports = function(passport) {
                 password: password,
                 confirmPassword: req.body.confirmPassword,
             });
+
             if (error) throw error;
             if (value.password !== value.confirmPassword) {
                 return done(null,false,{message:'Password and confirm password fields doesn\'t match'});
@@ -41,17 +42,17 @@ module.exports = function(passport) {
         }
     }));
     passport.use('login', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
+       usernameField: 'email',
+       // passwordField: 'password',
     }, async function (email, password, done) {
         try {
             const user = await User.findOne({email});
             if (!user) {
-                return done('This email is not registered!');
+                return done(null, false, { message: 'That email is not registered' });
             }
             const isMatch = await user.comparePassword(password);
             if (!isMatch) {
-                return done('Incorrect password!');
+                return done(null, false, { message: 'Password incorrect' });
             }
             return done(null, user);
         } catch (e) {

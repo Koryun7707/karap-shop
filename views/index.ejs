@@ -1,10 +1,7 @@
 <%- include ('header') -%>
 <main>
-    <% if(user){ %>
-    <h3><%= user.firstName %></h3>
-    <% }else { %>
-        <h1>1111111111</h1>
-    <% } %>
+    <%- include ('partials/messages') %>
+
     <section id="section1" class="position-relative section1 mb-5" style="margin-top: -44px">
         <div class="abs">
             <h1>ARMENIAN <br>
