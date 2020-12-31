@@ -34,4 +34,13 @@ $(document).ready(function(){
         $searchTrigger.addClass('active');
     });
 
+    function myFunction(){
+        const id = document.getElementById('myDiv');
+        id.innerHTML = 'Hello';
+        const user = document.querySelector('#myDiv').getAttribute('user');
+        // var user = $("#myDiv").attr("user");
+        console.log(user);
+        console.log('myFunctrion');
+    }
+    myFunction();
 });
