@@ -680,10 +680,10 @@ button:focus {
 
 /*admin css*/
 .back-side{
-    background-color: wheat;
+    background-color: #b7b2ae;
 }
 .admin-header{
-    background-color: #c4aa9d;
+    background-color: #c8c4c2;
     color: white;
     font-size: 16px;
     font-family: fantasy;
@@ -701,7 +701,7 @@ button:focus {
 }
 .page-titles{
     font-size: 25px;
-    color: #050505;
+    color: darkred;
     text-shadow:2px 1px;
 
 }

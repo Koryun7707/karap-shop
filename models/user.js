@@ -50,13 +50,15 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.pre('save', async function (next) {
-    this.password = await bcrypt.hash(this.password, saltRounds);
-    next();
-});
+//have a bcrypt error must be resolve
+// userSchema.pre('save', async function (next) {
+//     this.password = await bcrypt.hash(this.password, saltRounds);
+//     next();
+// });
 
 userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compare(password, this.password);
+    return password === this.password;
+    // return bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.toJSON = function () {

@@ -1,15 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const User = require('./models/user');
+const {getLogInPage, getSignUpPage, userLogOut, getUserDashboard} = require('./controllers/user');
+const {
+    getAboutPage,
+    getBlogPage,
+    getBrandPage,
+    getContactPage,
+    getJoinOurTeamPage,
+    getShopPage,
+    getAdminAboutPage,
+    getAdminAddBrandPage,
+    getAdminAddProductPage,
+    getAdminBrandPage,
+    getAdminContactPage,
+    getAdminHomePage,
+    getAdminJoinOurTeamPage,
+    getAdminOurBrandsPage,
+    getAdminOurProductsPage,
+    getAdminPage,
+    getAdminShopPage
+} = require('./controllers/pages');
+
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 const passport = require('passport');
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth')
+
 /**
  * User
  */
-
-
 router.post('/login',
     (req, res, next) => {
         passport.authenticate('login', {
@@ -18,7 +37,6 @@ router.post('/login',
             failureFlash: true
         })(req, res, next);
     });
-
 router.post('/signup',
     (req, res, next) => {
         passport.authenticate('signup', {
@@ -27,108 +45,43 @@ router.post('/signup',
             failureFlash: true
         })(req, res, next);
     });
+router.get('/signup', forwardAuthenticated, getSignUpPage);
+router.get('/login', forwardAuthenticated, getLogInPage);
+router.get('/logout', userLogOut);
+router.get('/', getUserDashboard);
 
-//get page login and signup
-router.get('/signup', forwardAuthenticated, (req, res) => {
-    res.render('signup', {user: req.session.user});
-})
-router.get('/login', forwardAuthenticated, (req, res) => {
-    res.render('login', {user: req.session.user});
-})
-
-
-// Logout
-router.get('/logout', async (req, res, next) => {
-    if (req.session) {
-        const user = await User.findById(req.session.user._id);
-        user.status = false;
-        await user.save();
-        req.session.destroy((err) => {
-            if (err) {
-                return next(err);
-            } else {
-                return res.redirect('/');
-            }
-        });
-    }
-});
-
-
-router.get('/', (req, res) => {
-    req.session.user = req.user;
-    res.render('index', {URL: '/', user: req.session.user});
-});
-
-/**
- * Brand
- */
-
+//Brand
 router.post('/brand', createBrand);
 router.delete('/brand/:id', deleteBrand);
 router.put('/brand', updateBrand);
 
-/**
- * Product
- */
-
+//Product
 router.post('/product', createProduct);
 router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
 
-router.get('/about', (req, res) => {
-    res.render('aboutUs', {URL: '/about', user: req.session.user});
-});
-router.get('/blog', (req, res) => {
-    res.render('blog', {URL: '/blog', user: req.session.user});
-});
-router.get('/brand', (req, res) => {
-    res.render('brand', {URL: '/brand', user: req.session.user});
-});
-router.get('/contact', (req, res) => {
-    res.render('contactUs', {URL: '/contact', user: req.session.user});
-});
-router.get('/join-our-team', (req, res) => {
-    res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user});
-});
-router.get('/shop', (req, res) => {
-    res.render('shop', {URL: '/shop', user: req.session.user});
-});
-router.get('/admin', (req, res) => {
-    res.render('admin', {user: req.session.user});
-});
+
+//Pages
+router.get('/about', getAboutPage);
+router.get('/blog', getBlogPage);
+router.get('/brand', getBrandPage);
+router.get('/contact', getContactPage);
+router.get('/join-our-team', getJoinOurTeamPage);
+router.get('/shop', getShopPage);
+
 
 //admin dashboard
-
-router.get('/admin-addBrand', (req, res) => {
-    res.render('admin/addBrand', {user: req.session.user});
-})
-router.get('/admin-about', (req, res) => {
-    res.render('admin/aboutUs', {user: req.session.user});
-})
-router.get('/admin-addProduct', (req, res) => {
-    res.render('admin/addProduct', {user: req.session.user});
-})
-router.get('/admin-brand', (req, res) => {
-    res.render('admin/brands', {user: req.session.user});
-})
-router.get('/admin-contact', (req, res) => {
-    res.render('admin/contactUs', {user: req.session.user});
-})
-router.get('/admin-home', (req, res) => {
-    res.render('admin/home', {user: req.session.user});
-})
-router.get('/admin-join-our-team', (req, res) => {
-    res.render('admin/joinOurTeam', {user: req.session.user});
-})
-router.get('/admin-ourBrands', (req, res) => {
-    res.render('admin/ourBrands', {user: req.session.user});
-})
-router.get('/admin-ourProducts', (req, res) => {
-    res.render('admin/ourProducts', {user: req.session.user});
-})
-router.get('/admin-shop', (req, res) => {
-    res.render('admin/shop', {user: req.session.user});
-})
+router.get('/admin', getAdminPage);
+router.get('/admin-addBrand', getAdminAddBrandPage);
+router.get('/admin-addProduct', getAdminAddProductPage);
+router.get('/admin-home', getAdminHomePage);
+router.get('/admin-shop', getAdminShopPage);
+router.get('/admin-brand', getAdminBrandPage);
+router.get('/admin-about', getAdminAboutPage);
+router.get('/admin-contact', getAdminContactPage);
+router.get('/admin-join-our-team', getAdminJoinOurTeamPage);
+router.get('/admin-ourBrands', getAdminOurBrandsPage);
+router.get('/admin-ourProducts', getAdminOurProductsPage);
 
 
 module.exports = router;

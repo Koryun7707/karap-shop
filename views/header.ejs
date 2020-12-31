@@ -71,6 +71,15 @@
                             <% } %>
                         </a>
                     </li>
+                    <% if(user && user.roleType === 'admin'){ %>
+                        <li class="<%= URL === '/admin' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                            <a class="nav-link" href="/admin">Dashboard
+                                <% if(URL === '/admin'){ %>
+                                    <span class="sr-only">(current)</span>
+                                <% } %>
+                            </a>
+                        </li>
+                    <% } %>
                 </ul>
                 <div class="d-flex ml-auto">
                     <ul class="navbar-nav align-items-lg-center pl-2 pl-lg-0 flex-wrap">
