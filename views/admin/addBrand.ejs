@@ -1,28 +1,31 @@
 <%- include ('adminHeader') -%>
 <div class="row">
     <div class="col-8 offset-2">
-        <form action="#" class="py-5">
+        <form action="/brand" method="POST" class="py-5">
             <div class="row page-titles">Add brand</div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Brand name.">
+                <input type="text" class="form-control" name="brandName" id="exampleInputEmail1"
+                       placeholder="Brand name.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Brand type.">
+                <input type="text" class="form-control" name="brandType" id="exampleInputEmail1"
+                       placeholder="Brand type.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">hTag</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Brand hash/tag.">
+                <input type="text" class="form-control" name="brandHashTag" id="exampleInputEmail1"
+                       placeholder="Brand hash/tag.">
             </div>
             <div class="form-group d-flex flex-column">
                 <label>Info</label>
-                <textarea name="" id="" rows="6" class="form-control"
+                <textarea name="brandInfo" id="" rows="6" class="form-control"
                           placeholder="Some info about brand."></textarea>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Upload brand logo</label>
-                <input type="file" class="form-control" id="uploadLogo">
+                <input type="file" class="form-control" id="uploadBrandLogo">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Upload brand images sm1/sm2/sm3</label>

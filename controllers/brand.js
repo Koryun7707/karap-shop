@@ -6,6 +6,7 @@ const {success, validation, err} = require('../utils/responseApi');
 const createBrand = async (req, res) => {
     logger.info('Start createBrand - - -');
     try {
+        console.log(req.body);
         const {error, value} = validateBrand(req.body);
         if (error && error.details) {
             logger.error(`Validate Error: ${error}`);
