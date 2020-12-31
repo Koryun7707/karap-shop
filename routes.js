@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getLogInPage, getSignUpPage, userLogOut, getUserDashboard} = require('./controllers/user');
+const {getLogInPage, getSignUpPage,sendMessageContactUs, userLogOut, getUserDashboard} = require('./controllers/user');
 const {
     getAboutPage,
     getBlogPage,
@@ -50,7 +50,7 @@ router.get('/signup', forwardAuthenticated, getSignUpPage);
 router.get('/login', forwardAuthenticated, getLogInPage);
 router.get('/logout', userLogOut);
 router.get('/', getUserDashboard);
-
+router.post('/sendMessageContactUs',sendMessageContactUs);
 
 /**
  * Brand

@@ -3,6 +3,7 @@ const {validateUser} = require('../validations/user');
 const User = require('../models/user');
 const {generateAvatar} = require('../utils/helper');
 const roleTypes = require('../configs/constants').ROLE_TYPES;
+const {sendMessageToMail} = require('../services/mailService')
 
 module.exports = function (passport) {
     passport.use('signup', new LocalStrategy({
@@ -40,6 +41,19 @@ module.exports = function (passport) {
 
             await user.save();
             console.log('user', user);
+            const message = {
+                from: process.env.MAIL_AUTH_EMAIL,
+                to: value.email,
+                subject: 'Welcome Shop Site',
+                html: `<h4>Hello ${value.email} welcome to Karap shop! 
+                                please follow via "link" link to verify your account.</h4>
+                               <div>
+                               <button >
+                              <a href="http://localhost:3000/">visit to eb site</a> 
+                               </button>
+                                </div> `,
+            }
+            sendMessageToMail(message);
             return done(null, user);
         } catch (e) {
             console.log(e);
