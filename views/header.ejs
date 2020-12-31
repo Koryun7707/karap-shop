@@ -84,30 +84,26 @@
                                 </div>
                             </div>
 
-
                             <% if(!user){ %>
 
-                            <li class="nav-item mr-2 mr-xl-4">
-                                <a href='/login' class="nav-link" type="button" >Login</a>
-                            </li>
-                            <li class="nav-item mr-2 mr-xl-4">
-                                <a href="/signup" class="nav-link" type="button">Registration</a>
-                            </li>
+                        <li class="nav-item mr-2 mr-xl-4">
+                            <a href='/login' class="nav-link" type="button">Login</a>
+                        </li>
+                        <li class="nav-item mr-2 mr-xl-4">
+                            <a href="/signup" class="nav-link" type="button">Registration</a>
+                        </li>
 
                         <% }else { %>
-                            <li class="nav-item mr-2 mr-xl-4">
-                                <a href="/logout" class="nav-link" type="button">Log Out</a>
-                            </li>
                         <li class="nav-item mr-2 mr-xl-4">
-                             <%=user.firstName%>
+                            <a href="/logout" class="nav-link" type="button">Log Out</a>
+                        </li>
+                        <li class="nav-item mr-2 mr-xl-4" id="avatar">
                             <img style="
                                       border-radius: 50%;
                                     border:2px solid silver;
-                                    cursor:pointer;" src="images/avatar.png" width="50" height="60" alt="">
+                                    cursor:pointer;" src=<%= user.avatar %> height="50" alt="?">
                         </li>
                         <% } %>
-
-
 
                         <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block ">
                             <a class="nav-link" href="#"><i class="fa fa-cart-arrow-down"></i></a>
@@ -139,10 +135,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <%- include ('partials/messages')%>
+                <%- include ('partials/messages') %>
                 <form action="/login" method="POST" id="newModalForm" class="offset-1 col-10">
                     <div class="form-group">
-                        <label  for="loginInputEmail" class="label">E-mail Address<sup>*</sup></label>
+                        <label for="loginInputEmail" class="label">E-mail Address<sup>*</sup></label>
                         <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                required name="email" type="email" class="form-control" id="loginInputEmail"
                                aria-describedby="emailHelp"
@@ -150,8 +146,9 @@
 
                     </div>
                     <div class="form-group">
-                        <label  for="loginPassword" class="label">Password<sup>*</sup></label>
-                        <input required minlength="8" name="password" type="password" class="form-control" id="loginPassword" placeholder="**********">
+                        <label for="loginPassword" class="label">Password<sup>*</sup></label>
+                        <input required minlength="8" name="password" type="password" class="form-control"
+                               id="loginPassword" placeholder="**********">
                     </div>
                     <button type="submit" class="btn btn-green-gradient">Log In</button>
                 </form>
@@ -182,17 +179,19 @@
                 <form action="/signup" method="POST" class="offset-1 col-10">
                     <div class="form-group">
                         <label for="firstName" class="label">Name<sup>*</sup></label>
-                        <input required name="firstName" type="text" class="form-control" id="firstname" placeholder="Name">
+                        <input required name="firstName" type="text" class="form-control" id="firstname"
+                               placeholder="Name">
                     </div>
                     <div class="form-group">
                         <label for="lastName" class="label">Last Name<sup>*</sup></label>
-                        <input required name="lastName" type="text" class="form-control" id="lastName" placeholder="Full Name">
+                        <input required name="lastName" type="text" class="form-control" id="lastName"
+                               placeholder="Full Name">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="label">Email Address<sup>*</sup></label>
                         <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                                required
-                                name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                               required
+                               name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
                                placeholder="Email Address">
                     </div>
                     <div class="form-group">
@@ -204,7 +203,7 @@
                     <div class="form-group">
                         <label for="InputPassword2" class="label">Retype Password<sup>*</sup></label>
                         <input required
-                              minlength="8"
+                               minlength="8"
                                name="confirmPassword" type="password" class="form-control" id="confirmPassword"
                                placeholder="**********">
                     </div>
@@ -296,3 +295,5 @@
         </div>
     </div>
 </div>
+<script src="js/user.js"></script>
+

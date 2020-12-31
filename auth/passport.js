@@ -1,9 +1,9 @@
 const LocalStrategy = require('passport-local').Strategy;
 const {validateUser} = require('../validations/user');
-// Load User model
 const User = require('../models/user');
+const {generateAvatar} = require('../utils/helper');
 
-module.exports = function(passport) {
+module.exports = function (passport) {
     passport.use('signup', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
@@ -20,19 +20,22 @@ module.exports = function(passport) {
 
             if (error) throw error;
             if (value.password !== value.confirmPassword) {
-                return done(null,false,{message:'Password and confirm password fields doesn\'t match'});
+                return done(null, false, {message: 'Password and confirm password fields doesn\'t match'});
             }
             const findUser = await User.findOne({email: value.email});
             if (findUser) {
-                return done(null,false,{message:'This email is already in use. Please use another one.'});
+                return done(null, false, {message: 'This email is already in use. Please use another one.'});
             }
-            const user = new User( {
+            const userAvatar = generateAvatar(req.body.firstName, req.body.lastName);
+            const user = new User({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: email,
                 password: password,
-                status:true
+                status: true,
+                avatar: userAvatar
             });
+
             await user.save();
             delete user.password;
             return done(null, user);
@@ -41,18 +44,19 @@ module.exports = function(passport) {
             return done(e);
         }
     }));
+
     passport.use('login', new LocalStrategy({
-       usernameField: 'email',
-       // passwordField: 'password',
+        usernameField: 'email',
+        // passwordField: 'password',
     }, async function (email, password, done) {
         try {
             const user = await User.findOne({email});
             if (!user) {
-                return done(null, false, { message: 'That email is not registered' });
+                return done(null, false, {message: 'That email is not registered'});
             }
             const isMatch = await user.comparePassword(password);
             if (!isMatch) {
-                return done(null, false, { message: 'Password incorrect' });
+                return done(null, false, {message: 'Password incorrect'});
             }
             return done(null, user);
         } catch (e) {
@@ -60,12 +64,12 @@ module.exports = function(passport) {
         }
     }));
 
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+    passport.deserializeUser(function (id, done) {
+        User.findById(id, function (err, user) {
             done(err, user);
         });
     });

@@ -18,19 +18,19 @@ const userSchema = new Schema({
     firstName: {
         type: String,
         minLength: 2,
-        maxLength:256,
+        maxLength: 256,
         required: true,
     },
     lastName: {
         type: String,
         minLength: 2,
-        maxLength:256,
+        maxLength: 256,
         required: true,
     },
     email: {
         type: String,
         minLength: 2,
-        maxLength:256,
+        maxLength: 256,
         required: true,
     },
     password: {
@@ -41,9 +41,12 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    date :{
-        type : Date,
-        default : Date.now
+    avatar: {
+        type: String,
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 });
 

@@ -5,7 +5,7 @@ module.exports = {
             return next();
         }
        // req.flash('error_msg', 'Please log in to view that resource');
-       res.render('index', {URL: '/', user: null});
+       res.redirect('/', {user: null});
     },
     forwardAuthenticated: function (req, res, next) {
         if (!req.isAuthenticated()) {
