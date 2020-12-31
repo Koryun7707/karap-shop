@@ -2,6 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const {validateUser} = require('../validations/user');
 const User = require('../models/user');
 const {generateAvatar} = require('../utils/helper');
+const roleTypes = require('../configs/constants').ROLE_TYPES;
 
 module.exports = function (passport) {
     passport.use('signup', new LocalStrategy({
@@ -28,16 +29,17 @@ module.exports = function (passport) {
             }
             const userAvatar = generateAvatar(req.body.firstName, req.body.lastName);
             const user = new User({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: email,
-                password: password,
+                firstName: value.firstName,
+                lastName: value.lastName,
+                email: value.email,
+                password: value.password,
+                roleType: roleTypes.USER,
                 status: true,
                 avatar: userAvatar
             });
 
             await user.save();
-            delete user.password;
+            console.log('user', user);
             return done(null, user);
         } catch (e) {
             console.log(e);
@@ -47,7 +49,7 @@ module.exports = function (passport) {
 
     passport.use('login', new LocalStrategy({
         usernameField: 'email',
-        // passwordField: 'password',
+        passwordField: 'password',
     }, async function (email, password, done) {
         try {
             const user = await User.findOne({email});

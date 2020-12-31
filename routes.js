@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const {userLogin, userSignup, activateHandle} = require('./controllers/user');
+const User = require('./models/user');
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 const passport = require('passport');
@@ -38,15 +38,24 @@ router.get('/login', forwardAuthenticated, (req, res) => {
 
 
 // Logout
-router.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
+router.get('/logout', async (req, res, next) => {
+    if (req.session) {
+        const user = await User.findById(req.session.user._id);
+        user.status = false;
+        await user.save();
+        req.session.destroy((err) => {
+            if (err) {
+                return next(err);
+            } else {
+                return res.redirect('/');
+            }
+        });
+    }
 });
 
 
 router.get('/', (req, res) => {
     req.session.user = req.user;
-    console.log(req.user);
     res.render('index', {URL: '/', user: req.session.user});
 });
 
