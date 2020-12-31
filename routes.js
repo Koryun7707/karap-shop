@@ -51,44 +51,15 @@ router.get('/login', forwardAuthenticated, getLogInPage);
 router.get('/logout', userLogOut);
 router.get('/', getUserDashboard);
 
-<<<<<<< Updated upstream
-
-//get page login and signup
-router.get('/signup', forwardAuthenticated,(req,res)=>{
-    res.render('signup',{user:req.session.user});
-})
-router.get('/login',forwardAuthenticated,(req,res)=>{
-    res.render('login',{user:req.session.user});
-})
-
-
-
-// Logout
-router.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
-});
-
-
-router.get('/',  (req, res) => {
-    req.session.user = req.user;
-    res.render('index', {URL: '/', user: req.session.user});
-});
 
 /**
  * Brand
  */
 
 
-router.post('/brand', createBrand);
-router.delete('/brand/:id', deleteBrand);
-router.put('/brand', updateBrand);
-=======
-//Brand
 router.post('/brand', checkIsAuthenticated, isAdmin, createBrand);
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
 router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
->>>>>>> Stashed changes
 
 //Product
 router.post('/product', createProduct);
