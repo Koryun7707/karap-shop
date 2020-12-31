@@ -20,11 +20,12 @@ const {
     getAdminPage,
     getAdminShopPage
 } = require('./controllers/pages');
-
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 const passport = require('passport');
-const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth')
+const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
+const {isAdmin} = require('./utils/helper');
+
 
 /**
  * User
@@ -50,6 +51,7 @@ router.get('/login', forwardAuthenticated, getLogInPage);
 router.get('/logout', userLogOut);
 router.get('/', getUserDashboard);
 
+<<<<<<< Updated upstream
 
 //get page login and signup
 router.get('/signup', forwardAuthenticated,(req,res)=>{
@@ -81,6 +83,12 @@ router.get('/',  (req, res) => {
 router.post('/brand', createBrand);
 router.delete('/brand/:id', deleteBrand);
 router.put('/brand', updateBrand);
+=======
+//Brand
+router.post('/brand', checkIsAuthenticated, isAdmin, createBrand);
+router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
+router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
+>>>>>>> Stashed changes
 
 //Product
 router.post('/product', createProduct);
@@ -96,19 +104,18 @@ router.get('/contact', getContactPage);
 router.get('/join-our-team', getJoinOurTeamPage);
 router.get('/shop', getShopPage);
 
-
 //admin dashboard
-router.get('/admin', getAdminPage);
-router.get('/admin-addBrand', getAdminAddBrandPage);
-router.get('/admin-addProduct', getAdminAddProductPage);
-router.get('/admin-home', getAdminHomePage);
-router.get('/admin-shop', getAdminShopPage);
-router.get('/admin-brand', getAdminBrandPage);
-router.get('/admin-about', getAdminAboutPage);
-router.get('/admin-contact', getAdminContactPage);
-router.get('/admin-join-our-team', getAdminJoinOurTeamPage);
-router.get('/admin-ourBrands', getAdminOurBrandsPage);
-router.get('/admin-ourProducts', getAdminOurProductsPage);
+router.get('/admin', checkIsAuthenticated, isAdmin, getAdminPage);
+router.get('/admin-addBrand', checkIsAuthenticated, isAdmin, getAdminAddBrandPage);
+router.get('/admin-addProduct', checkIsAuthenticated, isAdmin, getAdminAddProductPage);
+router.get('/admin-home', checkIsAuthenticated, isAdmin, getAdminHomePage);
+router.get('/admin-shop', checkIsAuthenticated, isAdmin, getAdminShopPage);
+router.get('/admin-brand', checkIsAuthenticated, isAdmin, getAdminBrandPage);
+router.get('/admin-about', checkIsAuthenticated, isAdmin, getAdminAboutPage);
+router.get('/admin-contact', checkIsAuthenticated, isAdmin, getAdminContactPage);
+router.get('/admin-join-our-team', checkIsAuthenticated, isAdmin, getAdminJoinOurTeamPage);
+router.get('/admin-ourBrands', checkIsAuthenticated, isAdmin, getAdminOurBrandsPage);
+router.get('/admin-ourProducts', checkIsAuthenticated, isAdmin, getAdminOurProductsPage);
 
 
 module.exports = router;

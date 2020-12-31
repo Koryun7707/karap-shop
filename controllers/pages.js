@@ -1,6 +1,4 @@
 require('dotenv').config();
-const User = require('../models/user');
-const {success, validation, err} = require('../utils/responseApi');
 
 module.exports = {
     getAboutPage: (req, res) => {
@@ -40,7 +38,7 @@ module.exports = {
         res.render('admin/brands', {user: req.session.user});
     },
     getAdminAboutPage: (req, res) => {
-        res.render('shop', {URL: '/shop', user: req.session.user});
+        res.render('admin/shop', {URL: '/shop', user: req.session.user});
     },
     getAdminContactPage: (req, res) => {
         res.render('admin/contactUs', {user: req.session.user});
