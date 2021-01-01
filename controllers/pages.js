@@ -19,38 +19,38 @@ module.exports = {
     getJoinOurTeamPage: (req, res) => {
         res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user});
     },//start admin pages ->
-    getAdminPage: (req, res) => {
-        res.render('admin', {user: req.session.user});
-    },
-    getAdminAddBrandPage: (req, res) => {
-        res.render('admin/addBrand', {user: req.session.user});
-    },
-    getAdminAddProductPage: (req, res) => {
-        res.render('admin/addProduct', {user: req.session.user});
-    },
     getAdminHomePage: (req, res) => {
-        res.render('admin/home', {user: req.session.user});
+        res.render('admin/home', {URL: '/admin-home', user: req.session.user});
     },
     getAdminShopPage: (req, res) => {
-        res.render('admin/shop', {user: req.session.user});
+        res.render('admin/shop', {URL: '/admin-shop', user: req.session.user});
     },
     getAdminBrandPage: (req, res) => {
-        res.render('admin/brands', {user: req.session.user});
+        res.render('admin/brands', {URL: '/admin-brand', user: req.session.user});
+    },
+    getAdminBlogPage: (req, res) => {
+        res.render('admin/brands', {URL: '/admin-blog', user: req.session.user});
     },
     getAdminAboutPage: (req, res) => {
-        res.render('admin/shop', {URL: '/shop', user: req.session.user});
+        res.render('admin/aboutUs', {URL: '/admin-about', user: req.session.user});
     },
     getAdminContactPage: (req, res) => {
-        res.render('admin/contactUs', {user: req.session.user});
+        res.render('admin/contactUs', {URL: '/admin-contact', user: req.session.user});
     },
     getAdminJoinOurTeamPage: (req, res) => {
-        res.render('admin/joinOurTeam', {user: req.session.user});
+        res.render('admin/joinOurTeam', {URL: '/admin-join-our-team', user: req.session.user});
+    },
+    getAdminAddBrandPage: (req, res) => {
+        res.render('admin/addBrand', {URL: '/admin-create-brand', user: req.session.user});
+    },
+    getAdminAddProductPage: (req, res) => {
+        res.render('admin/addProduct', {URL: 'admin-create-product', user: req.session.user});
     },
     getAdminOurBrandsPage: (req, res) => {
-        res.render('admin/ourBrands', {user: req.session.user});
+        res.render('admin/ourBrands', {URL: '/admin-all-brands', user: req.session.user});
     },
     getAdminOurProductsPage: (req, res) => {
-        res.render('admin/ourProducts', {user: req.session.user});
+        res.render('admin/ourProducts', {URL: '/admin-all-products', user: req.session.user});
     },
 
 };

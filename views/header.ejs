@@ -72,9 +72,9 @@
                         </a>
                     </li>
                     <% if(user && user.roleType === 'admin'){ %>
-                        <li class="<%= URL === '/admin' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                            <a class="nav-link" href="/admin">Dashboard
-                                <% if(URL === '/admin'){ %>
+                        <li class="<%= URL === '/admin-home' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                            <a class="nav-link" href="/admin-home">Dashboard
+                                <% if(URL === '/admin-home'){ %>
                                     <span class="sr-only">(current)</span>
                                 <% } %>
                             </a>

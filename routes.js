@@ -17,7 +17,7 @@ const {
     getAdminJoinOurTeamPage,
     getAdminOurBrandsPage,
     getAdminOurProductsPage,
-    getAdminPage,
+    getAdminBlogPage,
     getAdminShopPage
 } = require('./controllers/pages');
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
@@ -75,17 +75,17 @@ router.get('/join-our-team', getJoinOurTeamPage);
 router.get('/shop', getShopPage);
 
 //admin dashboard
-router.get('/admin', checkIsAuthenticated, isAdmin, getAdminPage);
-router.get('/admin-addBrand', checkIsAuthenticated, isAdmin, getAdminAddBrandPage);
-router.get('/admin-addProduct', checkIsAuthenticated, isAdmin, getAdminAddProductPage);
 router.get('/admin-home', checkIsAuthenticated, isAdmin, getAdminHomePage);
 router.get('/admin-shop', checkIsAuthenticated, isAdmin, getAdminShopPage);
 router.get('/admin-brand', checkIsAuthenticated, isAdmin, getAdminBrandPage);
+router.get('/admin-blog', checkIsAuthenticated, isAdmin, getAdminBlogPage);
 router.get('/admin-about', checkIsAuthenticated, isAdmin, getAdminAboutPage);
 router.get('/admin-contact', checkIsAuthenticated, isAdmin, getAdminContactPage);
 router.get('/admin-join-our-team', checkIsAuthenticated, isAdmin, getAdminJoinOurTeamPage);
-router.get('/admin-ourBrands', checkIsAuthenticated, isAdmin, getAdminOurBrandsPage);
-router.get('/admin-ourProducts', checkIsAuthenticated, isAdmin, getAdminOurProductsPage);
+router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, getAdminAddBrandPage);
+router.get('/admin-create-product', checkIsAuthenticated, isAdmin, getAdminAddProductPage);
+router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, getAdminOurBrandsPage);
+router.get('/admin-all-products', checkIsAuthenticated, isAdmin, getAdminOurProductsPage);
 
 
 module.exports = router;
