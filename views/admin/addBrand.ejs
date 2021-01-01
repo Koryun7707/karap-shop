@@ -1,7 +1,7 @@
 <%- include ('adminHeader') -%>
 <div class="row">
     <div class="col-8 offset-2">
-        <form action="/brand" method="POST" class="py-5">
+        <form method="post" enctype="multipart/form-data"  action="brand"  class="py-5">
             <div class="row page-titles">Add brand</div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
@@ -24,12 +24,16 @@
                           placeholder="Some info about brand."></textarea>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Upload brand logo</label>
-                <input type="file" class="form-control" id="uploadBrandLogo">
+                <label for="exampleInputEmail1">Upload brand logo, and three size images sm1/sm2/sm3(First choosen must be logo.)</label>
+                <input type="file" name="brandImages" multiple="multiple" class="form-control" id="uploadImagesBySize">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Upload brand images sm1/sm2/sm3</label>
-                <input type="file" class="form-control" id="uploadImagesBySize">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language">
+                    <option name="spain" value="spain" selected>Spain</option>
+                    <option name="eng" value="eng">Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>

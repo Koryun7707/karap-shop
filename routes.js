@@ -1,35 +1,42 @@
 const express = require('express');
 const router = express.Router();
-const {getLogInPage, getSignUpPage, sendMessageContactUs, userLogOut, getUserDashboard} = require('./controllers/user');
-const {
-    getAboutPage,
-    getBlogPage,
-    getBrandPage,
-    getContactPage,
-    getJoinOurTeamPage,
-    getShopPage,
-    getAdminAboutPage,
-    getAdminAddBrandPage,
-    getAdminAddProductPage,
-    getAdminBrandPage,
-    getAdminContactPage,
-    getAdminHomePage,
-    getAdminJoinOurTeamPage,
-    getAdminOurBrandsPage,
-    getAdminOurProductsPage,
-    getAdminBlogPage,
-    getAdminShopPage
-} = require('./controllers/pages');
+const passport = require('passport');
+const multer = require('multer');
+const path = require('path');
+const usersController = require('./controllers/user');
+const pagesController = require('./controllers/pages');
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
-const passport = require('passport');
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
 
+//Multer upload image
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/uploads');
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    },
+});
+const upload = multer({
+    storage: storage,
+    fileFilter: function (req, files, callback) {
+        const ext = path.extname(files.originalname);
+        const allowed = ['.png', '.jpg', '.jpeg',];
+        if (allowed.includes(ext)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Only .png, .jpg, .jpeg"), false);
+        }
+    },
+    limits: {
+        fileSize: 4 * 1024 * 1024,
+    },
+});
 
-/**
- * User
- */
+//Users
 router.post('/login',
     (req, res, next) => {
         passport.authenticate('login', {
@@ -46,46 +53,48 @@ router.post('/signup',
             failureFlash: true
         })(req, res, next);
     });
-router.get('/signup', forwardAuthenticated, getSignUpPage);
-router.get('/login', forwardAuthenticated, getLogInPage);
-router.get('/logout', userLogOut);
-router.get('/', getUserDashboard);
-router.post('/sendMessageContactUs', sendMessageContactUs);
+router.get('/signup', forwardAuthenticated, usersController.getSignUpPage);
+router.get('/login', forwardAuthenticated, usersController.getLogInPage);
+router.get('/logout', usersController.userLogOut);
+router.get('/', usersController.getUserDashboard);
+router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
 
-/**
- * Brand
- */
-router.post('/brand', checkIsAuthenticated, isAdmin, createBrand);
+//Brands
+router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages', 4), createBrand);//+
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
 router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
 
 
-//Product
-router.post('/product', createProduct);
+//Products
+router.post('/product', checkIsAuthenticated, isAdmin, upload.array('productImages', 5), createProduct);//+
 router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
 
 
 //Pages
-router.get('/about', getAboutPage);
-router.get('/blog', getBlogPage);
-router.get('/brand', getBrandPage);
-router.get('/contact', getContactPage);
-router.get('/join-our-team', getJoinOurTeamPage);
-router.get('/shop', getShopPage);
+router.get('/about', pagesController.getAboutPage);
+router.get('/blog', pagesController.getBlogPage);
+router.get('/brand', pagesController.getBrandPage);
+router.get('/contact', pagesController.getContactPage);
+router.get('/join-our-team', pagesController.getJoinOurTeamPage);
+router.get('/shop', pagesController.getShopPage);
 
-//admin dashboard
-router.get('/admin-home', checkIsAuthenticated, isAdmin, getAdminHomePage);
-router.get('/admin-shop', checkIsAuthenticated, isAdmin, getAdminShopPage);
-router.get('/admin-brand', checkIsAuthenticated, isAdmin, getAdminBrandPage);
-router.get('/admin-blog', checkIsAuthenticated, isAdmin, getAdminBlogPage);
-router.get('/admin-about', checkIsAuthenticated, isAdmin, getAdminAboutPage);
-router.get('/admin-contact', checkIsAuthenticated, isAdmin, getAdminContactPage);
-router.get('/admin-join-our-team', checkIsAuthenticated, isAdmin, getAdminJoinOurTeamPage);
-router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, getAdminAddBrandPage);
-router.get('/admin-create-product', checkIsAuthenticated, isAdmin, getAdminAddProductPage);
-router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, getAdminOurBrandsPage);
-router.get('/admin-all-products', checkIsAuthenticated, isAdmin, getAdminOurProductsPage);
-
+//admin
+router.get('/admin-home', checkIsAuthenticated, isAdmin, pagesController.getAdminHomePage);
+router.post('/admin-home', checkIsAuthenticated, isAdmin, upload.array('homeSliderImages', 10), pagesController.postAdminHomePage);
+router.get('/admin-shop', checkIsAuthenticated, isAdmin, pagesController.getAdminShopPage);
+router.post('/admin-shop', checkIsAuthenticated, isAdmin, upload.array('shopSliderImages', 1), pagesController.postAdminShopPage);
+router.get('/admin-brand', checkIsAuthenticated, isAdmin, pagesController.getAdminBrandPage);
+router.post('/admin-brand', checkIsAuthenticated, isAdmin, upload.array('imagesBrandSlider', 1), pagesController.postAdminBrandPage);
+router.get('/admin-about', checkIsAuthenticated, isAdmin, pagesController.getAdminAboutPage);
+router.post('/admin-about', checkIsAuthenticated, isAdmin, upload.array('imagesAboutSlider', 1), pagesController.postAdminAboutPage);
+router.get('/admin-contact', checkIsAuthenticated, isAdmin, pagesController.getAdminContactPage);
+router.post('/admin-contact', checkIsAuthenticated, isAdmin, upload.array('imagesContactSlider', 1), pagesController.postAdminContactPage);
+router.get('/admin-join-our-team', checkIsAuthenticated, isAdmin, pagesController.getAdminJoinOurTeamPage);
+router.post('/admin-join-our-team', checkIsAuthenticated, isAdmin, upload.array('imagesJoinOurTeamSlider', 2), pagesController.postAdminJoinOurTeamPage);
+router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, pagesController.getAdminAddBrandPage);
+router.get('/admin-create-product', checkIsAuthenticated, isAdmin, pagesController.getAdminAddProductPage);
+router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, pagesController.getAdminOurBrandsPage);
+router.get('/admin-all-products', checkIsAuthenticated, isAdmin, pagesController.getAdminOurProductsPage);
 
 module.exports = router;

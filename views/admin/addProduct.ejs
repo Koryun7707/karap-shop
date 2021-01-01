@@ -1,46 +1,62 @@
 <%- include ('adminHeader') -%>
 <div class="row">
     <div class="col-8 offset-2">
-        <form action="#" class="py-5">
+        <form method="post" enctype="multipart/form-data"  action="product" class="py-5">
             <div class="row page-titles">Add product.</div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Choose brand.</label>
-                <select>
-                    <option>Armani</option>
-                    <option>Zara</option>
+                <select name="brandId">
+                    <option name="armani" value="1" selected>Armani</option>
+                    <option name="zara" value="2">Zara</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product type.">
+                <input type="text" name="productType" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product type.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product name.">
+                <input type="text" name="productName" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product name.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Color</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product color.">
+                <input type="text" name="productColor" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product color.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Sale</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product sale.">
+                <input type="text" name="productSale" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product sale.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Count</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product count.">
+                <input type="text" name="productCount" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product count.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Price</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product price.">
+                <input type="text" name="productPrice" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product price.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Size</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product size.">
+                <input type="text" name="productSize" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product size.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Upload product images.</label>
-                <input type="file" class="form-control" id="uploadImagesBySize">
+                <input type="file" name="productImages" multiple="multiple" class="form-control"
+                       id="uploadImagesBySize">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language">
+                    <option name="spain" value="spain" selected>Spain</option>
+                    <option name="eng" value="eng">Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>

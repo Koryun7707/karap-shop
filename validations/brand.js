@@ -4,12 +4,11 @@ const Joi = require('joi');
 const validateBrand = (data) => {
     logger.info('Start Validate Brand - - -')
     const schema = Joi.object().keys({
-        name: Joi.string().required(),
-        info: Joi.string().required(),
-        type: Joi.string().allow('', null),
-        hTag: Joi.string().allow('', null),
-        logo: Joi.string().required(),
-        image: Joi.string().required(),
+        brandName: Joi.string().required(),
+        brandInfo: Joi.string().required(),
+        brandType: Joi.string().allow('', null),
+        brandHashTag: Joi.string().allow('', null),
+        language: Joi.string().required(),
     });
     return schema.validate(data);
 };

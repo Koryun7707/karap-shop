@@ -24,13 +24,13 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
-    logo: {
+    images: {
         type: Array,
         required: true,
     },
-    brandImages: {
-        type: Array,
-        required: true,
+    language: {
+        type: String,
+        enum: ['eng', 'ru', 'spain'],
     }
 });
 

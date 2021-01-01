@@ -1,19 +1,27 @@
 <%- include ('adminHeader') -%>
 <div class="row">
     <div class="col-8 offset-2">
-        <form action="#" class="py-5">
+        <form method="post" enctype="multipart/form-data"  action="admin-home" class="py-5">
             <div class="row page-titles">Home</div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Text on slider</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Text on slider.">
+                <input type="text" name="textOnHomeSlider" class="form-control" id="textOnHomeSlider" placeholder="Text on slider.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Upload home slider images.</label>
-                <input type="file" class="form-control" id="uploadImagesBySize">
+                <input type="file" multiple="multiple" name="homeSliderImages" class="form-control" id="homeSliderImages">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Home product type title(under the slider)</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Product count.">
+                <input type="text" name="homeProductTypeTitle" class="form-control" id="homeProductTypeTitle" placeholder="Product count.">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language">
+                    <option name="spain" value="spain" selected>Spain</option>
+                    <option name="eng" value="eng">Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>

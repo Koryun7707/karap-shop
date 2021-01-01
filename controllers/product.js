@@ -1,26 +1,74 @@
+const rimraf = require('rimraf');
+const fs = require('fs');
+const path = require('path');
 const Product = require('../models/product');
 const {logger} = require('../utils/logger');
 const {validateProduct} = require('../validations/product')
 const {success, validation, err} = require('../utils/responseApi');
+const {moveFile} = require('../utils/helper');
 
 const createProduct = async (req, res) => {
     logger.info('Start createProduct - - -');
     try {
+        console.log(req.body);
+        const files = req.files;
         const {error, value} = validateProduct(req.body);
-        if (error && error.details) {
-            logger.error(`Validate Error: ${error}`);
-            return res.status(422).json(validation(error));
+        if (error) {
+            if (files.length > 0) {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) console.log(err);
+                    })
+                });
+            }
+            return res.status(422).json(validation(error.message));
         }
-        const newProduct = new Product(value);
-        await newProduct.save();
-        return res.status(200).json(success('Product Add Complete!', {
-            newProduct
-        }, res.statusCode));
+        if (files.length !== 5) {
+            files.map((file) => {
+                rimraf(`./public/uploads/${file.filename}`, (err) => {
+                    if (err) console.log(err);
+                })
+            });
+            return res.status(422).json(validation('Files is required.!'));
+        }
+        let dir = `./public/uploads/product`;
+        if (!fs.existsSync(dir)) {
+            fs.mkdir(dir, (err) => {
+                if (err) console.log(err);
+            });
+        }
+        const newProduct = new Product({
+            brandId: value.brandId,
+            name: value.productName,
+            type: value.productType,
+            price: value.productPrice,
+            size: value.productSize,
+            sale: value.productSale,
+            color: value.productColor,
+            count: value.productCount,
+            language: value.language,
+        });
+        newProduct.images = moveFile(files, dir);
+        newProduct.save((err, result) => {
+            if (err) {
+                fs.readdir(dir, (error, files) => {
+                    if (error) throw error;
+                    for (const file of files) {
+                        fs.unlink(path.join(dir, file), err => {
+                            if (err) throw err;
+                        });
+                    }
+                });
+                return res.status(422).json(validation(err.message));
+            }
+            return res.status(200).json(success('Product Add Complete!', result, res.statusCode));
+        });
     } catch (e) {
         logger.error(`Added Product Error: ${e}`);
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+
 const deleteProduct = async (req, res) => {
     logger.info('Start deleteProduct - - -');
     const params = req.params;
@@ -32,6 +80,7 @@ const deleteProduct = async (req, res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+
 const updateProduct = async (req, res) => {
     logger.info('Start updateProduct - - -');
     try {

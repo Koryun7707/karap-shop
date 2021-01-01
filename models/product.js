@@ -8,7 +8,8 @@ const productSchema = new Schema({
         auto: true
     },
     brandId: {
-        type:mongoose.Schema.Types.ObjectId,
+        type: String,
+        // type: mongoose.Schema.Types.ObjectId,
     },
     type: {
         type: String,
@@ -19,26 +20,30 @@ const productSchema = new Schema({
         required: true,
     },
     price: {
-        type: Number,
+        type: String,
         required: true
     },
     size: {
-        type: Number,
+        type: String,
     },
     color: {
         type: String,
     },
     sale: {
-        type: Number,
+        type: String,
     },
     count: {
-        type: Number,
+        type: String,
         required: true,
     },
     images: {
         type: Array,
         required: true,
-    }
+    },
+    language: {
+        type: String,
+        enum: ['eng', 'ru', 'spain'],
+    },
 });
 
 module.exports = mongoose.model('Product', productSchema);

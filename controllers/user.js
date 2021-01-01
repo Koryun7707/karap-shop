@@ -14,10 +14,10 @@ module.exports = {
         req.session.user = req.user;
         res.render('index', {URL: '/', user: req.session.user});
     },
-    sendMessageContactUs:(req,res) =>{
+    sendMessageContactUs: (req, res) => {
         console.log(req.body);
-        try{
-            const {email,firstName,message} = req.body
+        try {
+            const {email, firstName, message} = req.body
             console.log(req.body);
             const content = {
                 from: process.env.MAIL_AUTH_EMAIL,
@@ -32,9 +32,9 @@ module.exports = {
                                 </div> `,
             }
             sendMessageToMail(content);
-            return res.status(200).json(success('Send Mail Completed!',{},res.statusCode))
+            return res.status(200).json(success('Send Mail Completed!', {}, res.statusCode))
 
-        }catch(e){
+        } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
             console.log(e)
         }
