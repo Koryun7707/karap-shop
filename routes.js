@@ -53,6 +53,8 @@ router.post('/signup',
             failureFlash: true
         })(req, res, next);
     });
+
+// router.post('/getJson', usersController.changeLanguage);
 router.get('/signup', forwardAuthenticated, usersController.getSignUpPage);
 router.get('/login', forwardAuthenticated, usersController.getLogInPage);
 router.get('/logout', usersController.userLogOut);

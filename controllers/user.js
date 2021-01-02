@@ -4,6 +4,9 @@ const {success, validation, err} = require('../utils/responseApi');
 const {sendMessageToMail} = require('../services/mailService')
 
 module.exports = {
+    changeLanguage: (req, res) => {
+        console.log(req.body.example)
+    },
     getSignUpPage: (req, res) => {
         res.render('signup', {user: req.session.user});
     },
@@ -11,6 +14,7 @@ module.exports = {
         res.render('login', {user: req.session.user});
     },
     getUserDashboard: (req, res) => {
+        console.log(req.body.example);
         req.session.user = req.user;
         res.render('index', {URL: '/', user: req.session.user});
     },

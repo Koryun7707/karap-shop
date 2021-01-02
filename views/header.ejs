@@ -103,29 +103,36 @@
                         </li>
 
                         <% }else { %>
-                        <li class="nav-item mr-2 mr-xl-4">
-                            <a href="/logout" class="nav-link" type="button">Log Out</a>
-                        </li>
-                        <li class="nav-item mr-2 mr-xl-4" id="avatar">
-                            <img style="
+                            <li class="nav-item mr-2 mr-xl-4">
+                                <a href="/logout" class="nav-link" type="button">Log Out</a>
+                            </li>
+                            <li class="nav-item mr-2 mr-xl-4" id="avatar">
+                                <img style="
                                       border-radius: 50%;
                                     border:2px solid silver;
                                     cursor:pointer;" src=<%= user.avatar %> height="50" alt="?">
-                        </li>
+                            </li>
                         <% } %>
                         <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block position-relative">
                             <span class="cart-products-count">0</span>
                             <a class="nav-link" href="#"><i class="fa fa-cart-arrow-down"></i></a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">En
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">RUS</a>
-                                <a class="dropdown-item" href="#">ARM</a>
-                            </div>
+                            <!--                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
+                            <!--                               data-toggle="dropdown"-->
+                            <!--                               aria-haspopup="true" aria-expanded="false">En-->
+                            <!--                            </a>-->
+                            <!--                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+                            <!--                            <form method="post" id="tableForm" action="getJson">-->
+                            <select class="example" name="example" id="example">
+                                <option name="eng" value="eng" selected>Eng</option>
+                                <option name="ru" value="ru">Ru</option>
+                                <option name="spain" value="spain">Spain</option>
+                            </select>
+                            <!--                            </form>-->
+                            <!--                                <a class="dropdown-item" href="#">RUS</a>-->
+                            <!--                                <a class="dropdown-item" href="#">ARM</a>-->
+                            <!--                            </div>-->
                         </li>
 
                     </ul>
@@ -304,5 +311,29 @@
         </div>
     </div>
 </div>
-<script src="js/user.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        document.getElementById('example').addEventListener('change', function () {
+            console.log('You selected: ', this.value);
+            var obj = {
+                'language': this.value,
+            };
+            console.log(JSON.stringify(obj));
+            $.ajax({
+                url: '/getJson',
+                method: 'POST',
+                data: JSON.stringify(obj),
+                success: function (data) {
+                    console.log('user created , info :' + data);
+                },
+                error: function (data) {
+                    console.log('User creation failed :' + data);
+                }
+            });
+        });
+    })
+    ;
+</script>
 

@@ -41,7 +41,7 @@ app.use(passport.session());
 app.use(flash());
 
 // Global variables
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
@@ -56,7 +56,9 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-
+app.post('/getJson', function (req, res) {
+    console.log(888888, req.body);
+});
 app.use('/', apiRoutes);
 
 app.listen(PORT, () => {
