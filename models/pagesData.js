@@ -44,6 +44,9 @@ const pageDataSchema = new Schema({
         type: Array,
         required: true,
     },
+    titleOurPhilosophy: {
+        type: String,
+    },
     ourPhilosophy: {
         type: String,
     },

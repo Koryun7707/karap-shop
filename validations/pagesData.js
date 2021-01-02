@@ -38,6 +38,7 @@ const validateAboutData = (data) => {
         textAboutSlider: Joi.string().allow(''),
         imagesAboutSlider: Joi.string().allow(''),
         ourPhilosophy: Joi.string().required(),
+        titleOurPhilosophy: Joi.string().required(),
         language: Joi.string().required(),
     });
     return schema.validate(data);

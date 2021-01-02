@@ -303,6 +303,7 @@ module.exports = {
                 const newData = new PageData({
                     textAboutSlider: value.textAboutSlider,
                     ourPhilosophy: value.ourPhilosophy,
+                    titleOurPhilosophy: value.titleOurPhilosophy,
                     language: value.language
                 });
                 newData.imagesAboutSlider = moveFile(files, dir);
