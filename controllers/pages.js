@@ -13,6 +13,8 @@ const {
 } = require('../validations/pagesData');
 const PageData = require('../models/pagesData');
 const {moveFile} = require('../utils/helper');
+const Brand = require('../models/brands');
+
 
 module.exports = {
     getAboutPage: (req, res) => {
@@ -539,8 +541,14 @@ module.exports = {
     getAdminAddBrandPage: (req, res) => {
         res.render('admin/addBrand', {URL: '/admin-create-brand', user: req.session.user});
     },
-    getAdminAddProductPage: (req, res) => {
-        res.render('admin/addProduct', {URL: 'admin-create-product', user: req.session.user});
+    getAdminAddProductPage:async (req, res) => {
+        try{
+            const brands = await Brand.find({}).select('name _id');
+            res.render('admin/addProduct', {URL: 'admin-create-product', user: req.session.user,brands:brands});
+        } catch(e){
+            return res.status(500).json(err(e.message, res.statusCode));
+        }
+
     },
     getAdminOurBrandsPage: (req, res) => {
         res.render('admin/ourBrands', {URL: '/admin-all-brands', user: req.session.user});
@@ -548,4 +556,5 @@ module.exports = {
     getAdminOurProductsPage: (req, res) => {
         res.render('admin/ourProducts', {URL: '/admin-all-products', user: req.session.user});
     },
+
 };

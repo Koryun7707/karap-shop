@@ -6,10 +6,12 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Choose brand.</label>
                 <select name="brandId">
-                    <option name="armani" value="1" selected>Armani</option>
-                    <option name="zara" value="2">Zara</option>
+                    <% brands.forEach(function(item){%>
+                    <option  value="<%=item._id%>"><%=item.name%></option>
+                    <%}) %>
                 </select>
             </div>
+
             <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
                 <input type="text" name="productType" class="form-control" id="exampleInputEmail1"
