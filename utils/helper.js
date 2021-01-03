@@ -33,5 +33,5 @@ const generateAvatar = (firstName, lastName) => {
 module.exports = {
     generateAvatar: generateAvatar,
     isAdmin: isAdmin,
-    moveFile: moveFile
+    moveFile: moveFile,
 };

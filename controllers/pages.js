@@ -14,29 +14,78 @@ const {
 const PageData = require('../models/pagesData');
 const {moveFile} = require('../utils/helper');
 const Brand = require('../models/brands');
+const language = require('../configs/languages')
+const User = require('../models/user')
 
+var langData = language[0];
+
+const isLanguage = (selectLang) => {
+    if (selectLang === 'eng') {
+        langData = language[0]
+    } else if(selectLang ==='ru') {
+        langData = language[1]
+    }
+};
 
 module.exports = {
+    changeLanguage:(req,res) =>{
+        console.log('Start changeLanguage');
+        isLanguage(req.body.language);
+        req.session.language = req.body.language;
+        res.end();
+    },
+    getUserDashboard: (req, res) => {
+        if(req.session.language === undefined){
+            req.session.language = 'eng';
+        }
+        req.session.user = req.user;
+        res.render('index', {URL: '/', user: req.session.user,language:langData});
+    },
     getAboutPage: (req, res) => {
-        res.render('aboutUs', {URL: '/about', user: req.session.user});
+        res.render('aboutUs', {URL: '/about', user: req.session.user,language:langData});
     },
     getBlogPage: (req, res) => {
-        res.render('blog', {URL: '/blog', user: req.session.user});
+        res.render('blog', {URL: '/blog', user: req.session.user,language:langData});
     },
     getShopPage: (req, res) => {
-        res.render('shop', {URL: '/shop', user: req.session.user});
+        console.log(req.session.language)
+        res.render('shop', {URL: '/shop', user: req.session.user,language:langData});
     },
     getBrandPage: (req, res) => {
-        res.render('brand', {URL: '/brand', user: req.session.user});
+        res.render('brand', {URL: '/brand', user: req.session.user,language:langData});
     },
     getContactPage: (req, res) => {
-        res.render('contactUs', {URL: '/contact', user: req.session.user});
+        res.render('contactUs', {URL: '/contact', user: req.session.user,language:langData});
     },
     getJoinOurTeamPage: (req, res) => {
-        res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user});
+        res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user,language:langData});
     },//start admin pages ->
     getAdminHomePage: (req, res) => {
-        res.render('admin/home', {URL: '/admin-home', user: req.session.user});
+        res.render('admin/home', {URL: '/admin-home', user: req.session.user,language:langData});
+    },
+    getSignUpPage: (req, res) => {
+        res.render('signup', {user: req.session.user,language:langData});
+    },
+    getLogInPage: (req, res) => {
+        res.render('login', {user: req.session.user,language:langData});
+    },
+    userLogOut: async (req, res, next) => {
+        try {
+            if (req.session.user) {
+                const user = await User.findById(req.session.user._id);
+                user.status = false;
+                await user.save();
+                req.session.destroy((err) => {
+                    if (err) {
+                        return next(err);
+                    } else {
+                        return res.redirect('/');
+                    }
+                });
+            }
+        } catch (e) {
+            console.log('userLogOut :' + e.stack);
+        }
     },
     postAdminHomePage: async (req, res) => {
         try {

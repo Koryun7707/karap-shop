@@ -120,6 +120,6 @@ module.exports =
         login_password:' Пароль* ',
         login_footer_button_left:'Забыли пароль?',
         login_footer_button_right:'Регистрация',
-        language:'rus',
+        language:'ru',
     }
     ]

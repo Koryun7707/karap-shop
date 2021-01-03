@@ -36,6 +36,9 @@ const upload = multer({
     },
 });
 
+//language
+router.post('/getJson', pagesController.changeLanguage)
+
 //Users
 router.post('/login',
     (req, res, next) => {
@@ -54,11 +57,11 @@ router.post('/signup',
         })(req, res, next);
     });
 
-// router.post('/getJson', usersController.changeLanguage);
-router.get('/signup', forwardAuthenticated, usersController.getSignUpPage);
-router.get('/login', forwardAuthenticated, usersController.getLogInPage);
-router.get('/logout', usersController.userLogOut);
-router.get('/', usersController.getUserDashboard);
+router.get('/signup', forwardAuthenticated, pagesController.getSignUpPage);
+router.get('/login', forwardAuthenticated, pagesController.getLogInPage);
+router.get('/logout', pagesController.userLogOut);
+router.get('/', pagesController.getUserDashboard);
+
 router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
 
 //Brands

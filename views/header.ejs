@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HOME</title>
+    <title>
+        Home
+    </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
@@ -44,7 +46,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="<%= URL === '/' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/">Home
+                        <a class="nav-link" href="/">
+                            <%if(language.home){%>
+                            <%=language.home%>
+                            <%}else{%>
+                                home
+                            <%}%>
                             <% if(URL === '/'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
@@ -118,21 +125,22 @@
                             <a class="nav-link" href="#"><i class="fa fa-cart-arrow-down"></i></a>
                         </li>
                         <li class="nav-item dropdown">
-                            <!--                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
-                            <!--                               data-toggle="dropdown"-->
-                            <!--                               aria-haspopup="true" aria-expanded="false">En-->
-                            <!--                            </a>-->
-                            <!--                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-                            <!--                            <form method="post" id="tableForm" action="getJson">-->
-                            <select class="example" name="example" id="example">
-                                <option name="eng" value="eng" selected>Eng</option>
-                                <option name="ru" value="ru">Ru</option>
-                                <option name="spain" value="spain">Spain</option>
-                            </select>
-                            <!--                            </form>-->
-                            <!--                                <a class="dropdown-item" href="#">RUS</a>-->
-                            <!--                                <a class="dropdown-item" href="#">ARM</a>-->
-                            <!--                            </div>-->
+
+                                <select class="example" name="example" id="example">
+                                    <%if(language.language === 'eng' ){%>
+                                        <option name="eng" value="eng" selected>Eng</option>
+                                        <option name="ru" value="ru">Ru</option>
+                                        <option name="spain" value="spain">Spain</option>
+                                    <%}else if(language.language === 'ru'){%>
+                                        <option name="eng" value="eng" >Eng</option>
+                                        <option name="ru" value="ru" selected>Ru</option>
+                                        <option name="spain" value="spain">Spain</option>
+                                    <%}else if(language.language === 'spain'){%>
+                                        <option name="eng" value="eng" >Eng</option>
+                                        <option name="ru" value="ru" selected>Ru</option>
+                                        <option name="spain" value="spain" selected>Spain</option>
+                                    <%}%>
+                                </select>
                         </li>
 
                     </ul>
@@ -141,192 +149,25 @@
         </nav>
     </div>
 </header>
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header rose-bg">
-                <h5 class="modal-title">Login</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <%- include ('partials/messages') %>
-                <form action="/login" method="POST" id="newModalForm" class="offset-1 col-10">
-                    <div class="form-group">
-                        <label for="loginInputEmail" class="label">E-mail Address<sup>*</sup></label>
-                        <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                               required name="email" type="email" class="form-control" id="loginInputEmail"
-                               aria-describedby="emailHelp"
-                               placeholder="E-mail Address">
 
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword" class="label">Password<sup>*</sup></label>
-                        <input required minlength="8" name="password" type="password" class="form-control"
-                               id="loginPassword" placeholder="**********">
-                    </div>
-                    <button type="submit" class="btn btn-green-gradient">Log In</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="d-flex justify-content-between mt-4 w-100">
-                    <a type="button" data-dismiss="modal" data-toggle="modal" data-target="#forgotPasswordModal"
-                       class="ml-2">Forgot Password?</a>
-                    <a type="button" data-dismiss="modal" data-toggle="modal" data-target="#RegistrationModal"
-                       class="ml-2">Registration</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="RegistrationModal" tabindex="-1" aria-labelledby="RegistrationModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header rose-bg">
-                <h5 class="modal-title">Create Account</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
 
-            <div class="modal-body">
-                <form action="/signup" method="POST" class="offset-1 col-10">
-                    <div class="form-group">
-                        <label for="firstName" class="label">Name<sup>*</sup></label>
-                        <input required name="firstName" type="text" class="form-control" id="firstname"
-                               placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName" class="label">Last Name<sup>*</sup></label>
-                        <input required name="lastName" type="text" class="form-control" id="lastName"
-                               placeholder="Full Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="label">Email Address<sup>*</sup></label>
-                        <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                               required
-                               name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                               placeholder="Email Address">
-                    </div>
-                    <div class="form-group">
-                        <label for="InputPassword1" class="label">Password<sup>*</sup></label>
-                        <input required
-                               minlength="8" name="password" type="password" class="form-control" id="password"
-                               placeholder="**********">
-                    </div>
-                    <div class="form-group">
-                        <label for="InputPassword2" class="label">Retype Password<sup>*</sup></label>
-                        <input required
-                               minlength="8"
-                               name="confirmPassword" type="password" class="form-control" id="confirmPassword"
-                               placeholder="**********">
-                    </div>
-                    <!--                       <div class="form-group form-check">-->
-                    <!--                           <input type="checkbox" class="form-check-input" id="Check1">-->
-                    <!--                           <label class="form-check-label fs-14" for="Check1">I read and accept <a href="#" class="ml-2">Terms and Conditions</a></label>-->
-                    <!--                       </div>-->
-                    <button type="submit" class="btn btn-green-gradient">Create account</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="d-flex justify-content-center fs-14 w-100">
-                    Already have an account?
-                    <a type="button" data-dismiss="modal" data-toggle="modal" data-target="#loginModal" class="ml-2">Login</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header rose-bg">
-                <h5 class="modal-title">Forgot Password?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="#" class="offset-1 col-10">
-                    <p>Enter your email address and we’ll <br> send you a link to reset your password</p>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1" class="label">Email Address</label>
-                        <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp"
-                               placeholder="Email Address">
-                    </div>
-                    <div class="w-100 d-flex justify-content-between mt-4">
-                        <a href="#" type="submit" class="btn-green-gradient-border mr-2">Cancel</a>
-                        <a type="button" data-toggle="modal" data-target="#resetPasswordModal"
-                           class="btn btn-green-gradient ml-2">Send</a>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="d-flex justify-content-center mt-4 fs-14 w-100">
-                    Don't have an account?
-                    <a type="button" data-dismiss="modal" data-toggle="modal" data-target="#RegistrationModal"
-                       class="ml-2">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header rose-bg">
-                <h5 class="modal-title">Reset Password?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="#" class="offset-1 col-10">
-                    <h3 class="h3 mr-auto">Reset Your Password</h3>
-                    <div class="form-group">
-                        <label for="newInputPassword1" class="label">Password<sup>*</sup></label>
-                        <input type="password" class="form-control" id="newInputPassword1" placeholder="**********">
-                    </div>
-                    <div class="form-group">
-                        <label for="newInputPassword2" class="label">Retype Password<sup>*</sup></label>
-                        <input type="password" class="form-control" id="newInputPassword2" placeholder="**********">
-                    </div>
-                    <button type="submit" class="btn btn-green-gradient">Save</button>
-                    <!--                       <div class="d-flex justify-content-center mt-4 fs-14">Don't have an account?<a href="createAccount.html" class="ml-2">Sign Up</a></div>-->
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="d-flex justify-content-center mt-4 fs-14 w-100">
-                    Don't have an account?
-                    <a type="button" data-dismiss="modal" data-toggle="modal" data-target="#RegistrationModal"
-                       class="ml-2">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
         crossorigin="anonymous"></script>
 <script>
     $(function () {
         document.getElementById('example').addEventListener('change', function () {
             console.log('You selected: ', this.value);
-            var obj = {
-                'language': this.value,
-            };
-            console.log(JSON.stringify(obj));
+            const obj = {
+                language:this.value
+            }
             $.ajax({
                 url: '/getJson',
-                method: 'POST',
-                data: JSON.stringify(obj),
-                success: function (data) {
-                    console.log('user created , info :' + data);
+                method: 'post',
+                data:obj,
+                success: function () {
+                    window.location.reload();
                 },
                 error: function (data) {
                     console.log('User creation failed :' + data);

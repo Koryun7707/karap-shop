@@ -56,9 +56,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.post('/getJson', function (req, res) {
-    console.log(888888, req.body);
-});
+
 app.use('/', apiRoutes);
 
 app.listen(PORT, () => {
