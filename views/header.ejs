@@ -47,11 +47,11 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="<%= URL === '/' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                         <a class="nav-link" href="/">
-                            <%if(language.home){%>
-                            <%=language.home%>
-                            <%}else{%>
+                            <% if(language.home){ %>
+                            <%= language.home %>
+                            <% }else{ %>
                                 home
-                            <%}%>
+                            <% } %>
                             <% if(URL === '/'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
@@ -126,21 +126,21 @@
                         </li>
                         <li class="nav-item dropdown">
 
-                                <select class="example" name="example" id="example">
-                                    <%if(language.language === 'eng' ){%>
-                                        <option name="eng" value="eng" selected>Eng</option>
-                                        <option name="ru" value="ru">Ru</option>
-                                        <option name="spain" value="spain">Spain</option>
-                                    <%}else if(language.language === 'ru'){%>
-                                        <option name="eng" value="eng" >Eng</option>
-                                        <option name="ru" value="ru" selected>Ru</option>
-                                        <option name="spain" value="spain">Spain</option>
-                                    <%}else if(language.language === 'spain'){%>
-                                        <option name="eng" value="eng" >Eng</option>
-                                        <option name="ru" value="ru" selected>Ru</option>
-                                        <option name="spain" value="spain" selected>Spain</option>
-                                    <%}%>
-                                </select>
+                            <select class="example" name="example" id="example">
+                                <% if(language.language === 'eng' ){ %>
+                                    <option name="eng" value="eng" selected>Eng</option>
+                                    <option name="ru" value="ru">Ru</option>
+                                    <option name="spain" value="spain">Spain</option>
+                                <% }else if(language.language === 'ru'){ %>
+                                    <option name="eng" value="eng">Eng</option>
+                                    <option name="ru" value="ru" selected>Ru</option>
+                                    <option name="spain" value="spain">Spain</option>
+                                <% }else if(language.language === 'spain'){ %>
+                                    <option name="eng" value="eng">Eng</option>
+                                    <option name="ru" value="ru" selected>Ru</option>
+                                    <option name="spain" value="spain" selected>Spain</option>
+                                <% } %>
+                            </select>
                         </li>
 
                     </ul>
@@ -151,8 +151,6 @@
 </header>
 
 
-
-
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
         crossorigin="anonymous"></script>
 <script>
@@ -160,12 +158,12 @@
         document.getElementById('example').addEventListener('change', function () {
             console.log('You selected: ', this.value);
             const obj = {
-                language:this.value
+                language: this.value
             }
             $.ajax({
-                url: '/getJson',
+                url: '/change-language',
                 method: 'post',
-                data:obj,
+                data: obj,
                 success: function () {
                     window.location.reload();
                 },

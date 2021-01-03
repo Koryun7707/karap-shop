@@ -6,7 +6,7 @@ const path = require('path');
 const usersController = require('./controllers/user');
 const pagesController = require('./controllers/pages');
 const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
-const {createBrand, deleteBrand, updateBrand } = require('./controllers/brand')
+const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
 
@@ -37,7 +37,7 @@ const upload = multer({
 });
 
 //language
-router.post('/getJson', pagesController.changeLanguage)
+router.post('/change-language', pagesController.changeLanguage)
 
 //Users
 router.post('/login',
@@ -68,7 +68,6 @@ router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
 router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages', 4), createBrand);//+
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
 router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
-
 
 
 //Products

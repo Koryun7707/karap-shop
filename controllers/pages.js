@@ -22,52 +22,52 @@ var langData = language[0];
 const isLanguage = (selectLang) => {
     if (selectLang === 'eng') {
         langData = language[0]
-    } else if(selectLang ==='ru') {
+    } else if (selectLang === 'ru') {
         langData = language[1]
     }
 };
 
 module.exports = {
-    changeLanguage:(req,res) =>{
+    changeLanguage: (req, res) => {
         console.log('Start changeLanguage');
         isLanguage(req.body.language);
         req.session.language = req.body.language;
         res.end();
     },
     getUserDashboard: (req, res) => {
-        if(req.session.language === undefined){
+        if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
         req.session.user = req.user;
-        res.render('index', {URL: '/', user: req.session.user,language:langData});
+        res.render('index', {URL: '/', user: req.session.user, language: langData});
     },
     getAboutPage: (req, res) => {
-        res.render('aboutUs', {URL: '/about', user: req.session.user,language:langData});
+        res.render('aboutUs', {URL: '/about', user: req.session.user, language: langData});
     },
     getBlogPage: (req, res) => {
-        res.render('blog', {URL: '/blog', user: req.session.user,language:langData});
+        res.render('blog', {URL: '/blog', user: req.session.user, language: langData});
     },
     getShopPage: (req, res) => {
         console.log(req.session.language)
-        res.render('shop', {URL: '/shop', user: req.session.user,language:langData});
+        res.render('shop', {URL: '/shop', user: req.session.user, language: langData});
     },
     getBrandPage: (req, res) => {
-        res.render('brand', {URL: '/brand', user: req.session.user,language:langData});
+        res.render('brand', {URL: '/brand', user: req.session.user, language: langData});
     },
     getContactPage: (req, res) => {
-        res.render('contactUs', {URL: '/contact', user: req.session.user,language:langData});
+        res.render('contactUs', {URL: '/contact', user: req.session.user, language: langData});
     },
     getJoinOurTeamPage: (req, res) => {
-        res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user,language:langData});
+        res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user, language: langData});
     },//start admin pages ->
     getAdminHomePage: (req, res) => {
-        res.render('admin/home', {URL: '/admin-home', user: req.session.user,language:langData});
+        res.render('admin/home', {URL: '/admin-home', user: req.session.user, language: langData});
     },
     getSignUpPage: (req, res) => {
-        res.render('signup', {user: req.session.user,language:langData});
+        res.render('signup', {user: req.session.user, language: langData});
     },
     getLogInPage: (req, res) => {
-        res.render('login', {user: req.session.user,language:langData});
+        res.render('login', {user: req.session.user, language: langData});
     },
     userLogOut: async (req, res, next) => {
         try {
@@ -590,11 +590,11 @@ module.exports = {
     getAdminAddBrandPage: (req, res) => {
         res.render('admin/addBrand', {URL: '/admin-create-brand', user: req.session.user});
     },
-    getAdminAddProductPage:async (req, res) => {
-        try{
+    getAdminAddProductPage: async (req, res) => {
+        try {
             const brands = await Brand.find({}).select('name _id');
-            res.render('admin/addProduct', {URL: 'admin-create-product', user: req.session.user,brands:brands});
-        } catch(e){
+            res.render('admin/addProduct', {URL: 'admin-create-product', user: req.session.user, brands: brands});
+        } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
         }
 
