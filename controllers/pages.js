@@ -41,13 +41,18 @@ module.exports = {
                 req.session.language = 'eng';
             }
             req.session.user = req.user;
-            const pageData = await PageData.findOne({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle');
-            const products = await Product.find({language: req.session.language}).select('images name');
+            const pageData = await PageData.findOne({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
+            const products = await Product.find({language: req.session.language}).select('images name').exec();
+            const brands = await Product.find({language: req.session.language}).select('images name').exec();
+
             console.log(pageData);
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
                 staticData: staticData,
+                pageData: pageData,
+                products: products,
+                brands: brands,
             });
         } catch (e) {
             console.log(e);
@@ -164,6 +169,7 @@ module.exports = {
                     language: value.language
                 });
                 newData.homeSliderImages = moveFile(files, dir);
+                console.log(newData);
                 newData.save((err, result) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {

@@ -2,14 +2,16 @@ module.exports =
     [{
         //header
         home: 'Home',
+        dashboard:'Dashboard',
         shop: 'Shop',
         brands:'Brands',
         blog:'Blog',
         login:'Login',
         signup:'Registration',
+        logOut:'Log out',
         //footer
-        pages:'Pages',
-        follow_us:'Follow Us',
+        pages:'PAGES',
+        follow_us:'FOLLOW US',
         delevery_returns:'Delevery & returns',
         privacy_policy:'Privacy policy',
         terms_conditions:'Terms & conditions ',
