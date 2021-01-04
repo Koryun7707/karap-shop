@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/range.css">
+    <link rel="stylesheet" href="css/jq-ui.css">
     <link rel="stylesheet" href="css/owl-carousel-min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
@@ -56,7 +58,7 @@
 
                     <li class="<%= URL === '/shop' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                         <a class="nav-link" href="/shop">
-                                <%= staticData.shop %>
+                            <%= staticData.shop %>
                             <% if(URL === '/shop'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
@@ -64,14 +66,14 @@
                     </li>
                     <li class="<%= URL === '/brand' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                         <a class="nav-link" href="/brand">
-                                <%= staticData.brands %>
+                            <%= staticData.brands %>
                             <% if(URL === '/brand'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
                         </a>
                     <li class="<%= URL === '/blog' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                         <a class="nav-link" href="/blog">
-                                <%= staticData.blog %>
+                            <%= staticData.blog %>
                             <% if(URL === '/blog'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
@@ -80,7 +82,7 @@
                     <% if(user && user.roleType === 'admin'){ %>
                         <li class="<%= URL === '/admin-home' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                             <a class="nav-link" href="/admin-home">
-                                    <%= staticData.dashboard %>
+                                <%= staticData.dashboard %>
                                 <% if(URL === '/admin-home'){ %>
                                     <span class="sr-only">(current)</span>
                                 <% } %>
@@ -104,19 +106,19 @@
 
                         <li class="nav-item mr-2 mr-xl-4">
                             <a href='/login' class="nav-link" type="button">
-                                    <%= staticData.login %>
+                                <%= staticData.login %>
                             </a>
                         </li>
                         <li class="nav-item mr-2 mr-xl-4">
                             <a href="/signup" class="nav-link" type="button">
-                                    <%= staticData.signup %>
+                                <%= staticData.signup %>
                             </a>
                         </li>
 
                         <% }else { %>
                             <li class="nav-item mr-2 mr-xl-4">
                                 <a href="/logout" class="nav-link" type="button">
-                                        <%= staticData.logOut %>
+                                    <%= staticData.logOut %>
                                 </a>
                             </li>
                             <li class="nav-item mr-2 mr-xl-4" id="avatar">

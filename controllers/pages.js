@@ -57,6 +57,9 @@ module.exports = {
         }
     },
     getAboutPage: (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('aboutUs', {
             URL: '/about',
             user: req.session.user,
@@ -64,7 +67,12 @@ module.exports = {
         });
     },
     getBlogPage: async (req, res) => {
-        const brands = await Brand.find({language: req.session.language}).select('info name images');
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
+        console.log(req.session.language);
+        const brands = await Brand.find({language: req.session.language});
+        console.log(brands);
         res.render('blog', {
             URL: '/blog',
             user: req.session.user,
@@ -73,6 +81,9 @@ module.exports = {
         });
     },
     getShopPage: (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         console.log(req.session.language)
         res.render('shop', {
             URL: '/shop',
@@ -82,6 +93,9 @@ module.exports = {
     },
     getBrandPage: async (req, res) => {
         try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
             const pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider');
             const brands = await Brand.find({language: req.session.language}).select('info name images');
             res.render('brand', {
@@ -97,6 +111,9 @@ module.exports = {
 
     },
     getContactPage: (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('contactUs', {
             URL: '/contact',
             user: req.session.user,
@@ -104,6 +121,9 @@ module.exports = {
         });
     },
     getJoinOurTeamPage: (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('joinOurTeam', {
             URL: '/join-our-team',
             user: req.session.user,
@@ -118,12 +138,18 @@ module.exports = {
         });
     },
     getSignUpPage: (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('signup', {
             user: req.session.user,
             staticData: staticData,
         });
     },
     getLogInPage: (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('login', {
             user: req.session.user,
             staticData: staticData,

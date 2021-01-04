@@ -1,75 +1,55 @@
-<%-include ('header')-%>
+<%- include ('header') -%>
 <main style="padding-top: 100px">
     <section class="blog-section py-5">
         <div class="container pt-5">
-            <div class="row blog-card mb-5">
-                <div class="col-5">
-                    <div class="rose-bg d-flex justify-content-center align-items-center w-100 h-100">
-                        <img src="images/blog1-logo.png" alt="logo">
+            <% if(brands.length > 0){ %>
+                <% brands.forEach(function(item, index){ %>
+                    <div class="row blog-card mb-5">
+                        <div class="col-5">
+                            <div class="rose-bg d-flex justify-content-center align-items-center w-100 h-100">
+                                <img src=<%= item.images[0] %> alt="logo">
+                            </div>
+                        </div>
+                        <div class="col-7 blog-img">
+                            <img src=<%= item.images[1] %> alt="" class="w-100 h-100 blog-img-anim">
+                        </div>
+                        <div class="col-12">
+                            <h2><%= item.type %></h2>
+                            <div class="subtitle"><%= item.name %></div>
+                            <ul class="list-unstyled">
+                                <li class="fashion-icon1"><%= item.hTag %> </li>
+                                <li class="fashion-icon2"><%= item.type %></li>
+                                <li style="display: none" id="<%= index %>"><%= item.info %></li>
+                            </ul>
+                            <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)" id="but<%= index %>">SEE
+                                MORE</a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-7 blog-img">
-                    <img src="images/blog-pic1.jpg" alt="" class="w-100 h-100 blog-img-anim" >
-                </div>
-                <div class="col-12">
-                    <h2>ARMENIAN HANDMADE SHOES</h2>
-                    <div class="subtitle">MISSGUIDED</div>
-                   <ul class="list-unstyled">
-                       <li class="fashion-icon1">#Fashion #Armenian # Tradition #Handmade # Shoes  </li>
-                       <li class="fashion-icon2">FASHION</li>
-                   </ul>
-                    <a href="#" class="btn btn-green-gradient px-5 py-2">SEE MORE</a>
-                </div>
-            </div>
-            <div class="row blog-card mb-5">
-                <div class="col-5">
-                    <div class="rose-bg d-flex justify-content-center align-items-center w-100 h-100">
-                        <img src="images/blog-logo-2.png" alt="logo">
-                    </div>
-                </div>
-                <div class="col-7 blog-img">
-                    <img src="images/blog-pic2.jpg" alt="" class="w-100 h-100 blog-img-anim" >
-                </div>
-                <div class="col-12">
-                    <h2>ARMENIAN HANDMADE ACCESSORIES</h2>
-                    <div class="subtitle">SUSTAINABLE BRANDS</div>
-                   <ul class="list-unstyled">
-                       <li class="fashion-icon1">#Fashion #Armenian # Tradition #Handmade #Accessories</li>
-                       <li class="fashion-icon2">FASHION</li>
-                   </ul>
-                    <a href="#" class="btn btn-green-gradient px-5 py-3">SEE MORE</a>
-                </div>
-            </div>
-            <div class="row blog-card mb-5">
-                <div class="col-5">
-                    <div class="rose-bg d-flex justify-content-center align-items-center w-100 h-100">
-                        <img src="images/blog-logo-3.png" alt="logo">
-                    </div>
-                </div>
-                <div class="col-7 blog-img">
-                    <img src="images/blog-pic3.jpg" alt="" class="w-100 h-100 blog-img-anim" >
-                </div>
-                <div class="col-12">
-                    <h2>ARMENIAN HANDMADE ACCESSORIES</h2>
-                    <div class="subtitle">SUSTAINABLE BRANDS</div>
-                   <ul class="list-unstyled">
-                       <li class="fashion-icon1">#Fashion #Armenian # Tradition #Handmade #Accessories</li>
-                       <li class="fashion-icon2">FASHION</li>
-                   </ul>
-                    <a href="#" class="btn btn-green-gradient px-5 py-2">SEE MORE</a>
-                </div>
-            </div>
+                <% }) %>
+            <% } %>
         </div>
     </section>
 </main>
-<%-include ('footer')-%>
+<%- include ('footer') -%>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script>
-    $(document).ready(function(){
+    function isOpen(element) {
+        const seeMore = element.id.slice(3, element.id.length);
+        const infoLiId = document.getElementById(seeMore);
+        if (infoLiId.style.display === 'none') {
+            infoLiId.style.display = 'block';
+            seeMore.innerText = 'Close';
+        } else {
+            infoLiId.style.display = 'none';
+            seeMore.innerText = 'SEE MORE';
+        }
+    }
+
+    $(document).ready(function () {
         $("#carousel1").owlCarousel({
             autoplay: true,
             lazyLoad: true,

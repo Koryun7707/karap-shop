@@ -1,10 +1,10 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
     var $searchTrigger = $('[data-ic-class="search-trigger"]'),
         $searchInput = $('[data-ic-class="search-input"]'),
         $searchClear = $('[data-ic-class="search-clear"]');
 
-    $searchTrigger.click(function(){
+    $searchTrigger.click(function () {
 
         var $this = $('[data-ic-class="search-trigger"]');
         $this.addClass('active');
@@ -12,9 +12,9 @@ $(document).ready(function(){
 
     });
 
-    $searchInput.blur(function(){
+    $searchInput.blur(function () {
 
-        if($searchInput.val().length > 0){
+        if ($searchInput.val().length > 0) {
 
             return false;
 
@@ -26,11 +26,11 @@ $(document).ready(function(){
 
     });
 
-    $searchClear.click(function(){
+    $searchClear.click(function () {
         $searchInput.val('');
     });
 
-    $searchInput.focus(function(){
+    $searchInput.focus(function () {
         $searchTrigger.addClass('active');
     });
     // Contact US Send Message
