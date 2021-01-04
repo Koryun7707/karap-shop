@@ -11,10 +11,11 @@ const {
     validateContactData,
     validateJoinOurTeamData
 } = require('../validations/pagesData');
-const PageData = require('../models/pagesData');
 const {moveFile} = require('../utils/helper');
-const Brand = require('../models/brands');
 const data = require('../configs/languages')
+const PageData = require('../models/pagesData');
+const Brand = require('../models/brands');
+const Product = require('../models/product');
 const User = require('../models/user')
 
 var staticData = data[0];
@@ -34,16 +35,23 @@ module.exports = {
         req.session.language = req.body.language;
         res.end();
     },
-    getUserDashboard: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
+    getUserDashboard: async (req, res) => {
+        try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            req.session.user = req.user;
+            const pageData = await PageData.findOne({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle');
+            const products = await Product.find({language: req.session.language}).select('images name');
+            console.log(pageData);
+            res.render('index', {
+                URL: '/',
+                user: req.session.user,
+                staticData: staticData,
+            });
+        } catch (e) {
+            console.log(e);
         }
-        req.session.user = req.user;
-        res.render('index', {
-            URL: '/',
-            user: req.session.user,
-            staticData: staticData,
-        });
     },
     getAboutPage: (req, res) => {
         res.render('aboutUs', {
