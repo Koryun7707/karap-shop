@@ -43,9 +43,7 @@ module.exports = {
             req.session.user = req.user;
             const pageData = await PageData.findOne({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             const products = await Product.find({language: req.session.language}).select('images name').exec();
-            const brands = await Product.find({language: req.session.language}).select('images name').exec();
-
-            console.log(pageData);
+            const brands = await Brand.find({language: 'eng'}).select('images name').exec();
             res.render('index', {
                 URL: '/',
                 user: req.session.user,

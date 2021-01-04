@@ -10,57 +10,42 @@
         </div>
         <div class="owl-slider ">
             <div id="carousel1" class="owl-carousel owl-carousel1">
+<<<<<<< Updated upstream
 <!--              -->
+=======
+                <% if(pageData.homeSliderImages.length > 0){ %>
+                    <% pageData.homeSliderImages.forEach(function(item, index){ %>
+                        <div class="item">
+                            <img src=<%= item %> id=<%= index %> alt="">
+                        </div>
+                    <% }) %>
+                <% } %>
+>>>>>>> Stashed changes
             </div>
         </div>
     </section>
     <section id="section2" class="section2 py-5">
         <div class="container pb-5 px-5">
-            <h2 class="text-center mb-3 mb-md-5">YOU CAN FIND THEM ON OUR WEBSITE</h2>
+            <h2 class="text-center mb-3 mb-md-5">
+                <% if(pageData.homeProductTypeTitle){ %>
+                    <%= pageData.homeProductTypeTitle %>
+                <% } %>
+            </h2>
 
             <div class="owl-slider">
                 <div id="carousel2" class="owl-carousel owl-carousel2">
-                    <div class="item">
-                        <div class="card">
-                            <div class="img-area">
-                                <img class="card-img-top" src="images/pic1.jpg" alt="Card image cap">
+                    <% if(products.length > 0){ %>
+                        <% products.forEach(function(item){ %>
+                            <div class="item">
+                                <div class="card">
+                                    <div class="img-area">
+                                        <img class="card-img-top" src=<%= item.images[0] %> id='' alt="Card image cap">
+                                    </div>
+                                    <a href="#" class="btn btn-green-gradient"><%= item.name %></a>
+                                </div>
                             </div>
-                            <a href="#" class="btn btn-green-gradient">clothese</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="card">
-                            <div class="img-area">
-                                <img class="card-img-top" src="images/pic2.jpg" alt="Card image cap">
-                            </div>
-                            <a href="#" class="btn btn-green-gradient">shoes</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="card">
-                            <div class="img-area">
-                                <img class="card-img-top" src="images/pic%203.jpg" alt="Card image cap">
-                            </div>
-                            <a href="#" class="btn btn-green-gradient">bags</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="card">
-                            <div class="img-area">
-                                <img class="card-img-top" src="images/pic%204.jpg" alt="Card image cap">
-                            </div>
-                            <a href="#" class="btn btn-green-gradient">watches</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="card">
-                            <div class="img-area">
-                                <img class="card-img-top" src="images/pic%205.jpg" alt="Card image cap">
-                            </div>
-                            <a href="#" class="btn btn-green-gradient">hats</a>
-                        </div>
-                    </div>
-
+                        <% }) %>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -68,54 +53,19 @@
     <section id="section3" class="section3">
         <div class="container-fluid">
             <div class="row justify-content-around  px-md-5">
-                <div class="col-6 col-md-4 col-lg-3 overflow-hidden">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide38.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">GUCCI</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide31.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">FIORE</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide32.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">Steffany</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide33.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">Armani</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide34.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title"> Steffany</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide35.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">FIORE</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide36.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">GUCCI</div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="/shop" class="home-card-pagination">
-                        <img src="images/slide37.jpg" alt="pic"/>
-                        <div class="home-card-pagination-title">Armani</div>
-                    </a>
-                </div>
+                <% if(brands.length > 0){ %>
+                    <% brands.forEach(function(item){ %>
+                        <div class="col-6 col-md-4 col-lg-3 overflow-hidden">
+                            <a href="/shop" class="home-card-pagination">
+                                <img src=<%= item.images[1] %>  alt="pic"/>
+                                <div class="home-card-pagination-title">
+                                    <%= item.name %>
+                                </div>
+                            </a>
+                        </div>
+                    <% }) %>
+                <% } %>
+
             </div>
             <div class="mb-5 d-flex justify-content-end px-md-5">
                 <nav aria-label="Page navigation example" class="ml-auto px-5">
