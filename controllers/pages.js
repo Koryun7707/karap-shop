@@ -80,12 +80,24 @@ module.exports = {
             staticData: staticData,
         });
     },
-    getBrandPage: (req, res) => {
-        res.render('brand', {
-            URL: '/brand', user:
-            req.session.user,
-            staticData: staticData,
-        });
+    getBrandPage: async (req, res) => {
+        try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            req.session.user = req.user;
+            const Brands = await Brand.find({language: req.session.language}).select('info name images');
+            console.log(Brands);
+            res.render('brand', {
+                URL: '/brand',
+                user: req.session.user,
+                staticData: staticData,
+                Brands:Brands,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
     },
     getContactPage: (req, res) => {
         res.render('contactUs', {

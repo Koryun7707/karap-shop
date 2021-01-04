@@ -3,7 +3,9 @@
 <main  style="padding-top: 100px" class="contact-section">
     <section class="contact-section-bg mb-5">
         <div class="container">
-            <h1 class="text-center">Contact Us</h1>
+            <h1 class="text-center">
+                Contact Us
+            </h1>
         </div>
     </section>
     <section class="py-5 my-5 contact-form">
@@ -13,41 +15,49 @@
                     <%- include ('partials/messages')%>
                     <form action="/sendMessageContactUs" method="POST" id="contactForm"   class="py-5">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">E - mail address</label>
-                            <input value="" name="email" required type="email" class="form-control" id="emailContactUs" aria-describedby="emailHelp" placeholder="E - mail address">
-<!--                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                            <label for="exampleInputEmail1">
+                                <%=staticData.contact_email%>
+                            </label>
+                            <input value="" name="email" required type="email" class="form-control"
+                                   id="emailContactUs" aria-describedby="emailHelp"
+                                   placeholder="<%=staticData.contact_email%>">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInput">First name</label>
-                            <input value="" name="firstName" required minlength="3" type="text" class="form-control" id="firstNameContactUs" placeholder="First name">
+                            <label for="exampleInput"><%=staticData.contact_first_name%></label>
+                            <input value="" name="firstName" required minlength="3"
+                                   type="text" class="form-control"
+                                   id="firstNameContactUs"
+                                   placeholder="<%=staticData.contact_first_name%>">
                         </div>
                         <div class="form-group d-flex flex-column">
-                            <label>Massage</label>
-                            <textarea value="" required name="message" id="messageContactUs" rows="6"  class="form-control">Massage</textarea>
+                            <label><%=staticData.contact_message%></label>
+                            <textarea value="" required name="message"
+                                      id="messageContactUs" rows="6"
+                                      class="form-control" placeholder="<%=staticData.contact_message%>"></textarea>
                         </div>
-                        <button id="sendMessageContactUs" type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Send</button>
+                        <button id="sendMessageContactUs" type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto"><%=staticData.contact_button%></button>
                     </form>
                 </div>
                 <div class="col-6 form-info px-5">
                     <ul class="list-unstyled pb-5 mb-5">
                         <li class="d-flex justify-content-between align-items-end mb-2">
-                            <span>Tel:</span>
+                            <span><%=staticData.contact_telephone%>:</span>
                             <a href="tel:+374898000325">+374898000325</a>
                         </li>
                         <li class="d-flex justify-content-between align-items-end mb-2">
-                            <span>Email:</span>
+                            <span><%=staticData.contact_info_email%>:</span>
                             <a href="karapshop@gmail.com">
                                 karapshop@gmail.com
                             </a>
                         </li>
                         <li class="d-flex justify-content-between align-items-end mb-2">
-                            <span>Address:</span>
+                            <span><%=staticData.contact_address%>:</span>
                             <a href="#">
                                 Armenia, Yerevan
                             </a>
                         </li>
                         <li class="d-flex justify-content-between align-items-end mb-2">
-                            <span>WORKING  HOURS:</span>
+                            <span><%=staticData.contact_working_hours%>:</span>
                             <a href="#">
                                 10:00 - 20:00
                             </a>

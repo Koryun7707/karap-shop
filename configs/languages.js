@@ -38,10 +38,12 @@ module.exports =
         contact_email:'E - mail address',
         contact_first_name:'First name',
         contact_message:'Message',
+        contact_button:'Send',
         //contact form info
         contact_telephone:'Tel',
         contact_address:'Address',
         contact_working_hours:'WORKING HOURS',
+        contact_info_email:'Email',
         //join our team
         join_header:'WHY WORK WITH US',
         join_section:'Reason',
@@ -99,10 +101,12 @@ module.exports =
         contact_email:'Адрес электронной почты',
         contact_first_name:'Имя',
         contact_message:'Сообщение',
+        contact_button:'Отправить',
         //contact form info
         contact_telephone:'Тел',
         contact_address:'Адрес',
         contact_working_hours:'РАБОЧИЕ ЧАСЫ',
+        contact_info_email:'Почта',
         //join our team
         join_header:'ПОЧЕМУ С НАМИ РАБОТАЕТ',
         join_section:'Причина',

@@ -5,19 +5,12 @@
     <section id="section1" class="position-relative section1 mb-5" style="margin-top: -44px">
         <div class="abs">
             <h1>
-                <% if(pageData.homeSliderText){ %>
-                    <%= pageData.homeSliderText %>
-                <% } %>
-                <br>
+
             </h1>
         </div>
         <div class="owl-slider ">
             <div id="carousel1" class="owl-carousel owl-carousel1">
-                <% pageData.homeSliderImages.forEach(function(item, index){ %>
-                    <div class="item">
-                        <img src=<%= item %> id=<%= index %> alt="">
-                    </div>
-                <% }) %>
+<!--              -->
             </div>
         </div>
     </section>
