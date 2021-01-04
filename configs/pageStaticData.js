@@ -1,0 +1,30 @@
+{
+    "_id": {
+    "$oid": "5ff02ed54568f43582327fbe"
+},
+    "homeSliderImages": ["uploads/home/1609752249858-400446786-cover-pic.jpg", "uploads/home/1609752249863-22196856-homeCover1.jpg"],
+    "imagesShopSlider": ["public/uploads/1609576234397-403951908-shop-cover-pic.jpg"],
+    "imagesBrandSlider": ["uploads/brand-page/1609576551545-543740621-brand-cover.png"],
+    "imagesAboutSlider": ["public/uploads/1609579614841-842473553-aboutUs-cover.jpg"],
+    "imagesContactSlider": ["public/uploads/1609579713335-790166859-cover-pic.jpg"],
+    "imagesJoinOurTeamSlider": ["public/uploads/1609579893121-16571983-brand-cover.png", "public/uploads/1609579893171-290959978-brand-pic1.jpg"],
+    "homeSliderText": "ARMENIAN BRANDS",
+    "homeProductTypeTitle": "YOU CAN FIND THEM ON OUR SITE",
+    "language": "eng",
+    "__v": 17,
+    "textShopSlider": "SHOP",
+    "textBrandSlider": "BRANDS",
+    "ourPhilosophy": "Our world is a mixture of cultures. Trends come and go, and only the best traditions remain. In recent years, the fashion industry has seen a number of talented Armenian designers and outstanding brands with conceptual ideas, not oriented on mass-produced items.  KARAP’s vision is to represent local brands and modern Armenian women, the unique civilization, great history behind and the beauty of this country.",
+    "textAboutSlider": "ABOUT US",
+    "textContactSlider": "CONTACT US",
+    "joinOurCol1Text": "Manage your charitable giving through an existing giving account or create a DAF with The Nature Conservancy.\r\n\r\nHave you met one of our friendly fundraising ambassadors?",
+    "joinOurCol1Title": "1 Reason",
+    "joinOurCol2Text": "Recognize loved ones with a donation in their honor or as a memorial gift.\r\n\r\nEasy and always under your control, monthly giving helps defend our natural world all year long.\r\n\r\nShare the inspiration of taking on nature’s biggest challenges by giving a gift membership.\r\n\r\nManage your charitable giving through an existing giving account or create a DAF with The Nature Conservancy.",
+    "joinOurCol2Title": "2 Reason",
+    "joinOurCol3Text": "Recognize loved ones with a donation in their honor or as a memorial gift.\r\n\r\nHave you met one of our friendly fundraising ambassadors? Learn more about how they are helping us broaden the reach of conservation.\r\n\r\nShare the inspiration of taking on nature’s biggest challenges by giving a gift membership.",
+    "joinOurCol3Title": "3 Reason",
+    "joinOurTeamPartners": "WE ARE LOOKING FOR PARTNERS",
+    "joinOurTeamPartnersTitle": "Order Armenian designer clothing shoes, conceptual accsessories and interior items, Jjgyufo8ojgvgsd mytrwirqgy awujrtashvfh..liuaioefuhjjdv ijjyfa of thekjgsf aygdfliaeyf kutodfe aetiu wefkiy\r\nOrder Armenian designer clothing shoes, conceptual accsessories and interior items, Jjgyufo8ojgvgsd mytrwirqgy awujrtashvfh..liuaioefuhjjdv ijjyfa of thekjgsf aygdfliaeyf kutodfe aetiu wefkiy",
+    "joinOurTeamWorkUs": "WHY WORK WITH US",
+    "textJoinOurTeamSlider": "JOIN OUR TEAM"
+}

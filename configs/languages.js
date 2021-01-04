@@ -35,6 +35,7 @@ module.exports =
         about_header_second: 'Our PHILOSOPHY',
         about_button: 'CONTACT US',
         //contact form
+
         contact_email:'E - mail address',
         contact_first_name:'First name',
         contact_message:'Message',
@@ -44,6 +45,7 @@ module.exports =
         contact_address:'Address',
         contact_working_hours:'WORKING HOURS',
         contact_info_email:'Email',
+
         contact_email: 'E - mail address',
         contact_first_name: 'First name',
         contact_message: 'Message',
@@ -51,6 +53,7 @@ module.exports =
         contact_telephone: 'Tel',
         contact_address: 'Address',
         contact_working_hours: 'WORKING HOURS',
+
         //join our team
         join_header: 'WHY WORK WITH US',
         join_section: 'Reason',
@@ -68,12 +71,13 @@ module.exports =
         login_header: 'Login',
         login_email: ' E-mail Address* ',
         login_password: ' Password* ',
+        login_button:'Log In',
         login_footer_button_left: 'Forgot Password?',
         login_footer_button_right: 'Registration',
         language: 'eng',
     }
         , {
-        dashboard: 'Приборная доска',
+        dashboard: 'Дашборд',
         logOut: 'Выйти',
         home: 'Главная',
         shop: 'Магазин',
@@ -107,6 +111,7 @@ module.exports =
         about_header_second: 'НАША ФИЛОСОФИЯ',
         about_button: 'СВЯЗАТЬСЯ С НАМИ',
         //contact form
+
         contact_email:'Адрес электронной почты',
         contact_first_name:'Имя',
         contact_message:'Сообщение',
@@ -116,6 +121,7 @@ module.exports =
         contact_address:'Адрес',
         contact_working_hours:'РАБОЧИЕ ЧАСЫ',
         contact_info_email:'Почта',
+
         contact_email: 'Адрес электронной почты',
         contact_first_name: 'Имя',
         contact_message: 'Сообщение',
@@ -123,6 +129,7 @@ module.exports =
         contact_telephone: 'Тел',
         contact_address: 'Адрес',
         contact_working_hours: 'РАБОЧИЕ ЧАСЫ',
+
         //join our team
         join_header: 'ПОЧЕМУ С НАМИ РАБОТАЕТ',
         join_section: 'Причина',
@@ -134,12 +141,13 @@ module.exports =
         signup_email: ' Адрес электронной почты* ',
         signup_password: 'Пароль* ',
         signup_retype_password: 'Повторите пароль*',
-        signup_question: 'Уже есть учетная запись?',
+        signup_question: 'Уже есть  аккаунт?',
         signup_to_login: 'Войти',
         //Login
         login_header: 'Логин*',
         login_email: ' Адрес электронной почты* ',
         login_password: ' Пароль* ',
+        login_button:'Войти',
         login_footer_button_left: 'Забыли пароль?',
         login_footer_button_right: 'Регистрация',
         language: 'ru',

@@ -3,69 +3,36 @@
 <main  style="padding-top: 100px" class="contact-section">
     <section class="join-section-bg">
         <div class="container">
-            <h1 class="text-center">JOIN OUR TEAM</h1>
+            <h1 class="text-center"><%=staticData.join_our_team%></h1>
         </div>
     </section>
     <section class="section py-5">
         <div class="container container-1730">
-            <h2 class="text-center mb-5 ">WHY WORK WITH US</h2>
+            <%- include ('partials/messages')%>
+            <h2 class="text-center mb-5 "><%=staticData.join_header%></h2>
             <div class="row mb-5 justify-content-between">
                 <div class="col-12 col-md-3">
-                    <div class="title">1 Reason</div>
+                    <div class="title">1 <%=staticData.join_section%></div>
                     <div class="text">
-                        <p>
-                            Manage your charitable giving through
-                            an existing giving account or create a
-                            DAF with The Nature Conservancy.
-                        </p>
-                        <p>
-                            Have you met one of our friendly fundraising
-                            ambassadors?
-                        </p>
+                        <% if(joinOurTeam){%>
+                          <%=joinOurTeam.joinOurCol1Text%>
+                        <%}%>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
-                    <div class="title">2 Reason</div>
+                    <div class="title">2 <%=staticData.join_section%></div>
                     <div class="text">
-                        <p>
-                            Recognize loved ones with a donation in their
-                            honor or as a memorial gift.
-                        </p>
-                        <p>
-                            Easy and always under your control, monthly giving
-                            helps defend our natural world all year long.
-                        </p>
-                        <p>
-                            Share the inspiration of taking on
-                            nature’s biggest challenges by giving a gift
-                            membership.
-                        </p>
-                        <p>
-                            Manage your charitable giving through
-                            an existing giving account or create a
-                            DAF with The Nature Conservancy.
-                        </p>
+                        <% if(joinOurTeam){%>
+                        <%=joinOurTeam.joinOurCol2Text%>
+                        <%}%>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
-                    <div class="title">3 Reason</div>
+                    <div class="title">3 <%=staticData.join_section%></div>
                     <div class="text">
-                        <p>
-                            Recognize loved ones with a donation in their
-                            honor or as a memorial gift.
-                        </p>
-                        <p>
-                            Have you met one of our friendly fundraising
-                            ambassadors? Learn more about
-                            how they are helping us
-                            broaden the reach of conservation.
-                        </p>
-                        <p>
-                            Share the inspiration of taking on
-                            nature’s biggest challenges by giving a gift
-                            membership.
-                        </p>
-
+                        <% if(joinOurTeam){%>
+                        <%=joinOurTeam.joinOurCol3Text%>
+                        <%}%>
                     </div>
                 </div>
             </div>
@@ -75,25 +42,20 @@
         <div class="container">
             <div class="row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5">
                 <div class="col-12 col-md-7 ">
-                    <h2 class="mb-5 ">WE ARE LOOKING FOR PARTNERS</h2>
+                    <h2 class="mb-5 "><%=staticData.join_header_second%></h2>
                     <div class="pr-5">
                         <div class="info-text mb-5 mb-md-0">
-                            Order Armenian designer clothing shoes,
-                            conceptual accsessories and interior items, Jjgyufo8ojgvgsd  mytrwirqgy
-                            awujrtashvfh..liuaioefuhjjdv
-                            ijjyfa  of thekjgsf
-                            aygdfliaeyf  kutodfe aetiu   wefkiy <br>
-                            Order Armenian designer clothing shoes,
-                            conceptual accsessories and interior items, Jjgyufo8ojgvgsd  mytrwirqgy
-                            awujrtashvfh..liuaioefuhjjdv
-                            ijjyfa  of thekjgsf
-                            aygdfliaeyf  kutodfe aetiu   wefkiy
+                            <% if(joinOurTeam){%>
+                            <%=joinOurTeam.joinOurTeamPartners%>
+                            <%}%>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-5 ">
                     <div class="rose-border">
-                        <img src="images/brand-pic1.jpg" alt="" class="brand-img">
+                        <% if(joinOurTeam){%>
+                        <img src="<%=joinOurTeam.imagesJoinOurTeamSlider[0]%>" alt="" class="brand-img">
+                        <%}%>
                     </div>
                 </div>
             </div>

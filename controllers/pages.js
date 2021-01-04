@@ -41,7 +41,7 @@ module.exports = {
                 req.session.language = 'eng';
             }
             req.session.user = req.user;
-            const pageData = await PageData.findOne({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
+            const pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             const products = await Product.find({language: req.session.language}).select('images name').exec();
             const brands = await Brand.find({language: 'eng'}).select('images name').exec();
             res.render('index', {
@@ -57,33 +57,20 @@ module.exports = {
         }
     },
     getAboutPage: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         res.render('aboutUs', {
             URL: '/about',
             user: req.session.user,
             staticData: staticData,
         });
     },
-    getBlogPage: async (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
-        console.log(req.session.language);
-        const brands = await Brand.find({language: req.session.language});
-        console.log(brands);
+    getBlogPage: (req, res) => {
         res.render('blog', {
             URL: '/blog',
             user: req.session.user,
             staticData: staticData,
-            brands: brands,
         });
     },
     getShopPage: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         console.log(req.session.language)
         res.render('shop', {
             URL: '/shop',
@@ -96,40 +83,47 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            const pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider');
-            const brands = await Brand.find({language: req.session.language}).select('info name images');
+            req.session.user = req.user;
+            const Brands = await Brand.find({language: req.session.language}).select('info name images');
             res.render('brand', {
                 URL: '/brand',
                 user: req.session.user,
                 staticData: staticData,
-                brands: brands,
-                pageData: pageData,
+                Brands:Brands,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err)
+            req.flash("error_msg", err.message);
+            return res.redirect("/brand");
         }
-
     },
     getContactPage: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         res.render('contactUs', {
             URL: '/contact',
             user: req.session.user,
             staticData: staticData,
         });
     },
-    getJoinOurTeamPage: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
+    getJoinOurTeamPage: async (req, res) => {
+        try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            req.session.user = req.user;
+            const joinOurTeam = await PageData.find({language: req.session.language}).select('joinOurCol1Text joinOurCol2Text joinOurCol3Text joinOurTeamPartners imagesJoinOurTeamSlider -_id');
+            res.render('joinOurTeam', {
+                URL: '/joinOurTeam',
+                user: req.session.user,
+                staticData: staticData,
+                joinOurTeam:joinOurTeam[0],
+            });
+        } catch (err) {
+            console.log(err)
+            req.flash("error_msg", err.message);
+            return res.redirect("/joinOurTeam");
         }
-        res.render('joinOurTeam', {
-            URL: '/join-our-team',
-            user: req.session.user,
-            staticData: staticData,
-        });
-    },//start admin pages ->
+    },
+    //start admin pages ->
     getAdminHomePage: (req, res) => {
         res.render('admin/home', {
             URL: '/admin-home',
@@ -138,18 +132,12 @@ module.exports = {
         });
     },
     getSignUpPage: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         res.render('signup', {
             user: req.session.user,
             staticData: staticData,
         });
     },
     getLogInPage: (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         res.render('login', {
             user: req.session.user,
             staticData: staticData,
@@ -612,7 +600,7 @@ module.exports = {
                 }
                 return res.status(422).json(validation(error.message));
             }
-            if (!files.length || files.length !== 2) {
+            if (!files.length || files.length !== 1) {
                 files.map((file) => {
                     rimraf(`./public/uploads/${file.filename}`, (err) => {
                         if (err) console.log(err);
@@ -629,17 +617,17 @@ module.exports = {
             }
             if (!myPageData) {
                 const newData = new PageData({
-                    textJoinOurTeamSlider: value.textJoinOurTeamSlider,
+                    // textJoinOurTeamSlider: value.textJoinOurTeamSlider,
                     imagesJoinOurTeamSlider: value.imagesJoinOurTeamSlider,
-                    joinOurTeamWorkUs: value.joinOurTeamWorkUs,
-                    joinOurCol1Title: value.joinOurCol1Title,
+                    // joinOurTeamWorkUs: value.joinOurTeamWorkUs,
+                    // joinOurCol1Title: value.joinOurCol1Title,
                     joinOurCol1Text: value.joinOurCol1Text,
-                    joinOurCol2Title: value.joinOurCol2Title,
+                    // joinOurCol2Title: value.joinOurCol2Title,
                     joinOurCol2Text: value.joinOurCol2Text,
-                    joinOurCol3Title: value.joinOurCol3Title,
+                    // joinOurCol3Title: value.joinOurCol3Title,
                     joinOurCol3Text: value.joinOurCol3Text,
                     joinOurTeamPartners: value.joinOurTeamPartners,
-                    joinOurTeamPartnersTitle: value.joinOurTeamPartnersTitle,
+                    // joinOurTeamPartnersTitle: value.joinOurTeamPartnersTitle,
                     language: value.language,
                 });
                 newData.imagesJoinOurTeamSlider = moveFile(files, dir);
@@ -658,16 +646,16 @@ module.exports = {
                     return res.status(200).json(success('Brand add complete!', result, res.statusCode));
                 });
             } else {
-                myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
-                myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
-                myPageData.joinOurCol1Title = value.joinOurCol1Title;
+                // myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
+                // myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
+                // myPageData.joinOurCol1Title = value.joinOurCol1Title;
                 myPageData.joinOurCol1Text = value.joinOurCol1Text;
-                myPageData.joinOurCol2Title = value.joinOurCol2Title;
+                // myPageData.joinOurCol2Title = value.joinOurCol2Title;
                 myPageData.joinOurCol2Text = value.joinOurCol2Text;
-                myPageData.joinOurCol3Title = value.joinOurCol3Title;
+                // myPageData.joinOurCol3Title = value.joinOurCol3Title;
                 myPageData.joinOurCol3Text = value.joinOurCol3Text;
                 myPageData.joinOurTeamPartners = value.joinOurTeamPartners;
-                myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
+                // myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
                 myPageData.language = value.language;
 
                 fs.readdir(dir, (err, files) => {
