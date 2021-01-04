@@ -13,19 +13,25 @@
                 <div class="col-12 col-md-3">
                     <div class="title">1 <%=staticData.join_section%></div>
                     <div class="text">
-                       <%=joinOurTeam.joinOurCol1Text%>
+                        <% if(joinOurTeam){%>
+                          <%=joinOurTeam.joinOurCol1Text%>
+                        <%}%>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="title">2 <%=staticData.join_section%></div>
                     <div class="text">
+                        <% if(joinOurTeam){%>
                         <%=joinOurTeam.joinOurCol2Text%>
+                        <%}%>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="title">3 <%=staticData.join_section%></div>
                     <div class="text">
+                        <% if(joinOurTeam){%>
                         <%=joinOurTeam.joinOurCol3Text%>
+                        <%}%>
                     </div>
                 </div>
             </div>
@@ -38,13 +44,17 @@
                     <h2 class="mb-5 "><%=staticData.join_header_second%></h2>
                     <div class="pr-5">
                         <div class="info-text mb-5 mb-md-0">
+                            <% if(joinOurTeam){%>
                             <%=joinOurTeam.joinOurTeamPartners%>
+                            <%}%>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-5 ">
                     <div class="rose-border">
+                        <% if(joinOurTeam){%>
                         <img src="<%=joinOurTeam.imagesJoinOurTeamSlider[0]%>" alt="" class="brand-img">
+                        <%}%>
                     </div>
                 </div>
             </div>
