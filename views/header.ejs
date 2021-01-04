@@ -47,11 +47,9 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="<%= URL === '/' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                         <a class="nav-link" href="/">
-                            <% if(language.home){ %>
-                            <%= language.home %>
-                            <% }else{ %>
-                                home
-                            <% } %>
+                            <% if(staticData.home){ %>
+                            <%= staticData.home %>
+                            <% }%>
                             <% if(URL === '/'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
@@ -59,14 +57,20 @@
                     </li>
 
                     <li class="<%= URL === '/shop' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/shop">Shop
+                        <a class="nav-link" href="/shop">
+                            <% if(staticData.shop){ %>
+                                <%= staticData.shop %>
+                            <% }%>
                             <% if(URL === '/shop'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
                         </a>
                     </li>
                     <li class="<%= URL === '/brand' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/brand">Brands
+                        <a class="nav-link" href="/brand">
+                            <% if(staticData.brands){ %>
+                                <%= staticData.brands %>
+                            <% }%>
                             <% if(URL === '/brand'){ %>
                                 <span class="sr-only">(current)</span>
                             <% } %>
@@ -127,15 +131,15 @@
                         <li class="nav-item dropdown">
 
                             <select class="example" name="example" id="example">
-                                <% if(language.language === 'eng' ){ %>
+                                <% if(staticData.language === 'eng' ){ %>
                                     <option name="eng" value="eng" selected>Eng</option>
                                     <option name="ru" value="ru">Ru</option>
                                     <option name="spain" value="spain">Spain</option>
-                                <% }else if(language.language === 'ru'){ %>
+                                <% }else if(staticData.language === 'ru'){ %>
                                     <option name="eng" value="eng">Eng</option>
                                     <option name="ru" value="ru" selected>Ru</option>
                                     <option name="spain" value="spain">Spain</option>
-                                <% }else if(language.language === 'spain'){ %>
+                                <% }else if(staticData.language === 'spain'){ %>
                                     <option name="eng" value="eng">Eng</option>
                                     <option name="ru" value="ru" selected>Ru</option>
                                     <option name="spain" value="spain" selected>Spain</option>

@@ -14,23 +14,23 @@ const {
 const PageData = require('../models/pagesData');
 const {moveFile} = require('../utils/helper');
 const Brand = require('../models/brands');
-const language = require('../configs/languages')
+const data = require('../configs/languages')
 const User = require('../models/user')
 
-var langData = language[0];
+var staticData = data[0];
 
-const isLanguage = (selectLang) => {
+const chooseLanguage = (selectLang) => {
     if (selectLang === 'eng') {
-        langData = language[0]
+        staticData = data[0]
     } else if (selectLang === 'ru') {
-        langData = language[1]
+        staticData = data[1]
     }
 };
 
 module.exports = {
     changeLanguage: (req, res) => {
         console.log('Start changeLanguage');
-        isLanguage(req.body.language);
+        chooseLanguage(req.body.language);
         req.session.language = req.body.language;
         res.end();
     },
@@ -39,35 +39,73 @@ module.exports = {
             req.session.language = 'eng';
         }
         req.session.user = req.user;
-        res.render('index', {URL: '/', user: req.session.user, language: langData});
+        res.render('index', {
+            URL: '/',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getAboutPage: (req, res) => {
-        res.render('aboutUs', {URL: '/about', user: req.session.user, language: langData});
+        res.render('aboutUs', {
+            URL: '/about',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getBlogPage: (req, res) => {
-        res.render('blog', {URL: '/blog', user: req.session.user, language: langData});
+        res.render('blog', {
+            URL: '/blog',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getShopPage: (req, res) => {
         console.log(req.session.language)
-        res.render('shop', {URL: '/shop', user: req.session.user, language: langData});
+        res.render('shop', {
+            URL: '/shop',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getBrandPage: (req, res) => {
-        res.render('brand', {URL: '/brand', user: req.session.user, language: langData});
+        res.render('brand', {
+            URL: '/brand', user:
+            req.session.user,
+            staticData: staticData,
+        });
     },
     getContactPage: (req, res) => {
-        res.render('contactUs', {URL: '/contact', user: req.session.user, language: langData});
+        res.render('contactUs', {
+            URL: '/contact',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getJoinOurTeamPage: (req, res) => {
-        res.render('joinOurTeam', {URL: '/join-our-team', user: req.session.user, language: langData});
+        res.render('joinOurTeam', {
+            URL: '/join-our-team',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },//start admin pages ->
     getAdminHomePage: (req, res) => {
-        res.render('admin/home', {URL: '/admin-home', user: req.session.user, language: langData});
+        res.render('admin/home', {
+            URL: '/admin-home',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getSignUpPage: (req, res) => {
-        res.render('signup', {user: req.session.user, language: langData});
+        res.render('signup', {
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getLogInPage: (req, res) => {
-        res.render('login', {user: req.session.user, language: langData});
+        res.render('login', {
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     userLogOut: async (req, res, next) => {
         try {
@@ -165,7 +203,11 @@ module.exports = {
         }
     },//+
     getAdminShopPage: (req, res) => {
-        res.render('admin/shop', {URL: '/admin-shop', user: req.session.user});
+        res.render('admin/shop', {
+            URL: '/admin-shop',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     postAdminShopPage: async (req, res) => {
         try {
@@ -243,7 +285,11 @@ module.exports = {
         }
     },//+
     getAdminBrandPage: (req, res) => {
-        res.render('admin/brands', {URL: '/admin-brand', user: req.session.user});
+        res.render('admin/brands', {
+            URL: '/admin-brand',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     postAdminBrandPage: async (req, res) => {
         try {
@@ -321,10 +367,18 @@ module.exports = {
         }
     },//+
     getAdminBlogPage: (req, res) => {
-        res.render('admin/brands', {URL: '/admin-blog', user: req.session.user});
+        res.render('admin/brands', {
+            URL: '/admin-blog', user:
+            req.session.user,
+            staticData: staticData,
+        });
     },
     getAdminAboutPage: (req, res) => {
-        res.render('admin/aboutUs', {URL: '/admin-about', user: req.session.user});
+        res.render('admin/aboutUs', {
+            URL: '/admin-about',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     postAdminAboutPage: async (req, res) => {
         try {
@@ -405,7 +459,11 @@ module.exports = {
         }
     },//+
     getAdminContactPage: (req, res) => {
-        res.render('admin/contactUs', {URL: '/admin-contact', user: req.session.user});
+        res.render('admin/contactUs', {
+            URL: '/admin-contact',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     postAdminContactPage: async (req, res) => {
         try {
@@ -485,7 +543,11 @@ module.exports = {
         }
     },//+
     getAdminJoinOurTeamPage: (req, res) => {
-        res.render('admin/joinOurTeam', {URL: '/admin-join-our-team', user: req.session.user});
+        res.render('admin/joinOurTeam', {
+            URL: '/admin-join-our-team',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     postAdminJoinOurTeamPage: async (req, res) => {
         try {
@@ -588,22 +650,38 @@ module.exports = {
         }
     },//+
     getAdminAddBrandPage: (req, res) => {
-        res.render('admin/addBrand', {URL: '/admin-create-brand', user: req.session.user});
+        res.render('admin/addBrand', {
+            URL: '/admin-create-brand',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getAdminAddProductPage: async (req, res) => {
         try {
             const brands = await Brand.find({}).select('name _id');
-            res.render('admin/addProduct', {URL: 'admin-create-product', user: req.session.user, brands: brands});
+            res.render('admin/addProduct', {
+                URL: 'admin-create-product',
+                user: req.session.user,
+                brands: brands,
+                staticData: staticData,
+            });
         } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
         }
 
     },
     getAdminOurBrandsPage: (req, res) => {
-        res.render('admin/ourBrands', {URL: '/admin-all-brands', user: req.session.user});
+        res.render('admin/ourBrands', {
+            URL: '/admin-all-brands',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
     getAdminOurProductsPage: (req, res) => {
-        res.render('admin/ourProducts', {URL: '/admin-all-products', user: req.session.user});
+        res.render('admin/ourProducts', {
+            URL: '/admin-all-products',
+            user: req.session.user,
+            staticData: staticData,
+        });
     },
-
 };
