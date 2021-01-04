@@ -44,10 +44,6 @@ module.exports = {
             const pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             const products = await Product.find({language: req.session.language}).select('images name').exec();
             const brands = await Brand.find({language: 'eng'}).select('images name').exec();
-            console.log(pageData)
-            // if (!pageData.length){
-            //     pageData = pageStaticData;
-            // }
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
@@ -89,17 +85,17 @@ module.exports = {
             }
             req.session.user = req.user;
             const Brands = await Brand.find({language: req.session.language}).select('info name images');
-            console.log(Brands);
             res.render('brand', {
                 URL: '/brand',
                 user: req.session.user,
                 staticData: staticData,
                 Brands:Brands,
             });
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err)
+            req.flash("error_msg", err.message);
+            return res.redirect("/brand");
         }
-
     },
     getContactPage: (req, res) => {
         res.render('contactUs', {
@@ -115,22 +111,19 @@ module.exports = {
             }
             req.session.user = req.user;
             const joinOurTeam = await PageData.find({language: req.session.language}).select('joinOurCol1Text joinOurCol2Text joinOurCol3Text joinOurTeamPartners imagesJoinOurTeamSlider -_id');
-            console.log(joinOurTeam);
             res.render('joinOurTeam', {
                 URL: '/joinOurTeam',
                 user: req.session.user,
                 staticData: staticData,
                 joinOurTeam:joinOurTeam[0],
             });
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err)
+            req.flash("error_msg", err.message);
+            return res.redirect("/joinOurTeam");
         }
-        // res.render('joinOurTeam', {
-        //     URL: '/join-our-team',
-        //     user: req.session.user,
-        //     staticData: staticData,
-        // });
-    },//start admin pages ->
+    },
+    //start admin pages ->
     getAdminHomePage: (req, res) => {
         res.render('admin/home', {
             URL: '/admin-home',
