@@ -63,11 +63,13 @@ module.exports = {
             staticData: staticData,
         });
     },
-    getBlogPage: (req, res) => {
+    getBlogPage: async (req, res) => {
+        const brands = await Brand.find({language: req.session.language}).select('info name images');
         res.render('blog', {
             URL: '/blog',
             user: req.session.user,
             staticData: staticData,
+            brands: brands,
         });
     },
     getShopPage: (req, res) => {
@@ -80,17 +82,14 @@ module.exports = {
     },
     getBrandPage: async (req, res) => {
         try {
-            if (req.session.language === undefined) {
-                req.session.language = 'eng';
-            }
-            req.session.user = req.user;
-            const Brands = await Brand.find({language: req.session.language}).select('info name images');
-            console.log(Brands);
+            const pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider');
+            const brands = await Brand.find({language: req.session.language}).select('info name images');
             res.render('brand', {
                 URL: '/brand',
                 user: req.session.user,
                 staticData: staticData,
-                Brands:Brands,
+                brands: brands,
+                pageData: pageData,
             });
         } catch (e) {
             console.log(e);

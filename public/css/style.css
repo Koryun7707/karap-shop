@@ -290,7 +290,6 @@ footer .abs {
 
 /*----brand-----*/
 .brand-section-bg {
-    background-image: url("../images/brand-bg.png");
     background-size: 100%;
     max-height: 735px;
     display: flex;
