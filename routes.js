@@ -62,6 +62,7 @@ router.get('/login', forwardAuthenticated, pagesController.getLogInPage);
 router.get('/logout', pagesController.userLogOut);
 router.get('/', pagesController.getUserDashboard);
 
+//send message contact us
 router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
 
 //Brands

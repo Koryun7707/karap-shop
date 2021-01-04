@@ -1,10 +1,8 @@
 require('dotenv').config();
-const {success, validation, err} = require('../utils/responseApi');
 const {sendMessageToMail} = require('../services/mailService')
 
 module.exports = {
-
-    sendMessageContactUs: (req, res) => {
+    sendMessageContactUs: async (req, res) => {
         console.log(req.body);
         try {
             const {email, firstName, message} = req.body
@@ -18,15 +16,17 @@ module.exports = {
                                <div>
                                    <p>
                                     ${message}
-                                    </p>
+                                    </p> 
                                 </div> `,
             }
-            sendMessageToMail(content);
-            return res.status(200).json(success('Send Mail Completed!', {}, res.statusCode))
+            await sendMessageToMail(content);
+            req.flash("success_msg", 'Send Mail Completed!');
+            return res.redirect("/contact");
 
-        } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
-            console.log(e)
+        } catch (err) {
+            console.log(err)
+            req.flash("error_msg", err.message);
+            return res.redirect("/contact");
         }
     },
 

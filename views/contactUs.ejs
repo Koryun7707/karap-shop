@@ -10,7 +10,8 @@
         <div class="container ">
             <div class="row p-5 btn-green-gradient align-items-center">
                 <div class="offset-1 col-5 py-5 pr-5 border-right">
-                    <form action="#" id="contactForm"   class="py-5">
+                    <%- include ('partials/messages')%>
+                    <form action="/sendMessageContactUs" method="POST" id="contactForm"   class="py-5">
                         <div class="form-group">
                             <label for="exampleInputEmail1">E - mail address</label>
                             <input value="" name="email" required type="email" class="form-control" id="emailContactUs" aria-describedby="emailHelp" placeholder="E - mail address">
