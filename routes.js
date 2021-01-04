@@ -97,7 +97,7 @@ router.post('/admin-about', checkIsAuthenticated, isAdmin, upload.array('imagesA
 router.get('/admin-contact', checkIsAuthenticated, isAdmin, pagesController.getAdminContactPage);
 router.post('/admin-contact', checkIsAuthenticated, isAdmin, upload.array('imagesContactSlider', 1), pagesController.postAdminContactPage);
 router.get('/admin-join-our-team', checkIsAuthenticated, isAdmin, pagesController.getAdminJoinOurTeamPage);
-router.post('/admin-join-our-team', checkIsAuthenticated, isAdmin, upload.array('imagesJoinOurTeamSlider', 2), pagesController.postAdminJoinOurTeamPage);
+router.post('/admin-join-our-team', checkIsAuthenticated, isAdmin, upload.array('imagesJoinOurTeamSlider', 1), pagesController.postAdminJoinOurTeamPage);
 router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, pagesController.getAdminAddBrandPage);
 router.get('/admin-create-product', checkIsAuthenticated, isAdmin, pagesController.getAdminAddProductPage);
 router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, pagesController.getAdminOurBrandsPage);

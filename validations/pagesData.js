@@ -57,17 +57,17 @@ const validateContactData = (data) => {
 const validateJoinOurTeamData = (data) => {
     logger.info('Start Validate Home page data - - -')
     const schema = Joi.object().keys({
-        textJoinOurTeamSlider: Joi.string().allow(''),
+        // textJoinOurTeamSlider: Joi.string().allow(''),
         imagesJoinOurTeamSlider: Joi.string().allow(''),
-        joinOurTeamWorkUs: Joi.string().required(),
-        joinOurCol1Title: Joi.string().required(),
+        // joinOurTeamWorkUs: Joi.string().required(),
+        // joinOurCol1Title: Joi.string().required(),
         joinOurCol1Text: Joi.string().required(),
-        joinOurCol2Title: Joi.string().required(),
+        // joinOurCol2Title: Joi.string().required(),
         joinOurCol2Text: Joi.string().required(),
-        joinOurCol3Title: Joi.string().required(),
+        // joinOurCol3Title: Joi.string().required(),
         joinOurCol3Text: Joi.string().required(),
         joinOurTeamPartners: Joi.string().required(),
-        joinOurTeamPartnersTitle: Joi.string().required(),
+        // joinOurTeamPartnersTitle: Joi.string().required(),
         language: Joi.string().required(),
     });
     return schema.validate(data);

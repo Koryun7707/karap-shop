@@ -41,9 +41,13 @@ module.exports = {
                 req.session.language = 'eng';
             }
             req.session.user = req.user;
-            const pageData = await PageData.findOne({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
+            const pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             const products = await Product.find({language: req.session.language}).select('images name').exec();
             const brands = await Brand.find({language: 'eng'}).select('images name').exec();
+            console.log(pageData)
+            // if (!pageData.length){
+            //     pageData = pageStaticData;
+            // }
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
@@ -104,12 +108,28 @@ module.exports = {
             staticData: staticData,
         });
     },
-    getJoinOurTeamPage: (req, res) => {
-        res.render('joinOurTeam', {
-            URL: '/join-our-team',
-            user: req.session.user,
-            staticData: staticData,
-        });
+    getJoinOurTeamPage: async (req, res) => {
+        try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            req.session.user = req.user;
+            const joinOurTeam = await PageData.find({language: req.session.language}).select('joinOurCol1Text joinOurCol2Text joinOurCol3Text joinOurTeamPartners imagesJoinOurTeamSlider -_id');
+            console.log(joinOurTeam);
+            res.render('joinOurTeam', {
+                URL: '/joinOurTeam',
+                user: req.session.user,
+                staticData: staticData,
+                joinOurTeam:joinOurTeam[0],
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        // res.render('joinOurTeam', {
+        //     URL: '/join-our-team',
+        //     user: req.session.user,
+        //     staticData: staticData,
+        // });
     },//start admin pages ->
     getAdminHomePage: (req, res) => {
         res.render('admin/home', {
@@ -587,7 +607,7 @@ module.exports = {
                 }
                 return res.status(422).json(validation(error.message));
             }
-            if (!files.length || files.length !== 2) {
+            if (!files.length || files.length !== 1) {
                 files.map((file) => {
                     rimraf(`./public/uploads/${file.filename}`, (err) => {
                         if (err) console.log(err);
@@ -604,17 +624,17 @@ module.exports = {
             }
             if (!myPageData) {
                 const newData = new PageData({
-                    textJoinOurTeamSlider: value.textJoinOurTeamSlider,
+                    // textJoinOurTeamSlider: value.textJoinOurTeamSlider,
                     imagesJoinOurTeamSlider: value.imagesJoinOurTeamSlider,
-                    joinOurTeamWorkUs: value.joinOurTeamWorkUs,
-                    joinOurCol1Title: value.joinOurCol1Title,
+                    // joinOurTeamWorkUs: value.joinOurTeamWorkUs,
+                    // joinOurCol1Title: value.joinOurCol1Title,
                     joinOurCol1Text: value.joinOurCol1Text,
-                    joinOurCol2Title: value.joinOurCol2Title,
+                    // joinOurCol2Title: value.joinOurCol2Title,
                     joinOurCol2Text: value.joinOurCol2Text,
-                    joinOurCol3Title: value.joinOurCol3Title,
+                    // joinOurCol3Title: value.joinOurCol3Title,
                     joinOurCol3Text: value.joinOurCol3Text,
                     joinOurTeamPartners: value.joinOurTeamPartners,
-                    joinOurTeamPartnersTitle: value.joinOurTeamPartnersTitle,
+                    // joinOurTeamPartnersTitle: value.joinOurTeamPartnersTitle,
                     language: value.language,
                 });
                 newData.imagesJoinOurTeamSlider = moveFile(files, dir);
@@ -633,16 +653,16 @@ module.exports = {
                     return res.status(200).json(success('Brand add complete!', result, res.statusCode));
                 });
             } else {
-                myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
-                myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
-                myPageData.joinOurCol1Title = value.joinOurCol1Title;
+                // myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
+                // myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
+                // myPageData.joinOurCol1Title = value.joinOurCol1Title;
                 myPageData.joinOurCol1Text = value.joinOurCol1Text;
-                myPageData.joinOurCol2Title = value.joinOurCol2Title;
+                // myPageData.joinOurCol2Title = value.joinOurCol2Title;
                 myPageData.joinOurCol2Text = value.joinOurCol2Text;
-                myPageData.joinOurCol3Title = value.joinOurCol3Title;
+                // myPageData.joinOurCol3Title = value.joinOurCol3Title;
                 myPageData.joinOurCol3Text = value.joinOurCol3Text;
                 myPageData.joinOurTeamPartners = value.joinOurTeamPartners;
-                myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
+                // myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
                 myPageData.language = value.language;
 
                 fs.readdir(dir, (err, files) => {

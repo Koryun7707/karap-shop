@@ -66,6 +66,7 @@ const pageDataSchema = new Schema({
     },
     joinOurTeamWorkUs: {
         type: String,
+
     },
     joinOurCol1Title: {
         type: String,

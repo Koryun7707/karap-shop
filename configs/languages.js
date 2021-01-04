@@ -35,7 +35,7 @@ module.exports =
         about_header_second: 'Our PHILOSOPHY',
         about_button: 'CONTACT US',
         //contact form
-<<<<<<< Updated upstream
+
         contact_email:'E - mail address',
         contact_first_name:'First name',
         contact_message:'Message',
@@ -45,7 +45,7 @@ module.exports =
         contact_address:'Address',
         contact_working_hours:'WORKING HOURS',
         contact_info_email:'Email',
-=======
+
         contact_email: 'E - mail address',
         contact_first_name: 'First name',
         contact_message: 'Message',
@@ -53,7 +53,7 @@ module.exports =
         contact_telephone: 'Tel',
         contact_address: 'Address',
         contact_working_hours: 'WORKING HOURS',
->>>>>>> Stashed changes
+
         //join our team
         join_header: 'WHY WORK WITH US',
         join_section: 'Reason',
@@ -110,7 +110,7 @@ module.exports =
         about_header_second: 'НАША ФИЛОСОФИЯ',
         about_button: 'СВЯЗАТЬСЯ С НАМИ',
         //contact form
-<<<<<<< Updated upstream
+
         contact_email:'Адрес электронной почты',
         contact_first_name:'Имя',
         contact_message:'Сообщение',
@@ -120,7 +120,7 @@ module.exports =
         contact_address:'Адрес',
         contact_working_hours:'РАБОЧИЕ ЧАСЫ',
         contact_info_email:'Почта',
-=======
+
         contact_email: 'Адрес электронной почты',
         contact_first_name: 'Имя',
         contact_message: 'Сообщение',
@@ -128,7 +128,7 @@ module.exports =
         contact_telephone: 'Тел',
         contact_address: 'Адрес',
         contact_working_hours: 'РАБОЧИЕ ЧАСЫ',
->>>>>>> Stashed changes
+
         //join our team
         join_header: 'ПОЧЕМУ С НАМИ РАБОТАЕТ',
         join_section: 'Причина',
