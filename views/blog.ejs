@@ -11,7 +11,7 @@
                             </div>
                         </div>
                         <div class="col-7 blog-img">
-                            <img src=<%= item.images[1] %> alt="" class="w-100 h-100 blog-img-anim">
+                            <img src=<%= item.images[3] %> alt="" class="w-100 h-100 blog-img-anim">
                         </div>
                         <div class="col-12">
                             <h2><%= item.type %></h2>
@@ -21,8 +21,9 @@
                                 <li class="fashion-icon2"><%= item.type %></li>
                                 <li style="display: none" id="<%= index %>"><%= item.info %></li>
                             </ul>
-                            <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)" id="but<%= index %>">SEE
-                                MORE</a>
+                            <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)" id="but<%= index %>">
+                                <%= staticData.blog_button %>
+                            </a>
                         </div>
                     </div>
                 <% }) %>

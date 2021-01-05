@@ -754,3 +754,7 @@ button:focus {
 .languageChangeButton{
     display: none;
 }
+.important{
+    color: #430d0d;
+    font-size: 16px;
+}

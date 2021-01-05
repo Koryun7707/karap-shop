@@ -41,7 +41,11 @@ module.exports = {
                 req.session.language = 'eng';
             }
             req.session.user = req.user;
-            const pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
+            let pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
+            if (req.session.language !== 'eng') {
+                const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
+                pageData[0].homeSliderImages = arrayImages.homeSliderImages;
+            }
             const products = await Product.find({language: req.session.language}).select('images name').exec();
             const brands = await Brand.find({language: 'eng'}).select('images name').exec();
             res.render('index', {
@@ -55,21 +59,36 @@ module.exports = {
         } catch (e) {
             console.log(e);
         }
-    },
-    getAboutPage: (req, res) => {
+    },//done
+    getAboutPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
+        let pageData = await PageData.find({language: req.session.language}).select('imagesAboutSlider textAboutSlider ourPhilosophy textOnAboutSlider titleOurPhilosophy').exec();
+        if (req.session.language !== 'eng') {
+            const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesAboutSlider').exec();
+            pageData[0].imagesAboutSlider = arrayImages.imagesAboutSlider;
+        }
+        console.log(pageData);
         res.render('aboutUs', {
             URL: '/about',
             user: req.session.user,
+            pageData: pageData,
             staticData: staticData,
         });
     },
-    getBlogPage: (req, res) => {
+    getBlogPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
+        const brands = await Brand.find({language: req.session.language}).exec();
         res.render('blog', {
             URL: '/blog',
             user: req.session.user,
             staticData: staticData,
+            brands: brands,
         });
-    },
+    },//done
     getShopPage: (req, res) => {
         console.log(req.session.language)
         res.render('shop', {
@@ -84,24 +103,39 @@ module.exports = {
                 req.session.language = 'eng';
             }
             req.session.user = req.user;
-            const Brands = await Brand.find({language: req.session.language}).select('info name images');
+            let pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider').exec();
+            if (req.session.language !== 'eng') {
+                const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesBrandSlider').exec();
+                pageData[0].imagesBrandSlider = arrayImages.imagesBrandSlider;
+            }
+            const brands = await Brand.find({language: req.session.language}).select('info name images');
             res.render('brand', {
                 URL: '/brand',
                 user: req.session.user,
+                pageData: pageData,
                 staticData: staticData,
-                Brands:Brands,
+                brands: brands,
             });
         } catch (err) {
             console.log(err)
             req.flash("error_msg", err.message);
             return res.redirect("/brand");
         }
-    },
-    getContactPage: (req, res) => {
+    },//done
+    getContactPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
+        let pageData = await PageData.find({language: req.session.language}).select('imagesContactSlider textContactSlider').exec();
+        if (req.session.language !== 'eng') {
+            const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesContactSlider').exec();
+            pageData[0].imagesContactSlider = arrayImages.imagesContactSlider;
+        }
         res.render('contactUs', {
             URL: '/contact',
             user: req.session.user,
             staticData: staticData,
+            pageData: pageData,
         });
     },
     getJoinOurTeamPage: async (req, res) => {
@@ -109,13 +143,17 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            req.session.user = req.user;
-            const joinOurTeam = await PageData.find({language: req.session.language}).select('joinOurCol1Text joinOurCol2Text joinOurCol3Text joinOurTeamPartners imagesJoinOurTeamSlider -_id');
+            const pageData = await PageData.find({language: req.session.language}).select('imagesJoinOurTeamSlider textJoinOurTeamSlider joinOurCol1Text joinOurCol2Text joinOurCol3Text joinOurCol1Title joinOurCol2Title joinOurCol3Title joinOurTeamPartnersTitle  joinOurTeamWorkUs joinOurTeamPartners');
+            if (req.session.language !== 'eng') {
+                const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesJoinOurTeamSlider').exec();
+                pageData[0].imagesJoinOurTeamSlider = arrayImages.imagesJoinOurTeamSlider;
+            }
+            console.log(pageData);
             res.render('joinOurTeam', {
                 URL: '/joinOurTeam',
                 user: req.session.user,
                 staticData: staticData,
-                joinOurTeam:joinOurTeam[0],
+                pageData: pageData,
             });
         } catch (err) {
             console.log(err)
@@ -130,7 +168,92 @@ module.exports = {
             user: req.session.user,
             staticData: staticData,
         });
-    },
+    },//done
+    postAdminHomePage: async (req, res) => {
+        try {
+            const files = req.files;
+            const {error, value} = validateHomeData(req.body);
+            if (error) {
+                if (files.length > 0) {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
+                }
+                return res.status(422).json(validation(error.message));
+            }
+            if (!files.length && value.language === 'eng') {
+                return res.status(422).json(validation('Files is required.!'));
+            }
+            const myPageData = await PageData.findOne({language: value.language}).exec();
+            let dir = `./public/uploads/home`;
+            if (!fs.existsSync(dir)) {
+                fs.mkdir(dir, (err) => {
+                    if (err) console.log(888888, err);
+                });
+            }
+            if (!myPageData) {
+                const newData = new PageData({
+                    homeSliderText: value.textOnHomeSlider,
+                    homeProductTypeTitle: value.homeProductTypeTitle,
+                    language: value.language
+                });
+                if (value.language === 'eng') {
+                    newData.homeSliderImages = moveFile(files, dir);
+                } else {
+                    newData.homeSliderImages = [];
+                }
+                newData.save((err, result) => {
+                    if (err) {
+                        fs.readdir(dir, (error, files) => {
+                            if (error) throw error;
+                            for (const file of files) {
+                                fs.unlink(path.join(dir, file), err => {
+                                    if (err) throw err;
+                                });
+                            }
+                        });
+                        throw err;
+                    }
+                    return res.status(200).json(success('Brand add complete!', result, res.statusCode));
+                });
+            } else {
+                fs.readdir(dir, (err, files) => {
+                    if (err) throw err;
+                    for (const file of files) {
+                        fs.unlink(path.join(dir, file), err => {
+                            if (err) throw err;
+                        });
+                    }
+                });
+                myPageData.homeSliderText = value.textOnHomeSlider;
+                myPageData.homeProductTypeTitle = value.homeProductTypeTitle;
+                myPageData.language = value.language;
+                if (value.language === 'eng') {
+                    myPageData.homeSliderImages = moveFile(files, dir);
+                } else {
+                    myPageData.homeSliderImages = [];
+                }
+                myPageData.save((err, result) => {
+                    if (err) {
+                        fs.readdir(dir, (error, files) => {
+                            if (error) throw error;
+                            for (const file of files) {
+                                fs.unlink(path.join(dir, file), err => {
+                                    if (err) throw err;
+                                });
+                            }
+                        });
+                        throw err;
+                    }
+                    return res.status(200).json(success('SUCCESS', result, res.statusCode));
+                });
+            }
+        } catch (e) {
+            return res.status(500).json(err(e.message, res.statusCode));
+        }
+    },//done
     getSignUpPage: (req, res) => {
         res.render('signup', {
             user: req.session.user,
@@ -161,84 +284,6 @@ module.exports = {
             console.log('userLogOut :' + e.stack);
         }
     },
-    postAdminHomePage: async (req, res) => {
-        try {
-            const files = req.files;
-            const {error, value} = validateHomeData(req.body);
-            if (error) {
-                if (files.length > 0) {
-                    files.map((file) => {
-                        rimraf(`./public/uploads/${file.filename}`, (err) => {
-                            if (err) console.log(err);
-                        })
-                    });
-                }
-                return res.status(422).json(validation(error.message));
-            }
-            if (!files.length) {
-                return res.status(422).json(validation('Files is required.!'));
-            }
-            const myPageData = await PageData.findOne({language: value.language}).exec();
-            let dir = `./public/uploads/home`;
-            if (!fs.existsSync(dir)) {
-                fs.mkdir(dir, (err) => {
-                    if (err) console.log(888888, err);
-                });
-            }
-            if (!myPageData) {
-                const newData = new PageData({
-                    homeSliderText: value.textOnHomeSlider,
-                    homeProductTypeTitle: value.homeProductTypeTitle,
-                    language: value.language
-                });
-                newData.homeSliderImages = moveFile(files, dir);
-                console.log(newData);
-                newData.save((err, result) => {
-                    if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
-                    }
-                    return res.status(200).json(success('Brand add complete!', result, res.statusCode));
-                });
-            } else {
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
-                });
-                myPageData.homeSliderText = value.textOnHomeSlider;
-                myPageData.homeProductTypeTitle = value.homeProductTypeTitle;
-                myPageData.language = value.language;
-                myPageData.homeSliderImages = moveFile(files, dir);
-                myPageData.save((err, result) => {
-                    if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
-                    }
-                    return res.status(200).json(success('SUCCESS', result, res.statusCode));
-                });
-            }
-        } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
-        }
-    },//+
     getAdminShopPage: (req, res) => {
         res.render('admin/shop', {
             URL: '/admin-shop',
@@ -342,7 +387,7 @@ module.exports = {
                 }
                 return res.status(422).json(validation(error.message));
             }
-            if (!files.length) {
+            if (!files.length && value.language === 'eng') {
                 return res.status(422).json(validation('Files is required.!'));
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -357,7 +402,11 @@ module.exports = {
                     textBrandSlider: value.textBrandSlider,
                     language: value.language
                 });
-                newData.imagesBrandSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    newData.imagesBrandSlider = moveFile(files, dir);
+                } else {
+                    newData.imagesBrandSlider = [];
+                }
                 newData.save((err, data) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -383,7 +432,11 @@ module.exports = {
                 });
                 myPageData.textBrandSlider = value.textBrandSlider;
                 myPageData.language = value.language;
-                myPageData.imagesBrandSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    myPageData.imagesBrandSlider = moveFile(files, dir);
+                } else {
+                    myPageData.imagesBrandSlider = [];
+                }
                 myPageData.save((err, result) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -431,7 +484,7 @@ module.exports = {
                 }
                 return res.status(422).json(validation(error.message));
             }
-            if (!files.length) {
+            if (!files.length && value.language) {
                 return res.status(422).json(validation('Files is required.!'));
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -443,12 +496,17 @@ module.exports = {
             }
             if (!myPageData) {
                 const newData = new PageData({
-                    textAboutSlider: value.textAboutSlider,
-                    ourPhilosophy: value.ourPhilosophy,
+                    textAboutGeneralImage: value.textAboutSlider,
                     titleOurPhilosophy: value.titleOurPhilosophy,
+                    ourPhilosophy: value.ourPhilosophy,
+                    titleAboutSlider: value.titleOfSlider,
                     language: value.language
                 });
+                // if (value.language === 'eng') {
                 newData.imagesAboutSlider = moveFile(files, dir);
+                // } else {
+                //     newData.imagesAboutSlider = [];
+                // }
                 newData.save(function (err, data) {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -466,6 +524,7 @@ module.exports = {
             } else {
                 myPageData.textAboutSlider = value.textAboutSlider;
                 myPageData.ourPhilosophy = value.ourPhilosophy;
+                myPageData.textOnAboutSlider = value.titleOfSlider;
                 myPageData.language = value.language;
                 fs.readdir(dir, (err, files) => {
                     if (err) throw err;
@@ -475,7 +534,16 @@ module.exports = {
                         });
                     }
                 });
+                // if (value.language === 'eng') {
                 myPageData.imagesAboutSlider = moveFile(files, dir);
+                // } else {
+                //     files.map((file) => {
+                //         rimraf(`./public/uploads/${file.filename}`, (err) => {
+                //             if (err) console.log(err);
+                //         })
+                //     });
+                //     myPageData.imagesAboutSlider = [];
+                // }
                 myPageData.save((err, data) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -494,7 +562,7 @@ module.exports = {
         } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
         }
-    },//+
+    },//done
     getAdminContactPage: (req, res) => {
         res.render('admin/contactUs', {
             URL: '/admin-contact',
@@ -516,7 +584,7 @@ module.exports = {
                 }
                 return res.status(422).json(validation(error.message));
             }
-            if (!files.length) {
+            if (!files.length && value.language === 'eng') {
                 return res.status(422).json(validation('Files is required.!'));
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -532,7 +600,16 @@ module.exports = {
                     imagesContactSlider: value.imagesContactSlider,
                     language: value.language
                 });
-                newData.imagesContactSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    newData.imagesContactSlider = moveFile(files, dir);
+                } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
+                    newData.imagesContactSlider = [];
+                }
                 newData.save((err, result) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -559,7 +636,11 @@ module.exports = {
                         });
                     }
                 });
-                myPageData.imagesContactSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    myPageData.imagesContactSlider = moveFile(files, dir);
+                } else {
+                    myPageData.imagesContactSlider = [];
+                }
                 myPageData.save((err, data) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -578,7 +659,7 @@ module.exports = {
         } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
         }
-    },//+
+    },//done
     getAdminJoinOurTeamPage: (req, res) => {
         res.render('admin/joinOurTeam', {
             URL: '/admin-join-our-team',
@@ -600,7 +681,7 @@ module.exports = {
                 }
                 return res.status(422).json(validation(error.message));
             }
-            if (!files.length || files.length !== 1) {
+            if (!files.length && value.language === 'eng') {
                 files.map((file) => {
                     rimraf(`./public/uploads/${file.filename}`, (err) => {
                         if (err) console.log(err);
@@ -617,20 +698,28 @@ module.exports = {
             }
             if (!myPageData) {
                 const newData = new PageData({
-                    // textJoinOurTeamSlider: value.textJoinOurTeamSlider,
-                    imagesJoinOurTeamSlider: value.imagesJoinOurTeamSlider,
-                    // joinOurTeamWorkUs: value.joinOurTeamWorkUs,
-                    // joinOurCol1Title: value.joinOurCol1Title,
+                    textJoinOurTeamSlider: value.textJoinOurTeamSlider,
+                    joinOurTeamWorkUs: value.joinOurTeamWorkUs,
+                    joinOurCol1Title: value.joinOurCol1Title,
                     joinOurCol1Text: value.joinOurCol1Text,
-                    // joinOurCol2Title: value.joinOurCol2Title,
+                    joinOurCol2Title: value.joinOurCol2Title,
                     joinOurCol2Text: value.joinOurCol2Text,
-                    // joinOurCol3Title: value.joinOurCol3Title,
+                    joinOurCol3Title: value.joinOurCol3Title,
                     joinOurCol3Text: value.joinOurCol3Text,
                     joinOurTeamPartners: value.joinOurTeamPartners,
-                    // joinOurTeamPartnersTitle: value.joinOurTeamPartnersTitle,
+                    joinOurTeamPartnersTitle: value.joinOurTeamPartnersTitle,
                     language: value.language,
                 });
-                newData.imagesJoinOurTeamSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    newData.imagesJoinOurTeamSlider = moveFile(files, dir);
+                } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
+                    newData.imagesJoinOurTeamSlider = [];
+                }
                 newData.save((err, result) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -646,16 +735,16 @@ module.exports = {
                     return res.status(200).json(success('Brand add complete!', result, res.statusCode));
                 });
             } else {
-                // myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
-                // myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
-                // myPageData.joinOurCol1Title = value.joinOurCol1Title;
+                myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
+                myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
+                myPageData.joinOurCol1Title = value.joinOurCol1Title;
                 myPageData.joinOurCol1Text = value.joinOurCol1Text;
-                // myPageData.joinOurCol2Title = value.joinOurCol2Title;
+                myPageData.joinOurCol2Title = value.joinOurCol2Title;
                 myPageData.joinOurCol2Text = value.joinOurCol2Text;
-                // myPageData.joinOurCol3Title = value.joinOurCol3Title;
+                myPageData.joinOurCol3Title = value.joinOurCol3Title;
                 myPageData.joinOurCol3Text = value.joinOurCol3Text;
                 myPageData.joinOurTeamPartners = value.joinOurTeamPartners;
-                // myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
+                myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
                 myPageData.language = value.language;
 
                 fs.readdir(dir, (err, files) => {
@@ -666,7 +755,16 @@ module.exports = {
                         });
                     }
                 });
-                myPageData.imagesJoinOurTeamSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    myPageData.imagesJoinOurTeamSlider = moveFile(files, dir);
+                } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
+                    myPageData.imagesJoinOurTeamSlider = [];
+                }
                 myPageData.save((err, result) => {
                     if (err) {
                         fs.readdir(dir, (error, files) => {
@@ -685,7 +783,7 @@ module.exports = {
         } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
         }
-    },//+
+    },//done
     getAdminAddBrandPage: (req, res) => {
         res.render('admin/addBrand', {
             URL: '/admin-create-brand',

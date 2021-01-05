@@ -11,7 +11,6 @@ const validateHomeData = (data) => {
     return schema.validate(data);
 };
 
-
 const validateShopData = (data) => {
     logger.info('Start Validate Home page data - - -')
     const schema = Joi.object().keys({
@@ -37,6 +36,7 @@ const validateAboutData = (data) => {
     const schema = Joi.object().keys({
         textAboutSlider: Joi.string().allow(''),
         imagesAboutSlider: Joi.string().allow(''),
+        titleOfSlider: Joi.string().required(),
         ourPhilosophy: Joi.string().required(),
         titleOurPhilosophy: Joi.string().required(),
         language: Joi.string().required(),
@@ -55,19 +55,18 @@ const validateContactData = (data) => {
 };
 
 const validateJoinOurTeamData = (data) => {
-    logger.info('Start Validate Home page data - - -')
+    logger.info('Start Validate join our team page data - - -')
     const schema = Joi.object().keys({
-        // textJoinOurTeamSlider: Joi.string().allow(''),
-        imagesJoinOurTeamSlider: Joi.string().allow(''),
-        // joinOurTeamWorkUs: Joi.string().required(),
-        // joinOurCol1Title: Joi.string().required(),
+        textJoinOurTeamSlider: Joi.string().allow(''),
+        joinOurTeamWorkUs: Joi.string().required(),
+        joinOurCol1Title: Joi.string().required(),
         joinOurCol1Text: Joi.string().required(),
-        // joinOurCol2Title: Joi.string().required(),
+        joinOurCol2Title: Joi.string().required(),
         joinOurCol2Text: Joi.string().required(),
-        // joinOurCol3Title: Joi.string().required(),
+        joinOurCol3Title: Joi.string().required(),
         joinOurCol3Text: Joi.string().required(),
         joinOurTeamPartners: Joi.string().required(),
-        // joinOurTeamPartnersTitle: Joi.string().required(),
+        joinOurTeamPartnersTitle: Joi.string().required(),
         language: Joi.string().required(),
     });
     return schema.validate(data);

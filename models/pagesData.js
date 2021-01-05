@@ -37,9 +37,9 @@ const pageDataSchema = new Schema({
         type: Array,
         required: true,
     },
-    textAboutSlider: {//About page
+    textAboutGeneralImage: {//About page
         type: String,
-    },
+    },//about
     imagesAboutSlider: {
         type: Array,
         required: true,
@@ -50,7 +50,13 @@ const pageDataSchema = new Schema({
     ourPhilosophy: {
         type: String,
     },
+    titleAboutSlider:{
+        type: String,
+    },
     textContactSlider: {//Contact us page
+        type: String,
+    },
+    titleOfSliderContactUs:{
         type: String,
     },
     imagesContactSlider: {

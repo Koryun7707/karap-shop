@@ -103,7 +103,7 @@ module.exports =
         shop_price: 'Цена',
         shop_brand: 'Бренд',
         //brands
-        brand_button: 'КУПИТЬ СЕЙЧАС',
+        brand_button: 'КУПИТЬ',
         //blog
         blog_button: 'УЗНАТЬ БОЛЬШЕ',
         //about

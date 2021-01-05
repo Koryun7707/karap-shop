@@ -1,34 +1,55 @@
 <%- include ('adminHeader') -%>
 <div class="row">
-            <div class="col-8 offset-2">
-                <form method="post" enctype="multipart/form-data"  action="admin-about" class="py-5">
-                    <div class="row page-titles">About us</div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Text on general image</label>
-                        <input type="text" name="textAboutSlider" class="form-control" id="exampleInputEmail1" placeholder="Text on general image.">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Upload about us general image.</label>
-                        <input type="file" name="imagesAboutSlider" class="form-control" id="uploadImagesBySize">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Our philosophy title</label>
-                        <input type="text" name="titleOurPhilosophy" class="form-control" id="exampleInputEmail1" placeholder="Our philosophy title.">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Our philosophy text</label>
-                        <input type="text" name="ourPhilosophy" class="form-control" id="exampleInputEmail1" placeholder="Our philosophy text.">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Language</label>
-                        <select name="language">
-                            <option name="spain" value="spain" >Spain</option>
-                            <option name="eng" value="eng" selected>Eng</option>
-                            <option name="ru" value="ru">Ru</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
-                </form>
+    <div class="col-8 offset-2">
+        <form method="post" enctype="multipart/form-data" action="admin-about" class="py-5">
+            <div class="row page-titles">About us</div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Text on general image</label>
+                <input type="text" name="textAboutSlider" class="form-control" id="exampleInputEmail1"
+                       placeholder="Text on general image.">
             </div>
-        </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Slider tilte.</label>
+                <input type="text" name="titleOfSlider" class="form-control" id="exampleInputEmail1"
+                       placeholder="Slider title.">
+            </div>
+            <div class="form-group important" id="upload_about_images">
+                <label for="exampleInputEmail1">Upload about us general image, and slider images(*first must be choose
+                    general image,max images count must be 5).</label>
+                <input type="file" multiple="multiple" name="imagesAboutSlider" class="form-control" id="uploadImagesBySize">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Our philosophy title</label>
+                <input type="text" name="titleOurPhilosophy" class="form-control" id="exampleInputEmail1"
+                       placeholder="Our philosophy title.">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Our philosophy text</label>
+                <input type="text" name="ourPhilosophy" class="form-control" id="exampleInputEmail1"
+                       placeholder="Our philosophy text.">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language" id="select_about_us">
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                    <option name="spain" value="spain">Spain</option>
+                    <option name="spain" value="spain">Arm</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        document.getElementById('select_about_us').addEventListener('change', function () {
+            if (this.value !== 'eng') {
+                document.getElementById('upload_about_images').style.display = 'none';
+            } else {
+                document.getElementById('upload_about_images').style.display = 'block';
+            }
+        });
+    });
+</script>
 <%- include ('adminFooter') -%>

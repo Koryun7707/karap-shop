@@ -5,7 +5,7 @@ const {validation} = require('../utils/responseApi');
 
 const moveFile = (files, dir) => {
     const array = [];
-    files.map((file) => {
+    files.forEach((file) => {
         array.push(`${dir.slice(9, dir.length)}/${file.filename}`);
         let f = pathMiddleware.basename(file.path);
         let dest = pathMiddleware.resolve(dir, f);

@@ -1,22 +1,23 @@
-<%-include ('header')-%>
+<%- include ('header') -%>
 
-<main  style="padding-top: 100px">
-    <section class="brand-section-bg">
+<main style="padding-top: 100px">
+    <section class="brand-section-bg" style="background-image: url(<%= pageData[0].imagesBrandSlider[0] %>)">
         <div class="container">
-            <h1 class="text-center">BRANDS</h1>
+            <h1 class="text-center"><%= pageData[0].textBrandSlider %></h1>
         </div>
     </section>
     <section class="pt-5">
         <div class="p-5 container-1730 container">
             <div class="owl-slider py-5">
                 <div id="carousel-brand" class="owl-carousel main-item-bg">
-                    <%Brands.forEach(function(item){%>
-                    <div class="item">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <img class="card-img-top" src="<%=item.images[0]%>" alt="Card image cap" width="135" height="62">
+                    <% brands.forEach(function(item){ %>
+                        <div class="item">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img class="card-img-top" src="<%= item.images[0] %>" alt="Card image cap" width="135"
+                                     height="62">
+                            </div>
                         </div>
-                    </div>
-                    <%})%>
+                    <% }) %>
                 </div>
             </div>
         </div>
@@ -24,24 +25,24 @@
 
     <section class="py-lg-5 brand-section">
         <div class="container-fluid">
-            <%Brands.forEach(function(item){%>
-            <div class="row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5">
-                <div class="col-12 col-md-6 col-xl-4">
-                  <div class="pr-5">
-                      <h3 class="title"><%=item.name%></h3>
-                      <div class="info-text">
-                         <%=item.info%>
-                      </div>
-                      <a href="#" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
-                  </div>
+            <% brands.forEach(function(item){ %>
+                <div class="row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="pr-5">
+                            <h3 class="title"><%= item.name %></h3>
+                            <div class="info-text">
+                                <%= item.info %>
+                            </div>
+                            <a href="#" class="btn btn-green-gradient px-5 py-3"><%=staticData.brand_button%></a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="rose-border">
+                            <img src="<%= item.images[1] %>" alt="" class="brand-img">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 col-xl-4">
-                   <div class="rose-border">
-                       <img src="<%=item.images[1]%>" alt="" class="brand-img">
-                   </div>
-                </div>
-            </div>
-            <%})%>
+            <% }) %>
 
             <div class="mb-5 d-flex justify-content-end px-md-5">
                 <nav aria-label="Page navigation example" class="ml-auto px-5">
@@ -67,14 +68,14 @@
         </div>
     </section>
 </main>
-<%-include ('footer')-%>
+<%- include ('footer') -%>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $("#carousel-brand").owlCarousel({
             autoplay: true,
             lazyLoad: true,

@@ -93,11 +93,11 @@ router.post('/admin-shop', checkIsAuthenticated, isAdmin, upload.array('shopSlid
 router.get('/admin-brand', checkIsAuthenticated, isAdmin, pagesController.getAdminBrandPage);
 router.post('/admin-brand', checkIsAuthenticated, isAdmin, upload.array('imagesBrandSlider', 1), pagesController.postAdminBrandPage);
 router.get('/admin-about', checkIsAuthenticated, isAdmin, pagesController.getAdminAboutPage);
-router.post('/admin-about', checkIsAuthenticated, isAdmin, upload.array('imagesAboutSlider', 1), pagesController.postAdminAboutPage);
+router.post('/admin-about', checkIsAuthenticated, isAdmin, upload.array('imagesAboutSlider', 5), pagesController.postAdminAboutPage);
 router.get('/admin-contact', checkIsAuthenticated, isAdmin, pagesController.getAdminContactPage);
 router.post('/admin-contact', checkIsAuthenticated, isAdmin, upload.array('imagesContactSlider', 1), pagesController.postAdminContactPage);
 router.get('/admin-join-our-team', checkIsAuthenticated, isAdmin, pagesController.getAdminJoinOurTeamPage);
-router.post('/admin-join-our-team', checkIsAuthenticated, isAdmin, upload.array('imagesJoinOurTeamSlider', 1), pagesController.postAdminJoinOurTeamPage);
+router.post('/admin-join-our-team', checkIsAuthenticated, isAdmin, upload.array('imagesJoinOurTeamSlider', 2), pagesController.postAdminJoinOurTeamPage);
 router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, pagesController.getAdminAddBrandPage);
 router.get('/admin-create-product', checkIsAuthenticated, isAdmin, pagesController.getAdminAddProductPage);
 router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, pagesController.getAdminOurBrandsPage);
