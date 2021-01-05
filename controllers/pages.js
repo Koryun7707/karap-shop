@@ -97,6 +97,20 @@ module.exports = {
             staticData: staticData,
         });
     },
+    getSelectedProducts: (req,res) =>{
+        res.render('selectedProducts', {
+            URL: '/selectedProducts',
+            user: req.session.user,
+            staticData: staticData,
+        });
+    },
+    getProduct: (req,res) => {
+        res.render('product', {
+            URL: '/product',
+            user: req.session.user,
+            staticData: staticData,
+        });
+    },
     getBrandPage: async (req, res) => {
         try {
             if (req.session.language === undefined) {

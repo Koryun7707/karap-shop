@@ -84,6 +84,8 @@ router.get('/brand', pagesController.getBrandPage);
 router.get('/contact', pagesController.getContactPage);
 router.get('/join-our-team', pagesController.getJoinOurTeamPage);
 router.get('/shop', pagesController.getShopPage);
+router.get('/selectedProducts',pagesController.getSelectedProducts);
+router.get('/product',pagesController.getProduct);
 
 //admin
 router.get('/admin-home', checkIsAuthenticated, isAdmin, pagesController.getAdminHomePage);
