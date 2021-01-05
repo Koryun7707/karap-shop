@@ -4,7 +4,9 @@
 
     <section id="section1" class="position-relative section1 mb-5" style="margin-top: -44px">
         <div class="abs">
-            <h1><%= pageData[0].homeSliderText %></h1>
+            <%if(pageData.length){%>
+                <h1><%= pageData[0].homeSliderText %></h1>
+            <%}%>
         </div>
         <div class="owl-slider ">
             <div id="carousel1" class="owl-carousel owl-carousel1">
@@ -20,7 +22,11 @@
     </section>
     <section id="section2" class="section2 py-5">
         <div class="container pb-5 px-5">
-            <h2 class="text-center mb-3 mb-md-5"><%= pageData[0].homeProductTypeTitle %></h2>
+            <h2 class="text-center mb-3 mb-md-5">
+                <%if(pageData.length){%>
+                    <%= pageData[0].homeProductTypeTitle %>
+                <%}%>
+            </h2>
             <div class="owl-slider">
                 <div id="carousel2" class="owl-carousel owl-carousel2">
                     <% if(products.length > 0){ %>

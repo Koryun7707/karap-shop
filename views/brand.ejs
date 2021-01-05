@@ -1,12 +1,16 @@
 <%- include ('header') -%>
 
 <main style="padding-top: 100px">
-    <section class="brand-section-bg" style="background-image: url(<%= pageData[0].imagesBrandSlider[0] %>)">
+    <%if(pageData.length){%>
+        <section class="brand-section-bg" style="background-image: url(<%= pageData[0].imagesBrandSlider[0] %>)">
         <div class="container">
-            <h1 class="text-center"><%= pageData[0].textBrandSlider %></h1>
+            <h1 class="text-center">
+                <%= pageData[0].textBrandSlider %>
+            </h1>
         </div>
     </section>
-    <section class="pt-5">
+        <%}%>
+        <section class="pt-5">
         <div class="p-5 container-1730 container">
             <div class="owl-slider py-5">
                 <div id="carousel-brand" class="owl-carousel main-item-bg">

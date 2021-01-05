@@ -1,13 +1,15 @@
 <%- include ('header') -%>
 
 <main style="padding-top: 100px" class="contact-section">
-    <section class="contact-section-bg mb-5" style="background-image: url(<%= pageData[0].imagesContactSlider[0] %>)">
-        <div class="container">
-            <h1 class="text-center">
-                <%= pageData[0].textContactSlider %>
-            </h1>
-        </div>
-    </section>
+    <%if(pageData.length){%>
+        <section class="contact-section-bg mb-5" style="background-image: url(<%= pageData[0].imagesContactSlider[0] %>)">
+            <div class="container">
+                <h1 class="text-center">
+                    <%= pageData[0].textContactSlider %>
+                </h1>
+            </div>
+        </section>
+    <%}%>
     <section class="py-5 my-5 contact-form">
         <div class="container ">
             <div class="row p-5 btn-green-gradient align-items-center">
