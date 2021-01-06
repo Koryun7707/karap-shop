@@ -89,13 +89,32 @@ module.exports = {
             brands: brands,
         });
     },//done
-    getShopPage: (req, res) => {
+    getShopPage:async (req, res) => {
+        console.log('Start shop get')
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         console.log(req.session.language)
-        res.render('shop', {
-            URL: '/shop',
-            user: req.session.user,
-            staticData: staticData,
-        });
+        try{
+
+
+            const pageData = await PageData.find({language:req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
+            const productsType = await Product.find({language:req.session.language}).select('type -_id').exec();
+            const brands = await Brand.find({language:req.session.language}).select('name').exec();
+            console.log(productsType)
+            res.render('shop', {
+                URL: '/shop',
+                user: req.session.user,
+                staticData: staticData,
+                pageData:pageData,
+                productsType:productsType,
+                brands:brands,
+            });
+        }catch (e){
+            console.log(`Get Brands Error: ${e}`)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
     },
     getSelectedProducts: (req,res) =>{
         res.render('selectedProducts', {

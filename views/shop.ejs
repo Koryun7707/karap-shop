@@ -1,50 +1,44 @@
     <%-include ('header')-%>
 <main  style="padding-top: 100px" class="shop-section">
-    <section class="shop-section-bg">
-        <div class="container">
-            <h1 class="text-center">Shop</h1>
-        </div>
-    </section>
+    <%if(pageData.length){%>
+        <section class="shop-section-bg" style="background-image: url(<%=pageData[0].imagesShopSlider[0]%>)">
+            <div class="container">
+                <h1 class="text-center"><%=pageData[0].textShopSlider%></h1>
+            </div>
+        </section>
+    <%}%>
    <div class="container-fluid pt-5 mt-5">
        <div class="row py-5">
            <div class="col-md-3 col-12">
                <div class="sidebar px-5">
                    <form action="#">
-                       <div class="sidebar-title">PRODUCT PAGES</div>
+                       <div class="sidebar-title"><%=staticData.shop_product_page%></div>
                        <div class="scrollbar shop-page-scroll">
                            <div class="force-overflow">
                                <ul class="list-unstyled px-4 mb-5">
-                                   <li class="form-group">
-                                       <input type="checkbox" id="Clothing">
-                                       <label for="Clothing" class="clothing-icon">Clothing</label>
-                                   </li>
-                                   <li class="form-group">
-                                       <input type="checkbox" id="Accessories">
-                                       <label for="Accessories" class="accessories-icon">Accessories</label>
-                                   </li>
-                                   <li class="form-group">
-                                       <input type="checkbox" id="Arte">
-                                       <label for="Arte" class="beauty-icon">Beauty Arte</label>
-                                   </li>
-                                   <li class="form-group">
-                                       <input type="checkbox" id="Book">
-                                       <label for="Book" class="book-icon">Book</label>
-                                   </li>
+                                   <%if(productsType.length){%>
+                                       <%productsType.forEach(function(item){%>
+                                           <li class="form-group">
+                                               <input type="checkbox" id="<%=item.type%>">
+                                               <label for="<%=item.type%>" class="clothing-icon"><%=item.type%></label>
+                                           </li>
+                                       <%})%>
+                                   <%}%>
                                </ul>
                            </div>
                        </div>
-                       <div class="sidebar-title">Search</div>
+                       <div class="sidebar-title"><%=staticData.shop_search%></div>
                        <div class="shop-search mb-5">
-                           <input type="search" class="form-control " placeholder="Search">
+                           <input type="search" class="form-control " placeholder="<%=staticData.shop_search%>">
                        </div>
-                       <div class="sidebar-title">On Sale</div>
+                       <div class="sidebar-title"><%=staticData.shop_sale%></div>
                        <div class="px-4 mb-5">
                            <div class="form-group">
                                <input type="checkbox" id="sale">
-                               <label for="sale" style="text-transform: capitalize">On Sale (58)</label>
+                               <label for="sale" style="text-transform: capitalize"><%=staticData.shop_sale%> (58)</label>
                            </div>
                        </div>
-                       <div class="sidebar-title">Price</div>
+                       <div class="sidebar-title"><%=staticData.shop_price%></div>
                        <div class="mb-5 d-flex flex-column">
                            <div class="d-flex align-items-center mb-5">
                                <input type="number" class="form-control range-slide-input"/>
@@ -60,38 +54,42 @@
                            </div>
                        </div>
 
-                       <div class="sidebar-title ">Brand</div>
+                       <div class="sidebar-title "><%=staticData.shop_brand%></div>
                        <div class="px-4 mb-5">
                            <div class="scrollbar shop-page-scroll">
                                <div class="force-overflow">
-                                   <div class="form-group">
-                                       <input type="checkbox" id="TIFFANY">
-                                       <label for="TIFFANY">TIFFANY</label>
-                                   </div>
-                                   <div class="form-group">
-                                       <input type="checkbox" id="cuccy">
-                                       <label for="cuccy">cuccy</label>
-                                   </div>
-                                   <div class="form-group">
-                                       <input type="checkbox" id="armani">
-                                       <label for="armani">armani</label>
-                                   </div>
-                                   <div class="form-group">
-                                       <input type="checkbox" id="dior">
-                                       <label for="dior">dior</label>
-                                   </div>
-                                   <div class="form-group">
-                                       <input type="checkbox" id="STEFFANI">
-                                       <label for="STEFFANI">STEFFANI</label>
-                                   </div>
-                                   <div class="form-group">
-                                       <input type="checkbox" id="SOLLAR">
-                                       <label for="SOLLAR">SOLLAR</label>
-                                   </div>
-                                   <div class="form-group">
-                                       <input type="checkbox" id="FACE">
-                                       <label for="FACE">FACE</label>
-                                   </div>
+                                   <%if(brands.length){%>
+                                       <%brands.forEach(function(item){%>
+                                           <div class="form-group">
+                                               <input type="checkbox" id=<%=item.name%> value="<%=item._id%>">
+                                               <label for="<%=item.name%>"><%=item.name%></label>
+                                           </div>
+                                       <%})%>
+                                   <%}%>
+<!--                                   <div class="form-group">-->
+<!--                                       <input type="checkbox" id="cuccy">-->
+<!--                                       <label for="cuccy">cuccy</label>-->
+<!--                                   </div>-->
+<!--                                   <div class="form-group">-->
+<!--                                       <input type="checkbox" id="armani">-->
+<!--                                       <label for="armani">armani</label>-->
+<!--                                   </div>-->
+<!--                                   <div class="form-group">-->
+<!--                                       <input type="checkbox" id="dior">-->
+<!--                                       <label for="dior">dior</label>-->
+<!--                                   </div>-->
+<!--                                   <div class="form-group">-->
+<!--                                       <input type="checkbox" id="STEFFANI">-->
+<!--                                       <label for="STEFFANI">STEFFANI</label>-->
+<!--                                   </div>-->
+<!--                                   <div class="form-group">-->
+<!--                                       <input type="checkbox" id="SOLLAR">-->
+<!--                                       <label for="SOLLAR">SOLLAR</label>-->
+<!--                                   </div>-->
+<!--                                   <div class="form-group">-->
+<!--                                       <input type="checkbox" id="FACE">-->
+<!--                                       <label for="FACE">FACE</label>-->
+<!--                                   </div>-->
                                </div>
                            </div>
                        </div>

@@ -100,9 +100,23 @@ const updateProduct = async (req, res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+const getProducts = async(req,res)=>{
+    logger.info('Start getProducts - - -');
+    try{
+        const {filterByType} = req.body;
+        const data = await Product.find({type:filterByType});
+        return res.status(200).json(success('Products Data!', {
+            data
+        }, res.statusCode));
 
+    }catch(e){
+        logger.error(`Get Products Error: ${e}`);
+        return res.status(500).json(err(e.message, res.statusCode));
+    }
+}
 module.exports = {
     createProduct: createProduct,
     deleteProduct: deleteProduct,
     updateProduct: updateProduct,
+    getProducts:getProducts,
 };

@@ -5,8 +5,8 @@ const multer = require('multer');
 const path = require('path');
 const usersController = require('./controllers/user');
 const pagesController = require('./controllers/pages');
-const {createProduct, deleteProduct, updateProduct} = require('./controllers/product')
-const {createBrand, deleteBrand, updateBrand} = require('./controllers/brand')
+const {createProduct, deleteProduct, updateProduct,getProducts} = require('./controllers/product')
+const {createBrand, deleteBrand, updateBrand,getBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
 
@@ -69,12 +69,12 @@ router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
 router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages', 4), createBrand);//+
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
 router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
-
-
+router.get('/brands',getBrands);
 //Products
 router.post('/product', checkIsAuthenticated, isAdmin, upload.array('productImages', 5), createProduct);//+
 router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
+router.get('/products',getProducts);
 
 
 //Pages
