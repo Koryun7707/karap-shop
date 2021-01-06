@@ -62,27 +62,65 @@
                 <% } %>
 
             </div>
-            <div class="mb-5 d-flex justify-content-end px-md-5">
-                <nav aria-label="Page navigation example" class="ml-auto px-5">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true"><</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <nav aria-label="Page navigation example">
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
+<!--                </ul>-->
+
+            <% if (pages > 0) { %>
+                <ul class="pagination">
+                    <% if (current == 1) { %>
+                        <li class="page-item disabled"><a class="page-link" >First</a></li>
+                    <% } else { %>
+                        <li  class="page-item"><a  class="page-link" href="/1">First</a></li>
+                    <% } %>
+                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                    <% if (i !== 1) { %>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                        <% if (i == current) { %>
+                            <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/<%= i %>"><%= i %></a></li>
+                        <% } %>
+                        <% if (i == Number(current) + 4 && i < pages) { %>
+                            <li class="page-item disabled"><a class="page-link">...</a></li>
+                        <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="page-item disabled"><a class="page-link">Last</a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="/<%= pages %>">Last</a></li>
+                    <% } %>
+                </ul>
+            <% } %>
+            </nav>
+<!--            <div class="mb-5 d-flex justify-content-end px-md-5">-->
+<!--                <nav aria-label="Page navigation example" class="ml-auto px-5">-->
+<!--                    <ul class="pagination">-->
+<!--                        <li class="page-item">-->
+<!--                            <a class="page-link" href="#" aria-label="Previous">-->
+<!--                                <span aria-hidden="true"><</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">...</a></li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">10</a></li>-->
+<!--                        <li class="page-item">-->
+<!--                            <a class="page-link" href="#" aria-label="Next">-->
+<!--                                <span aria-hidden="true">></span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </nav>-->
+<!--            </div>-->
         </div>
     </section>
 </main>

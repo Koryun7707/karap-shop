@@ -70,6 +70,7 @@ router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages',
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
 router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
 router.get('/brands',getBrands);
+
 //Products
 router.post('/product', checkIsAuthenticated, isAdmin, upload.array('productImages', 5), createProduct);//+
 router.delete('/product/:id', deleteProduct);

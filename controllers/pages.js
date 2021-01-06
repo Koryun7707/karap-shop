@@ -19,7 +19,7 @@ const Product = require('../models/product');
 const User = require('../models/user')
 
 var staticData = data[0];
-
+const ITEMS_PER_PAGE = 4;
 const chooseLanguage = (selectLang) => {
     if (selectLang === 'eng') {
         staticData = data[0]
@@ -35,7 +35,7 @@ module.exports = {
         req.session.language = req.body.language;
         res.end();
     },
-    getUserDashboard: async (req, res) => {
+    getUserDashboard: async (req, res,next) => {
         try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
@@ -47,15 +47,39 @@ module.exports = {
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
             const products = await Product.find({language: req.session.language}).select('images name').exec();
-            const brands = await Brand.find({language: 'eng'}).select('images name').exec();
-            res.render('index', {
-                URL: '/',
-                user: req.session.user,
-                staticData: staticData,
-                pageData: pageData,
-                products: products,
-                brands: brands,
-            });
+          //  const brands = await Brand.find({language: 'eng'}).select('images name').exec();
+            let perPage = 1
+            let page = req.params.page || 1
+
+            Brand
+                .find({language: req.session.language})
+                .skip((perPage * page) - perPage)
+                .limit(perPage)
+                .exec(function(err, brands) {
+                    Brand.count({language: req.session.language}).exec(function(err, count) {
+                        if (err) return next(err)
+                        res.render('index', {
+                                 URL: '/',
+                                 user: req.session.user,
+                                 staticData: staticData,
+                                 pageData: pageData,
+                                 products: products,
+                                 brands: brands,
+                         //   products: products,
+                            current: page,
+                            pages: Math.ceil(count / perPage)
+                        })
+                    })
+                })
+
+            // res.render('index', {
+            //     URL: '/',
+            //     user: req.session.user,
+            //     staticData: staticData,
+            //     pageData: pageData,
+            //     products: products,
+            //     brands: brands,
+            // });
         } catch (e) {
             console.log(e);
         }
