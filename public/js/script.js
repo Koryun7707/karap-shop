@@ -66,6 +66,7 @@ $(document).ready(function () {
     $(".product-size ul li, .product-color ul li").on('click', function() {
         $(this).toggleClass("active")
     });
+
     // Contact US Send Message
     // $(document).on("click", "#sendMessageContactUs", function(){
     //     const message = document.getElementById('messageContactUs').value;

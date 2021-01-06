@@ -87,6 +87,11 @@ router.get('/join-our-team', pagesController.getJoinOurTeamPage);
 router.get('/shop', pagesController.getShopPage);
 router.get('/selectedProducts',pagesController.getSelectedProducts);
 router.get('/product',pagesController.getProduct);
+router.post('/shop-filter',(req,res)=>{
+    console.log('shop-filter')
+    console.log(1111,req.body);
+    res.end();
+})
 
 //admin
 router.get('/admin-home', checkIsAuthenticated, isAdmin, pagesController.getAdminHomePage);
