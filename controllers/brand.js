@@ -94,26 +94,31 @@ const updateBrand = async (req, res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
-const getBrands = async (req,res) =>{
-    logger.info('Start Brands Get - - -');
-    try{
-        if(req.session.language === undefined){
+
+const getBrands = async (req, res, next) => {
+    try {
+        if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
-        const brands = await Brand.find({language:req.session.language}).select('name').exec();
-        console.log(brands);
-        return res.status(200).json(success('Brands Data!', {
-            brands
+        console.log(req.query.page);
+        const page = Number(req.query.page) || 1;
+        const limit = 1;
+        const options = {
+            page: page,
+            limit: limit,
+        }
+        const results = await Brand.paginate({language: req.session.language}, options);
+        return res.status(200).json(success('success', {
+            brands: results.docs
         }, res.statusCode));
-    }
-    catch(e){
-        logger.error(`Brand Update Error: ${e}`);
-        return res.status(500).json(err(e.message, res.statusCode));
+    } catch (e) {
+        console.log(e);
     }
 }
+
 module.exports = {
     createBrand: createBrand,
     deleteBrand: deleteBrand,
     updateBrand: updateBrand,
-    getBrands:getBrands
+    getBrands: getBrands
 };

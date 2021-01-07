@@ -35,7 +35,7 @@ module.exports = {
         req.session.language = req.body.language;
         res.end();
     },
-    getUserDashboard: async (req, res,next) => {
+    getUserDashboard: async (req, res, next) => {
         try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
@@ -47,39 +47,15 @@ module.exports = {
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
             const products = await Product.find({language: req.session.language}).select('images name').exec();
-          //  const brands = await Brand.find({language: 'eng'}).select('images name').exec();
-            let perPage = 1
-            let page = req.params.page || 1
-
-            Brand
-                .find({language: req.session.language})
-                .skip((perPage * page) - perPage)
-                .limit(perPage)
-                .exec(function(err, brands) {
-                    Brand.count({language: req.session.language}).exec(function(err, count) {
-                        if (err) return next(err)
-                        res.render('index', {
-                                 URL: '/',
-                                 user: req.session.user,
-                                 staticData: staticData,
-                                 pageData: pageData,
-                                 products: products,
-                                 brands: brands,
-                         //   products: products,
-                            current: page,
-                            pages: Math.ceil(count / perPage)
-                        })
-                    })
-                })
-
-            // res.render('index', {
-            //     URL: '/',
-            //     user: req.session.user,
-            //     staticData: staticData,
-            //     pageData: pageData,
-            //     products: products,
-            //     brands: brands,
-            // });
+            const countOfBrands = await Brand.find({language: req.session.language}).exec();
+            res.render('index', {
+                URL: '/',
+                user: req.session.user,
+                staticData: staticData,
+                pageData: pageData,
+                products: products,
+                pages: countOfBrands.length
+            });
         } catch (e) {
             console.log(e);
         }
@@ -113,41 +89,41 @@ module.exports = {
             brands: brands,
         });
     },//done
-    getShopPage:async (req, res) => {
+    getShopPage: async (req, res) => {
         console.log('Start shop get')
         if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
         console.log(req.session.language)
-        try{
+        try {
 
 
-            const pageData = await PageData.find({language:req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
-            const productsType = await Product.find({language:req.session.language}).select('type -_id').exec();
-            const brands = await Brand.find({language:req.session.language}).select('name').exec();
+            const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
+            const productsType = await Product.find({language: req.session.language}).select('type -_id').exec();
+            const brands = await Brand.find({language: req.session.language}).select('name').exec();
             console.log(productsType)
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
                 staticData: staticData,
-                pageData:pageData,
-                productsType:productsType,
-                brands:brands,
+                pageData: pageData,
+                productsType: productsType,
+                brands: brands,
             });
-        }catch (e){
+        } catch (e) {
             console.log(`Get Brands Error: ${e}`)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
     },
-    getSelectedProducts: (req,res) =>{
+    getSelectedProducts: (req, res) => {
         res.render('selectedProducts', {
             URL: '/selectedProducts',
             user: req.session.user,
             staticData: staticData,
         });
     },
-    getProduct: (req,res) => {
+    getProduct: (req, res) => {
         res.render('product', {
             URL: '/product',
             user: req.session.user,

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 
@@ -34,5 +35,6 @@ const brandSchema = new Schema({
     }
 });
 
+brandSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Brand', brandSchema);

@@ -4,9 +4,9 @@
 
     <section id="section1" class="position-relative section1 mb-5" style="margin-top: -44px">
         <div class="abs">
-            <%if(pageData.length){%>
+            <% if(pageData.length){ %>
                 <h1><%= pageData[0].homeSliderText %></h1>
-            <%}%>
+            <% } %>
         </div>
         <div class="owl-slider ">
             <div id="carousel1" class="owl-carousel owl-carousel1">
@@ -23,9 +23,9 @@
     <section id="section2" class="section2 py-5">
         <div class="container pb-5 px-5">
             <h2 class="text-center mb-3 mb-md-5">
-                <%if(pageData.length){%>
+                <% if(pageData.length){ %>
                     <%= pageData[0].homeProductTypeTitle %>
-                <%}%>
+                <% } %>
             </h2>
             <div class="owl-slider">
                 <div id="carousel2" class="owl-carousel owl-carousel2">
@@ -45,82 +45,44 @@
             </div>
         </div>
     </section>
-    <section id="section3" class="section3">
+    <section id="section-brand-3" value=<%= pages %> class="section3">
         <div class="container-fluid">
-            <div class="row justify-content-around  px-md-5">
-                <% if(brands.length > 0){ %>
-                    <% brands.forEach(function(item){ %>
-                        <div class="col-6 col-md-4 col-lg-3 overflow-hidden">
-                            <a href="/shop" class="home-card-pagination">
-                                <img src=<%= item.images[1] %>  alt="pic"/>
-                                <div class="home-card-pagination-title">
-                                    <%= item.name %>
-                                </div>
-                            </a>
-                        </div>
-                    <% }) %>
-                <% } %>
+            <div class="row justify-content-around  px-md-5" id="brands-render-place">
 
             </div>
-            <nav aria-label="Page navigation example">
-<!--                <ul class="pagination">-->
-<!--                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
-<!--                </ul>-->
-
-            <% if (pages > 0) { %>
-                <ul class="pagination">
-                    <% if (current == 1) { %>
-                        <li class="page-item disabled"><a class="page-link" >First</a></li>
-                    <% } else { %>
-                        <li  class="page-item"><a  class="page-link" href="/1">First</a></li>
+            <div class="mb-5 d-flex justify-content-end px-md-5">
+                <nav aria-label="Page navigation example">
+                    <% if (pages > 0) { %>
+                        <ul class="pagination">
+                            <li class="page-item" onclick="handelChosenPage(this)" id="-1" value="-1">
+                                <a class="page-link"><<</a>
+                            </li>
+                            <% for (let i = 1;  i <= pages; i++) { %>
+                                <% if (i == 1) { %>
+                                    <li class="page-item active" id="<%= i %>" onclick="handelChosenPage(this)"
+                                        value="<%= i %>">
+                                        <a class="page-link">
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                <% }else{ %>
+                                    <li class="page-item" id="<%= i %>" onclick="handelChosenPage(this)"
+                                        value="<%= i %>">
+                                        <a class="page-link">
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                            <li class="page-item" id="+1" onclick="handelChosenPage(this)" value="+1">
+                                <a class="page-link">
+                                    >>
+                                </a>
+                            </li>
+                        </ul>
                     <% } %>
-                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-                    <% if (i !== 1) { %>
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    <% } %>
-                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-                        <% if (i == current) { %>
-                            <li class="page-item active"><a class="page-link"><%= i %></a></li>
-                        <% } else { %>
-                            <li class="page-item"><a class="page-link" href="/<%= i %>"><%= i %></a></li>
-                        <% } %>
-                        <% if (i == Number(current) + 4 && i < pages) { %>
-                            <li class="page-item disabled"><a class="page-link">...</a></li>
-                        <% } %>
-                    <% } %>
-                    <% if (current == pages) { %>
-                        <li class="page-item disabled"><a class="page-link">Last</a></li>
-                    <% } else { %>
-                        <li class="page-item"><a class="page-link" href="/<%= pages %>">Last</a></li>
-                    <% } %>
-                </ul>
-            <% } %>
-            </nav>
-<!--            <div class="mb-5 d-flex justify-content-end px-md-5">-->
-<!--                <nav aria-label="Page navigation example" class="ml-auto px-5">-->
-<!--                    <ul class="pagination">-->
-<!--                        <li class="page-item">-->
-<!--                            <a class="page-link" href="#" aria-label="Previous">-->
-<!--                                <span aria-hidden="true"><</span>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                        <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                        <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                        <li class="page-item"><a class="page-link" href="#">...</a></li>-->
-<!--                        <li class="page-item"><a class="page-link" href="#">10</a></li>-->
-<!--                        <li class="page-item">-->
-<!--                            <a class="page-link" href="#" aria-label="Next">-->
-<!--                                <span aria-hidden="true">></span>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </nav>-->
-<!--            </div>-->
+                </nav>
+            </div>
         </div>
     </section>
 </main>
@@ -131,7 +93,7 @@
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
         $(".owl-carousel1").owlCarousel({
             autoplay: true,
@@ -180,6 +142,113 @@
 
         });
     });
+</script>
+<script type="text/javascript">
+    window.onload = function () {
+        $.ajax({
+            url: '/brands',
+            method: 'get',
+            data: {
+                page: 1,
+            },
+            success: function (result) {
+                $("#brands-render-place").empty();
+                result.results.brands.map((item) => {
+                    let brandsRenderPlace = document.getElementById('brands-render-place');
+                    let div = document.createElement('div');
+                    div.setAttribute('class', 'col-6 col-md-4 col-lg-3 overflow-hidden');
+                    div.innerHTML = `  <a href="/shop" class="home-card-pagination">
+                           <img src=${item.images[1]} alt="pic"/>
+                           <div class="home-card-pagination-title">${item.name}</div>
+                       </a>`;
+                    brandsRenderPlace.appendChild(div);
+                });
+            },
+            error: function (data) {
+                console.log('User creation failed :' + data);
+            }
+        });
+    };
+
+    function handelChosenPage(item) {
+        let pagesCount = document.getElementById('section-brand-3').getAttribute('value');
+        const elementValue = item.getAttribute('value');
+        const elementAttributes = item.getAttribute('class');
+        let pageNumber;
+        if (elementValue === '-1') {
+            for (let i = 1; i <= Number(pagesCount); i++) {
+                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                    if (i === 1) {
+                        document.getElementById(`${i}`).setAttribute("class", "page-item active");
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
+                    } else {
+                        pageNumber = i - 1;
+                        document.getElementById(`${i - 1}`).setAttribute("class", "page-item active");
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                        break;
+                    }
+                }
+            }
+        } else if (elementValue === '+1') {
+            for (let i = 1; i <= Number(pagesCount); i++) {
+                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                    if (i === Number(pagesCount)) {
+                        document.getElementById(`${i}`).setAttribute("class", "page-item active");
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
+                    } else {
+                        pageNumber = i + 1;
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                        document.getElementById(`${i + 1}`).setAttribute("class", "page-item active");
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (elementAttributes.includes('active')) {
+                for (let i = 1; i <= Number(pagesCount); i++) {
+                    if (i === Number(elementValue)) {
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
+                    } else {
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                    }
+                }
+            } else {
+                for (let i = 1; i <= Number(pagesCount); i++) {
+                    if (i === Number(elementValue)) {
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
+                    } else {
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                    }
+                }
+            }
+        }
+        if (pageNumber === undefined) {
+            pageNumber = Number(elementValue);
+        }
+        $.ajax({
+            url: '/brands',
+            method: 'get',
+            data: {
+                page: pageNumber,
+            },
+            success: function (result) {
+                $("#brands-render-place").empty();
+                result.results.brands.map((item) => {
+                    let brandsRenderPlace = document.getElementById('brands-render-place');
+                    let div = document.createElement('div');
+                    div.setAttribute('class', 'col-6 col-md-4 col-lg-3 overflow-hidden');
+                    div.innerHTML = `  <a href="/shop" class="home-card-pagination">
+                           <img src=${item.images[1]} alt="pic"/>
+                           <div class="home-card-pagination-title">${item.name}</div>
+                       </a>`;
+                    brandsRenderPlace.appendChild(div);
+                });
+            },
+            error: function (data) {
+                console.log('User creation failed :' + data);
+            }
+        });
+    }
 </script>
 <script src="js/script.js"></script>
 
