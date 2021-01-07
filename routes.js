@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const usersController = require('./controllers/user');
 const pagesController = require('./controllers/pages');
-const {createProduct, deleteProduct, updateProduct,getProducts} = require('./controllers/product')
+const {createProduct, deleteProduct, updateProduct,getProducts,getProductsShopFilter} = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand,getBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
@@ -87,11 +87,9 @@ router.get('/join-our-team', pagesController.getJoinOurTeamPage);
 router.get('/shop', pagesController.getShopPage);
 router.get('/selectedProducts',pagesController.getSelectedProducts);
 router.get('/product',pagesController.getProduct);
-router.post('/shop-filter',(req,res)=>{
-    console.log('shop-filter')
-    console.log(1111,req.body);
-    res.end();
-})
+
+//shop Filter
+router.post('/shop-filter',getProductsShopFilter);
 
 //admin
 router.get('/admin-home', checkIsAuthenticated, isAdmin, pagesController.getAdminHomePage);

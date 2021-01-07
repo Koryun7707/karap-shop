@@ -114,9 +114,41 @@ const getProducts = async(req,res)=>{
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+const getProductsShopFilter = async(req,res)=>{
+    logger.info('Start getProductsShopFilter - - -')
+    try{
+        if(req.session.language === undefined){
+            req.session.language = 'eng';
+        }
+        console.log(req.body);
+        const types = req.body['types[]'] || [];
+        const brandIds = req.body['brandIds[]'] || [];
+        let data;
+        if(brandIds.length>0 && types.length>0) {
+            data = await Product.find({ '$and':[{ type: { "$in" : types} ,brandId:{"$in":brandIds}}]}).select('images name');
+        }else if (brandIds.length>0){
+             data = await Product.find({ brandId: { "$in" : brandIds} ,language:req.session.language}).select('images name');
+
+        }else if (types.length>0){
+            data = await Product.find({ type: { "$in" : types} }).select('images name');
+
+        }
+        // console.log(req.body['types[]']);
+        console.log(data);
+        return res.status(200).json(success('Products Data Shop!',
+            data
+        , res.statusCode));
+
+    }catch(e){
+        logger.error(`Get Products Error: ${e}`);
+        return res.status(500).json(err(e.message, res.statusCode));
+    }
+
+}
 module.exports = {
     createProduct: createProduct,
     deleteProduct: deleteProduct,
     updateProduct: updateProduct,
     getProducts:getProducts,
+    getProductsShopFilter:getProductsShopFilter,
 };
