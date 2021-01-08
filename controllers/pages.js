@@ -96,10 +96,9 @@ module.exports = {
         }
         console.log(req.session.language)
         try {
-
-
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
             const productsType = await Product.find({language: req.session.language}).select('type -_id').exec();
+            const allProducts = await Product.find({language:req.session.language}).select('images name').lean().exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             console.log(productsType)
             res.render('shop', {
@@ -109,6 +108,7 @@ module.exports = {
                 pageData: pageData,
                 productsType: productsType,
                 brands: brands,
+                allProducts:allProducts,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)

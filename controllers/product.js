@@ -123,17 +123,49 @@ const getProductsShopFilter = async(req,res)=>{
         console.log(req.body);
         const types = req.body['types[]'] || [];
         const brandIds = req.body['brandIds[]'] || [];
+        const searchValue = req.body.searchValue;
         let data;
+        console.log(searchValue);
+
         if(brandIds.length>0 && types.length>0) {
-            data = await Product.find({ '$and':[{ type: { "$in" : types} ,brandId:{"$in":brandIds}}]}).select('images name');
+            const search ={ $and: [
+                    {  '$or': [
+                            {'name'   : {'$regex': searchValue, "$options": "i"}},
+                        ]}
+                    ,{language:req.session.language}
+                    ,{ type: { "$in" : types}
+                    ,brandId:{"$in":brandIds}}
+                ]};
+            data = await Product.find(search).select('images name');
         }else if (brandIds.length>0){
-             data = await Product.find({ brandId: { "$in" : brandIds} ,language:req.session.language}).select('images name');
+            const search ={ $and: [
+                    {  '$or': [
+                            {'name'   : {'$regex': searchValue, "$options": "i"}},
+                        ]}
+                    ,{language:req.session.language}
+                    ,{brandId:{"$in":brandIds}},
+                ]};
+             data = await Product.find(search).select('images name');
 
         }else if (types.length>0){
-            data = await Product.find({ type: { "$in" : types} }).select('images name');
+            const search ={ $and: [
+                    {  '$or': [
+                            {'name'   : {'$regex': searchValue, "$options": "i"}},
+                        ]}
+                    ,{language:req.session.language}
+                    ,{type: { "$in" : types} },
+                ]};
+            data = await Product.find(search).select('images name');
 
+        }else{
+            const search ={ $and: [
+                    {  '$or': [
+                            {'name'   : {'$regex': searchValue, "$options": "i"}},
+                        ]}
+                    ,{language:req.session.language},
+                ]};
+            data = await Product.find(search).select('images name');
         }
-        // console.log(req.body['types[]']);
         console.log(data);
         return res.status(200).json(success('Products Data Shop!',
             data
