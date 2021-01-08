@@ -51,37 +51,25 @@
 
             </div>
             <div class="mb-5 d-flex justify-content-end px-md-5">
-                <nav aria-label="Page navigation example">
-                    <% if (pages > 0) { %>
-                        <ul class="pagination">
-                            <li class="page-item" onclick="handelChosenPage(this)" id="-1" value="-1">
-                                <a class="page-link"><<</a>
-                            </li>
-                            <% for (let i = 1;  i <= pages; i++) { %>
-                                <% if (i == 1) { %>
-                                    <li class="page-item active" id="<%= i %>" onclick="handelChosenPage(this)"
-                                        value="<%= i %>">
-                                        <a class="page-link">
-                                            <%= i %>
-                                        </a>
-                                    </li>
-                                <% }else{ %>
-                                    <li class="page-item" id="<%= i %>" onclick="handelChosenPage(this)"
-                                        value="<%= i %>">
-                                        <a class="page-link">
-                                            <%= i %>
-                                        </a>
-                                    </li>
-                                <% } %>
-                            <% } %>
-                            <li class="page-item" id="+1" onclick="handelChosenPage(this)" value="+1">
-                                <a class="page-link">
-                                    >>
+                <% if (pages > 0) { %>
+                    <div class="pagination">
+                        <a onclick="handelChosenPage(this)" id="-1" value="-1">&laquo;</a>
+                        <% for (let i = 1;  i <= pages; i++) { %>
+                            <% if (i == 1) { %>
+                                <a class="active" id="<%= i %>" onclick="handelChosenPage(this)"
+                                   value="<%= i %>">
+                                    <%= i %>
                                 </a>
-                            </li>
-                        </ul>
-                    <% } %>
-                </nav>
+                            <% }else{ %>
+                                <a class="page-item" id="<%= i %>" onclick="handelChosenPage(this)"
+                                   value="<%= i %>">
+                                    <%= i %>
+                                </a>
+                            <% } %>
+                        <% } %>
+                        <a id="+1" onclick="handelChosenPage(this)" value="+1">&raquo;</a>
+                    </div>
+                <% } %>
             </div>
         </div>
     </section>
@@ -175,12 +163,15 @@
         const elementValue = item.getAttribute('value');
         const elementAttributes = item.getAttribute('class');
         let pageNumber;
+        console.log('elementValue', elementValue);
         if (elementValue === '-1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
                 if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
                     if (i === 1) {
+                        pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
+                        break;
                     } else {
                         pageNumber = i - 1;
                         document.getElementById(`${i - 1}`).setAttribute("class", "page-item active");
@@ -193,8 +184,10 @@
             for (let i = 1; i <= Number(pagesCount); i++) {
                 if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
                     if (i === Number(pagesCount)) {
+                        pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
+                        break;
                     } else {
                         pageNumber = i + 1;
                         document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
