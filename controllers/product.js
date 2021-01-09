@@ -100,87 +100,114 @@ const updateProduct = async (req, res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
-const getProducts = async(req,res)=>{
+
+const getProducts = async (req, res) => {
     logger.info('Start getProducts - - -');
-    try{
+    try {
         const {filterByType} = req.body;
-        const data = await Product.find({type:filterByType});
+        const data = await Product.find({type: filterByType});
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
 
-    }catch(e){
+    } catch (e) {
         logger.error(`Get Products Error: ${e}`);
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
-const getProductsShopFilter = async(req,res)=>{
+
+const getProductsShopFilter = async (req, res) => {
     logger.info('Start getProductsShopFilter - - -')
-    try{
-        if(req.session.language === undefined){
+    try {
+        if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
-        console.log(req.body);
+        const page = Number(req.body.page) || 1;
+        const limit = 1;
+        const options = {
+            page: page,
+            limit: limit,
+        }
         const types = req.body['types[]'] || [];
         const brandIds = req.body['brandIds[]'] || [];
         const searchValue = req.body.searchValue;
         let data;
-        console.log(searchValue);
+        if (!brandIds.length && !types.length && searchValue === undefined) {
+            data = await Product.paginate({language: req.session.language}, options);
+        } else if (brandIds.length > 0 && types.length > 0) {
+            const search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'name': {'$regex': searchValue, "$options": "i"}},
+                        ]
+                    }
+                    , {language: req.session.language}
+                    , {
+                        type: {"$in": types}
+                        , brandId: {"$in": brandIds}
+                    }
+                ]
+            };
+            data = await Product.paginate(search, options);
+            // await Product.find(search).select('images name');
+        } else if (brandIds.length > 0) {
+            const search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'name': {'$regex': searchValue, "$options": "i"}},
+                        ]
+                    }
+                    , {language: req.session.language}
+                    , {brandId: {"$in": brandIds}},
+                ]
+            };
+            data = await Product.paginate(search, options);
 
-        if(brandIds.length>0 && types.length>0) {
-            const search ={ $and: [
-                    {  '$or': [
-                            {'name'   : {'$regex': searchValue, "$options": "i"}},
-                        ]}
-                    ,{language:req.session.language}
-                    ,{ type: { "$in" : types}
-                    ,brandId:{"$in":brandIds}}
-                ]};
-            data = await Product.find(search).select('images name');
-        }else if (brandIds.length>0){
-            const search ={ $and: [
-                    {  '$or': [
-                            {'name'   : {'$regex': searchValue, "$options": "i"}},
-                        ]}
-                    ,{language:req.session.language}
-                    ,{brandId:{"$in":brandIds}},
-                ]};
-             data = await Product.find(search).select('images name');
+        } else if (types.length > 0) {
+            const search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'name': {'$regex': searchValue, "$options": "i"}},
+                        ]
+                    }
+                    , {language: req.session.language}
+                    , {type: {"$in": types}},
+                ]
+            };
+            data = await Product.paginate(search, options);
 
-        }else if (types.length>0){
-            const search ={ $and: [
-                    {  '$or': [
-                            {'name'   : {'$regex': searchValue, "$options": "i"}},
-                        ]}
-                    ,{language:req.session.language}
-                    ,{type: { "$in" : types} },
-                ]};
-            data = await Product.find(search).select('images name');
-
-        }else{
-            const search ={ $and: [
-                    {  '$or': [
-                            {'name'   : {'$regex': searchValue, "$options": "i"}},
-                        ]}
-                    ,{language:req.session.language},
-                ]};
-            data = await Product.find(search).select('images name');
+        } else {
+            const search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'name': {'$regex': searchValue, "$options": "i"}},
+                        ]
+                    }
+                    , {language: req.session.language},
+                ]
+            };
+            data = await Product.paginate(search, options);
         }
-        console.log(data);
-        return res.status(200).json(success('Products Data Shop!',
-            data
-        , res.statusCode));
+        return res.status(200).json(success('Products Data Shop!', {
+            data: data.docs,
+            pageCount: data.pages,
+        }, res.statusCode));
 
-    }catch(e){
+    } catch (e) {
         logger.error(`Get Products Error: ${e}`);
         return res.status(500).json(err(e.message, res.statusCode));
     }
 
 }
+
 module.exports = {
     createProduct: createProduct,
     deleteProduct: deleteProduct,
     updateProduct: updateProduct,
-    getProducts:getProducts,
-    getProductsShopFilter:getProductsShopFilter,
+    getProducts: getProducts,
+    getProductsShopFilter: getProductsShopFilter,
 };
