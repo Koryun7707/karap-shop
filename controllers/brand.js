@@ -109,7 +109,8 @@ const getBrands = async (req, res, next) => {
         }
         const results = await Brand.paginate({language: req.session.language}, options);
         return res.status(200).json(success('success', {
-            brands: results.docs
+            brands: results.docs,
+            pageCount: results.pages,
         }, res.statusCode));
     } catch (e) {
         console.log(e);

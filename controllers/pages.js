@@ -147,6 +147,7 @@ module.exports = {
                 pageData: pageData,
                 staticData: staticData,
                 brands: brands,
+                pages: brands.length
             });
         } catch (err) {
             console.log(err)

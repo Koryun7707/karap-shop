@@ -20,7 +20,7 @@
             </div>
         </div>
     </section>
-    <section id="section2" class="section2 py-5">
+    <section id="section2" class="section2 py-5" value=<%= products.length %>>
         <div class="container pb-5 px-5">
             <h2 class="text-center mb-3 mb-md-5">
                 <% if(pageData.length){ %>
@@ -105,7 +105,7 @@
             smartSpeed: 800,
             nav: true,
             dots: false,
-            items: 5,
+            items: Number(document.getElementById('section2').getAttribute('value')),
             margin: 40,
             responsive: {
                 0: {
@@ -113,18 +113,18 @@
                 },
 
                 600: {
-                    items: 2
+                    items: Number(document.getElementById('section2').getAttribute('value')) - 3
                 },
 
                 1024: {
-                    items: 3
+                    items: Number(document.getElementById('section2').getAttribute('value')) - 2
                 },
                 1199: {
-                    items: 5
+                    items: Number(document.getElementById('section2').getAttribute('value'))
                 },
 
                 1366: {
-                    items: 5
+                    items: Number(document.getElementById('section2').getAttribute('value'))
                 }
             },
 

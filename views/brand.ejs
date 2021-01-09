@@ -1,16 +1,16 @@
 <%- include ('header') -%>
 
 <main style="padding-top: 100px">
-    <%if(pageData.length){%>
+    <% if(pageData.length){ %>
         <section class="brand-section-bg" style="background-image: url(<%= pageData[0].imagesBrandSlider[0] %>)">
-        <div class="container">
-            <h1 class="text-center">
-                <%= pageData[0].textBrandSlider %>
-            </h1>
-        </div>
-    </section>
-        <%}%>
-        <section class="pt-5">
+            <div class="container">
+                <h1 class="text-center">
+                    <%= pageData[0].textBrandSlider %>
+                </h1>
+            </div>
+        </section>
+    <% } %>
+    <section class="pt-5" id="section2Div" value=<%= brands.length %>>
         <div class="p-5 container-1730 container">
             <div class="owl-slider py-5">
                 <div id="carousel-brand" class="owl-carousel main-item-bg">
@@ -26,48 +26,11 @@
             </div>
         </div>
     </section>
-
     <section class="py-lg-5 brand-section">
-        <div class="container-fluid">
-            <% brands.forEach(function(item){ %>
-                <div class="row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5">
-                    <div class="col-12 col-md-6 col-xl-4">
-                        <div class="pr-5">
-                            <h3 class="title"><%= item.name %></h3>
-                            <div class="info-text">
-                                <%= item.info %>
-                            </div>
-                            <a href="#" class="btn btn-green-gradient px-5 py-3"><%=staticData.brand_button%></a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-xl-4">
-                        <div class="rose-border">
-                            <img src="<%= item.images[1] %>" alt="" class="brand-img">
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
-
-            <div class="mb-5 d-flex justify-content-end px-md-5">
-                <nav aria-label="Page navigation example" class="ml-auto px-5">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true"><</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">10</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+        <div class="container-fluid" id="brands-section-place">
+        </div>
+        <div class="mb-5 d-flex justify-content-end px-md-5">
+            <div class="pagination" id="pagination-place-brands">
             </div>
         </div>
     </section>
@@ -78,6 +41,166 @@
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        $.ajax({
+            url: '/brands',
+            method: 'get',
+            data: {
+                page: 1,
+            },
+            success: function (response) {
+                $("#brands-section-place").empty();
+                if (response.results.pageCount > 0) {
+                    document.getElementById('brands-section-place').setAttribute('value', response.results.pageCount);
+                    let paginationPlace = document.getElementById('pagination-place-brands');
+                    for (let i = -1; i < response.results.pageCount + 1; i++) {
+                        let a = document.createElement('a');
+                        a.setAttribute('onclick', 'handelChosenPage(this);');
+                        if (i === -1) {
+                            a.setAttribute('id', `-1`);
+                            a.setAttribute('value', `-1`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `&laquo;`
+                        } else if (i === 0) {
+                            a.setAttribute('id', '1');
+                            a.setAttribute('value', '1');
+                            a.setAttribute('class', `active`);
+                            a.innerHTML = '1'
+                        } else if (i > 0 && i !== response.results.pageCount) {
+                            a.setAttribute('id', `${i + 1}`);
+                            a.setAttribute('value', `${i + 1}`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `${i + 1}`
+                        } else {
+                            a.setAttribute('id', `+1`);
+                            a.setAttribute('value', `+1`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `&raquo;`
+                        }
+                        paginationPlace.append(a);
+                    }
+                }
+                response.results.brands.map((item) => {
+                    let brandsRenderPlace = document.getElementById('brands-section-place');
+                    let div = document.createElement('div');
+                    div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
+                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-4">
+                    <div class="pr-5">
+                        <h3 class="title">${item.name}</h3>
+                        <div class="info-text">
+                            ${item.info}
+                        </div>
+                        <a href="#" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="rose-border">
+                        <img src=${item.images[1]} alt="" class="brand-img">
+                    </div>
+                </div>`;
+                    brandsRenderPlace.appendChild(div);
+                });
+            },
+            error: function (data) {
+                console.log('User creation failed :' + data);
+            }
+        });
+    };
+    function handelChosenPage(item) {
+        let pagesCount = document.getElementById('brands-section-place').getAttribute('value');
+        const elementValue = item.getAttribute('value');
+        const elementAttributes = item.getAttribute('class');
+        let pageNumber;
+        if (elementValue === '-1') {
+            for (let i = 1; i <= Number(pagesCount); i++) {
+                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                    if (i === 1) {
+                        pageNumber = i;
+                        document.getElementById(`${i}`).setAttribute("class", "page-item active");
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
+                        break;
+                    } else {
+                        pageNumber = i - 1;
+                        document.getElementById(`${i - 1}`).setAttribute("class", "page-item active");
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                        break;
+                    }
+                }
+            }
+        } else if (elementValue === '+1') {
+            for (let i = 1; i <= Number(pagesCount); i++) {
+                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                    if (i === Number(pagesCount)) {
+                        pageNumber = i;
+                        document.getElementById(`${i}`).setAttribute("class", "page-item active");
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
+                        break;
+                    } else {
+                        pageNumber = i + 1;
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                        document.getElementById(`${i + 1}`).setAttribute("class", "page-item active");
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (elementAttributes.includes('active')) {
+                for (let i = 1; i <= Number(pagesCount); i++) {
+                    if (i === Number(elementValue)) {
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
+                    } else {
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                    }
+                }
+            } else {
+                for (let i = 1; i <= Number(pagesCount); i++) {
+                    if (i === Number(elementValue)) {
+                        document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
+                    } else {
+                        document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                    }
+                }
+            }
+        }
+        if (pageNumber === undefined) {
+            pageNumber = Number(elementValue);
+        }
+        $.ajax({
+            url: '/brands',
+            method: 'get',
+            data: {
+                page: pageNumber,
+            },
+            success: function (response) {
+                $("#brands-section-place").empty();
+                response.results.brands.map((item) => {
+                    let brandsRenderPlace = document.getElementById('brands-section-place');
+                    let div = document.createElement('div');
+                    div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
+                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-4">
+                    <div class="pr-5">
+                        <h3 class="title">${item.name}</h3>
+                        <div class="info-text">
+                            ${item.info}
+                        </div>
+                        <a href="#" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="rose-border">
+                        <img src=${item.images[1]} alt="" class="brand-img">
+                    </div>
+                </div>`;
+                    brandsRenderPlace.appendChild(div);
+                });
+            },
+            error: function (data) {
+                console.log('User creation failed :' + data);
+            }
+        });
+    }
+</script>
 <script>
     $(document).ready(function () {
         $("#carousel-brand").owlCarousel({
@@ -104,7 +227,7 @@
                 },
 
                 1366: {
-                    items: 7
+                    items: 5
                 }
             }
         });
