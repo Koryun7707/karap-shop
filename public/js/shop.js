@@ -7,6 +7,13 @@ function addToCard(id){
         if(Cardlocal.includes(id.value)){
             alert('Sorry but product is already added');
         }else{
+            document.getElementById('addToCardButton').innerHTML = 'Added';
+            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+            document.getElementById('addToCardButton').classList.add('btn-dark');
+            setTimeout(()=>{
+                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+            },1000)
             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
             Cardlocal.push(id.value);
             Cardlocal= JSON.stringify(Cardlocal);
@@ -15,6 +22,13 @@ function addToCard(id){
 
     }else{
         document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+        document.getElementById('addToCardButton').innerHTML = 'Added';
+        document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+        document.getElementById('addToCardButton').classList.add('btn-dark');
+        setTimeout(()=>{
+            document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+            document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+        },1000)
         let array = [];
         array.push(id.value);
         array= JSON.stringify(array);
@@ -82,6 +96,7 @@ $(document).ready(function () {
                 if (response.results.data.length) {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
+                        filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
@@ -92,13 +107,13 @@ $(document).ready(function () {
                                         <div class="title">${item.name}</div>
                                     </a>
                                     
-                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                    <button value="${item._id}" id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
                                         ADD TO CART</button>                 
                                 </div>
                             `
                         ;
 
-                        filterDiv.append(newDiv);
+
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -198,7 +213,7 @@ $(document).ready(function () {
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                    <button value="${item._id}"  id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
                                         ADD TO CART</button>  
                                 </div>
                             `
@@ -352,7 +367,7 @@ $(document).ready(function () {
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                    <button value="${item._id}"  id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
                                         ADD TO CART</button>  
                                 </div>
                             `
@@ -485,7 +500,7 @@ $(document).ready(function () {
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                    <button value="${item._id}"  id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
                                         ADD TO CART</button>  
                                 </div>
                             `
