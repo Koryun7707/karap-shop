@@ -17,6 +17,7 @@ const PageData = require('../models/pagesData');
 const Brand = require('../models/brands');
 const Product = require('../models/product');
 const User = require('../models/user')
+const {logger} = require('../utils/logger')
 
 var staticData = data[0];
 const chooseLanguage = (selectLang) => {
@@ -122,12 +123,23 @@ module.exports = {
             staticData: staticData,
         });
     },
-    getProduct: (req, res) => {
-        res.render('product', {
-            URL: '/product',
-            user: req.session.user,
-            staticData: staticData,
-        });
+    getProduct:async (req, res) => {
+        logger.info('Start get Product - - -');
+        try{
+            const {_id} = req.query;
+            const product = await Product.find({_id}).lean().exec();
+            console.log(product)
+            res.render('product', {
+                URL: '/product',
+                user: req.session.user,
+                product:product,
+                staticData: staticData,
+            });
+        }catch(e){
+            console.log(e)
+            req.flash("error_msg", e.message);
+            return res.redirect("/shop");
+        }
     },
     getBrandPage: async (req, res) => {
         try {

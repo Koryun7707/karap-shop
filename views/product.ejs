@@ -2,30 +2,31 @@
 <main  style="padding-top: 100px" class="product-section">
     <div class="container my-5">
         <div class="row">
+            <%if(product.length){%>
             <div class="col-7">
                 <div class="row">
                     <div class="col-2">
                         <div class="mb-2 small-images">
-                            <img src="images/shop-pic9.jpg" alt="" class="w-100">
+                            <img src="<%= product[0].images[3]%>" alt="" class="w-100">
                         </div>
                         <div class="mb-2 small-images">
-                            <img src="images/shop-pic9.jpg" alt="" class="w-100">
+                            <img src="<%= product[0].images[1]%>" alt="" class="w-100">
                         </div>
                         <div class="mb-2 small-images">
-                            <img src="images/shop-pic9.jpg" alt="" class="w-100">
+                            <img src="<%= product[0].images[2]%>" alt="" class="w-100">
                         </div>
                     </div>
                     <div class="col-10">
-                        <img src="images/shop-pic9.jpg" alt="" class="w-100">
+                        <img src="<%= product[0].images[0]%>" alt="" class="w-100">
                     </div>
                 </div>
             </div>
             <div class="col-5">
                 <div class="product-name">
-                    <h2 class="mb-2">Fiore</h2>
+                    <h2 class="mb-2"><%= product[0].name%></h2>
                 </div>
                 <div class="product-price">
-                    <h2><b>20 610 dram</b></h2>
+                    <h2><b><%=product[0].price%> dram</b></h2>
                 </div>
                 <div class="product-size">
                     <h5>Size</h5>
@@ -55,9 +56,11 @@
                     </div>
                 </div>
                 <div class="col-8 my-3 p-0">
-                    <button class="btn btn-green-gradient">ADD TO CART</button>
+                    <button value="<%=product[0]._id%>"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                        ADD TO CART</button>
                 </div>
             </div>
+            <%}%>
         </div>
     </div>
 
@@ -88,6 +91,7 @@
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
+<script src ='js/shop.js'></script>
 
 </body>
 </html>

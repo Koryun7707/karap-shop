@@ -1,3 +1,26 @@
+function addToCard(id){
+    let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
+    shoppingCard++;
+    let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
+    console.log(Cardlocal);
+    if(Cardlocal){
+        if(Cardlocal.includes(id.value)){
+            alert('Sorry but product is already added');
+        }else{
+            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+            Cardlocal.push(id.value);
+            Cardlocal= JSON.stringify(Cardlocal);
+            localStorage.setItem('shoppingCard',Cardlocal);
+        }
+
+    }else{
+        document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+        let array = [];
+        array.push(id.value);
+        array= JSON.stringify(array);
+        localStorage.setItem('shoppingCard',array);
+    }
+}
 $(document).ready(function () {
     let searchValue;
     var typingTimer;                //timer identifier
@@ -17,11 +40,13 @@ $(document).ready(function () {
 
     //when shop page render first time called ==>
     function getProductByPagination() {
+
         $.ajax({
             type: 'post',
             url: '/shop-filter',
             data: {page: 1},
             success: (response) => {
+                console.log('first',response)
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
                     let paginatinPlace = document.getElementById('pagination-place');
@@ -60,16 +85,19 @@ $(document).ready(function () {
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
-                                    <a href="/product">
+                                    <a href="/product?_id=${item._id}">
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <a href="#" class="btn btn-green-gradient py-3">AD TO CART</a>
+                                    
+                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                        ADD TO CART</button>                 
                                 </div>
                             `
                         ;
+
                         filterDiv.append(newDiv);
                     })
                 } else {
@@ -163,14 +191,15 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
-                                <div class="card shop-card">
-                                    <a href="/product">
+                                  <div class="card shop-card">
+                                    <a href="/product?_id=${item._id}">
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <a href="#" class="btn btn-green-gradient py-3">AD TO CART</a>
+                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                        ADD TO CART</button>  
                                 </div>
                             `
                         ;
@@ -316,14 +345,15 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
-                                <div class="card shop-card">
-                                    <a href="/product">
+                                  <div class="card shop-card">
+                                    <a href="/product?_id=${item._id}">
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <a href="#" class="btn btn-green-gradient py-3">AD TO CART</a>
+                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                        ADD TO CART</button>  
                                 </div>
                             `
                         ;
@@ -448,14 +478,15 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
-                                <div class="card shop-card">
-                                    <a href="/product">
+                                   <div class="card shop-card">
+                                    <a href="/product?_id=${item._id}">
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <a href="#" class="btn btn-green-gradient py-3">AD TO CART</a>
+                                    <button value="${item._id}"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                        ADD TO CART</button>  
                                 </div>
                             `
                         ;
