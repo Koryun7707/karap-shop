@@ -128,9 +128,10 @@ const getProductsShopFilter = async (req, res) => {
             page: page,
             limit: limit,
         }
-        const types = req.body['types[]'] || [];
-        const brandIds = req.body['brandIds[]'] || [];
-        const searchValue = req.body.searchValue;
+        console.log(req.body,777);
+        const types = req.body['types[]'] || req.body.type ||  [];
+        const brandIds = req.body['brandIds[]'] || req.body.brandId || [];
+        const searchValue = req.body.searchValue || '';
         let data;
         if (!brandIds.length && !types.length && searchValue === undefined) {
             data = await Product.paginate({language: req.session.language}, options);

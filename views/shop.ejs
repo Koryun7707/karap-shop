@@ -14,18 +14,23 @@
                     <form action="#">
                         <div class="sidebar-title"><%= staticData.shop_product_page %></div>
                         <div class="scrollbar shop-page-scroll">
-                            <div class="force-overflow">
+                            <div class="force-overflow" id="productType" value=<%=type%>>
                                 <ul class="list-unstyled px-4 mb-5">
-                                    <form action="">
+                                    <form action="" >
 
                                         <% if(productsType.length){ %>
                                             <% productsType.forEach(function(item){ %>
 
                                                 <li class="form-group">
-                                                    <input type="checkbox" id="<%= item.type %>" value=<%= item.type %>>
-                                                    <label for="<%= item.type %>"
-                                                           class="clothing-icon"><%= item.type %></label>
-
+                                                    <%if(item.type === type){%>
+                                                        <input checked  type="checkbox" id="<%= item.type %>" value=<%= item.type %>>
+                                                        <label for="<%= item.type %>"
+                                                               class="clothing-icon"><%= item.type %></label>
+                                                    <%}else{%>
+                                                            <input   type="checkbox" id="<%= item.type %>" value=<%= item.type %>>
+                                                            <label for="<%= item.type %>"
+                                                                   class="clothing-icon"><%= item.type %></label>
+                                                    <%}%>
                                                 </li>
                                             <% }) %>
                                         <% } %>
@@ -70,8 +75,13 @@
                                     <% if(brands.length){ %>
                                         <% brands.forEach(function(item){ %>
                                             <div class="form-group">
-                                                <input type="checkbox" id=<%= item.name %> value="<%= item._id %>">
-                                                <label for="<%= item.name %>"><%= item.name %></label>
+                                                <%if(brandId === item._id.toString()){%>
+                                                    <input checked type="checkbox" id=<%= item.name %> value="<%= item._id %>">
+                                                    <label for="<%= item.name %>"><%= item.name %></label>
+                                                <%}else{%>
+                                                        <input type="checkbox" id=<%= item.name %> value="<%= item._id %>">
+                                                        <label for="<%= item.name %>"><%= item.name %></label>
+                                                <%}%>
                                             </div>
                                         <% }) %>
                                     <% } %>

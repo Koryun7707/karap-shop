@@ -18,6 +18,7 @@ const Brand = require('../models/brands');
 const Product = require('../models/product');
 const User = require('../models/user')
 const {logger} = require('../utils/logger')
+const http = require('http');
 
 var staticData = data[0];
 const chooseLanguage = (selectLang) => {
@@ -46,7 +47,7 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
-            const products = await Product.find({language: req.session.language}).select('images name').exec();
+            const products = await Product.find({language: req.session.language}).select('images name type').exec();
             const countOfBrands = await Brand.find({language: req.session.language}).exec();
             res.render('index', {
                 URL: '/',
@@ -90,17 +91,16 @@ module.exports = {
         });
     },//done
     getShopPage: async (req, res) => {
-        console.log('Start shop get')
+        logger.info('Start Shop get - - -');
         if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
-        console.log(req.session.language)
         try {
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
             const productsType = await Product.find({language: req.session.language}).select('type -_id').exec();
-            const allProducts = await Product.find({language: req.session.language}).select('images name').lean().exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
-            console.log(productsType)
+            const type = req.query.type || null;
+            const brandId = req.query.brandId || null;
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -108,7 +108,8 @@ module.exports = {
                 pageData: pageData,
                 productsType: productsType,
                 brands: brands,
-                pages: allProducts.length
+                type:type,
+                brandId:brandId,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)

@@ -51,14 +51,23 @@ $(document).ready(function () {
     $input.on('keydown', function () {
         clearTimeout(typingTimer);
     });
-
+    //location href
+    function gup( name, url ) {
+        if (!url) url = location.href;
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( regexS );
+        var results = regex.exec( url );
+        return results == null ? null : results[1];
+    }
     //when shop page render first time called ==>
     function getProductByPagination() {
-
+        const type = gup('type',location.href);
+        const brandId = gup('brandId',location.href);
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1},
+            data: {page: 1,type:type,brandId:brandId},
             success: (response) => {
                 console.log('first',response)
                 if (response.results.pageCount > 0) {
@@ -204,6 +213,7 @@ $(document).ready(function () {
                 if (response.results.data.length) {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
+                        filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
@@ -224,7 +234,7 @@ $(document).ready(function () {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
                             <h1>No Found Data</h1>`
-                    filterDiv.append(newDiv);
+
                 }
             },
             error: function (data) {
@@ -358,6 +368,7 @@ $(document).ready(function () {
                 if (response.results.data.length) {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
+                        filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
@@ -372,7 +383,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        filterDiv.append(newDiv);
+
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -491,6 +502,7 @@ $(document).ready(function () {
                 if (response.results.data.length) {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
+                        filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                    <div class="card shop-card">
@@ -505,7 +517,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        filterDiv.append(newDiv);
+
                     })
                 } else {
                     let newDiv = document.createElement('div');

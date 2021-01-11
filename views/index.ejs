@@ -36,7 +36,7 @@
                                     <div class="img-area">
                                         <img class="card-img-top" src=<%= item.images[0] %> id='' alt="Card image cap">
                                     </div>
-                                    <a href="#" class="btn btn-green-gradient"><%= item.name %></a>
+                                    <a href="/shop?type=<%=item.type%>" class="btn btn-green-gradient"><%= item.name %></a>
                                 </div>
                             </div>
                         <% }) %>
@@ -145,7 +145,8 @@
                     let brandsRenderPlace = document.getElementById('brands-render-place');
                     let div = document.createElement('div');
                     div.setAttribute('class', 'col-6 col-md-4 col-lg-3 overflow-hidden');
-                    div.innerHTML = `  <a href="/shop" class="home-card-pagination">
+
+                    div.innerHTML = `  <a href="/shop?brandId=${item._id}" class="home-card-pagination">
                            <img src=${item.images[1]} alt="pic"/>
                            <div class="home-card-pagination-title">${item.name}</div>
                        </a>`;
@@ -230,7 +231,7 @@
                     let brandsRenderPlace = document.getElementById('brands-render-place');
                     let div = document.createElement('div');
                     div.setAttribute('class', 'col-6 col-md-4 col-lg-3 overflow-hidden');
-                    div.innerHTML = `  <a href="/shop" class="home-card-pagination">
+                    div.innerHTML = `  <a href="/shop?brandId=${item._id}" class="home-card-pagination">
                            <img src=${item.images[1]} alt="pic"/>
                            <div class="home-card-pagination-title">${item.name}</div>
                        </a>`;
