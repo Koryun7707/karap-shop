@@ -204,11 +204,25 @@ const getProductsShopFilter = async (req, res) => {
     }
 
 }
-
+const getProductById = async (req,res)=>{
+    logger.info('Get Product By Id - - -');
+    try{
+        const ids = req.body['shoppingCard[]'];
+        console.log(ids);
+        const products = await Product.find({_id:{"$in":ids}}).lean().exec();
+        console.log(products);
+        return res.status(200).json(success('Products Data Shopping Card!',
+            products, res.statusCode));
+    }catch(e){
+        logger.error(`Get Product by Id: ${e}`);
+        return res.status(500).json(err(e.message,res.statusCode));
+    }
+}
 module.exports = {
     createProduct: createProduct,
     deleteProduct: deleteProduct,
     updateProduct: updateProduct,
     getProducts: getProducts,
     getProductsShopFilter: getProductsShopFilter,
+    getProductById:getProductById,
 };

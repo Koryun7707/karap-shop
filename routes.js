@@ -10,7 +10,8 @@ const {
     deleteProduct,
     updateProduct,
     getProducts,
-    getProductsShopFilter
+    getProductsShopFilter,
+    getProductById
 } = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand, getBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
@@ -82,6 +83,7 @@ router.post('/product', checkIsAuthenticated, isAdmin, upload.array('productImag
 router.delete('/product/:id', deleteProduct);
 router.put('/product', updateProduct);
 router.get('/products', getProducts);
+router.post('/product-by-id',getProductById);
 
 
 //Pages
