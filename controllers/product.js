@@ -132,67 +132,38 @@ const getProductsShopFilter = async (req, res) => {
         const types = req.body['types[]'] || req.body.type ||  [];
         const brandIds = req.body['brandIds[]'] || req.body.brandId || [];
         const searchValue = req.body.searchValue || '';
+        const onSale = req.body.onSale ? true : false;
+        const search = {
+            $and: [
+                {
+                    '$or': [
+                        {'name': {'$regex': searchValue, "$options": "i"}},
+                    ]
+                }
+                , {language: req.session.language}
+            ]
+        };
+        if(onSale) {
+            search['$and'].push({sale: {$exists: true}});
+        }
         let data;
         if (!brandIds.length && !types.length && searchValue === undefined) {
             data = await Product.paginate({language: req.session.language}, options);
         } else if (brandIds.length > 0 && types.length > 0) {
-            const search = {
-                $and: [
-                    {
-                        '$or': [
-                            {'name': {'$regex': searchValue, "$options": "i"}},
-                        ]
-                    }
-                    , {language: req.session.language}
-                    , {
-                        type: {"$in": types}
-                        , brandId: {"$in": brandIds}
-                    }
-                ]
-            };
+            search['$and'].push({brandId: {"$in": brandIds}});
+            search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
-            // await Product.find(search).select('images name');
         } else if (brandIds.length > 0) {
-            const search = {
-                $and: [
-                    {
-                        '$or': [
-                            {'name': {'$regex': searchValue, "$options": "i"}},
-                        ]
-                    }
-                    , {language: req.session.language}
-                    , {brandId: {"$in": brandIds}},
-                ]
-            };
+            search['$and'].push({brandId: {"$in": brandIds}});
             data = await Product.paginate(search, options);
-
         } else if (types.length > 0) {
-            const search = {
-                $and: [
-                    {
-                        '$or': [
-                            {'name': {'$regex': searchValue, "$options": "i"}},
-                        ]
-                    }
-                    , {language: req.session.language}
-                    , {type: {"$in": types}},
-                ]
-            };
+            search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
 
         } else {
-            const search = {
-                $and: [
-                    {
-                        '$or': [
-                            {'name': {'$regex': searchValue, "$options": "i"}},
-                        ]
-                    }
-                    , {language: req.session.language},
-                ]
-            };
             data = await Product.paginate(search, options);
         }
+        console.log(data);
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,

@@ -421,10 +421,13 @@ $(document).ready(function () {
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             var brandId = [];
+            var onSale;
             $.each($('input:checked'), function (index, input) {
                 if (input.value.length > 20) {
                     brandId.push(input.value);
-                } else {
+                } else if(input.value === 'on') {
+                    onSale = input.value;
+                }else {
                     values.push(input.value);
                 }
             });
@@ -433,7 +436,7 @@ $(document).ready(function () {
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {types: values, brandIds: brandId, searchValue: searchValue, page: pageNumber},
+            data: {types: values, brandIds: brandId, searchValue: searchValue,onSale:onSale, page: pageNumber},
             success: (response) => {
                 $("#pagination-place").empty();
                 if (response.results.pageCount > 0) {
@@ -533,4 +536,5 @@ $(document).ready(function () {
         })
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
+    $("amount").on("change", function(){console.log(this.value)});
 })

@@ -62,7 +62,7 @@
                             </div>
                             <div class="price-range-slider">
                                 <p class="range-value">
-                                    <input type="text" id="amount" readonly/>
+                                    <input  type="text" id="amount"  readonly/>
                                 </p>
                                 <div id="slider-range" class="range-bar"></div>
                             </div>
@@ -113,8 +113,8 @@
         $("#slider-range").slider({
             range: true,
             min: 0,
-            max: 500,
-            values: [75, 300],
+            max: 50000,
+            values: [0, 50000],
             slide: function (event, ui) {
                 $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
             }
