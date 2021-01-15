@@ -11,7 +11,8 @@ const {
     updateProduct,
     getProducts,
     getProductsShopFilter,
-    getProductById
+    getProductById,
+    getDataSearch
 } = require('./controllers/product')
 const {createBrand, deleteBrand, updateBrand, getBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
@@ -98,6 +99,9 @@ router.get('/product', pagesController.getProduct);
 
 //shop Filter
 router.post('/shop-filter', getProductsShopFilter);
+
+//search
+router.post('/search',getDataSearch);
 
 //admin
 router.get('/admin-home', checkIsAuthenticated, isAdmin, pagesController.getAdminHomePage);

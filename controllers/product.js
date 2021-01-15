@@ -6,6 +6,7 @@ const {logger} = require('../utils/logger');
 const {validateProduct} = require('../validations/product')
 const {success, validation, err} = require('../utils/responseApi');
 const {moveFile} = require('../utils/helper');
+const Brand = require('../models/brands')
 
 const createProduct = async (req, res) => {
     logger.info('Start createProduct - - -');
@@ -189,6 +190,31 @@ const getProductById = async (req,res)=>{
         return res.status(500).json(err(e.message,res.statusCode));
     }
 }
+const getDataSearch = async (req,res) =>{
+    logger.info(`Get Data Search  - - - `);
+        const {search} = req.body;
+        const searchFilter = {
+            $and: [
+                {
+                    '$or': [
+                        {'name': {'$regex': search, "$options": "i"}},
+                    ]
+                }
+                , {language: req.session.language}
+            ]
+        };
+        Promise.all([
+            Product.find(searchFilter).select('name').lean(),
+            Brand.find(searchFilter).select('name')
+        ]).then(([products,brands])=>{
+            return res.status(200).json(success('Get Data Search!',
+                {products:products,brands:brands}, res.statusCode));
+        })
+            .catch((e)=>{
+        logger.error(`Get Data Search Error: ${e}`);
+        return res.json(500).json(err(e.message,res.statusCode));
+    })
+}
 module.exports = {
     createProduct: createProduct,
     deleteProduct: deleteProduct,
@@ -196,4 +222,5 @@ module.exports = {
     getProducts: getProducts,
     getProductsShopFilter: getProductsShopFilter,
     getProductById:getProductById,
+    getDataSearch:getDataSearch
 };

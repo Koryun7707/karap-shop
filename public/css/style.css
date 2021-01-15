@@ -15,6 +15,13 @@ body {
     font-family: 'MYRIADPRO-REGULAR', sans-serif;
     background-color: #f3f3f3;
 }
+#search-div{
+    background: white;
+   color: #2b2b2b;
+    position: relative;
+    margin-top: 100px;
+
+}
 .header-bg {
     background: linear-gradient(90deg, #033d29, #097814);
     min-height: 100px;
