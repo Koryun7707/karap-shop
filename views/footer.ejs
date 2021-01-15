@@ -94,7 +94,7 @@
         <div class="text-center position-relative mt-2 mt-md-5">
             <p class="mb-0">copyrighter 2020</p>
             <div class="abs">
-                <a href="<%= URL %>">
+                <a class="scrollup" style="cursor: pointer">
                     <img src="images/buttonUp.png" alt="button" title="button">
                 </a>
             </div>
@@ -108,6 +108,12 @@
             $(".modal-backdrop.fade").removeClass('show');
             $("this").addClass('show');
         });
+        $('.scrollup').click(function() {
+            // переместиться в верхнюю часть страницы
+            $("html, body").animate({
+                scrollTop:0
+            },1000);
+        })
     })
     $('#closemodal').click(function () {
         $('#loginModal').modal('hide');
