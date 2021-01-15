@@ -11,33 +11,22 @@ const {
     validateContactData,
     validateJoinOurTeamData
 } = require('../validations/pagesData');
-const {moveFile} = require('../utils/helper');
-const data = require('../configs/languages')
+const {moveFile, getStaticData} = require('../utils/helper');
 const PageData = require('../models/pagesData');
 const Brand = require('../models/brands');
 const Product = require('../models/product');
 const User = require('../models/user')
 const {logger} = require('../utils/logger')
-const http = require('http');
-
-var staticData = data[0];
-const chooseLanguage = (selectLang) => {
-    if (selectLang === 'eng') {
-        staticData = data[0]
-    } else if (selectLang === 'ru') {
-        staticData = data[1]
-    }
-};
 
 module.exports = {
-    changeLanguage: (req, res) => {
+    changeLanguage: async (req, res) => {
         console.log('Start changeLanguage');
-        chooseLanguage(req.body.language);
         req.session.language = req.body.language;
         res.end();
     },
     getUserDashboard: async (req, res, next) => {
         try {
+            // let staticData =
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
@@ -52,7 +41,7 @@ module.exports = {
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
-                staticData: staticData,
+                staticData: await getStaticData(req.session.language),
                 pageData: pageData,
                 products: products,
                 pages: countOfBrands.length
@@ -75,7 +64,7 @@ module.exports = {
             URL: '/about',
             user: req.session.user,
             pageData: pageData,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     getBlogPage: async (req, res) => {
@@ -86,7 +75,7 @@ module.exports = {
         res.render('blog', {
             URL: '/blog',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
             brands: brands,
         });
     },//done
@@ -95,8 +84,10 @@ module.exports = {
         if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
+        console.log('shop lang', req.session.language);
         try {
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
+            console.log(pageData);
             const productsType = await Product.find({language: req.session.language}).select('type -_id').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             const type = req.query.type || null;
@@ -104,12 +95,12 @@ module.exports = {
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
-                staticData: staticData,
+                staticData: await getStaticData(req.session.language),
                 pageData: pageData,
                 productsType: productsType,
                 brands: brands,
-                type:type,
-                brandId:brandId,
+                type: type,
+                brandId: brandId,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)
@@ -117,26 +108,26 @@ module.exports = {
             return res.redirect("/");
         }
     },
-    getSelectedProducts: (req, res) => {
+    getSelectedProducts: async (req, res) => {
         res.render('selectedProducts', {
             URL: '/selectedProducts',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
-    getProduct:async (req, res) => {
+    getProduct: async (req, res) => {
         logger.info('Start get Product - - -');
-        try{
+        try {
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
             console.log(product)
             res.render('product', {
                 URL: '/product',
                 user: req.session.user,
-                product:product,
-                staticData: staticData,
+                product: product,
+                staticData: await getStaticData(req.session.language),
             });
-        }catch(e){
+        } catch (e) {
             console.log(e)
             req.flash("error_msg", e.message);
             return res.redirect("/shop");
@@ -158,7 +149,7 @@ module.exports = {
                 URL: '/brand',
                 user: req.session.user,
                 pageData: pageData,
-                staticData: staticData,
+                staticData: await getStaticData(req.session.language),
                 brands: brands,
                 pages: brands.length
             });
@@ -180,7 +171,7 @@ module.exports = {
         res.render('contactUs', {
             URL: '/contact',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
             pageData: pageData,
         });
     },
@@ -198,7 +189,7 @@ module.exports = {
             res.render('joinOurTeam', {
                 URL: '/joinOurTeam',
                 user: req.session.user,
-                staticData: staticData,
+                staticData: await getStaticData(req.session.language),
                 pageData: pageData,
             });
         } catch (err) {
@@ -208,11 +199,11 @@ module.exports = {
         }
     },
     //start admin pages ->
-    getAdminHomePage: (req, res) => {
+    getAdminHomePage: async (req, res) => {
         res.render('admin/home', {
             URL: '/admin-home',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },//done
     postAdminHomePage: async (req, res) => {
@@ -300,16 +291,16 @@ module.exports = {
             return res.status(500).json(err(e.message, res.statusCode));
         }
     },//done
-    getSignUpPage: (req, res) => {
+    getSignUpPage: async (req, res) => {
         res.render('signup', {
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
-    getLogInPage: (req, res) => {
+    getLogInPage: async (req, res) => {
         res.render('login', {
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     userLogOut: async (req, res, next) => {
@@ -330,11 +321,11 @@ module.exports = {
             console.log('userLogOut :' + e.stack);
         }
     },
-    getAdminShopPage: (req, res) => {
+    getAdminShopPage: async (req, res) => {
         res.render('admin/shop', {
             URL: '/admin-shop',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     postAdminShopPage: async (req, res) => {
@@ -412,11 +403,11 @@ module.exports = {
             return res.status(500).json(err(e.message, res.statusCode));
         }
     },//+
-    getAdminBrandPage: (req, res) => {
+    getAdminBrandPage: async (req, res) => {
         res.render('admin/brands', {
             URL: '/admin-brand',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     postAdminBrandPage: async (req, res) => {
@@ -502,18 +493,18 @@ module.exports = {
             return res.status(500).json(err(e.message, res.statusCode));
         }
     },//+
-    getAdminBlogPage: (req, res) => {
+    getAdminBlogPage: async (req, res) => {
         res.render('admin/brands', {
             URL: '/admin-blog', user:
             req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
-    getAdminAboutPage: (req, res) => {
+    getAdminAboutPage: async (req, res) => {
         res.render('admin/aboutUs', {
             URL: '/admin-about',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     postAdminAboutPage: async (req, res) => {
@@ -609,11 +600,11 @@ module.exports = {
             return res.status(500).json(err(e.message, res.statusCode));
         }
     },//done
-    getAdminContactPage: (req, res) => {
+    getAdminContactPage: async (req, res) => {
         res.render('admin/contactUs', {
             URL: '/admin-contact',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     postAdminContactPage: async (req, res) => {
@@ -706,11 +697,11 @@ module.exports = {
             return res.status(500).json(err(e.message, res.statusCode));
         }
     },//done
-    getAdminJoinOurTeamPage: (req, res) => {
+    getAdminJoinOurTeamPage: async (req, res) => {
         res.render('admin/joinOurTeam', {
             URL: '/admin-join-our-team',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     postAdminJoinOurTeamPage: async (req, res) => {
@@ -830,11 +821,11 @@ module.exports = {
             return res.status(500).json(err(e.message, res.statusCode));
         }
     },//done
-    getAdminAddBrandPage: (req, res) => {
+    getAdminAddBrandPage: async (req, res) => {
         res.render('admin/addBrand', {
             URL: '/admin-create-brand',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
     getAdminAddProductPage: async (req, res) => {
@@ -844,25 +835,25 @@ module.exports = {
                 URL: 'admin-create-product',
                 user: req.session.user,
                 brands: brands,
-                staticData: staticData,
+                staticData: await getStaticData(req.session.language),
             });
         } catch (e) {
             return res.status(500).json(err(e.message, res.statusCode));
         }
 
     },
-    getAdminOurBrandsPage: (req, res) => {
+    getAdminOurBrandsPage: async (req, res) => {
         res.render('admin/ourBrands', {
             URL: '/admin-all-brands',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
-    getAdminOurProductsPage: (req, res) => {
+    getAdminOurProductsPage: async (req, res) => {
         res.render('admin/ourProducts', {
             URL: '/admin-all-products',
             user: req.session.user,
-            staticData: staticData,
+            staticData: await getStaticData(req.session.language),
         });
     },
 };

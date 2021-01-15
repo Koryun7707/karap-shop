@@ -100,7 +100,7 @@
                                     <input id="search-input" type="text" class="search-input" data-ic-class="search-input"
                                            placeholder="Search"/>
                                     <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
-                                    <div id ='search-div' >
+                                    <div id ='search-div' data-ic-class="search-div">
 
                                     </div>
                                 </div>
@@ -167,6 +167,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
         crossorigin="anonymous"></script>
 <script>
+
     $(function () {
         document.getElementById('example').addEventListener('change', function () {
             console.log('You selected: ', this.value);
@@ -217,15 +218,17 @@
                     if(brands.length){
                         brands.forEach(function(item){
                             let a= document.createElement(`a`);
-                            a.innerHTML = `${item.name}`;
+                            a.href = `shop?brandId=${item._id}`
+                            a.innerHTML = `${item.name} <br/>`;
                             div.append(a);
                         })
                     }
                     if(products.length){
                         products.forEach(function(item){
-                            let p = document.createElement(`p`);
-                            p.innerHTML = `${item.name}`;
-                            div.append(p);
+                            let a = document.createElement(`a`);
+                            a.href = `shop?type=${item.type}`
+                            a.innerHTML = `${item.name}  <br/>`;
+                            div.append(a);
                         })
                     }
 

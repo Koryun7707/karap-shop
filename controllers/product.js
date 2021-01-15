@@ -129,7 +129,7 @@ const getProductsShopFilter = async (req, res) => {
             page: page,
             limit: limit,
         }
-        console.log(req.body,777);
+        // console.log(req.body,777);
         const types = req.body['types[]'] || req.body.type ||  [];
         const brandIds = req.body['brandIds[]'] || req.body.brandId || [];
         const searchValue = req.body.searchValue || '';
@@ -138,7 +138,7 @@ const getProductsShopFilter = async (req, res) => {
             $and: [
                 {
                     '$or': [
-                        {'name': {'$regex': searchValue, "$options": "i"}},
+                        {'name': {'$regex': `^${searchValue}`, "$options": "i"}},
                     ]
                 }
                 , {language: req.session.language}
@@ -164,7 +164,7 @@ const getProductsShopFilter = async (req, res) => {
         } else {
             data = await Product.paginate(search, options);
         }
-        console.log(data);
+        // console.log(data);
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,
@@ -197,14 +197,14 @@ const getDataSearch = async (req,res) =>{
             $and: [
                 {
                     '$or': [
-                        {'name': {'$regex': search, "$options": "i"}},
+                        {'name': {'$regex': `^${search}`, "$options": "i"}},
                     ]
                 }
                 , {language: req.session.language}
             ]
         };
         Promise.all([
-            Product.find(searchFilter).select('name').lean(),
+            Product.find(searchFilter).select('name type').lean(),
             Brand.find(searchFilter).select('name')
         ]).then(([products,brands])=>{
             return res.status(200).json(success('Get Data Search!',

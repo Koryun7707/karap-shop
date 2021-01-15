@@ -32,6 +32,7 @@ $(document).ready(function () {
 
     $searchInput.focus(function () {
         $searchTrigger.addClass('active');
+
     });
 
     var minVal = 1, maxVal = 20; // Set Max and Min values

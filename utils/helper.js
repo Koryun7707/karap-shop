@@ -2,6 +2,7 @@ const fs = require('fs');
 const pathMiddleware = require('path');
 const {ROLE_TYPES} = require('../configs/constants');
 const {validation} = require('../utils/responseApi');
+const data = require('../configs/languages')
 
 const moveFile = (files, dir) => {
     const array = [];
@@ -30,8 +31,19 @@ const generateAvatar = (firstName, lastName) => {
     return `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=random&color=fff`
 };
 
+const getStaticData = (selectLang) => {
+    let staticData;
+    if (selectLang === 'eng') {
+        staticData = data[0]
+    } else if (selectLang === 'ru') {
+        staticData = data[1]
+    }
+    return staticData;
+}
+
 module.exports = {
     generateAvatar: generateAvatar,
     isAdmin: isAdmin,
     moveFile: moveFile,
+    getStaticData: getStaticData,
 };
