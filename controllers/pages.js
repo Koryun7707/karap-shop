@@ -84,10 +84,10 @@ module.exports = {
         if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
-        console.log('shop lang', req.session.language);
+        // console.log('shop lang', req.session.language);
         try {
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
-            console.log(pageData);
+            // console.log(pageData);
             const productsType = await Product.find({language: req.session.language}).select('type -_id').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             const type = req.query.type || null;
@@ -120,7 +120,7 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
-            console.log(product)
+            // console.log(product)
             res.render('product', {
                 URL: '/product',
                 user: req.session.user,

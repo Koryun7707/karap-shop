@@ -1,66 +1,83 @@
 <%- include ('header') -%>
-<main  style="padding-top: 100px" class="product-section">
+<main style="padding-top: 100px" class="product-section">
     <div class="container my-5">
         <div class="row">
-            <%if(product.length){%>
-            <div class="col-7">
-                <div class="row">
-                    <div class="col-2">
-                        <div class="mb-2 small-images">
-                            <img src="<%= product[0].images[3]%>" alt="" class="w-100">
+            <% if(product.length){ %>
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="mb-2 small-images">
+                                <img src="<%= product[0].images[1] %>" alt="" class="w-100">
+                            </div>
+                            <div class="mb-2 small-images">
+                                <img src="<%= product[0].images[2] %>" alt="" class="w-100">
+                            </div>
+                            <div class="mb-2 small-images">
+                                <img src="<%= product[0].images[3] %>" alt="" class="w-100">
+                            </div>
                         </div>
-                        <div class="mb-2 small-images">
-                            <img src="<%= product[0].images[1]%>" alt="" class="w-100">
-                        </div>
-                        <div class="mb-2 small-images">
-                            <img src="<%= product[0].images[2]%>" alt="" class="w-100">
+                        <div class="col-10">
+                            <img src="<%= product[0].images[0] %>" alt="" class="w-100">
                         </div>
                     </div>
-                    <div class="col-10">
-                        <img src="<%= product[0].images[0]%>" alt="" class="w-100">
+                </div>
+                <div class="col-5">
+                    <div class="product-name">
+                        <h2 class="mb-2"><%= product[0].name %></h2>
+                    </div>
+                    <div class="product-price" id="productPrice" value="<%= product[0].price %>">
+                        <h5>Price</h5>
+                        <h2><b id="pricePlace"><%= product[0].price %> $</b></h2>
+                    </div>
+                    <% if(product[0].sale){ %>
+                        <div class="product-price">
+                            <h5>Sale <%= product[0].sale %> %</h5>
+                        </div>
+                    <% } %>
+                    <div class="product-size">
+                        <h5>Size</h5>
+                        <ul class="list-unstyled d-flex" id="productSizesDiv" value=<%= product[0].sizes %>>
+                            <% if(product[0].sizes){ %>
+                                <% product[0].sizes.forEach(function(item, index){ %>
+                                    <% if(index === 0){ %>
+                                        <li class="mr-2 active" id="<%= item %> "
+                                            onclick="handleSize()"><%= item %></li>
+                                    <% } else { %>
+                                        <li class="mr-2" id="<%= item %>" onclick="handleSize()"><%= item %></li>
+
+                                    <% } %>
+                                <% }) %>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
+                        <h5>Color</h5>
+                        <ul class="list-unstyled d-flex">
+                            <% if(product[0].colors){ %>
+                                <% product[0].colors.forEach(function(item, index){ %>
+                                    <li class="mr-2" style="background-color: <%= item %>"
+                                        value="<%= index %>" onclick="handleColor(this)"> <%= item %></li>
+                                <% }) %>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <div class="product-count">
+                        <h5>Count of product</h5>
+                        <div class="qtySelector text-center">
+                            <i class="fa fa-minus decreaseQty" id="'fa-minus" onclick="countPrice(this)"></i>
+                            <input type="text" id="qtyValueProduct" class="qtyValue" value="1"/>
+                            <i class="fa fa-plus increaseQty" id="fa-plus" onclick="countPrice(this)"></i>
+                        </div>
+                    </div>
+                    <div class="col-8 my-3 p-0">
+                        <button value="<%= product[0]._id %>" id="addToCardButton"
+                                class="btn btn-green-gradient py-3"
+                                onclick="addToCard(this)">
+                            ADD TO CART
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div class="col-5">
-                <div class="product-name">
-                    <h2 class="mb-2"><%= product[0].name%></h2>
-                </div>
-                <div class="product-price">
-                    <h2><b><%=product[0].price%> dram</b></h2>
-                </div>
-                <div class="product-size">
-                    <h5>Size</h5>
-                    <ul class="list-unstyled d-flex">
-                        <li class="mr-2">xs</li>
-                        <li class="mr-2">s</li>
-                        <li class="mr-2">m</li>
-                        <li class="mr-2">l</li>
-                        <li class="mr-2">xl</li>
-                    </ul>
-                </div>
-                <div class="product-color">
-                    <h5>Color</h5>
-                    <ul class="list-unstyled d-flex">
-                        <li class="mr-2">black</li>
-                        <li class="mr-2">green</li>
-                        <li class="mr-2">yellow</li>
-                        <li class="mr-2">white</li>
-                    </ul>
-                </div>
-                <div class="product-count">
-                    <h5>Qount of product</h5>
-                    <div class="qtySelector text-center">
-                        <i class="fa fa-minus decreaseQty"></i>
-                        <input type="text" class="qtyValue" value="1" />
-                        <i class="fa fa-plus increaseQty"></i>
-                    </div>
-                </div>
-                <div class="col-8 my-3 p-0">
-                    <button value="<%=product[0]._id%>" id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
-                        ADD TO CART</button>
-                </div>
-            </div>
-            <%}%>
+            <% } %>
         </div>
     </div>
 
@@ -68,30 +85,28 @@
 <%- include ('footer') -%>
 
 
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-    $( function() {
-        $( "#slider-range" ).slider({
+    $(function () {
+        $("#slider-range").slider({
             range: true,
             min: 0,
             max: 500,
-            values: [ 75, 300 ],
-            slide: function( event, ui ) {
-                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            values: [75, 300],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
             }
         });
-        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-            " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-    } );
+        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+            " - $" + $("#slider-range").slider("values", 1));
+    });
 </script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
-<script src ='js/shop.js'></script>
+<script src='js/shop.js'></script>
 
 </body>
 </html>

@@ -43,9 +43,9 @@ const createProduct = async (req, res) => {
             name: value.productName,
             type: value.productType,
             price: value.productPrice,
-            size: value.productSize,
+            sizes: value.productSize.split('/'),
             sale: value.productSale,
-            color: value.productColor,
+            colors: value.productColor.split('/'),
             count: value.productCount,
             language: value.language,
         });
@@ -130,7 +130,7 @@ const getProductsShopFilter = async (req, res) => {
             limit: limit,
         }
         // console.log(req.body,777);
-        const types = req.body['types[]'] || req.body.type ||  [];
+        const types = req.body['types[]'] || req.body.type || [];
         const brandIds = req.body['brandIds[]'] || req.body.brandId || [];
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
@@ -144,7 +144,7 @@ const getProductsShopFilter = async (req, res) => {
                 , {language: req.session.language}
             ]
         };
-        if(onSale) {
+        if (onSale) {
             search['$and'].push({sale: {$exists: true}});
         }
         let data;
@@ -176,51 +176,73 @@ const getProductsShopFilter = async (req, res) => {
     }
 
 }
-const getProductById = async (req,res)=>{
+
+const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
-    try{
-        const ids = req.body['shoppingCard[]'];
-        console.log(ids);
-        const products = await Product.find({_id:{"$in":ids}}).lean().exec();
-        console.log(products);
-        return res.status(200).json(success('Products Data Shopping Card!',
-            products, res.statusCode));
-    }catch(e){
+    try {
+        // console.log(req.body.productCount, req.body.productId);
+        if (req.body.productCount && req.body.productId) {
+            const product = await Product.findById(req.body.productId).exec();
+            // console.log('pr', product);
+            if (Number(product.count) >= Number(req.body.productCount)) {
+                return res.status(200).json(success('Product exists',
+                    [], res.statusCode));
+            } else {
+                let mes;
+                if (Number(product.count) === '0') {
+                    mes = 'Product not exists';
+                } else {
+                    mes = `Sorry now we have only ${product.count} product.`;
+                }
+                return res.send({message: mes, error: true});
+                // return res.status(500).json(err(mes, res.statusCode));
+            }
+        } else {
+            const ids = req.body['shoppingCard[]'];
+            // console.log(ids);
+            const products = await Product.find({_id: {"$in": ids}}).lean().exec();
+            // console.log(products);
+            return res.status(200).json(success('Products Data Shopping Card!',
+                products, res.statusCode));
+        }
+    } catch (e) {
         logger.error(`Get Product by Id: ${e}`);
-        return res.status(500).json(err(e.message,res.statusCode));
+        return res.status(500).json(err(e.message, res.statusCode));
     }
 }
-const getDataSearch = async (req,res) =>{
+
+const getDataSearch = async (req, res) => {
     logger.info(`Get Data Search  - - - `);
-        const {search} = req.body;
-        const searchFilter = {
-            $and: [
-                {
-                    '$or': [
-                        {'name': {'$regex': `^${search}`, "$options": "i"}},
-                    ]
-                }
-                , {language: req.session.language}
-            ]
-        };
-        Promise.all([
-            Product.find(searchFilter).select('name type').lean(),
-            Brand.find(searchFilter).select('name')
-        ]).then(([products,brands])=>{
-            return res.status(200).json(success('Get Data Search!',
-                {products:products,brands:brands}, res.statusCode));
-        })
-            .catch((e)=>{
-        logger.error(`Get Data Search Error: ${e}`);
-        return res.json(500).json(err(e.message,res.statusCode));
+    const {search} = req.body;
+    const searchFilter = {
+        $and: [
+            {
+                '$or': [
+                    {'name': {'$regex': `^${search}`, "$options": "i"}},
+                ]
+            }
+            , {language: req.session.language}
+        ]
+    };
+    Promise.all([
+        Product.find(searchFilter).select('name type').lean(),
+        Brand.find(searchFilter).select('name')
+    ]).then(([products, brands]) => {
+        return res.status(200).json(success('Get Data Search!',
+            {products: products, brands: brands}, res.statusCode));
     })
+        .catch((e) => {
+            logger.error(`Get Data Search Error: ${e}`);
+            return res.json(500).json(err(e.message, res.statusCode));
+        })
 }
+
 module.exports = {
     createProduct: createProduct,
     deleteProduct: deleteProduct,
     updateProduct: updateProduct,
     getProducts: getProducts,
     getProductsShopFilter: getProductsShopFilter,
-    getProductById:getProductById,
-    getDataSearch:getDataSearch
+    getProductById: getProductById,
+    getDataSearch: getDataSearch
 };

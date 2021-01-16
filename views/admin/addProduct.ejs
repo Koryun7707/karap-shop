@@ -1,14 +1,14 @@
 <%- include ('adminHeader') -%>
 <div class="row">
     <div class="col-8 offset-2">
-        <form method="post" enctype="multipart/form-data"  action="product" class="py-5">
+        <form method="post" enctype="multipart/form-data" action="product" class="py-5">
             <div class="row page-titles">Add product.</div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Choose brand.</label>
                 <select name="brandId">
-                    <% brands.forEach(function(item){%>
-                    <option  value="<%=item._id%>"><%=item.name%></option>
-                    <%}) %>
+                    <% brands.forEach(function(item){ %>
+                        <option value="<%= item._id %>"><%= item.name %></option>
+                    <% }) %>
                 </select>
             </div>
 
@@ -23,17 +23,18 @@
                        placeholder="Product name.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Color</label>
+                <label for="exampleInputEmail1">Color(*please enter product color only this format
+                    red/black/rose.)</label>
                 <input type="text" name="productColor" class="form-control" id="exampleInputEmail1"
                        placeholder="Product color.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Sale</label>
+                <label for="exampleInputEmail1">Sale(*must be a number.)</label>
                 <input type="text" name="productSale" class="form-control" id="exampleInputEmail1"
                        placeholder="Product sale.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Count</label>
+                <label for="exampleInputEmail1">Count(* count of product.)</label>
                 <input type="text" name="productCount" class="form-control" id="exampleInputEmail1"
                        placeholder="Product count.">
             </div>
@@ -43,19 +44,20 @@
                        placeholder="Product price.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Size</label>
+                <label for="exampleInputEmail1">Size(*please enter only in this format xs/s/m/l.)</label>
                 <input type="text" name="productSize" class="form-control" id="exampleInputEmail1"
                        placeholder="Product size.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Upload product images.</label>
+                <label for="exampleInputEmail1">Upload product images(*First must be choosen product type image, choosen
+                    images count must be 5).</label>
                 <input type="file" name="productImages" multiple="multiple" class="form-control"
                        id="uploadImagesBySize">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Language</label>
                 <select name="language">
-                    <option name="spain" value="spain" >Spain</option>
+                    <option name="spain" value="spain">Spain</option>
                     <option name="eng" value="eng" selected>Eng</option>
                     <option name="ru" value="ru">Ru</option>
                 </select>

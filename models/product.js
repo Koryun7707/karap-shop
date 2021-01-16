@@ -24,11 +24,11 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    size: {
-        type: String,
+    sizes: {
+        type: Array,
     },
-    color: {
-        type: String,
+    colors: {
+        type: Array,
     },
     sale: {
         type: String,
