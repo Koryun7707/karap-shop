@@ -856,4 +856,42 @@ module.exports = {
             staticData: await getStaticData(req.session.language),
         });
     },
+    editProduct :async (req,res) =>{
+        try{
+            const {_id} = req.query;
+            const product = await Product.find({_id:_id}).lean().exec();
+            console.log(product);
+            res.render('admin/editProduct',{
+                URL: '/admin-editProduct',
+                user: req.session.user,
+                product:product[0],
+                staticData: await getStaticData(req.session.language),
+            })
+        }
+        catch(e){
+            console.log(e)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    editBrand: async (req,res)=>{
+        logger.info('Start edit brand - - -');
+        try{
+            const {_id} = req.query;
+            console.log(_id)
+            const brand = await Brand.find({_id:_id}).lean().exec();
+            console.log(brand);
+            res.render('admin/editBrand',{
+                URL: '/admin-editBrand',
+                user: req.session.user,
+                brand:brand[0],
+                staticData: await getStaticData(req.session.language),
+            })
+        }
+        catch(e){
+            console.log(e)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    }
 };

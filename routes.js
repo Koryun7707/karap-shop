@@ -14,7 +14,7 @@ const {
     getProductById,
     getDataSearch
 } = require('./controllers/product')
-const {createBrand, deleteBrand, updateBrand, getBrands} = require('./controllers/brand')
+const {createBrand, deleteBrand, updateBrand, getBrands,getAllBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
 
@@ -78,6 +78,7 @@ router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages',
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
 router.put('/brand', checkIsAuthenticated, isAdmin, updateBrand);
 router.get('/brands', getBrands);
+router.get('/all-brands',getAllBrands)
 
 //Products
 router.post('/product', checkIsAuthenticated, isAdmin, upload.array('productImages', 5), createProduct);//+
@@ -120,5 +121,8 @@ router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, pagesController
 router.get('/admin-create-product', checkIsAuthenticated, isAdmin, pagesController.getAdminAddProductPage);
 router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, pagesController.getAdminOurBrandsPage);
 router.get('/admin-all-products', checkIsAuthenticated, isAdmin, pagesController.getAdminOurProductsPage);
+//edit
+router.get('/admin-editProduct',checkIsAuthenticated,isAdmin,pagesController.editProduct);
+router.get('/admin-editBrand',checkIsAuthenticated,isAdmin,pagesController.editBrand);
 
 module.exports = router;

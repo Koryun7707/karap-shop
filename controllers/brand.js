@@ -65,12 +65,12 @@ const createBrand = async (req, res) => {
 
 const deleteBrand = async (req, res) => {
     logger.info('Start deleteBrand - - -');
-    const params = req.params;
+    const {id} = req.params;
     try {
-        await Brand.findByIdAndRemove({_id: params.id}).lean();
-        return res.status(200).json({success: true, message: 'Delete User Completed'});
-    } catch (error) {
-        logger.error(`Brand Delete Error: ${error}`);
+        await Brand.findByIdAndRemove({_id: id}).lean();
+        return res.status(200).json({success: true, message: 'Delete Brand Completed'});
+    } catch (e) {
+        logger.error(`Brand Delete Error: ${e}`);
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
@@ -116,10 +116,23 @@ const getBrands = async (req, res, next) => {
         console.log(e);
     }
 }
+const getAllBrands = async (req,res) =>{
+    logger.info('Start Get All Brands - - -');
+    try{
+        const Brands = await Brand.find({language:req.session.language}).lean().exec();
+        console.log(Brands)
+        return res.status(200).json(success("success",Brands,res.statusCode));
+    }catch(e){
+        logger.error(`Brand Get All Error: ${e}`);
+        req.flash("error_msg", e.message);
+        return res.redirect("/");
+    }
+}
 
 module.exports = {
     createBrand: createBrand,
     deleteBrand: deleteBrand,
     updateBrand: updateBrand,
-    getBrands: getBrands
+    getBrands: getBrands,
+    getAllBrands:getAllBrands
 };

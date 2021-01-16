@@ -78,7 +78,7 @@ const deleteProduct = async (req, res) => {
         return res.status(200).json({success: true, message: 'Delete Product Completed'});
     } catch (error) {
         logger.error(`Product Delete Error: ${error}`);
-        return res.status(500).json(err(e.message, res.statusCode));
+        return res.status(500).json(err(error.message, res.statusCode));
     }
 }
 
@@ -106,7 +106,13 @@ const getProducts = async (req, res) => {
     logger.info('Start getProducts - - -');
     try {
         const {filterByType} = req.body;
-        const data = await Product.find({type: filterByType});
+        let data;
+        if(filterByType){
+             data = await Product.find({type: filterByType});
+        }
+        else {
+             data = await Product.find({language:req.session.language});
+        }
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
