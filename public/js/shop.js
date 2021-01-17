@@ -12,37 +12,6 @@ function countPrice(element) {
     }
 }
 
-function handleSize() {
-    const productSizes = document.getElementById('productSizesDiv').getAttribute('value').split(',');
-    document.getElementById(element.id).setAttribute('class', 'active');
-
-    for (let i = 0; i < productSizes.length; i++) {
-        if (productSizes[i] !== element.id) {
-            document.getElementById(`${productSizes[i]}`).removeClass('active');
-        }
-    }
-    // productSizes.forEach((item) => {
-    //     if (item === element.id) {
-    //         console.log(item);
-    //         document.getElementById(item).setAttribute('class', '');
-    //     } else {
-    //     }
-    // })
-}
-
-function handleColor(element) {
-    const productColors = document.getElementById('productColorDivDiv').getAttribute('value').split(',');
-    const size = element.id;
-    document.getElementById(size).style.backgroundColor = "#c4aa9d";
-    productColors.map((item) => {
-        if (item !== size) {
-            document.getElementById(item).style.backgroundColor = "yellow";
-        }
-    });
-    window.productColor = element.getAttribute('value');
-}
-
-
 function addToCard(id) {
     //start check product exist or not
     const product = {
@@ -50,54 +19,74 @@ function addToCard(id) {
         productId: id.value,
     }
     $.ajax({
-        type: 'post',
-        url: '/product-by-id',
-        data: product,
-        success: (response) => {
-            console.log(response);
-            if (response.message && response.error) {
-                alert(`${response.message}`);
-            } else {
-                let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
-                shoppingCard++;
-                let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
-                console.log(Cardlocal);
-                if (Cardlocal) {
-                    if (Cardlocal.includes(id.value)) {
-                        alert('Sorry but product is already added');
-                    } else {
-                        document.getElementById('addToCardButton').innerHTML = 'Added';
-                        document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                        document.getElementById('addToCardButton').classList.add('btn-dark');
-                        setTimeout(() => {
-                            document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                            document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                        }, 1000)
-                        document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
-                        Cardlocal.push(id.value);
-                        Cardlocal = JSON.stringify(Cardlocal);
-                        localStorage.setItem('shoppingCard', Cardlocal);
-                    }
-
+            type: 'post',
+            url: '/product-by-id',
+            data: product,
+            success: (response) => {
+                console.log(response);
+                if (response.message && response.error) {
+                    alert(`${response.message}`);
                 } else {
-                    document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
-                    document.getElementById('addToCardButton').innerHTML = 'Added';
-                    document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                    document.getElementById('addToCardButton').classList.add('btn-dark');
-                    setTimeout(() => {
-                        document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                        document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                    }, 1000)
-                    let array = [];
-                    array.push(id.value);
-                    array = JSON.stringify(array);
-                    localStorage.setItem('shoppingCard', array);
+                    let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
+                    shoppingCard++;
+                    let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
+                    let productSize;
+                    let productColor;
+                    const productCount = Number(document.getElementById('qtyValueProduct').value);
+                    if (!document.querySelector('input[name="productSize"]:checked')) {
+                        alert('Choose product size.');
+                    } else if (!document.querySelector('input[name="productColor"]:checked')) {
+                        alert('Select product color.');
+                    } else {
+                        productSize = document.querySelector('input[name="productSize"]:checked').id;
+                        productColor = document.querySelector('input[name="productColor"]:checked').id;
+                        if (Cardlocal) {
+                            Cardlocal.forEach((item) => {
+                                if (item.productId === response.results._id) {
+                                    alert('Sorry but product is already added');
+                                } else {
+                                    document.getElementById('addToCardButton').innerHTML = 'Added';
+                                    document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                                    document.getElementById('addToCardButton').classList.add('btn-dark');
+                                    setTimeout(() => {
+                                        document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                        document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                    }, 1000)
+                                    document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                                    Cardlocal.push({
+                                        productId: id.value,
+                                        size: productSize,
+                                        color: productColor,
+                                        count: productCount,
+                                    });
+                                    Cardlocal = JSON.stringify(Cardlocal);
+                                    localStorage.setItem('shoppingCard', Cardlocal);
+                                }
+                            });
+                        } else {
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('addToCardButton').innerHTML = 'Added';
+                            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                            document.getElementById('addToCardButton').classList.add('btn-dark');
+                            setTimeout(() => {
+                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                            }, 500)
+                            let array = [];
+                            array.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                            });
+                            array = JSON.stringify(array);
+                            localStorage.setItem('shoppingCard', array);
+                        }
+                    }
                 }
-            }
-        },
-    })
-
-
+            },
+        }
+    )
 }
 
 //This part vor product price

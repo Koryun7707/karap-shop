@@ -107,11 +107,10 @@ const getProducts = async (req, res) => {
     try {
         const {filterByType} = req.body;
         let data;
-        if(filterByType){
-             data = await Product.find({type: filterByType});
-        }
-        else {
-             data = await Product.find({language:req.session.language});
+        if (filterByType) {
+            data = await Product.find({type: filterByType});
+        } else {
+            data = await Product.find({language: req.session.language});
         }
         return res.status(200).json(success('Products Data!', {
             data
@@ -192,7 +191,7 @@ const getProductById = async (req, res) => {
             // console.log('pr', product);
             if (Number(product.count) >= Number(req.body.productCount)) {
                 return res.status(200).json(success('Product exists',
-                    [], res.statusCode));
+                    product, res.statusCode));
             } else {
                 let mes;
                 if (Number(product.count) === '0') {

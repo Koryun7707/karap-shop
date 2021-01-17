@@ -38,14 +38,10 @@
                         <h5>Size</h5>
                         <ul class="list-unstyled d-flex" id="productSizesDiv" value=<%= product[0].sizes %>>
                             <% if(product[0].sizes){ %>
-                                <% product[0].sizes.forEach(function(item, index){ %>
-                                    <% if(index === 0){ %>
-                                        <li class="mr-2 active" id="<%= item %> "
-                                            onclick="handleSize()"><%= item %></li>
-                                    <% } else { %>
-                                        <li class="mr-2" id="<%= item %>" onclick="handleSize()"><%= item %></li>
-
-                                    <% } %>
+                                <% product[0].sizes.forEach(function(item){ %>
+                                    <input type="radio" name="productSize" id=<%= item %>>
+                                        <%= item %>
+                                    </input>
                                 <% }) %>
                             <% } %>
                         </ul>
@@ -54,9 +50,10 @@
                         <h5>Color</h5>
                         <ul class="list-unstyled d-flex">
                             <% if(product[0].colors){ %>
-                                <% product[0].colors.forEach(function(item, index){ %>
-                                    <li class="mr-2" style="background-color: <%= item %>"
-                                        value="<%= index %>" onclick="handleColor(this)"> <%= item %></li>
+                                <% product[0].colors.forEach(function(item){ %>
+                                    <input type="radio" name="productColor" id=<%= item %>>
+                                        <%= item %>
+                                    </input>
                                 <% }) %>
                             <% } %>
                         </ul>
