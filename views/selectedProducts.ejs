@@ -153,6 +153,7 @@
         let local = JSON.parse(localStorage.getItem('shoppingCard'));
         local = local.filter(item=>item.productId!=button.value);
         localStorage.setItem('shoppingCard',JSON.stringify(local));
+        document.getElementById('shoppingCardNumber').innerHTML = local.length;
     }
 
 </script>

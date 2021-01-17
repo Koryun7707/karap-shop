@@ -832,7 +832,7 @@ module.exports = {
     },
     getAdminAddProductPage: async (req, res) => {
         try {
-            const brands = await Brand.find({}).select('name _id');
+            const brands = await Brand.find({language:req.session.language}).select('name _id');
             res.render('admin/addProduct', {
                 URL: 'admin-create-product',
                 user: req.session.user,

@@ -40,7 +40,7 @@ function addToCard(id) {
                     } else {
                         productSize = document.querySelector('input[name="productSize"]:checked').id;
                         productColor = document.querySelector('input[name="productColor"]:checked').id;
-                        if (Cardlocal) {
+                        if (Cardlocal && Cardlocal.length) {
                             Cardlocal.forEach((item) => {
                                 if (item.productId === response.results._id) {
                                     alert('Sorry but product is already added');
@@ -126,7 +126,7 @@ function searchByPrice() {
             url: '/shop-filter',
             data: {types: values, brandIds: brandId, searchValue: searchValue, page: 1,priceFrom:priceFrom,priceTo:priceTo},
             success: (response) => {
-                // console.log('first', response)
+                console.log(777777777777);
                 if (response.results.pageCount > 0) {
                     $('#pagination-place').empty();
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -171,11 +171,13 @@ function searchByPrice() {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
+                                         <div>
+                                            <h2>${item.price}</h2>
+                                        </div>
                                         <div class="title">${item.name}</div>
                                     </a>
                                     
-                                    <button value="${item._id}" id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
-                                        ADD TO CART</button>                 
+                                                   
                                 </div>
                             `
                         ;
@@ -234,7 +236,7 @@ $(document).ready(function () {
             url: '/shop-filter',
             data: {page: 1, type: type, brandId: brandId},
             success: (response) => {
-                // console.log('first', response)
+                console.log(8888888888888);
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
                     let paginatinPlace = document.getElementById('pagination-place');
@@ -278,11 +280,12 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
+                                         <div>
+                                            <h2>${item.price}</h2>
+                                        </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    
-                                    <button value="${item._id}" id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
-                                        ADD TO CART</button>                 
+                                                     
                                 </div>
                             `
                         ;
@@ -385,10 +388,12 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
+                                         <div>
+                                            <h2>${item.price}</h2>
+                                        </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <button value="${item._id}"  id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
-                                        ADD TO CART</button>  
+                                    
                                 </div>
                             `
                         ;
@@ -540,10 +545,12 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
+                                         <div>
+                                            <h2>${item.price}</h2>
+                                        </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <button value="${item._id}"  id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
-                                        ADD TO CART</button>  
+                                    
                                 </div>
                             `
                         ;
@@ -677,10 +684,12 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
+                                        <div>
+                                            <h2>${item.price}</h2>
+                                        </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    <button value="${item._id}"  id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
-                                        ADD TO CART</button>  
+                                    
                                 </div>
                             `
                         ;
