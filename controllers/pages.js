@@ -895,5 +895,20 @@ module.exports = {
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
+    },
+    getShipping:async(req,res)=>{
+        logger.info('Start Shipping address get - - -');
+        try{
+            res.render('shippingAddress',{
+                URL: '/shipping',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language),
+            })
+        }catch(e){
+            console.log(e)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+
     }
 };

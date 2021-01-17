@@ -270,6 +270,7 @@ const getProductById = async (req, res) => {
             }
         } else {
             const ids = req.body['shoppingCard[]'];
+            console.log(ids)
             // console.log(ids);
             const products = await Product.find({_id: {"$in": ids}}).lean().exec();
             // console.log(products);

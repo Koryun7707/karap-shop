@@ -97,6 +97,7 @@ router.get('/join-our-team', pagesController.getJoinOurTeamPage);
 router.get('/shop', pagesController.getShopPage);
 router.get('/selectedProducts', pagesController.getSelectedProducts);
 router.get('/product', pagesController.getProduct);
+router.get('/shipping', pagesController.getShipping);
 
 //shop Filter
 router.post('/shop-filter', getProductsShopFilter);
