@@ -67,6 +67,13 @@ const deleteBrand = async (req, res) => {
     logger.info('Start deleteBrand - - -');
     const {id} = req.params;
     try {
+        //code must be changed, and optimized
+        const brand = await Brand.findById(_id).lean();
+        brand.images.map((item) => {
+            rimraf(`./public/${item}`, (err) => {
+                if (err) console.log(err);
+            })
+        });
         await Brand.findByIdAndRemove({_id: id}).lean();
         return res.status(200).json({success: true, message: 'Delete Brand Completed'});
     } catch (e) {
@@ -78,17 +85,63 @@ const deleteBrand = async (req, res) => {
 const updateBrand = async (req, res) => {
     logger.info('Start Brand update - - -');
     try {
-        const _id = req.body._id;
-        delete req.body._id;
+        const _id = req.params._id;
+        const files = req.files;
+        const brand = await Brand.findById(_id).exec();
         const {error, value} = validateBrand(req.body);
         if (error && error.details) {
             logger.error(`Validate Error: ${error}`);
+            if (files.length > 0) {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) console.log(err);
+                    })
+                });
+            }
             return res.status(422).json(validation(error));
         }
-        await Brand.findByIdAndUpdate({_id}, value).lean();
-        return res.status(200).json(success('Brand Update Complete!', {
-            value
-        }, res.statusCode));
+        if (files.length !== 4) {
+            files.map((file) => {
+                rimraf(`./public/uploads/${file.filename}`, (err) => {
+                    if (err) console.log(err);
+                })
+            });
+            return res.status(422).json(validation('Files is required.!'));
+        }
+        let dir = `./public/uploads/brands`;
+        if (!fs.existsSync(dir)) {
+            fs.mkdir(dir, (err) => {
+                if (err) console.log(err);
+            });
+        }
+        brand.name = value.brandName;
+        brand.info = value.brandInfo;
+        brand.type = value.brandType;
+        brand.hTag = value.brandHashTag;
+        brand.language = value.language;
+        brand.images.map((item) => {
+            rimraf(`./public/${item}`, (err) => {
+                if (err) console.log(err);
+            })
+        });
+        brand.images = moveFile(files, dir);
+        brand.save((err, result) => {
+            if (err) {
+                fs.readdir(dir, (error, files) => {
+                    if (error) throw error;
+                    for (const file of files) {
+                        fs.unlink(path.join(dir, file), err => {
+                            if (err) throw err;
+                        });
+                    }
+                });
+                return res.status(422).json(validation(err.message));
+            }
+            return res.status(200).json(success('Brand Update Complete!', {
+                result
+            }, res.statusCode))
+        });
+
     } catch (e) {
         logger.error(`Brand Update Error: ${e}`);
         return res.status(500).json(err(e.message, res.statusCode));
@@ -116,13 +169,13 @@ const getBrands = async (req, res, next) => {
         console.log(e);
     }
 }
-const getAllBrands = async (req,res) =>{
+const getAllBrands = async (req, res) => {
     logger.info('Start Get All Brands - - -');
-    try{
-        const Brands = await Brand.find({language:req.session.language}).lean().exec();
+    try {
+        const Brands = await Brand.find({language: req.session.language}).lean().exec();
         console.log(Brands)
-        return res.status(200).json(success("success",Brands,res.statusCode));
-    }catch(e){
+        return res.status(200).json(success("success", Brands, res.statusCode));
+    } catch (e) {
         logger.error(`Brand Get All Error: ${e}`);
         req.flash("error_msg", e.message);
         return res.redirect("/");
@@ -134,5 +187,5 @@ module.exports = {
     deleteBrand: deleteBrand,
     updateBrand: updateBrand,
     getBrands: getBrands,
-    getAllBrands:getAllBrands
+    getAllBrands: getAllBrands
 };

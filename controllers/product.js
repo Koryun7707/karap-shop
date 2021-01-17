@@ -74,6 +74,13 @@ const deleteProduct = async (req, res) => {
     logger.info('Start deleteProduct - - -');
     const params = req.params;
     try {
+        //code must be changed, and optimized
+        const product = await Product.findById(params.id).lean();
+        product.images.map((item) => {
+            rimraf(`./public/${item}`, (err) => {
+                if (err) console.log(err);
+            })
+        });
         await Product.findByIdAndRemove({_id: params.id}).lean();
         return res.status(200).json({success: true, message: 'Delete Product Completed'});
     } catch (error) {
@@ -83,19 +90,72 @@ const deleteProduct = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
+    console.log(11111111111);
     logger.info('Start updateProduct - - -');
     try {
-        const _id = req.body._id;
-        delete req.body._id;
+        const files = req.files;
+        const _id = req.params._id;
+        const product = await Product.findById(_id).exec();
+        req.body.brandId = product.brandId;
+
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
+            if (files.length > 0) {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) console.log(err);
+                    })
+                });
+            }
             logger.error(`Validate Error: ${error}`);
             return res.status(422).json(validation(error));
         }
-        await Product.findByIdAndUpdate({_id}, value).lean();
-        return res.status(200).json(success('Product Update Complete!', {
-            value
-        }, res.statusCode));
+        if (files.length !== 5) {
+            files.map((file) => {
+                rimraf(`./public/uploads/${file.filename}`, (err) => {
+                    if (err) console.log(err);
+                })
+            });
+            return res.status(422).json(validation('Files is required.!'));
+        }
+        let dir = `./public/uploads/product`;
+        if (!fs.existsSync(dir)) {
+            fs.mkdir(dir, (err) => {
+                if (err) console.log(err);
+            });
+        }
+        product.brandId = value.brandId;
+        product.name = value.productName;
+        product.type = value.productType;
+        product.price = value.productPrice;
+        product.sizes = value.productSize.split('/');
+        product.sale = value.productSale;
+        product.colors = value.productColor.split('/');
+        product.count = value.productCount;
+        product.language = value.language;
+
+        product.images.map((item) => {
+            rimraf(`./public/${item}`, (err) => {
+                if (err) console.log(err);
+            })
+        });
+        product.images = moveFile(files, dir);
+        product.save((err, result) => {
+            if (err) {
+                fs.readdir(dir, (error, files) => {
+                    if (error) throw error;
+                    for (const file of files) {
+                        fs.unlink(path.join(dir, file), err => {
+                            if (err) throw err;
+                        });
+                    }
+                });
+                return res.status(422).json(validation(err.message));
+            }
+            return res.status(200).json(success('Product Update Complete!', {
+                result
+            }, res.statusCode))
+        });
     } catch (error) {
         logger.error(`Product Update Error: ${error}`);
         return res.status(500).json(err(e.message, res.statusCode));
@@ -140,7 +200,7 @@ const getProductsShopFilter = async (req, res) => {
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
-        console.log(priceFrom,priceTo);
+        console.log(priceFrom, priceTo);
         const search = {
             $and: [
                 {
@@ -168,12 +228,11 @@ const getProductsShopFilter = async (req, res) => {
             search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
 
-        } else if(priceTo && priceFrom){
+        } else if (priceTo && priceFrom) {
             console.log('start')
             search['$and'].push({price: {$gt: priceFrom, $lt: priceTo}});
             data = await Product.paginate(search, options);
-        }
-            else {
+        } else {
             data = await Product.paginate(search, options);
         }
         console.log(data.docs);

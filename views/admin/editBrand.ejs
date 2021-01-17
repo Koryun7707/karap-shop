@@ -1,50 +1,50 @@
 <%- include ('adminHeader') -%>
 <div class="row">
     <div class="col-8 offset-2">
-        <form method="put" enctype="multipart/form-data"  action="product" class="py-5">
+        <form method="post" enctype="multipart/form-data" action="brand-edit/<%= brand._id %>" class="py-5">
             <div class="row page-titles">Edit Brand.</div>
-            <input type="hidden" value="<%=brand._id%>">
+            <input type="hidden" value="<%= brand._id %>">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input value="<%= brand.name %>" type="text" name="brandName" class="form-control"
+                       id="exampleInputEmail1"
+                       placeholder="Product name.">
+            </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
-                <input value="<%=brand.name%>" type="text" name="productType" class="form-control" id="exampleInputEmail1"
+                <input value="<%= brand.type %>" type="text" name="brandType" class="form-control"
+                       id="exampleInputEmail1"
                        placeholder="Product type.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Name</label>
-                <input  value="<%=brand.info%>" type="text" name="productName" class="form-control" id="exampleInputEmail1"
-                        placeholder="Product name.">
+                <label for="exampleInputEmail1">hTag</label>
+                <input value="<%= brand.hTag %>" type="text" name="brandHashTag" class="form-control"
+                       id="exampleInputEmail1"
+                       placeholder="Product color.">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Color</label>
-                <input  value="<%=brand.type%>" type="text" name="productColor" class="form-control" id="exampleInputEmail1"
-                        placeholder="Product color.">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Sale</label>
-                <input  value="<%=brand.hTag%>" type="text" name="productSale" class="form-control" id="exampleInputEmail1"
-                        placeholder="Product sale.">
+                <label for="exampleInputEmail1">Info</label>
+                <input value="<%= brand.info %>" type="text" name="brandInfo" class="form-control"
+                       id="exampleInputEmail1"
+                       placeholder="Product info."/>
             </div>
 
             <div class="form-group">
-                <!--                                <label for="exampleInputEmail1">Upload product images.</label>-->
-                <!--                                <input type="file" name="productImages" multiple="multiple" class="form-control"-->
-                <!--                                       id="uploadImagesBySize">-->
-
-                <div style="display: inline-block " >
-                    <img src="<%=brand.images[0]%>" alt="">
-                </div>
-                <div  style="display: inline-block">
-                    <img src="<%=brand.images[1]%>" alt="">
-                </div>
-                <div  style="display: inline-block">
-                    <img src="<%=brand.images[2]%>" alt="">
-                </div>
-                <div  style="display: inline-block">
-                    <img src="<%=brand.images[3]%>" alt="">
-                </div>
+                <label for="exampleInputEmail1">Upload product images(*First must be choosen product type image, choosen
+                    images count must be 4).</label>
+                <input type="file" name="brandImagesUpdate" multiple="multiple" class="form-control"
+                       id="uploadImagesBySize">
             </div>
 
-
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language">
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                    <option name="spain" value="spain">Spain</option>
+                    <option name="spain" value="spain">Arm</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>
     </div>
