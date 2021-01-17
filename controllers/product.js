@@ -139,6 +139,8 @@ const getProductsShopFilter = async (req, res) => {
         const brandIds = req.body['brandIds[]'] || req.body.brandId || [];
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
+        const {priceFrom, priceTo} = req.body
+        console.log(priceFrom,priceTo);
         const search = {
             $and: [
                 {
@@ -166,10 +168,15 @@ const getProductsShopFilter = async (req, res) => {
             search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
 
-        } else {
+        } else if(priceTo && priceFrom){
+            console.log('start')
+            search['$and'].push({price: {$gt: priceFrom, $lt: priceTo}});
             data = await Product.paginate(search, options);
         }
-        // console.log(data);
+            else {
+            data = await Product.paginate(search, options);
+        }
+        console.log(data.docs);
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,

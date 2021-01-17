@@ -103,8 +103,98 @@ function searchByPrice() {
         }, 1000);
 
     } else {
+
         //write our code here
         console.log(priceFrom, priceTo);
+        let searchValue = document.querySelector('input[type=search]').value || ''
+        if ($('input[type=checkbox]').is(':checked')) {
+            var values = [];
+            var brandId = [];
+
+            $.each($('input:checked'), function (index, input) {
+                if (input.value.length > 20) {
+                    brandId.push(input.value);
+                } else {
+                    values.push(input.value);
+                }
+            });
+        }
+        console.log(values,brandId);
+        console.log(searchValue)
+        $.ajax({
+            type: 'post',
+            url: '/shop-filter',
+            data: {types: values, brandIds: brandId, searchValue: searchValue, page: 1,priceFrom:priceFrom,priceTo:priceTo},
+            success: (response) => {
+                // console.log('first', response)
+                if (response.results.pageCount > 0) {
+                    $('#pagination-place').empty();
+                    document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
+                    let paginatinPlace = document.getElementById('pagination-place');
+                    for (let i = -1; i < response.results.pageCount + 1; i++) {
+                        let a = document.createElement('a');
+                        a.setAttribute('onclick', 'giveChosenPage(this);');
+                        if (i === -1) {
+                            a.setAttribute('id', `-1`);
+                            a.setAttribute('value', `-1`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `&laquo;`
+                        } else if (i === 0) {
+                            a.setAttribute('id', '1');
+                            a.setAttribute('value', '1');
+                            a.setAttribute('class', `active`);
+                            a.innerHTML = '1'
+                        } else if (i > 0 && i !== response.results.pageCount) {
+                            a.setAttribute('id', `${i + 1}`);
+                            a.setAttribute('value', `${i + 1}`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `${i + 1}`
+                        } else {
+                            a.setAttribute('id', `+1`);
+                            a.setAttribute('value', `+1`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `&raquo;`
+                        }
+                        paginatinPlace.append(a);
+                    }
+                }
+                let filterDiv = document.getElementById('shopFilter');
+                $("#shopFilter").empty();
+                if (response.results.data.length) {
+                    response.results.data.forEach(function (item) {
+                        let newDiv = document.createElement('div');
+                        filterDiv.append(newDiv);
+                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.innerHTML = `
+                                <div class="card shop-card">
+                                    <a href="/product?_id=${item._id}">
+                                        <div class="img-area">
+                                            <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
+                                        </div>
+                                        <div class="title">${item.name}</div>
+                                    </a>
+                                    
+                                    <button value="${item._id}" id="addToCardButton"  class="btn btn-green-gradient py-3" onclick="addToCard(this)">
+                                        ADD TO CART</button>                 
+                                </div>
+                            `
+                        ;
+
+
+                    })
+                } else {
+                    let newDiv = document.createElement('div');
+                    newDiv.innerHTML = `
+                            <h1>No Found Data</h1>`
+                    filterDiv.append(newDiv);
+                }
+            },
+            error: (e) => {
+                console.log(e)
+            }
+        })
+
+
     }
 }
 

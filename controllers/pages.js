@@ -298,9 +298,11 @@ module.exports = {
         });
     },
     getLogInPage: async (req, res) => {
-        res.render('login', {
+        const staticData = await getStaticData(req.session.language);
+       return res.render('login', {
+            URL:'/login',
             user: req.session.user,
-            staticData: await getStaticData(req.session.language),
+            staticData: staticData
         });
     },
     userLogOut: async (req, res, next) => {

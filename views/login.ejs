@@ -1,6 +1,7 @@
 <%- include ('header') -%>
 <main style="padding-top: 100px;">
     <div id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <%if(staticData){%>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header rose-bg">
@@ -33,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            <%}%>
         </div>
 </main>
 <%- include ('footer') -%>
