@@ -20,7 +20,9 @@ const createBrand = async (req, res) => {
                     })
                 });
             }
-            return res.status(422).json(validation(error.message));
+            req.flash("error_msg",error.message );
+            return res.redirect("/admin-create-brand");
+            // return res.status(422).json(validation(error.message));
         }
         if (files.length !== 4) {
             files.map((file) => {
@@ -28,7 +30,9 @@ const createBrand = async (req, res) => {
                     if (err) console.log(err);
                 })
             });
-            return res.status(422).json(validation('Files is required.!'));
+            req.flash("error","Files is required.!" );
+            return res.redirect("/admin-create-brand");
+            // return res.status(422).json(validation('Files is required.!'));
         }
         let dir = `./public/uploads/brands`;
         if (!fs.existsSync(dir)) {
@@ -54,12 +58,16 @@ const createBrand = async (req, res) => {
                         });
                     }
                 });
-                return res.status(422).json(validation(err.message));
+                req.flash("error_msg",err.message );
+                return res.redirect("/admin-create-brand");
             }
-            return res.status(200).json(success('Brand add complete!', result, res.statusCode));
+            req.flash("success_msg","Brand add complete!" );
+            return res.redirect("/admin-create-brand");
         });
     } catch (e) {
-        return res.status(500).json(err(e.message, res.statusCode));
+        req.flash("error",e.message );
+        return res.redirect("/admin-create-brand");
+        // return res.status(500).json(err(e.message, res.statusCode));
     }
 };
 
@@ -137,6 +145,7 @@ const updateBrand = async (req, res) => {
                 });
                 return res.status(422).json(validation(err.message));
             }
+
             return res.status(200).json(success('Brand Update Complete!', {
                 result
             }, res.statusCode))

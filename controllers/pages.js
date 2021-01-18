@@ -218,10 +218,12 @@ module.exports = {
                         })
                     });
                 }
-                return res.status(422).json(validation(error.message));
+                req.flash('error_msg',error.message);
+                return res.redirect('/admin-home');
             }
             if (!files.length && value.language === 'eng') {
-                return res.status(422).json(validation('Files is required.!'));
+                req.flash('error_msg','Files is required.!');
+                return res.redirect('/admin-home');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/home`;
@@ -253,7 +255,8 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('Brand add complete!', result, res.statusCode));
+                    req.flash('success_msg',"Home Page Data Add Completed!");
+                    return res.redirect('/admin-home');
                 });
             } else {
                 fs.readdir(dir, (err, files) => {
@@ -284,11 +287,14 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('SUCCESS', result, res.statusCode));
+                    req.flash('success_msg',"Home Page Data Add Completed!");
+                    return res.redirect('/admin-home');
                 });
             }
         } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
+            logger.error(`Home Page Data Add Error: ${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/admin-home');
         }
     },//done
     getSignUpPage: async (req, res) => {
@@ -342,10 +348,12 @@ module.exports = {
                         })
                     });
                 }
-                return res.status(422).json(validation(error.message));
+                req.flash('error_msg',error.message);
+                return res.redirect('/admin-shop');
             }
             if (!files.length) {
-                return res.status(422).json(validation('Files is required.!'));
+                req.flash('error_msg',"Files is required.!");
+                return res.redirect('/admin-shop');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/shop`;
@@ -372,7 +380,8 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('Brand add complete!', result, res.statusCode));
+                    req.flash('success_msg',"Shop Page Data Add Completed!");
+                    return res.redirect('/admin-shop');
                 });
             } else {
                 myPageData.textShopSlider = value.textShopSlider;
@@ -398,11 +407,14 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('Post shop complete!', data, res.statusCode));
+                    req.flash('success_msg',"Shop Page Data Add Completed!");
+                    return res.redirect('/admin-shop');
                 });
             }
         } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
+            logger.error(`Shop Page Data Add Error:${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/admin-shop');
         }
     },//+
     getAdminBrandPage: async (req, res) => {
@@ -424,10 +436,12 @@ module.exports = {
                         })
                     });
                 }
-                return res.status(422).json(validation(error.message));
+                req.flash('error_msg',error.message);
+                return res.redirect('/admin-brand');
             }
             if (!files.length && value.language === 'eng') {
-                return res.status(422).json(validation('Files is required.!'));
+                req.flash('error_msg',"Files is required.!");
+                return res.redirect('/admin-brand');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/brand-page`;
@@ -458,7 +472,8 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('ok', data, res.statusCode));
+                    req.flash('success_msg',"Brand Page Data Add Completed!");
+                    return res.redirect('/admin-brand');
                 });
             } else {
                 fs.readdir(dir, (err, files) => {
@@ -488,11 +503,14 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('ok', result, res.statusCode));
+                    req.flash('success_msg',"Brand Page Data Add Completed!");
+                    return res.redirect('/admin-brand');
                 });
             }
         } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
+            logger.error(`Brand Page Data Add Error: ${e}`)
+            req.flash('error_msg',"Brand Page Data Add Completed!");
+            return res.redirect('/admin-brand');
         }
     },//+
     getAdminBlogPage: async (req, res) => {
@@ -521,10 +539,12 @@ module.exports = {
                         })
                     });
                 }
-                return res.status(422).json(validation(error.message));
+                req.flash('error_msg',error.message);
+                return res.redirect('/admin-about');
             }
             if (!files.length && value.language) {
-                return res.status(422).json(validation('Files is required.!'));
+                req.flash('error_msg',"Files is required.!");
+                return res.redirect('/admin-about');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/about`;
@@ -558,7 +578,8 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('ok', data, res.statusCode));
+                    req.flash('success_msg',"Data About Add Completed!");
+                    return res.redirect('/admin-about');
                 });
             } else {
                 myPageData.textAboutSlider = value.textAboutSlider;
@@ -595,11 +616,14 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('ok', data, res.statusCode));
+                    req.flash('success_msg',"Data About Add Completed!");
+                    return res.redirect('/admin-about');
                 });
             }
         } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
+            logger.error(`About add data error: ${e}`);
+            req.flash('success_msg',e.message);
+            return res.redirect('/admin-about');
         }
     },//done
     getAdminContactPage: async (req, res) => {
@@ -621,10 +645,12 @@ module.exports = {
                         })
                     });
                 }
-                return res.status(422).json(validation(error.message));
+                req.flash('error_msg',error.message);
+                return res.redirect('/admin-contact');
             }
             if (!files.length && value.language === 'eng') {
-                return res.status(422).json(validation('Files is required.!'));
+                req.flash('error_msg',"Files is required.!");
+                return res.redirect('/admin-contact');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/contact`;
@@ -661,7 +687,8 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('ok', result, res.statusCode));
+                    req.flash('success_msg','Contact Page Data Add Completed!');
+                    return res.redirect('/admin-contact');
                 });
             } else {
                 myPageData.textContactSlider = value.textContactSlider;
@@ -692,11 +719,14 @@ module.exports = {
                         });
                         throw err;
                     }
-                    return res.status(200).json(success('ok', data, res.statusCode));
+                    req.flash('success_msg','Contact Page Data Add Completed!');
+                    return res.redirect('/admin-contact');
                 });
             }
         } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
+            logger.error(`Contact Page Data Add Error: ${e}`)
+            req.flash('error_msg',e.message);
+            return res.redirect('/admin-contact');
         }
     },//done
     getAdminJoinOurTeamPage: async (req, res) => {
@@ -718,7 +748,8 @@ module.exports = {
                         })
                     });
                 }
-                return res.status(422).json(validation(error.message));
+                req.flash('error_msg',error.message);
+                return res.redirect('/admin-join-our-team');
             }
             if (!files.length && value.language === 'eng') {
                 files.map((file) => {
@@ -726,7 +757,8 @@ module.exports = {
                         if (err) console.log(err);
                     })
                 });
-                return res.status(422).json(validation('Files is required.!'));
+                req.flash('error_msg','Files is required.!');
+                return res.redirect('/admin-join-our-team');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/joinOurTeam`;
@@ -769,9 +801,11 @@ module.exports = {
                                 });
                             }
                         });
-                        return res.status(422).json(validation(err.message));
+                        req.flash('error_msg',err.message);
+                        return res.redirect('/admin-join-our-team');
                     }
-                    return res.status(200).json(success('Brand add complete!', result, res.statusCode));
+                    req.flash('success_msg',"JoinOurTeam Page Data Add Completed!");
+                    return res.redirect('/admin-join-our-team');
                 });
             } else {
                 myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
@@ -814,13 +848,17 @@ module.exports = {
                                 });
                             }
                         });
-                        return res.status(422).json(validation(err.message));
+                        req.flash('error_msg',err.message);
+                        return res.redirect('/admin-join-our-team');
                     }
-                    return res.status(200).json(success('Brand add complete!', result, res.statusCode));
+                    req.flash('success_msg',"JoinOurTeam Page Data Add Completed!");
+                    return res.redirect('/admin-join-our-team');
                 });
             }
         } catch (e) {
-            return res.status(500).json(err(e.message, res.statusCode));
+            logger.error(`JoinOurTeam Page Data Add Error:${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/admin-join-our-team');
         }
     },//done
     getAdminAddBrandPage: async (req, res) => {

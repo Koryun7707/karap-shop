@@ -22,7 +22,8 @@ const createProduct = async (req, res) => {
                     })
                 });
             }
-            return res.status(422).json(validation(error.message));
+            req.flash("error_msg",error.message);
+            return res.redirect("/admin-create-product");
         }
         if (files.length !== 5) {
             files.map((file) => {
@@ -30,7 +31,8 @@ const createProduct = async (req, res) => {
                     if (err) console.log(err);
                 })
             });
-            return res.status(422).json(validation('Files is required.!'));
+            req.flash("error_msg","Files is required.!");
+            return res.redirect("/admin-create-product");
         }
         let dir = `./public/uploads/product`;
         if (!fs.existsSync(dir)) {
@@ -60,13 +62,16 @@ const createProduct = async (req, res) => {
                         });
                     }
                 });
-                return res.status(422).json(validation(err.message));
+                req.flash("error_msg",err.message);
+                return res.redirect("/admin-create-product");
             }
-            return res.status(200).json(success('Product Add Complete!', result, res.statusCode));
+            req.flash("success_msg","Product Add Complete!");
+            return res.redirect("/admin-create-product");
         });
     } catch (e) {
         logger.error(`Added Product Error: ${e}`);
-        return res.status(500).json(err(e.message, res.statusCode));
+        req.flash("error",e.message);
+        return res.redirect("/admin-create-product");
     }
 }
 
