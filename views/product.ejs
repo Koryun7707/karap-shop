@@ -103,6 +103,99 @@
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
+<script>
+    function countPrice(element) {
+        let count = Number(document.getElementById('qtyValueProduct').value);
+        let productPrice = document.getElementById('productPrice').getAttribute('value');
+        if (element.id === 'fa-plus') {
+            count++;
+        } else {
+            count--;
+        }
+        if (count > 0) {
+            let payPrice = Number(productPrice) * count;
+            document.getElementById('pricePlace').innerHTML = `${payPrice} $`;
+        }
+    }
+
+    function addToCard(id) {
+        //start check product exist or not
+        const product = {
+            productCount: document.getElementById('qtyValueProduct').value,
+            productId: id.value,
+        }
+        $.ajax({
+                type: 'post',
+                url: '/product-by-id',
+                data: product,
+                success: (response) => {
+                    console.log(response);
+                    if (response.message && response.error) {
+                        alert(`${response.message}`);
+                    } else {
+                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
+                        shoppingCard++;
+                        let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
+                        let productSize;
+                        let productColor;
+                        const productCount = Number(document.getElementById('qtyValueProduct').value);
+                        if (!document.querySelector('input[name="productSize"]:checked')) {
+                            alert('Choose product size.');
+                        } else if (!document.querySelector('input[name="productColor"]:checked')) {
+                            alert('Select product color.');
+                        } else {
+                            productSize = document.querySelector('input[name="productSize"]:checked').id;
+                            productColor = document.querySelector('input[name="productColor"]:checked').id;
+                            if (Cardlocal && Cardlocal.length) {
+                                Cardlocal.forEach((item) => {
+                                    if (item.productId === response.results._id) {
+                                        alert('Sorry but product is already added');
+                                    } else {
+                                        document.getElementById('addToCardButton').innerHTML = 'Added';
+                                        document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                                        document.getElementById('addToCardButton').classList.add('btn-dark');
+                                        setTimeout(() => {
+                                            document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                            document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                        }, 1000)
+                                        document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                                        Cardlocal.push({
+                                            productId: id.value,
+                                            size: productSize,
+                                            color: productColor,
+                                            count: productCount,
+                                        });
+                                        Cardlocal = JSON.stringify(Cardlocal);
+                                        localStorage.setItem('shoppingCard', Cardlocal);
+                                    }
+                                });
+                            } else {
+                                document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                                document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                                document.getElementById('addToCardButton').classList.add('btn-dark');
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                                let array = [];
+                                array.push({
+                                    productId: id.value,
+                                    size: productSize,
+                                    color: productColor,
+                                    count: productCount,
+                                });
+                                array = JSON.stringify(array);
+                                localStorage.setItem('shoppingCard', array);
+                            }
+                        }
+                    }
+                },
+            }
+        )
+    }
+
+</script>
 
 </body>
 </html>

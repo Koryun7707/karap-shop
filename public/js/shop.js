@@ -1,93 +1,3 @@
-function countPrice(element) {
-    let count = Number(document.getElementById('qtyValueProduct').value);
-    let productPrice = document.getElementById('productPrice').getAttribute('value');
-    if (element.id === 'fa-plus') {
-        count++;
-    } else {
-        count--;
-    }
-    if (count > 0) {
-        let payPrice = Number(productPrice) * count;
-        document.getElementById('pricePlace').innerHTML = `${payPrice} $`;
-    }
-}
-
-function addToCard(id) {
-    //start check product exist or not
-    const product = {
-        productCount: document.getElementById('qtyValueProduct').value,
-        productId: id.value,
-    }
-    $.ajax({
-            type: 'post',
-            url: '/product-by-id',
-            data: product,
-            success: (response) => {
-                console.log(response);
-                if (response.message && response.error) {
-                    alert(`${response.message}`);
-                } else {
-                    let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
-                    shoppingCard++;
-                    let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
-                    let productSize;
-                    let productColor;
-                    const productCount = Number(document.getElementById('qtyValueProduct').value);
-                    if (!document.querySelector('input[name="productSize"]:checked')) {
-                        alert('Choose product size.');
-                    } else if (!document.querySelector('input[name="productColor"]:checked')) {
-                        alert('Select product color.');
-                    } else {
-                        productSize = document.querySelector('input[name="productSize"]:checked').id;
-                        productColor = document.querySelector('input[name="productColor"]:checked').id;
-                        if (Cardlocal && Cardlocal.length) {
-                            Cardlocal.forEach((item) => {
-                                if (item.productId === response.results._id) {
-                                    alert('Sorry but product is already added');
-                                } else {
-                                    document.getElementById('addToCardButton').innerHTML = 'Added';
-                                    document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                                    document.getElementById('addToCardButton').classList.add('btn-dark');
-                                    setTimeout(() => {
-                                        document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                        document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                                    }, 1000)
-                                    document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
-                                    Cardlocal.push({
-                                        productId: id.value,
-                                        size: productSize,
-                                        color: productColor,
-                                        count: productCount,
-                                    });
-                                    Cardlocal = JSON.stringify(Cardlocal);
-                                    localStorage.setItem('shoppingCard', Cardlocal);
-                                }
-                            });
-                        } else {
-                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
-                            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 500)
-                            let array = [];
-                            array.push({
-                                productId: id.value,
-                                size: productSize,
-                                color: productColor,
-                                count: productCount,
-                            });
-                            array = JSON.stringify(array);
-                            localStorage.setItem('shoppingCard', array);
-                        }
-                    }
-                }
-            },
-        }
-    )
-}
 
 //This part vor product price
 function searchByPrice() {
@@ -119,18 +29,25 @@ function searchByPrice() {
                 }
             });
         }
-        console.log(values,brandId);
+        console.log(values, brandId);
         console.log(searchValue)
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {types: values, brandIds: brandId, searchValue: searchValue, page: 1,priceFrom:priceFrom,priceTo:priceTo},
+            data: {
+                types: values,
+                brandIds: brandId,
+                searchValue: searchValue,
+                page: 1,
+                priceFrom: priceFrom,
+                priceTo: priceTo
+            },
             success: (response) => {
                 console.log(777777777777);
                 if (response.results.pageCount > 0) {
                     $('#pagination-place').empty();
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
-                    let paginatinPlace = document.getElementById('pagination-place');
+                    let paginationPlace = document.getElementById('pagination-place');
                     for (let i = -1; i < response.results.pageCount + 1; i++) {
                         let a = document.createElement('a');
                         a.setAttribute('onclick', 'giveChosenPage(this);');
@@ -155,7 +72,7 @@ function searchByPrice() {
                             a.setAttribute('class', `page-item`);
                             a.innerHTML = `&raquo;`
                         }
-                        paginatinPlace.append(a);
+                        paginationPlace.append(a);
                     }
                 }
                 let filterDiv = document.getElementById('shopFilter');
@@ -176,13 +93,8 @@ function searchByPrice() {
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
-                                    
-                                                   
                                 </div>
-                            `
-                        ;
-
-
+                            `;
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -231,10 +143,12 @@ $(document).ready(function () {
     function getProductByPagination() {
         const type = gup('type', location.href);
         const brandId = gup('brandId', location.href);
+        const priceFrom = document.getElementById('priceFrom').value;
+        const priceTo = document.getElementById('priceTo').value;
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1, type: type, brandId: brandId},
+            data: {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo},
             success: (response) => {
                 console.log(8888888888888);
                 if (response.results.pageCount > 0) {
@@ -330,7 +244,6 @@ $(document).ready(function () {
                 }
             }
         } else if (elementValue === '+1') {
-            console.log(2222);
             for (let i = 1; i <= Number(pagesCount); i++) {
                 if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
                     if (i === Number(pagesCount)) {
@@ -370,10 +283,18 @@ $(document).ready(function () {
         if (pageNumber === undefined) {
             pageNumber = Number(elementValue);
         }
+        //get price product
+        const priceFrom = document.getElementById('priceFrom').value;
+        const priceTo = document.getElementById('priceTo').value;
+        console.log(pageNumber);
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: pageNumber},
+            data: {
+                page: pageNumber,
+                priceFrom: priceFrom,
+                priceTo: priceTo,
+            },
             success: function (response) {
                 let filterDiv = document.getElementById('shopFilter');
                 $("#shopFilter").empty();
@@ -392,8 +313,7 @@ $(document).ready(function () {
                                             <h2>${item.price}</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
-                                    </a>
-                                    
+                                    </a> 
                                 </div>
                             `
                         ;
@@ -485,6 +405,8 @@ $(document).ready(function () {
         }
         //do something
         searchValue = document.querySelector('input[type=search]').value;
+        const priceFrom = document.getElementById('priceFrom').value;
+        const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             var brandId = [];
@@ -499,7 +421,14 @@ $(document).ready(function () {
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {types: values, brandIds: brandId, searchValue: searchValue, page: pageNumber},
+            data: {
+                types: values,
+                brandIds: brandId,
+                searchValue: searchValue,
+                page: pageNumber,
+                priceFrom: priceFrom,
+                priceTo: priceTo
+            },
             success: (response) => {
                 $("#pagination-place").empty();
                 if (response.results.pageCount > 0) {
@@ -604,10 +533,20 @@ $(document).ready(function () {
             });
         }
         searchValue = document.querySelector('input[type=search]').value;
+        const priceFrom = document.getElementById('priceFrom').value;
+        const priceTo = document.getElementById('priceTo').value;
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {types: values, brandIds: brandId, searchValue: searchValue, onSale: onSale, page: pageNumber},
+            data: {
+                types: values,
+                priceFrom: priceFrom,
+                priceTo: priceTo,
+                brandIds: brandId,
+                searchValue: searchValue,
+                onSale: onSale,
+                page: pageNumber
+            },
             success: (response) => {
                 $("#pagination-place").empty();
                 if (response.results.pageCount > 0) {
@@ -709,10 +648,8 @@ $(document).ready(function () {
         })
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
-    $("amount").on("change", function () {
-        console.log(this.value)
+    $("amount").on("change", function () {nsole.log(this.value)
     });
-    console.log(document.getElementById('amount').value);
 
 
 })
