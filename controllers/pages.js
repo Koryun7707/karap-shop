@@ -32,7 +32,8 @@ module.exports = {
             }
             req.session.user = req.user;
             let pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
-            if (req.session.language !== 'eng') {
+            if (req.session.language !== 'eng' &&pageData.length) {
+                console.log(pageData)
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
@@ -55,7 +56,7 @@ module.exports = {
             req.session.language = 'eng';
         }
         let pageData = await PageData.find({language: req.session.language}).select('imagesAboutSlider textAboutSlider ourPhilosophy textOnAboutSlider titleOurPhilosophy').exec();
-        if (req.session.language !== 'eng') {
+        if (req.session.language !== 'eng' && pageData.length) {
             const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesAboutSlider').exec();
             pageData[0].imagesAboutSlider = arrayImages.imagesAboutSlider;
         }
@@ -140,7 +141,7 @@ module.exports = {
             }
             req.session.user = req.user;
             let pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider').exec();
-            if (req.session.language !== 'eng') {
+            if (req.session.language !== 'eng' && pageData.length) {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesBrandSlider').exec();
                 pageData[0].imagesBrandSlider = arrayImages.imagesBrandSlider;
             }
@@ -164,7 +165,7 @@ module.exports = {
             req.session.language = 'eng';
         }
         let pageData = await PageData.find({language: req.session.language}).select('imagesContactSlider textContactSlider').exec();
-        if (req.session.language !== 'eng') {
+        if (req.session.language !== 'eng' && pageData.length) {
             const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesContactSlider').exec();
             pageData[0].imagesContactSlider = arrayImages.imagesContactSlider;
         }
@@ -181,13 +182,13 @@ module.exports = {
                 req.session.language = 'eng';
             }
             const pageData = await PageData.find({language: req.session.language}).select('imagesJoinOurTeamSlider textJoinOurTeamSlider joinOurCol1Text joinOurCol2Text joinOurCol3Text joinOurCol1Title joinOurCol2Title joinOurCol3Title joinOurTeamPartnersTitle  joinOurTeamWorkUs joinOurTeamPartners');
-            if (req.session.language !== 'eng') {
+            if (req.session.language !== 'eng' && pageData.length) {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesJoinOurTeamSlider').exec();
                 pageData[0].imagesJoinOurTeamSlider = arrayImages.imagesJoinOurTeamSlider;
             }
             console.log(pageData);
             res.render('joinOurTeam', {
-                URL: '/joinOurTeam',
+                URL: '/join-our-team',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
@@ -195,7 +196,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             req.flash("error_msg", err.message);
-            return res.redirect("/joinOurTeam");
+            return res.redirect("/join-our-team");
         }
     },
     //start admin pages ->

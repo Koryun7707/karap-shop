@@ -40,7 +40,6 @@ module.exports = function (passport) {
             });
 
             await user.save();
-            console.log('user', user);
             const message = {
                 from: process.env.MAIL_AUTH_EMAIL,
                 to: value.email,
