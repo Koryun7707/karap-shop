@@ -1,8 +1,142 @@
 <%- include ('header') -%>
 <main style="padding-top: 100px;">
-<h1>
-    shipping address
-</h1>
+
+
+    <div class="container mt-5">
+        <div class="row inform">
+            <div class="col-12 col-md-7 col-lg-7">
+                <h3 class="mb-5">Contact Information</h3>
+                <form action="#">
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email Address">
+                    </div>
+                    <h5 class="mb-2">Shipping Address</h5>
+                    <div class="d-flex justify-content-between">
+                        <div class="form-group mr-1">
+                            <input type="text" class="form-control" id="First Name" placeholder="First Name">
+                        </div>
+                        <div class="form-group ml-1">
+                            <input type="text" class="form-control" id="Last Name" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="address" placeholder="Address">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="apartment" placeholder="Apartment">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="form-group mr-1">
+                            <input type="number" class="form-control" id="PostalCode" placeholder="Postal Code">
+                        </div>
+                        <div class="form-group ml-1">
+                            <input type="text" class="form-control" id="City" placeholder="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="country" placeholder="Country/Region">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="phone" placeholder="Phone">
+                    </div>
+                    <div class="shop-check">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Save this information for nex time</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-md-5 col-lg-5 total-info">
+                <div class="mb-3 text-center">
+                    <img src="images/logo/logo%20kanach.png" alt="" style="width: 30%">
+                </div>
+                <div class="total-section" id='currentDiv'>
+<!--                    <div class="d-flex" >-->
+<!--                        <div class="img-area">-->
+<!--                            <img src="images/brand-pic2.jpg" alt="">-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <h5>product Name</h5>-->
+<!--                            <div><span>color</span>/<span>size</span></div>-->
+<!--                        </div>-->
+<!--                        <div class="price ml-auto">977 $</div>-->
+<!--                    </div>-->
+                    <hr>
+                    <div class="d-flex">
+                        <div class="form-group mr-1 col-9 pl-0">
+                            <input type="number" class="form-control" id="Postal Code" placeholder="Card Number">
+                        </div>
+                        <div class="col-3 p-0">
+                            <button class="btn-green-gradient" style="height: 45px; border-radius:5px">Apply</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>Sale</div>
+                            <div>-30%</div>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>Delivery</div>
+                            <div>500 dram</div>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>Date</div>
+                            <div>21-23 of january</div>
+                        </div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <h2 class="title"><b>TOTAL</b></h2>
+                        <div class="product-price" >
+                            <h2 style="color: #065a1f"><b id="product-price">20 610 dram</b></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
+<script>
+    const selected = JSON.parse(localStorage.getItem('selected'))
+    const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
+    console.log(selected)
+    if(selected){
+        let currentDiv = document.getElementById('currentDiv')
+        $.ajax({
+            type: 'post',
+            url: '/product-by-id',
+            data: {shoppingCard:selected},
+            success: (response) => {
+                if(response.results.length){
+                    response.results.forEach((item)=>{
+                        let div = document.createElement('div');
+                        currentDiv.prepend(div);
+                        div.setAttribute('class', 'd-flex');
+                        div.innerHTML = `
+                        <div class="img-area">
+                            <img src="${item.images[0]}" alt="">
+                            </div>
+                        <div>
+                            <h5>${item.name}</h5>
+                            <div><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}</span>/<span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</span></div>
+                        </div>
+                        <div class="price ml-auto">${item.price} $</div>
+`
+                    })
+                }
+            },
+            error(e){
+                console.log(e);
+            }
+        })
+    }
+</script>
+
 <%- include ('footer') -%>

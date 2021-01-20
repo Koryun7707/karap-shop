@@ -880,7 +880,24 @@ button:focus {
 }
 
 /*end product page*/
-
+.inform .form-group {
+    flex: 1;
+}
+.inform .form-control {
+    height: 45px!important;
+}
+.total-info .img-area {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    padding: 0 8px;
+    border-radius: 5px;
+    margin-right: 8px;
+}
+.total-info .img-area img{
+    width: 100%;
+}
 
 .qtySelector {
     border: 1px solid #ddd;

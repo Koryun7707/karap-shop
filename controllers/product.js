@@ -267,6 +267,7 @@ const getProductsShopFilter = async (req, res) => {
 const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
     try {
+        console.log(req.body);
         if (req.body.productCount && req.body.productId) {
             const product = await Product.findById(req.body.productId).exec();
             if (Number(product.count) >= Number(req.body.productCount)) {
@@ -285,6 +286,7 @@ const getProductById = async (req, res) => {
         } else {
             const ids = req.body['shoppingCard[]'];
             const products = await Product.find({_id: {"$in": ids}}).lean().exec();
+            console.log(products)
             return res.status(200).json(success('Products Data Shopping Card!',
                 products, res.statusCode));
         }
