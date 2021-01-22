@@ -5,7 +5,7 @@
         <h2 class="my-4"><b>Selected Products</b></h2>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
-                <input type="checkbox" id="select-all">
+                <input onclick="selectAll(this)" type="checkbox" id="select-all">
                 <label for="select-all" class="">Select All</label>
             </div>
         </div>
@@ -138,6 +138,7 @@
 
     function checkFluency() {
         if ($('input[type=checkbox]').is(':checked')) {
+
             let sum = 0;
             let productCount = 0;
             let productPrice = 0;
@@ -147,16 +148,23 @@
             const afterSale = document.getElementById('afterSale');
 
             $.each($('input:checked'), function (index, input) {
-                const _id = input.getAttribute('_id')
-                let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-                value = value.substring(0, value.length - 1);
-                sum += Number(value);
-                productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
-                let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
-                let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+                if(input.id != 'select-all' && input.id!="agreement") {
 
-                productPrice+=Number(template.substring(0,template.length-1))
-                productSalePrice+= Number(afterSale.substring(0,afterSale.length-1));
+                    console.log('ddd')
+                    const _id = input.getAttribute('_id')
+                    console.log(input)
+
+                    let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+
+                    value = value.substring(0, value.length - 1);
+                    sum += Number(value);
+                    productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
+                    let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
+                    let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+
+                    productPrice += Number(template.substring(0, template.length - 1))
+                    productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
+                }
             });
 
             if (sum) {
@@ -175,6 +183,7 @@
             afterSale.innerHTML = `0`;
             document.getElementById('total').innerHTML = '0';
         }
+
     }
 
     function deleteProduct(button) {
@@ -263,7 +272,21 @@
             document.getElementById('total').innerHTML = '0';
         }
     }
+        function selectAll(element){
+                if(element.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function() {
+                        this.checked = true;
 
+                    });
+                    checkFluency();
+                } else {
+                    $(':checkbox').each(function() {
+                        this.checked = false;
+                    });
+                }
+
+        }
 </script>
 
 </body>
