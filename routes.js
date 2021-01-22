@@ -13,7 +13,8 @@ const {
     getProductsShopFilter,
     getProductById,
     getDataSearch
-} = require('./controllers/product')
+} = require('./controllers/product');
+const {createShippingAddress, getShippingAddresses} = require('./controllers/shippingAddress');
 const {createBrand, deleteBrand, updateBrand, getBrands, getAllBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
@@ -98,6 +99,10 @@ router.get('/shop', pagesController.getShopPage);
 router.get('/selectedProducts', pagesController.getSelectedProducts);
 router.get('/product', pagesController.getProduct);
 router.get('/shipping', pagesController.getShipping);
+
+//Create shipping address
+router.post('/shipping-address', checkIsAuthenticated, createShippingAddress);
+router.get('/shipping-address', checkIsAuthenticated, isAdmin, getShippingAddresses);
 
 //shop Filter
 router.post('/shop-filter', getProductsShopFilter);
