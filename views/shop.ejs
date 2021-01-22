@@ -22,16 +22,16 @@
                                             <% productsType.forEach(function(item){ %>
 
                                                 <li class="form-group">
-                                                    <% if(item.type === type){ %>
-                                                        <input checked type="checkbox" id="<%= item.type %>"
-                                                               value=<%= item.type %>>
-                                                        <label for="<%= item.type %>"
-                                                               class="clothing-icon"><%= item.type %></label>
+                                                    <% if(item === type){ %>
+                                                        <input checked type="checkbox" id="<%= item %>"
+                                                               value=<%= item %>>
+                                                        <label for="<%= item %>"
+                                                               class="clothing-icon"><%= item %></label>
                                                     <% }else{ %>
-                                                        <input type="checkbox" id="<%= item.type %>"
-                                                               value=<%= item.type %>>
-                                                        <label for="<%= item.type %>"
-                                                               class="clothing-icon"><%= item.type %></label>
+                                                        <input type="checkbox" id="<%= item %>"
+                                                               value=<%= item %>>
+                                                        <label for="<%= item %>"
+                                                               class="clothing-icon"><%= item %></label>
                                                     <% } %>
                                                 </li>
                                             <% }) %>

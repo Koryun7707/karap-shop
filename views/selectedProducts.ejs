@@ -23,24 +23,21 @@
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>Products <span id="countProduct"></span> Count</div>
+                        <div>Products <span id="countProduct">0</span> Count</div>
                         <div id="productStartPrice">0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div>Sale</div>
                         <div id="afterSale">0</div>
                     </div>
-                    <div class="mb-3 d-flex justify-content-between">
-                        <div>Date</div>
-                        <div>21-23 of january</div>
-                    </div>
                     <div class="my-4">
-                        <a onclick="sendData()" href="/shipping" class="btn btn-green-gradient mb-3"
-                           style="font-size: 20px; color: #fff; text-transform: capitalize">Pay for order</a>
+                        <a onclick="sendData()" id="shippingPage" href="/shipping" class="btn btn-green-gradient mb-3"
+                           style="font-size: 20px; color: #fff; text-transform: capitalize">Continue shipping</a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
-                                <input type="checkbox" id="agreement">
-                                <label for="agreement" class="">I agree with <a href="#">Terms & conditions </a></label>
+                                <input type="checkbox" id="agreeTerms">
+                                <label for="agreeTerms" class="">I agree with <a href="#">Terms &
+                                        conditions </a></label>
                             </div>
                         </div>
                     </div>
@@ -137,25 +134,20 @@
     })
 
     function checkFluency() {
+        let productStartPrice = document.getElementById('productStartPrice');
+        let countProduct = document.getElementById('countProduct');
+        let afterSale = document.getElementById('afterSale');
         if ($('input[type=checkbox]').is(':checked')) {
-
             let sum = 0;
             let productCount = 0;
             let productPrice = 0;
             let productSalePrice = 0;
-            const productStartPrice = document.getElementById('productStartPrice');
-            const countProduct = document.getElementById('countProduct');
-            const afterSale = document.getElementById('afterSale');
-
+            let countOfBasketCheckedProducts = 0;
             $.each($('input:checked'), function (index, input) {
-                if(input.id != 'select-all' && input.id!="agreement") {
-
-                    console.log('ddd')
+                if (input.id !== 'select-all' && input.id !== "agreeTerms") {
+                    countOfBasketCheckedProducts++;
                     const _id = input.getAttribute('_id')
-                    console.log(input)
-
                     let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-
                     value = value.substring(0, value.length - 1);
                     sum += Number(value);
                     productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
@@ -165,22 +157,30 @@
                     productPrice += Number(template.substring(0, template.length - 1))
                     productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
                 }
+                if (input.id === "agreeTerms") {
+                    document.getElementById("agreeTerms").checked = false;
+                }
             });
-
+            if (countOfBasketCheckedProducts !== JSON.parse(localStorage.getItem('shoppingCard')).length) {
+                document.getElementById('select-all').checked = false;
+            } else {
+                document.getElementById('select-all').checked = true;
+            }
             if (sum) {
-
                 countProduct.innerHTML = `${productCount}`;
                 productStartPrice.innerHTML = `${productPrice}`
-                afterSale.innerHTML = `${productPrice-productSalePrice}`;
-
+                afterSale.innerHTML = `${productPrice - productSalePrice}`;
                 document.getElementById('total').innerHTML = sum;
-
-
+            } else {
+                countProduct.innerHTML = '0';
+                productStartPrice.innerHTML = '0';
+                afterSale.innerHTML = '0';
+                document.getElementById('total').innerHTML = '0';
             }
         } else {
-            countProduct.innerHTML = `0`;
-            productStartPrice.innerHTML = `0`
-            afterSale.innerHTML = `0`;
+            countProduct.innerHTML = '0';
+            productStartPrice.innerHTML = '0';
+            afterSale.innerHTML = '0';
             document.getElementById('total').innerHTML = '0';
         }
 
@@ -198,9 +198,10 @@
     function sendData() {
         var values = [];
         if ($('input[type=checkbox]').is(':checked')) {
-
             $.each($('input:checked'), function (index, input) {
+                console.log(111);
                 const id = input.getAttribute('_id');
+
                 let obj = {
                     productId: id,
                     count: document.getElementById(`qtyInput${id}`).getAttribute('value'),
@@ -250,15 +251,17 @@
         localStorage.setItem('shoppingCard', JSON.stringify(shoppingCard));
         let sum = 0;
         $.each($('input:checked'), function (index, input) {
-            const _id = input.getAttribute('_id')
-            let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-            value = value.substring(0, value.length - 1);
-            sum += Number(value);
-            productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
-            let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
-            let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-            productPrice += Number(template.substring(0, template.length - 1))
-            productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
+            if (input.id != 'select-all' && input.id != "agreeTerms") {
+                const _id = input.getAttribute('_id')
+                let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+                value = value.substring(0, value.length - 1);
+                sum += Number(value);
+                productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
+                let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
+                let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+                productPrice += Number(template.substring(0, template.length - 1))
+                productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
+            }
         });
         if (sum) {
             countProduct.innerHTML = `${productCount}`;
@@ -272,21 +275,29 @@
             document.getElementById('total').innerHTML = '0';
         }
     }
-        function selectAll(element){
-                if(element.checked) {
-                    // Iterate each checkbox
-                    $(':checkbox').each(function() {
-                        this.checked = true;
 
-                    });
-                    checkFluency();
-                } else {
-                    $(':checkbox').each(function() {
-                        this.checked = false;
-                    });
-                }
-
+    function selectAll(element) {
+        if (element.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function () {
+                this.checked = true;
+            });
+            checkFluency();
+        } else {
+            $(':checkbox').each(function () {
+                this.checked = false;
+            });
+            checkFluency();
         }
+    }
+
+    $('#agreeTerms').on('click', (element) => {
+        if (!element.checked) {
+            element.checked = true;
+        } else {
+            element.checked = false;
+        }
+    });
 </script>
 
 </body>

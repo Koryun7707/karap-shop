@@ -198,3 +198,15 @@ module.exports = {
     getBrands: getBrands,
     getAllBrands: getAllBrands
 };
+
+
+
+
+
+
+
+
+
+
+
+

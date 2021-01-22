@@ -2,7 +2,7 @@
 <main>
     <%- include ('partials/messages') %>
 
-    <section id="section1" class="position-relative section1 mb-5" >
+    <section id="section1" class="position-relative section1 mb-5">
         <div class="abs">
             <% if(pageData.length){ %>
                 <h1><%= pageData[0].homeSliderText %></h1>
@@ -36,7 +36,8 @@
                                     <div class="img-area">
                                         <img class="card-img-top" src=<%= item.images[0] %> id='' alt="Card image cap">
                                     </div>
-                                    <a href="/shop?type=<%=item.type%>" class="btn btn-green-gradient"><%= item.name %></a>
+                                    <a href="/shop?type=<%= item.type %>"
+                                       class="btn btn-green-gradient"><%= item.type %></a>
                                 </div>
                             </div>
                         <% }) %>

@@ -32,12 +32,15 @@ module.exports = {
             }
             req.session.user = req.user;
             let pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
-            if (req.session.language !== 'eng' &&pageData.length) {
+            if (req.session.language !== 'eng' && pageData.length) {
                 console.log(pageData)
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
-            const products = await Product.find({language: req.session.language}).select('images name type').exec();
+            let products = await Product.find({language: req.session.language}).select('images name type').exec();
+
+            products = [...new Map(products.map(item =>
+                [item['type'], item])).values()];
             const countOfBrands = await Brand.find({language: req.session.language}).exec();
             res.render('index', {
                 URL: '/',
@@ -89,7 +92,8 @@ module.exports = {
         try {
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
             // console.log(pageData);
-            const productsType = await Product.find({language: req.session.language}).select('type -_id').exec();
+            const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
+            console.log(productsType);
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             const type = req.query.type || null;
             const brandId = req.query.brandId || null;
@@ -219,11 +223,11 @@ module.exports = {
                         })
                     });
                 }
-                req.flash('error_msg',error.message);
+                req.flash('error_msg', error.message);
                 return res.redirect('/admin-home');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg','Files is required.!');
+                req.flash('error_msg', 'Files is required.!');
                 return res.redirect('/admin-home');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -256,7 +260,7 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Home Page Data Add Completed!");
+                    req.flash('success_msg', "Home Page Data Add Completed!");
                     return res.redirect('/admin-home');
                 });
             } else {
@@ -288,13 +292,13 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Home Page Data Add Completed!");
+                    req.flash('success_msg', "Home Page Data Add Completed!");
                     return res.redirect('/admin-home');
                 });
             }
         } catch (e) {
             logger.error(`Home Page Data Add Error: ${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/admin-home');
         }
     },//done
@@ -306,8 +310,8 @@ module.exports = {
     },
     getLogInPage: async (req, res) => {
         const staticData = await getStaticData(req.session.language);
-       return res.render('login', {
-            URL:'/login',
+        return res.render('login', {
+            URL: '/login',
             user: req.session.user,
             staticData: staticData
         });
@@ -349,11 +353,11 @@ module.exports = {
                         })
                     });
                 }
-                req.flash('error_msg',error.message);
+                req.flash('error_msg', error.message);
                 return res.redirect('/admin-shop');
             }
             if (!files.length) {
-                req.flash('error_msg',"Files is required.!");
+                req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-shop');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -381,7 +385,7 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Shop Page Data Add Completed!");
+                    req.flash('success_msg', "Shop Page Data Add Completed!");
                     return res.redirect('/admin-shop');
                 });
             } else {
@@ -408,13 +412,13 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Shop Page Data Add Completed!");
+                    req.flash('success_msg', "Shop Page Data Add Completed!");
                     return res.redirect('/admin-shop');
                 });
             }
         } catch (e) {
             logger.error(`Shop Page Data Add Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/admin-shop');
         }
     },//+
@@ -437,11 +441,11 @@ module.exports = {
                         })
                     });
                 }
-                req.flash('error_msg',error.message);
+                req.flash('error_msg', error.message);
                 return res.redirect('/admin-brand');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg',"Files is required.!");
+                req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-brand');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -473,7 +477,7 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Brand Page Data Add Completed!");
+                    req.flash('success_msg', "Brand Page Data Add Completed!");
                     return res.redirect('/admin-brand');
                 });
             } else {
@@ -504,13 +508,13 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Brand Page Data Add Completed!");
+                    req.flash('success_msg', "Brand Page Data Add Completed!");
                     return res.redirect('/admin-brand');
                 });
             }
         } catch (e) {
             logger.error(`Brand Page Data Add Error: ${e}`)
-            req.flash('error_msg',"Brand Page Data Add Completed!");
+            req.flash('error_msg', "Brand Page Data Add Completed!");
             return res.redirect('/admin-brand');
         }
     },//+
@@ -540,11 +544,11 @@ module.exports = {
                         })
                     });
                 }
-                req.flash('error_msg',error.message);
+                req.flash('error_msg', error.message);
                 return res.redirect('/admin-about');
             }
             if (!files.length && value.language) {
-                req.flash('error_msg',"Files is required.!");
+                req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-about');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -579,7 +583,7 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Data About Add Completed!");
+                    req.flash('success_msg', "Data About Add Completed!");
                     return res.redirect('/admin-about');
                 });
             } else {
@@ -617,13 +621,13 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg',"Data About Add Completed!");
+                    req.flash('success_msg', "Data About Add Completed!");
                     return res.redirect('/admin-about');
                 });
             }
         } catch (e) {
             logger.error(`About add data error: ${e}`);
-            req.flash('success_msg',e.message);
+            req.flash('success_msg', e.message);
             return res.redirect('/admin-about');
         }
     },//done
@@ -646,11 +650,11 @@ module.exports = {
                         })
                     });
                 }
-                req.flash('error_msg',error.message);
+                req.flash('error_msg', error.message);
                 return res.redirect('/admin-contact');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg',"Files is required.!");
+                req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-contact');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -688,7 +692,7 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg','Contact Page Data Add Completed!');
+                    req.flash('success_msg', 'Contact Page Data Add Completed!');
                     return res.redirect('/admin-contact');
                 });
             } else {
@@ -720,13 +724,13 @@ module.exports = {
                         });
                         throw err;
                     }
-                    req.flash('success_msg','Contact Page Data Add Completed!');
+                    req.flash('success_msg', 'Contact Page Data Add Completed!');
                     return res.redirect('/admin-contact');
                 });
             }
         } catch (e) {
             logger.error(`Contact Page Data Add Error: ${e}`)
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/admin-contact');
         }
     },//done
@@ -749,7 +753,7 @@ module.exports = {
                         })
                     });
                 }
-                req.flash('error_msg',error.message);
+                req.flash('error_msg', error.message);
                 return res.redirect('/admin-join-our-team');
             }
             if (!files.length && value.language === 'eng') {
@@ -758,7 +762,7 @@ module.exports = {
                         if (err) console.log(err);
                     })
                 });
-                req.flash('error_msg','Files is required.!');
+                req.flash('error_msg', 'Files is required.!');
                 return res.redirect('/admin-join-our-team');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -802,10 +806,10 @@ module.exports = {
                                 });
                             }
                         });
-                        req.flash('error_msg',err.message);
+                        req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
-                    req.flash('success_msg',"JoinOurTeam Page Data Add Completed!");
+                    req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
                     return res.redirect('/admin-join-our-team');
                 });
             } else {
@@ -849,16 +853,16 @@ module.exports = {
                                 });
                             }
                         });
-                        req.flash('error_msg',err.message);
+                        req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
-                    req.flash('success_msg',"JoinOurTeam Page Data Add Completed!");
+                    req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
                     return res.redirect('/admin-join-our-team');
                 });
             }
         } catch (e) {
             logger.error(`JoinOurTeam Page Data Add Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/admin-join-our-team');
         }
     },//done
@@ -871,7 +875,7 @@ module.exports = {
     },
     getAdminAddProductPage: async (req, res) => {
         try {
-            const brands = await Brand.find({language:req.session.language}).select('name _id');
+            const brands = await Brand.find({language: req.session.language}).select('name _id');
             res.render('admin/addProduct', {
                 URL: 'admin-create-product',
                 user: req.session.user,
@@ -897,53 +901,51 @@ module.exports = {
             staticData: await getStaticData(req.session.language),
         });
     },
-    editProduct :async (req,res) =>{
-        try{
+    editProduct: async (req, res) => {
+        try {
             const {_id} = req.query;
-            const product = await Product.find({_id:_id}).lean().exec();
+            const product = await Product.find({_id: _id}).lean().exec();
             console.log(product);
-            res.render('admin/editProduct',{
+            res.render('admin/editProduct', {
                 URL: '/admin-editProduct',
                 user: req.session.user,
-                product:product[0],
+                product: product[0],
                 staticData: await getStaticData(req.session.language),
             })
-        }
-        catch(e){
+        } catch (e) {
             console.log(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
     },
-    editBrand: async (req,res)=>{
+    editBrand: async (req, res) => {
         logger.info('Start edit brand - - -');
-        try{
+        try {
             const {_id} = req.query;
             console.log(_id)
-            const brand = await Brand.find({_id:_id}).lean().exec();
+            const brand = await Brand.find({_id: _id}).lean().exec();
             console.log(brand);
-            res.render('admin/editBrand',{
+            res.render('admin/editBrand', {
                 URL: '/admin-editBrand',
                 user: req.session.user,
-                brand:brand[0],
+                brand: brand[0],
                 staticData: await getStaticData(req.session.language),
             })
-        }
-        catch(e){
+        } catch (e) {
             console.log(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
     },
-    getShipping:async(req,res)=>{
+    getShipping: async (req, res) => {
         logger.info('Start Shipping address get - - -');
-        try{
-            res.render('shippingAddress',{
+        try {
+            res.render('shippingAddress', {
                 URL: '/shipping',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
             })
-        }catch(e){
+        } catch (e) {
             console.log(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
