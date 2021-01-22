@@ -212,6 +212,14 @@
     }
 
     function countPriceForBasket(element) {
+        //pay for order
+        let productCount = 0;
+        let productPrice = 0;
+        let productSalePrice = 0;
+        const productStartPrice = document.getElementById('productStartPrice');
+        const countProduct = document.getElementById('countProduct');
+        const afterSale = document.getElementById('afterSale');
+        //end
         const id = element.id.substring(6, element.id.length);
         let basketProductCount = Number(document.getElementById(`qtyInput${id}`).getAttribute('value'));
         if (element.id.substring(0, 6) === 'faMinu' && Number(basketProductCount) >= 2) {
@@ -235,12 +243,23 @@
         $.each($('input:checked'), function (index, input) {
             const _id = input.getAttribute('_id')
             let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-            value = value.substring(0, value.length - 1)
+            value = value.substring(0, value.length - 1);
             sum += Number(value);
+            productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
+            let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
+            let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+            productPrice += Number(template.substring(0, template.length - 1))
+            productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
         });
         if (sum) {
+            countProduct.innerHTML = `${productCount}`;
+            productStartPrice.innerHTML = `${productPrice}`
+            afterSale.innerHTML = `${productPrice - productSalePrice}`;
             document.getElementById('total').innerHTML = sum;
         } else {
+            countProduct.innerHTML = `0`;
+            productStartPrice.innerHTML = `0`
+            afterSale.innerHTML = `0`;
             document.getElementById('total').innerHTML = '0';
         }
     }
