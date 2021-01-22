@@ -166,6 +166,9 @@
             localStorage.setItem('selected',JSON.stringify(values));
         }
     }
+    window.onload = function(){
+        localStorage.removeItem('selected');
+    }
 
 </script>
 
