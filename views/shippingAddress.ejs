@@ -6,7 +6,6 @@
         <div class="row inform">
             <div class="col-12 col-md-7 col-lg-7">
                 <h3 class="mb-5">Contact Information</h3>
-<!--                action="/shipping-address" method="post"-->
                 <form>
                     <div class="form-group">
                         <input type="email" class="form-control" id="exampleFormControlInput1"
@@ -41,7 +40,6 @@
                     <div class="form-group">
                         <input type="number" class="form-control" id="phone" placeholder="Phone">
                     </div>
-<<<<<<< Updated upstream
                     <div class="shop-check">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -49,22 +47,10 @@
                                 time</label>
                         </div>
                     </div>
-=======
->>>>>>> Stashed changes
                 </form>
             </div>
             <div class="col-12 col-md-5 col-lg-5 total-info">
                 <div class="total-section" id='currentDiv'>
-                    <!--                    <div class="d-flex" >-->
-                    <!--                        <div class="img-area">-->
-                    <!--                            <img src="images/brand-pic2.jpg" alt="">-->
-                    <!--                        </div>-->
-                    <!--                        <div>-->
-                    <!--                            <h5>product Name</h5>-->
-                    <!--                            <div><span>color</span>/<span>size</span></div>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="price ml-auto">977 $</div>-->
-                    <!--                    </div>-->
                     <hr>
                     <div class="d-flex">
                         <div class="col-3 p-0">
@@ -106,29 +92,15 @@
 <script>
     const selected = JSON.parse(localStorage.getItem('selected'))
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
-<<<<<<< Updated upstream
+
     if (selected && selected.length) {
         selected.forEach((item) => {
             let div = document.createElement('div');
             currentDiv.prepend(div);
             div.setAttribute('class', 'd-flex');
             div.innerHTML = `
-=======
-    console.log(selected)
-    if (selected) {
-        let currentDiv = document.getElementById('currentDiv')
-        $.ajax({
-            type: 'post',
-            url: '/product-by-id',
-            data: {shoppingCard: selected},
-            success: (response) => {
-                if (response.results.length) {
-                    response.results.forEach((item) => {
-                        let div = document.createElement('div');
-                        currentDiv.prepend(div);
-                        div.setAttribute('class', 'd-flex');
-                        div.innerHTML = `
->>>>>>> Stashed changes
+
+
                         <div class="img-area">
                             <img src="${item.images}" alt="">
                             </div>
@@ -138,18 +110,8 @@
                         </div>
                         <div class="price ml-auto">${item.price} </div>
                         <div class="price ml-auto">${item.priceSale} </div>
-`
-<<<<<<< Updated upstream
-=======
-                    })
-                }
-            },
-            error(e) {
-                console.log(e);
+`                      })
             }
->>>>>>> Stashed changes
-        })
-    }
-</script>
+    </script>
 
 <%- include ('footer') -%>
