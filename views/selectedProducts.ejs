@@ -1,6 +1,6 @@
 <%- include ('header') -%>
 
-<main  style="padding-top: 100px" class="selected-product-section">
+<main style="padding-top: 100px" class="selected-product-section">
     <div class="container container-1730 my-5">
         <h2 class="my-4"><b>Selected Products</b></h2>
         <div class="shop-check d-flex ml-3">
@@ -35,7 +35,8 @@
                         <div>21-23 of january</div>
                     </div>
                     <div class="my-4">
-                        <a onclick="sendData()" href="/shipping"  class="btn btn-green-gradient mb-3" style="font-size: 20px; color: #fff; text-transform: capitalize">Pay  for order</a>
+                        <a onclick="sendData()" href="/shipping" class="btn btn-green-gradient mb-3"
+                           style="font-size: 20px; color: #fff; text-transform: capitalize">Pay for order</a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
                                 <input type="checkbox" id="agreement">
@@ -53,25 +54,24 @@
 <%- include ('footer') -%>
 
 
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script>
-    $( function() {
-        $( "#slider-range" ).slider({
+    $(function () {
+        $("#slider-range").slider({
             range: true,
             min: 0,
             max: 500,
-            values: [ 75, 300 ],
-            slide: function( event, ui ) {
-                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            values: [75, 300],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
             }
         });
-        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-            " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-    } );
+        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+            " - $" + $("#slider-range").slider("values", 1));
+    });
 </script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
@@ -81,17 +81,17 @@
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
     console.log(shoppingCard)
     let currentDiv = document.getElementById('shoppingCardDiv');
-    let array =[]
-    shoppingCard.forEach((item)=>{
+    let array = []
+    shoppingCard.forEach((item) => {
         array.push(item.productId)
     })
     $.ajax({
         type: 'post',
         url: '/product-by-id',
-        data: {shoppingCard:array},
+        data: {shoppingCard: array},
         success: (response) => {
-            if(response.results.length){
-                response.results.forEach(function(item){
+            if (response.results.length) {
+                response.results.forEach(function (item) {
                     let newDiv = document.createElement('div');
                     currentDiv.append(newDiv);
                     newDiv.setAttribute('class', 'selected-product-cart');
@@ -114,13 +114,15 @@
 
                     <div class="product-count">
                         <div class="qtySelector text-center">
-                            <i class="fa fa-minus decreaseQty"></i>
-                            <input type="text" class="qtyValue" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
-                            <i class="fa fa-plus increaseQty"></i>
+                            <i onclick="countPriceForBasket(this)" id="faMinus" class="fa fa-minus decreaseQty" ></i>
+                            <input type="text" class="qtyValue" id="basket-product-count" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
+                            <i onclick="countPriceForBasket(this)"  id="faPlus" class="fa fa-plus increaseQty"></i>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <div class="product-price">${item.price} dram</div>
+                        <div  id="productPriceBasket" value=${item.price}  style="text-decoration: line-through" class="product-price">${item.price} €</div>
+                        <div  id="saleProductPrice" value=${item.sale} class="product-price" >${Number(item.price) - (Number(item.price) * Number(item.sale)) / 100} €</div>
+
                     </div>
                      <div class="d-flex justify-content-end">
                         <button value="${item._id}" class="btn btn-danger" onclick="deleteProduct(this)" type="submit">Delete</button>
@@ -134,7 +136,8 @@
             console.log(e)
         }
     })
-    function checkFluency(){
+
+    function checkFluency() {
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             $.each($('input:checked'), function (index, input) {
@@ -144,30 +147,47 @@
             if (values.length) {
                 document.getElementById('total').innerHTML = values.reduce((a, b) => a + b);
             }
-        }
-        else {
+        } else {
             document.getElementById('total').innerHTML = '0';
         }
     }
-    function deleteProduct(button){
+
+    function deleteProduct(button) {
         document.getElementById(button.value).remove();
         let local = JSON.parse(localStorage.getItem('shoppingCard'));
-        local = local.filter(item=>item.productId!=button.value);
-        localStorage.setItem('shoppingCard',JSON.stringify(local));
+        local = local.filter(item => item.productId != button.value);
+        localStorage.setItem('shoppingCard', JSON.stringify(local));
         document.getElementById('shoppingCardNumber').innerHTML = local.length;
     }
-    function sendData  (){
+
+    function sendData() {
         var values = [];
         if ($('input[type=checkbox]').is(':checked')) {
 
             $.each($('input:checked'), function (index, input) {
                 values.push(input.getAttribute('_id'));
             });
-            localStorage.setItem('selected',JSON.stringify(values));
+            localStorage.setItem('selected', JSON.stringify(values));
         }
     }
-    window.onload = function(){
+
+    window.onload = function () {
         localStorage.removeItem('selected');
+    }
+
+    function countPriceForBasket(element) {
+        console.log(element.id)
+        let basketProductCount = document.getElementById('basket-product-count').getAttribute('value');
+        if (element.id === 'faMinus' && Number(basketProductCount) >= 2) {
+            basketProductCount--;
+        } else if (element.id === 'faPlus') {
+            basketProductCount++;
+        }
+        document.getElementById('basket-product-count').setAttribute('value', `${basketProductCount}`);
+        const price = Number(basketProductCount) * Number(document.getElementById('productPriceBasket').getAttribute('value'));
+        const saleCount = price - (price * Number(document.getElementById('saleProductPrice').getAttribute('value')) / 100);
+        document.getElementById('saleProductPrice').innerHTML = `${saleCount} €`;
+        document.getElementById('productPriceBasket').innerHTML = `${price} €`;
     }
 
 </script>
