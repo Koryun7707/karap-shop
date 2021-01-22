@@ -23,12 +23,12 @@
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>Sale</div>
-                        <div>-30%</div>
+                        <div>Products <span id="countProduct"></span> Count</div>
+                        <div id="productStartPrice">0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>Delivery</div>
-                        <div>500 dram</div>
+                        <div>Sale</div>
+                        <div id="afterSale">0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div>Date</div>
@@ -79,7 +79,6 @@
 <script>
 
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
-    console.log(shoppingCard)
     let currentDiv = document.getElementById('shoppingCardDiv');
     let array = []
     shoppingCard.forEach((item) => {
@@ -99,14 +98,14 @@
                     newDiv.innerHTML = `
                     <div  class="shop-check d-flex">
                         <div class="form-group mr-2">
-                            <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${item.price}">
+                            <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
                             <label for="${item.name}" class=""></label>
                         </div>
                         <div class="img-area mr-3">
-                            <img src="${item.images[0]}" alt="" class="w-100">
+                            <img id='productImage${item._id}' src="${item.images[0]}" alt="" class="w-100">
                         </div>
                         <div>
-                            <div class="product-name">${item.name}</div>
+                            <div id='productName${item._id}' class="product-name">${item.name}</div>
                             <div class="product-color my-2">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}</div>
                             <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
                         </div>
@@ -114,14 +113,14 @@
 
                     <div class="product-count">
                         <div class="qtySelector text-center">
-                            <i onclick="countPriceForBasket(this)" id="faMinus" class="fa fa-minus decreaseQty" ></i>
-                            <input type="text" class="qtyValue" id="basket-product-count" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
-                            <i onclick="countPriceForBasket(this)"  id="faPlus" class="fa fa-plus increaseQty"></i>
+                            <i onclick="countPriceForBasket(this)" id="faMinu${item._id}" class="fa fa-minus decreaseQty" ></i>
+                            <input type="text" class="qtyValue" id="qtyInput${item._id}" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
+                            <i onclick="countPriceForBasket(this)"  id="faPlus${item._id}" class="fa fa-plus increaseQty"></i>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <div  id="productPriceBasket" value=${item.price}  style="text-decoration: line-through" class="product-price">${item.price} €</div>
-                        <div  id="saleProductPrice" value=${item.sale} class="product-price" >${Number(item.price) - (Number(item.price) * Number(item.sale)) / 100} €</div>
+                        <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
+                        <div  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}€</div>
 
                     </div>
                      <div class="d-flex justify-content-end">
@@ -139,15 +138,41 @@
 
     function checkFluency() {
         if ($('input[type=checkbox]').is(':checked')) {
-            var values = [];
+            let sum = 0;
+            let productCount = 0;
+            let productPrice = 0;
+            let productSalePrice = 0;
+            const productStartPrice = document.getElementById('productStartPrice');
+            const countProduct = document.getElementById('countProduct');
+            const afterSale = document.getElementById('afterSale');
+
             $.each($('input:checked'), function (index, input) {
-                values.push(Number(input.value));
+                const _id = input.getAttribute('_id')
+                let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+                value = value.substring(0, value.length - 1);
+                sum += Number(value);
+                productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
+                let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
+                let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+
+                productPrice+=Number(template.substring(0,template.length-1))
+                productSalePrice+= Number(afterSale.substring(0,afterSale.length-1));
             });
 
-            if (values.length) {
-                document.getElementById('total').innerHTML = values.reduce((a, b) => a + b);
+            if (sum) {
+
+                countProduct.innerHTML = `${productCount}`;
+                productStartPrice.innerHTML = `${productPrice}`
+                afterSale.innerHTML = `${productPrice-productSalePrice}`;
+
+                document.getElementById('total').innerHTML = sum;
+
+
             }
         } else {
+            countProduct.innerHTML = `0`;
+            productStartPrice.innerHTML = `0`
+            afterSale.innerHTML = `0`;
             document.getElementById('total').innerHTML = '0';
         }
     }
@@ -165,8 +190,18 @@
         if ($('input[type=checkbox]').is(':checked')) {
 
             $.each($('input:checked'), function (index, input) {
-                values.push(input.getAttribute('_id'));
+                const id = input.getAttribute('_id');
+                let obj = {
+                    productId: id,
+                    count: document.getElementById(`qtyInput${id}`).getAttribute('value'),
+                    price: document.getElementById(`productPriceBasket${id}`).innerHTML,
+                    priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
+                    images: document.getElementById(`productImage${id}`).getAttribute('src'),
+                    name: document.getElementById(`productName${id}`).innerHTML,
+                }
+                values.push(obj);
             });
+
             localStorage.setItem('selected', JSON.stringify(values));
         }
     }
@@ -176,18 +211,37 @@
     }
 
     function countPriceForBasket(element) {
-        console.log(element.id)
-        let basketProductCount = document.getElementById('basket-product-count').getAttribute('value');
-        if (element.id === 'faMinus' && Number(basketProductCount) >= 2) {
+        const id = element.id.substring(6, element.id.length);
+        let basketProductCount = Number(document.getElementById(`qtyInput${id}`).getAttribute('value'));
+        if (element.id.substring(0, 6) === 'faMinu' && Number(basketProductCount) >= 2) {
             basketProductCount--;
-        } else if (element.id === 'faPlus') {
+        } else if (element.id.substring(0, 6) === 'faPlus') {
             basketProductCount++;
         }
-        document.getElementById('basket-product-count').setAttribute('value', `${basketProductCount}`);
-        const price = Number(basketProductCount) * Number(document.getElementById('productPriceBasket').getAttribute('value'));
-        const saleCount = price - (price * Number(document.getElementById('saleProductPrice').getAttribute('value')) / 100);
-        document.getElementById('saleProductPrice').innerHTML = `${saleCount} €`;
-        document.getElementById('productPriceBasket').innerHTML = `${price} €`;
+        document.getElementById(`qtyInput${id}`).setAttribute('value', `${basketProductCount}`);
+        const price = Number(basketProductCount) * Number(document.getElementById(`productPriceBasket${id}`).getAttribute('value'));
+        const saleCount = price - (price * Number(document.getElementById(`saleProductPrice${id}`).getAttribute('value')) / 100);
+        document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount}€`;
+        document.getElementById(`productPriceBasket${id}`).innerHTML = `${price}€`;
+        let shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
+        shoppingCard.forEach((item) => {
+            if (id === item.productId) {
+                item.count = basketProductCount;
+            }
+        })
+        localStorage.setItem('shoppingCard', JSON.stringify(shoppingCard));
+        let sum = 0;
+        $.each($('input:checked'), function (index, input) {
+            const _id = input.getAttribute('_id')
+            let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+            value = value.substring(0, value.length - 1)
+            sum += Number(value);
+        });
+        if (sum) {
+            document.getElementById('total').innerHTML = sum;
+        } else {
+            document.getElementById('total').innerHTML = '0';
+        }
     }
 
 </script>

@@ -134,8 +134,7 @@
                         <% } %>
                         <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block position-relative">
                                 <span id="shoppingCardNumber" class="cart-products-count">0</span>
-                            <a class="nav-link" href="/selectedProducts"><i class="fa fa-cart-arrow-down"></i></a>
-<!--                            <a class="nav-link" href="#"><i class="fa fa-cart-arrow-down"></i></a>-->
+                                <a onclick="goToSelectedPage()" class="nav-link" id="shoppingCard"><i class="fa fa-cart-arrow-down"></i></a>
                         </li>
                         <li class="nav-item dropdown">
 
@@ -169,7 +168,17 @@
         crossorigin="anonymous"></script>
 <script>
 
+
+
+    function goToSelectedPage() {
+        let basket = document.getElementById('shoppingCard');
+        const local = JSON.parse(localStorage.getItem('shoppingCard'));
+        if (local && local.length) {
+            basket.setAttribute('href', '/selectedProducts');
+        }
+    }
     $(function () {
+
         document.getElementById('example').addEventListener('change', function () {
             console.log('You selected: ', this.value);
             const obj = {

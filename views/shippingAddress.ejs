@@ -8,7 +8,8 @@
                 <h3 class="mb-5">Contact Information</h3>
                 <form action="#">
                     <div class="form-group">
-                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email Address">
+                        <input type="email" class="form-control" id="exampleFormControlInput1"
+                               placeholder="Email Address">
                     </div>
                     <h5 class="mb-2">Shipping Address</h5>
                     <div class="d-flex justify-content-between">
@@ -42,7 +43,8 @@
                     <div class="shop-check">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Save this information for nex time</label>
+                            <label class="form-check-label" for="exampleCheck1">Save this information for nex
+                                time</label>
                         </div>
                     </div>
                 </form>
@@ -52,16 +54,16 @@
                     <img src="images/logo/logo%20kanach.png" alt="" style="width: 30%">
                 </div>
                 <div class="total-section" id='currentDiv'>
-<!--                    <div class="d-flex" >-->
-<!--                        <div class="img-area">-->
-<!--                            <img src="images/brand-pic2.jpg" alt="">-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <h5>product Name</h5>-->
-<!--                            <div><span>color</span>/<span>size</span></div>-->
-<!--                        </div>-->
-<!--                        <div class="price ml-auto">977 $</div>-->
-<!--                    </div>-->
+                    <!--                    <div class="d-flex" >-->
+                    <!--                        <div class="img-area">-->
+                    <!--                            <img src="images/brand-pic2.jpg" alt="">-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <h5>product Name</h5>-->
+                    <!--                            <div><span>color</span>/<span>size</span></div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="price ml-auto">977 $</div>-->
+                    <!--                    </div>-->
                     <hr>
                     <div class="d-flex">
                         <div class="form-group mr-1 col-9 pl-0">
@@ -88,7 +90,7 @@
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <h2 class="title"><b>TOTAL</b></h2>
-                        <div class="product-price" >
+                        <div class="product-price">
                             <h2 style="color: #065a1f"><b id="product-price">20 610 dram</b></h2>
                         </div>
                     </div>
@@ -106,35 +108,22 @@
 <script>
     const selected = JSON.parse(localStorage.getItem('selected'))
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
-    console.log(selected)
-    if(selected){
-        let currentDiv = document.getElementById('currentDiv')
-        $.ajax({
-            type: 'post',
-            url: '/product-by-id',
-            data: {shoppingCard:selected},
-            success: (response) => {
-                if(response.results.length){
-                    response.results.forEach((item)=>{
-                        let div = document.createElement('div');
-                        currentDiv.prepend(div);
-                        div.setAttribute('class', 'd-flex');
-                        div.innerHTML = `
+    if (selected && selected.length) {
+        selected.forEach((item) => {
+            let div = document.createElement('div');
+            currentDiv.prepend(div);
+            div.setAttribute('class', 'd-flex');
+            div.innerHTML = `
                         <div class="img-area">
-                            <img src="${item.images[0]}" alt="">
+                            <img src="${item.images}" alt="">
                             </div>
                         <div>
                             <h5>${item.name}</h5>
-                            <div><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}</span>/<span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</span></div>
+                            <div><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color}</span>/<span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size}</span></div>
                         </div>
-                        <div class="price ml-auto">${item.price} $</div>
+                        <div class="price ml-auto">${item.price} </div>
+                        <div class="price ml-auto">${item.priceSale} </div>
 `
-                    })
-                }
-            },
-            error(e){
-                console.log(e);
-            }
         })
     }
 </script>
