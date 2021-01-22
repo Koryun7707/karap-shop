@@ -1,6 +1,6 @@
 const ShippingAddress = require('../models/shipingAddress');
 const {logger} = require('../utils/logger');
-const {success, validation, err} = require('../utils/responseApi');
+const {success, err} = require('../utils/responseApi');
 const {validateShippingAddress} = require('../validations/shippingAddress');
 
 const createShippingAddress = async (req, res) => {

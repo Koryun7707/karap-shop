@@ -31,7 +31,7 @@
                         <div id="afterSale">0</div>
                     </div>
                     <div class="my-4">
-                        <a onclick="sendData()" id="shippingPage" href="/shipping" class="btn btn-green-gradient mb-3"
+                        <a onclick="sendData()" id="shippingPage"  class="btn btn-green-gradient mb-3"
                            style="font-size: 20px; color: #fff; text-transform: capitalize">Continue shipping</a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
@@ -196,24 +196,38 @@
     }
 
     function sendData() {
-        var values = [];
-        if ($('input[type=checkbox]').is(':checked')) {
-            $.each($('input:checked'), function (index, input) {
-                console.log(111);
-                const id = input.getAttribute('_id');
+        const agreeTerms = document.getElementById('agreeTerms').checked;
+        const count = Number(document.getElementById('countProduct').innerHTML);
+        if(!agreeTerms  || !count){
+            document.getElementById('shippingPage').removeAttribute('href');
+            if(!count){
+               alert('Please Select Product!');
+           }else{
+               alert('Please read Term and Conditions');
+           }
 
-                let obj = {
-                    productId: id,
-                    count: document.getElementById(`qtyInput${id}`).getAttribute('value'),
-                    price: document.getElementById(`productPriceBasket${id}`).innerHTML,
-                    priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
-                    images: document.getElementById(`productImage${id}`).getAttribute('src'),
-                    name: document.getElementById(`productName${id}`).innerHTML,
-                }
-                values.push(obj);
-            });
+        }else {
+            document.getElementById('shippingPage').setAttribute('href','/shipping');
+            var values = [];
+            if ($('input[type=checkbox]').is(':checked')) {
+                $.each($('input:checked'), function (index, input) {
+                    if (input.getAttribute('id') !== 'agreeTerms' && input.getAttribute('id') !== 'select-all') {
+                        const id = input.getAttribute('_id');
+                        let obj = {
+                            productId: id,
+                            count: document.getElementById(`qtyInput${id}`).getAttribute('value'),
+                            price: document.getElementById(`productPriceBasket${id}`).innerHTML,
+                            priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
+                            images: document.getElementById(`productImage${id}`).getAttribute('src'),
+                            name: document.getElementById(`productName${id}`).innerHTML,
+                        }
+                        values.push(obj);
+                    }
+                });
 
-            localStorage.setItem('selected', JSON.stringify(values));
+
+                localStorage.setItem('selected', JSON.stringify(values));
+            }
         }
     }
 
