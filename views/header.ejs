@@ -244,8 +244,6 @@
                 success: function (response) {
                     $('#search-div').html("");
                     const {brands, products} = response.results;
-                    console.log(brands)
-                    console.log(products)
                     let div = document.createElement(`div`);
                     $('#search-div').append(div);
                     if (brands.length) {

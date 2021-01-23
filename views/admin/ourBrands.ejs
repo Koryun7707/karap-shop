@@ -26,7 +26,6 @@
             url: '/all-brands',
             method: 'get',
             success: function (response) {
-                console.log(response.results);
                 let tbody = document.getElementById('tbody')
                 if(response.results.length){
                     response.results.forEach(function(item){
@@ -55,12 +54,10 @@
     })
     function deleteBrand(button){
         const _id =  button.getAttribute('value');
-        console.log(_id);
         $.ajax({
             url:`/brand/${_id}`,
             method: 'delete',
             success: function (response) {
-                console.log(response)
                 document.getElementById(_id).remove();
             },
             error: function (data) {

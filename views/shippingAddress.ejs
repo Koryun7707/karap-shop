@@ -178,15 +178,12 @@
             let productsDeliveryFromSpainWeight = 0;
             const orderArray = JSON.parse(localStorage.getItem('order'));
             orderArray.forEach((item) => {
-                console.log(item);
                 if (item.registrationAddress === 'armenia') {
                     productsDeliveryFromArmeniaWeight += Number(item.productWeight);
                 } else {
                     productsDeliveryFromSpainWeight += Number(item.productWeight);
                 }
             });
-            console.log(productsDeliveryFromArmeniaWeight, productsDeliveryFromSpainWeight);
-            console.log(country);
             if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight <= 0.5) {
                 priceDelivery += 19.5;
             } else if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight > 0.5 && productsDeliveryFromArmeniaWeight <= 1) {
@@ -291,7 +288,6 @@
             const shippingAddress = JSON.stringify(newObj);
             localStorage.setItem('shippingAddress', shippingAddress);
             element.setAttribute('href', '/')
-            console.log(1111);
         }
     }
 

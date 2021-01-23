@@ -15,7 +15,6 @@ function searchByPrice() {
     } else {
 
         //write our code here
-        console.log(priceFrom, priceTo);
         let searchValue = document.querySelector('input[type=search]').value || ''
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
@@ -29,8 +28,7 @@ function searchByPrice() {
                 }
             });
         }
-        console.log(values, brandId);
-        console.log(searchValue)
+
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -43,7 +41,6 @@ function searchByPrice() {
                 priceTo: priceTo
             },
             success: (response) => {
-                console.log(777777777777);
                 if (response.results.pageCount > 0) {
                     $('#pagination-place').empty();
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -150,7 +147,6 @@ $(document).ready(function () {
             url: '/shop-filter',
             data: {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo},
             success: (response) => {
-                console.log(8888888888888);
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
                     let paginatinPlace = document.getElementById('pagination-place');
@@ -227,7 +223,6 @@ $(document).ready(function () {
         const elementAttributes = item.getAttribute('class');
         let pageNumber;
         if (elementValue === '-1') {
-            console.log(1111);
             for (let i = 1; i <= Number(pagesCount); i++) {
                 if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
                     if (i === 1) {
@@ -269,9 +264,7 @@ $(document).ready(function () {
                     }
                 }
             } else {
-                console.log(Number(pagesCount));
                 for (let i = 1; i <= Number(pagesCount); i++) {
-                    console.log(i);
                     if (i === Number(elementValue)) {
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
                     } else {
@@ -286,7 +279,6 @@ $(document).ready(function () {
         //get price product
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
-        console.log(pageNumber);
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -500,7 +492,6 @@ $(document).ready(function () {
 
     //page = return givePageNumber function
     function handeleOnchangeValue(page) {
-        console.log('page', page);
         // let pagesCount = Number(document.getElementById('pagination-place').getAttribute('value'));
         let pageNumber;
         if (page > 0) {

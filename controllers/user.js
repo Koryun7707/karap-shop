@@ -3,10 +3,8 @@ const {sendMessageToMail} = require('../services/mailService')
 
 module.exports = {
     sendMessageContactUs: async (req, res) => {
-        console.log(req.body);
         try {
             const {email, firstName, message} = req.body
-            console.log(req.body);
             const content = {
                 from: process.env.MAIL_AUTH_EMAIL,
                 to: email,

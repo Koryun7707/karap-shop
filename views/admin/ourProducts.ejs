@@ -29,7 +29,6 @@
         url: '/products',
         method: 'get',
         success: function (response) {
-            console.log(response);
             let tbody = document.getElementById('tbody')
             if(response.results.data.length){
                 response.results.data.forEach(function(item){
@@ -64,7 +63,6 @@
             url:`/product/${_id}`,
             method: 'delete',
             success: function (response) {
-                console.log(response)
                     document.getElementById(_id).remove();
             },
             error: function (data) {

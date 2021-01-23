@@ -286,7 +286,6 @@ const getProductById = async (req, res) => {
         } else {
             const ids = req.body['shoppingCard[]'];
             const products = await Product.find({_id: {"$in": ids}}).populate('brandId').lean().exec();
-            console.log(products)
             return res.status(200).json(success('Products Data Shopping Card!',
                 products, res.statusCode));
         }

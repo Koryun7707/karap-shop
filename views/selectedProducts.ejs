@@ -86,7 +86,6 @@
         success: (response) => {
             if (response.results.length) {
                 response.results.forEach(function (item) {
-                    console.log(item);
                     let newDiv = document.createElement('div');
                     currentDiv.append(newDiv);
                     newDiv.setAttribute('class', 'selected-product-cart');
@@ -194,7 +193,6 @@
     }
 
     function sendData() {
-        console.log(255252525)
         const agreeTerms = document.getElementById('agreeTerms').checked;
         const count = Number(document.getElementById('countProduct').innerHTML);
         if (!agreeTerms || !count) {

@@ -129,7 +129,6 @@
                 url: '/product-by-id',
                 data: product,
                 success: (response) => {
-                    console.log(response);
                     if (response.message && response.error) {
                         alert(`${response.message}`);
                     } else {

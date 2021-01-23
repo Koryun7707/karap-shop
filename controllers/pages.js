@@ -33,7 +33,6 @@ module.exports = {
             req.session.user = req.user;
             let pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             if (req.session.language !== 'eng' && pageData.length) {
-                console.log(pageData)
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
@@ -63,7 +62,6 @@ module.exports = {
             const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesAboutSlider').exec();
             pageData[0].imagesAboutSlider = arrayImages.imagesAboutSlider;
         }
-        console.log(pageData);
         res.render('aboutUs', {
             URL: '/about',
             user: req.session.user,
@@ -88,12 +86,9 @@ module.exports = {
         if (req.session.language === undefined) {
             req.session.language = 'eng';
         }
-        // console.log('shop lang', req.session.language);
         try {
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
-            // console.log(pageData);
             const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
-            console.log(productsType);
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             const type = req.query.type || null;
             const brandId = req.query.brandId || null;
@@ -128,7 +123,6 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
-            // console.log(product)
             res.render('product', {
                 URL: '/product',
                 user: req.session.user,
@@ -136,7 +130,6 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
             });
         } catch (e) {
-            console.log(e)
             req.flash("error_msg", e.message);
             return res.redirect("/shop");
         }
@@ -162,7 +155,6 @@ module.exports = {
                 pages: brands.length
             });
         } catch (err) {
-            console.log(err)
             req.flash("error_msg", err.message);
             return res.redirect("/brand");
         }
@@ -193,7 +185,6 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesJoinOurTeamSlider').exec();
                 pageData[0].imagesJoinOurTeamSlider = arrayImages.imagesJoinOurTeamSlider;
             }
-            console.log(pageData);
             res.render('joinOurTeam', {
                 URL: '/join-our-team',
                 user: req.session.user,
@@ -201,7 +192,6 @@ module.exports = {
                 pageData: pageData,
             });
         } catch (err) {
-            console.log(err)
             req.flash("error_msg", err.message);
             return res.redirect("/join-our-team");
         }
@@ -908,7 +898,6 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id: _id}).lean().exec();
-            console.log(product);
             res.render('admin/editProduct', {
                 URL: '/admin-editProduct',
                 user: req.session.user,
@@ -925,9 +914,7 @@ module.exports = {
         logger.info('Start edit brand - - -');
         try {
             const {_id} = req.query;
-            console.log(_id)
             const brand = await Brand.find({_id: _id}).lean().exec();
-            console.log(brand);
             res.render('admin/editBrand', {
                 URL: '/admin-editBrand',
                 user: req.session.user,
@@ -935,7 +922,6 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
-            console.log(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -946,7 +932,6 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            console.log(req.session.user);
             res.render('shippingAddress', {
                 URL: '/shipping',
                 user: req.session.user,

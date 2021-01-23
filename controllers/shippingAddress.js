@@ -7,7 +7,6 @@ const createShippingAddress = async (req, res) => {
     //TODO must be work sended data after success payed
     //TODO give data from loocal storage
     // TODO from body must be come selected product array, and user shipping address data
-    console.log(req.body);
     logger.info('Start create shipping address - - -');
     try {
         const {error, value} = validateShippingAddress(req.body);
