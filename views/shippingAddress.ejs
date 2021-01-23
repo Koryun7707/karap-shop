@@ -7,40 +7,84 @@
             <div class="col-12 col-md-7 col-lg-7">
                 <h3 class="mb-5">Contact Information</h3>
                 <form>
+                    <h5 class="mb-2">Email Address</h5>
                     <div class="form-group">
-                        <input type="email" class="form-control" id="exampleFormControlInput1"
-                               placeholder="Email Address">
+                        <input type="email" class="form-control" id="shippingAddressEmail">
                     </div>
                     <h5 class="mb-2">Shipping Address</h5>
                     <div class="d-flex justify-content-between">
                         <div class="form-group mr-1">
-                            <input type="text" class="form-control" id="First Name" placeholder="First Name">
+                            <input type="text" class="form-control" id="firstName">
                         </div>
                         <div class="form-group ml-1">
-                            <input type="text" class="form-control" id="Last Name" placeholder="Last Name">
+                            <input type="text" class="form-control" id="lastName">
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="address" placeholder="Address">
+                        <input type="text" class="form-control" value="" id="address" placeholder="Address">
+                        <div id="addressMessage"></div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="apartment" placeholder="Apartment">
+                        <input type="text" class="form-control" value="" id="apartment" placeholder="Apartment">
+                        <div id="apartmentMessage"></div>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div class="form-group mr-1">
-                            <input type="number" class="form-control" id="PostalCode" placeholder="Postal Code">
+                            <input type="text" class="form-control" value="" id="postalCode" placeholder="Postal Code">
+                            <div id="postalCodeMessage"></div>
                         </div>
                         <div class="form-group ml-1">
-                            <input type="text" class="form-control" id="City" placeholder="City">
+                            <input type="text" class="form-control" value="" id="city" placeholder="City">
+                            <div id="cityMessage"></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="country" placeholder="Country/Region">
+                        <select id="selectCountry" onchange="handleSelectChange()" name="country">
+                            <option value="Country/Region" selected="selected">Country/Region</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Croatia"> Croatia</option>
+                            <option value="Cyprus"> Cyprus</option>
+                            <option value="Czech Republic"> Czech Republic</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Estonia"> Estonia</option>
+                            <option value="Finland">Finland</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Lalov">Lalov</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="P Spain"> P Spain</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Bosnia and Herzegovina"> Bosnia and Herzegovina</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Montenegro"> Montenegro</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="Andorra">Andorra</option>
+                            <option value="Monaco">Monaco</option>
+                            <option value="Vatican">Vatican</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="San Marino"> San Marino</option>
+                            <option value="Macedonia">Macedonia</option>
+                        </select>
+                        <div id="countryMessage"></div>
                     </div>
                     <div class="form-group">
-                        <input type="number" class="form-control" id="phone" placeholder="Phone">
+                        <input type="text" class="form-control" value="" id="phone" placeholder="Phone">
+                        <div id="phoneMessage"></div>
                     </div>
-
                 </form>
             </div>
             <div class="col-12 col-md-5 col-lg-5 total-info">
@@ -48,28 +92,27 @@
                     <hr>
                     <div class="d-flex">
                         <div class="col-3 p-0">
-                            <button class="btn-green-gradient" style="height: 45px; border-radius:5px">Apply</button>
+                            <a class="btn-green-gradient" style="height: 180px; width: 300px; border-radius:5px"
+                               onclick="handleOrderAddress(this)">
+                                Apply
+                            </a>
                         </div>
                     </div>
                     <hr>
                     <div>
                         <div class="mb-3 d-flex justify-content-between">
                             <div>Sale</div>
-                            <div>-30%</div>
+                            <div id="salePrice"></div>
                         </div>
                         <div class="mb-3 d-flex justify-content-between">
                             <div>Delivery</div>
-                            <div>500 dram</div>
-                        </div>
-                        <div class="mb-3 d-flex justify-content-between">
-                            <div>Date</div>
-                            <div>21-23 of january</div>
+                            <div id="delivery">0</div>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <h2 class="title"><b>TOTAL</b></h2>
                         <div class="product-price">
-                            <h2 style="color: #065a1f"><b id="product-price">20 610 dram</b></h2>
+                            <h2 style="color: #065a1f"><b id="productPrice"></b></h2>
                         </div>
                     </div>
                 </div>
@@ -84,17 +127,205 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
 <script>
-    const selected = JSON.parse(localStorage.getItem('selected'))
-    const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
+    // var shippingCountries = [
+    //     {
+    //         "from": 'spain',
+    //         "Austria": 11.5,
+    //         "Belgium": 11.5,
+    //         "Bulgaria": 11.5,
+    //         "Croatia": 11.5,
+    //         "Cyprus": 11.5,
+    //         "Czech Republic": 11.5,
+    //         "Denmark": 11.5,
+    //         "Estonia": 11.5,
+    //         "Finland": 11.5,
+    //         "France": 11.5,
+    //         "Germany": 11.5,
+    //         "Greece": 11.5,
+    //         "Hungary": 11.5,
+    //         "Ireland": 11.5,
+    //         "Italy": 11.5,
+    //         "Latvia": 11.5,
+    //         "Lithuania": 11.5,
+    //         "Luxembourg": 11.5,
+    //         "Malta": 11.5,
+    //         "Lalov": 11.5,
+    //         "Netherlands": 11.5,
+    //         "P Spain": 11.5,
+    //         "Sweden": 11.5,
+    //         "Switzerland": 11.5,
+    //         "Serbia": 11.5,
+    //         "Norway": 11.5,
+    //         "Bosnia and Herzegovina": 11.5,
+    //         "Albania": 11.5,
+    //         "Montenegro": 11.5,
+    //         "Iceland": 11.5,
+    //         "Andorra": 11.5,
+    //         "Monaco": 11.5,
+    //         "Vatican": 11.5,
+    //         "Liechtenstein": 11.5,
+    //         "San Marino": 11.5,
+    //         "Macedonia": 11.5,
+    //     }
+    // ];
+    function handleSelectChange() {
+        let totalPrice = document.getElementById('productPrice').innerHTML;
+        totalPrice = Number(totalPrice.substring(0, totalPrice.length - 1));
+        let country = document.getElementById("selectCountry").value;
+        if (country !== 'Country/Region') {
+            let priceDelivery = 0;
+            let productsDeliveryFromArmeniaWeight = 0;
+            let productsDeliveryFromSpainWeight = 0;
+            const orderArray = JSON.parse(localStorage.getItem('order'));
+            orderArray.forEach((item) => {
+                console.log(item);
+                if (item.registrationAddress === 'armenia') {
+                    productsDeliveryFromArmeniaWeight += Number(item.productWeight);
+                } else {
+                    productsDeliveryFromSpainWeight += Number(item.productWeight);
+                }
+            });
+            console.log(productsDeliveryFromArmeniaWeight, productsDeliveryFromSpainWeight);
+            console.log(country);
+            if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight <= 0.5) {
+                priceDelivery += 19.5;
+            } else if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight > 0.5 && productsDeliveryFromArmeniaWeight <= 1) {
+                priceDelivery += 28.5;
+            } else if (productsDeliveryFromArmeniaWeight > 1) {
+                priceDelivery += Math.floor((productsDeliveryFromArmeniaWeight - 1) / 2) * 9 + 19.5;
+            }
 
-    if (selected && selected.length) {
-        selected.forEach((item) => {
-            let div = document.createElement('div');
-            currentDiv.prepend(div);
-            div.setAttribute('class', 'd-flex');
-            div.innerHTML = `
+            if (country === 'P Spain') {
+                if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 2) {
+                    priceDelivery += 8.5;
+                } else if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight > 2 && productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 5) {
+                    priceDelivery += 9.5;
+                } else if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight > 5) {
+                    priceDelivery += Math.floor((productsDeliveryFromSpainWeight - 1) / 3) + 8.5;
+                }
+            } else if (country === 'USA  Canada') {
+                if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 2) {
+                    priceDelivery += 25.5;
+                } else if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight > 2 && productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 5) {
+                    priceDelivery += 50;//this must be changed
+                } else if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight > 5) {
+                    priceDelivery += Math.floor((productsDeliveryFromSpainWeight - 1) / 3) + 25.5;//this must be changed
+                }
+            } else {
 
+                if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 2) {
+                    priceDelivery += 11.5;
+                } else if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight > 2 && productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 5) {
+                    priceDelivery += 25.5;//this must be changed
+                } else if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight > 5) {
+                    priceDelivery += Math.floor((productsDeliveryFromSpainWeight - 1) / 3) + 11.5;//this must be changed
+                }
+            }
+            document.getElementById('delivery').innerHTML = `${priceDelivery}€`
+            document.getElementById('productPrice').innerHTML = `${totalPrice + priceDelivery}€`
+        } else {
+            let totalDelivery = document.getElementById('delivery').innerHTML;
+            totalDelivery = Number(totalDelivery.substring(0, totalDelivery.length - 1));
+            document.getElementById('productPrice').innerHTML = `${totalPrice - totalDelivery}€`
+            document.getElementById('delivery').innerHTML = `${0}€`
+        }
+    }
 
+    function handleOrderAddress(element) {
+        let address = document.getElementById('address');
+        let apartment = document.getElementById('apartment');
+        let postalCode = document.getElementById('postalCode');
+        let city = document.getElementById('city');
+        let country = $("#selectCountry").val();
+        const phone = document.getElementById('phone');
+        if (!address.value || !apartment.value || !postalCode.value || !city.value || country === 'Country/Region' || !phone.value) {
+            let addressMessage = document.getElementById('addressMessage');
+            let apartmentMessage = document.getElementById('apartmentMessage');
+            let postalCodeMessage = document.getElementById('postalCodeMessage');
+            let cityMessage = document.getElementById('cityMessage');
+            let countryMessage = document.getElementById('countryMessage');
+            let phoneMessage = document.getElementById('phoneMessage')
+
+            if (!address.value) {
+                addressMessage.innerHTML = 'Address is required';
+                setTimeout(() => {
+                    addressMessage.innerHTML = '';
+                }, 1000);
+            } else if (!apartment.value) {
+                apartmentMessage.innerHTML = 'Apartment is required';
+                setTimeout(() => {
+                    apartmentMessage.innerHTML = '';
+                }, 1000);
+            } else if (!postalCode.value) {
+                postalCodeMessage.innerHTML = 'Postal code is required';
+                setTimeout(() => {
+                    postalCodeMessage.innerHTML = '';
+                }, 1000);
+            } else if (!city.value) {
+                cityMessage.innerHTML = 'City is required';
+                setTimeout(() => {
+                    cityMessage.innerHTML = '';
+                }, 1000);
+            } else if (country === 'Country/Region') {
+                countryMessage.innerHTML = 'Please select country ';
+                setTimeout(() => {
+                    countryMessage.innerHTML = '';
+                }, 1000);
+            } else if (!phone.value) {
+                phoneMessage.innerHTML = 'Phone is required, in case we need to contact you about your order';
+                setTimeout(() => {
+                    phoneMessage.innerHTML = '';
+                }, 1000);
+            }
+        } else {
+            let totalDelivery = document.getElementById('delivery').innerHTML;
+            totalDelivery = Number(totalDelivery.substring(0, totalDelivery.length - 1));
+            const newObj = {
+                address: address.value,
+                apartment: apartment.value,
+                postalCode: postalCode.value,
+                city: city.value,
+                country: country.value,
+                deliveryPrice: totalDelivery,
+            };
+            const shippingAddress = JSON.stringify(newObj);
+            localStorage.setItem('shippingAddress', shippingAddress);
+            element.setAttribute('href', '/')
+            console.log(1111);
+        }
+    }
+
+    window.onload = () => {
+        const shippingAddressEmail = document.getElementById('shippingAddressEmail');
+        const firstNameElement = document.getElementById('firstName');
+        const lastNameElement = document.getElementById('lastName');
+        const {firstName, lastName, email} = JSON.parse(localStorage.getItem('user'));
+        shippingAddressEmail.setAttribute('placeholder', email);
+        shippingAddressEmail.disabled = true;
+        firstNameElement.setAttribute('placeholder', firstName);
+        firstNameElement.disabled = true;
+        lastNameElement.setAttribute('placeholder', lastName);
+        lastNameElement.disabled = true;
+
+        //==> this part i add in my window on load function
+        let productTotalPrice = 0;
+        let productSalePrice = 0;
+        const salePrice = document.getElementById('salePrice');
+        const productPrice = document.getElementById('productPrice');
+
+        const order = JSON.parse(localStorage.getItem('order'));
+        const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
+        if (order && order.length) {
+            order.forEach((item) => {
+                let priceAfterSale = Number(item.priceSale.substring(0, item.priceSale.length - 1));
+                let allPrice = Number(item.price.substring(0, item.price.length - 1));
+                productTotalPrice += priceAfterSale;
+                productSalePrice += allPrice;
+
+                let div = document.createElement('div');
+                currentDiv.prepend(div);
+                div.setAttribute('class', 'd-flex');
+                div.innerHTML = `
                         <div class="img-area">
                             <img src="${item.images}" alt="">
                             </div>
@@ -102,9 +333,17 @@
                             <h5>${item.name}</h5>
                             <div><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color}</span>/<span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size}</span></div>
                         </div>
-                        <div class="price ml-auto">${item.price} </div>
+                        <div class="price ml-auto" style="text-decoration: line-through;">${item.price} </div>
                         <div class="price ml-auto">${item.priceSale} </div>
-`                      })
-            }
-    </script>
+`
+            })
+            salePrice.innerHTML = `-${productSalePrice - productTotalPrice}€`;
+            productPrice.innerHTML = `${productTotalPrice}€`;
+        }
+
+
+        //clear shipping addres when page is refresh
+    }
+
+</script>
 <%- include ('footer') -%>

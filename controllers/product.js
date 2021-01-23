@@ -48,6 +48,7 @@ const createProduct = async (req, res) => {
             sale: value.productSale,
             colors: value.productColor.split('/'),
             count: value.productCount,
+            productWeight: value.productWeight,
             language: value.language,
         });
         newProduct.images = moveFile(files, dir);
@@ -267,15 +268,14 @@ const getProductsShopFilter = async (req, res) => {
 const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
     try {
-        console.log(req.body);
         if (req.body.productCount && req.body.productId) {
-            const product = await Product.findById(req.body.productId).exec();
+            const product = await Product.findById(req.body.productId).populate('brandId').exec();
             if (Number(product.count) >= Number(req.body.productCount)) {
                 return res.status(200).json(success('Product exists',
                     product, res.statusCode));
             } else {
                 let mes;
-                if (Number(product.count) === '0') {
+                if (Number(product.count) === 0) {
                     mes = 'Product not exists';
                 } else {
                     mes = `Sorry now we have only ${product.count} product.`;
@@ -285,7 +285,7 @@ const getProductById = async (req, res) => {
             }
         } else {
             const ids = req.body['shoppingCard[]'];
-            const products = await Product.find({_id: {"$in": ids}}).lean().exec();
+            const products = await Product.find({_id: {"$in": ids}}).populate('brandId').lean().exec();
             console.log(products)
             return res.status(200).json(success('Products Data Shopping Card!',
                 products, res.statusCode));

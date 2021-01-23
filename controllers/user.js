@@ -29,5 +29,4 @@ module.exports = {
             return res.redirect("/contact");
         }
     },
-
 };

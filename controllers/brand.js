@@ -10,6 +10,7 @@ const {moveFile} = require('../utils/helper');
 const createBrand = async (req, res) => {
     logger.info('Start createBrand - - -');
     try {
+        console.log(22222,req.body);
         const files = req.files;
         const {error, value} = validateBrand(req.body);
         if (error) {
@@ -43,6 +44,7 @@ const createBrand = async (req, res) => {
             info: value.brandInfo,
             type: value.brandType,
             hTag: value.brandHashTag,
+            registrationAddress: value.registrationAddress,
             language: value.language,
         });
         brand.images = moveFile(files, dir);

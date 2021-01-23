@@ -98,7 +98,7 @@ router.get('/join-our-team', pagesController.getJoinOurTeamPage);
 router.get('/shop', pagesController.getShopPage);
 router.get('/selectedProducts', pagesController.getSelectedProducts);
 router.get('/product', pagesController.getProduct);
-router.get('/shipping', pagesController.getShipping);
+router.get('/shipping', checkIsAuthenticated, pagesController.getShipping);
 
 //Create shipping address
 router.post('/shipping-address', checkIsAuthenticated, createShippingAddress);

@@ -12,6 +12,7 @@ const validateProduct = (data) => {
         productSale: Joi.string().allow('', null),
         productColor: Joi.string().allow('', null),
         productCount: Joi.string().required(),
+        productWeight: Joi.string().required(),
         language: Joi.string().required(),
     });
     return schema.validate(data);

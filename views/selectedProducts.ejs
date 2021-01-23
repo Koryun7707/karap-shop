@@ -31,7 +31,7 @@
                         <div id="afterSale">0</div>
                     </div>
                     <div class="my-4">
-                        <a onclick="sendData()" id="shippingPage"  class="btn btn-green-gradient mb-3"
+                        <a onclick="sendData()" id="shippingPage" class="btn btn-green-gradient mb-3"
                            style="font-size: 20px; color: #fff; text-transform: capitalize">Continue shipping</a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
@@ -46,7 +46,6 @@
             </div>
         </div>
     </div>
-
 </main>
 <%- include ('footer') -%>
 
@@ -74,7 +73,6 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
 <script>
-
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
     let currentDiv = document.getElementById('shoppingCardDiv');
     let array = []
@@ -88,6 +86,7 @@
         success: (response) => {
             if (response.results.length) {
                 response.results.forEach(function (item) {
+                    console.log(item);
                     let newDiv = document.createElement('div');
                     currentDiv.append(newDiv);
                     newDiv.setAttribute('class', 'selected-product-cart');
@@ -102,7 +101,7 @@
                             <img id='productImage${item._id}' src="${item.images[0]}" alt="" class="w-100">
                         </div>
                         <div>
-                            <div id='productName${item._id}' class="product-name">${item.name}</div>
+                            <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${item.name}</div>
                             <div class="product-color my-2">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}</div>
                             <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
                         </div>
@@ -123,7 +122,6 @@
                      <div class="d-flex justify-content-end">
                         <button value="${item._id}" class="btn btn-danger" onclick="deleteProduct(this)" type="submit">Delete</button>
                     </div>
-
                `
                 })
             }
@@ -196,18 +194,19 @@
     }
 
     function sendData() {
+        console.log(255252525)
         const agreeTerms = document.getElementById('agreeTerms').checked;
         const count = Number(document.getElementById('countProduct').innerHTML);
-        if(!agreeTerms  || !count){
+        if (!agreeTerms || !count) {
             document.getElementById('shippingPage').removeAttribute('href');
-            if(!count){
-               alert('Please Select Product!');
-           }else{
-               alert('Please read Term and Conditions');
-           }
-
-        }else {
-            document.getElementById('shippingPage').setAttribute('href','/shipping');
+            if (!count) {
+                alert('Please Select Product!');
+            } else if (!agreeTerms) {
+                alert('Please read Term and Conditions');
+            }
+        } else if (!localStorage.getItem('user')) {
+            alert('Please login for continue to shipping.');
+        } else {
             var values = [];
             if ($('input[type=checkbox]').is(':checked')) {
                 $.each($('input:checked'), function (index, input) {
@@ -220,19 +219,20 @@
                             priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
                             images: document.getElementById(`productImage${id}`).getAttribute('src'),
                             name: document.getElementById(`productName${id}`).innerHTML,
+                            registrationAddress: document.getElementById(`productName${id}`).getAttribute('registrationAddress'),
+                            productWeight: document.getElementById(`productName${id}`).getAttribute('productWeight'),
                         }
                         values.push(obj);
                     }
                 });
-
-
-                localStorage.setItem('selected', JSON.stringify(values));
+                localStorage.setItem('order', JSON.stringify(values));
+                document.getElementById('shippingPage').setAttribute('href', '/shipping');
             }
         }
     }
 
     window.onload = function () {
-        localStorage.removeItem('selected');
+        localStorage.removeItem('order');
     }
 
     function countPriceForBasket(element) {

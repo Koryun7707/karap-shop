@@ -9,7 +9,8 @@ const productSchema = new Schema({
         auto: true
     },
     brandId: {
-        type: String,
+        type: ObjectId,
+        ref: 'Brand',
         // type: mongoose.Schema.Types.ObjectId,
     },
     type: {
@@ -32,6 +33,10 @@ const productSchema = new Schema({
     },
     sale: {
         type: String,
+    },
+    productWeight:{
+        type: String,
+        required: true,
     },
     count: {
         type: String,

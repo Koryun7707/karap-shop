@@ -114,6 +114,9 @@ module.exports = {
         }
     },
     getSelectedProducts: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('selectedProducts', {
             URL: '/selectedProducts',
             user: req.session.user,
@@ -940,6 +943,10 @@ module.exports = {
     getShipping: async (req, res) => {
         logger.info('Start Shipping address get - - -');
         try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            console.log(req.session.user);
             res.render('shippingAddress', {
                 URL: '/shipping',
                 user: req.session.user,

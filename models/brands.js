@@ -29,6 +29,10 @@ const brandSchema = new Schema({
         type: Array,
         required: true,
     },
+    registrationAddress: {
+        type: String,
+        required: true,
+    },
     language: {
         type: String,
         enum: ['eng', 'ru', 'spain'],

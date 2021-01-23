@@ -23,7 +23,7 @@
 
 <header class="fixed-top header-bg">
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light ">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand mr-2 mr-xl-5 header-logo" href="/">
                 <img src="images/logo/spitak%20logo.png" alt="">
             </a>
@@ -45,120 +45,125 @@
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                <%if(staticData){%>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="<%= URL === '/' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/">
-                            <%= staticData.home %>
-                            <% if(URL === '/'){ %>
-                                <span class="sr-only">(current)</span>
-                            <% } %>
-                        </a>
-                    </li>
-
-                    <li class="<%= URL === '/shop' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/shop">
-                            <%= staticData.shop %>
-                            <% if(URL === '/shop'){ %>
-                                <span class="sr-only">(current)</span>
-                            <% } %>
-                        </a>
-                    </li>
-                    <li class="<%= URL === '/brand' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/brand">
-                            <%= staticData.brands %>
-                            <% if(URL === '/brand'){ %>
-                                <span class="sr-only">(current)</span>
-                            <% } %>
-                        </a>
-                    <li class="<%= URL === '/blog' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                        <a class="nav-link" href="/blog">
-                            <%= staticData.blog %>
-                            <% if(URL === '/blog'){ %>
-                                <span class="sr-only">(current)</span>
-                            <% } %>
-                        </a>
-                    </li>
-                    <% if(user && user.roleType === 'admin'){ %>
-                        <li class="<%= URL === '/admin-home' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
-                            <a class="nav-link" href="/admin-home">
-                                <%= staticData.dashboard %>
-                                <% if(URL === '/admin-home'){ %>
+            <% if(staticData){ %>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="<%= URL === '/' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                            <a class="nav-link" href="/">
+                                <%= staticData.home %>
+                                <% if(URL === '/'){ %>
                                     <span class="sr-only">(current)</span>
                                 <% } %>
                             </a>
                         </li>
-                    <% } %>
-                </ul>
-                <div class="d-flex ml-auto">
-                    <ul class="navbar-nav align-items-lg-center pl-2 pl-lg-0 flex-wrap">
-                        <li class=" mr-4 d-none d-md-none d-xl-block d-lg-block ">
-                            <div class="d-flex">
-                                <div class="icon-search-container"  data-ic-class="search-trigger">
-                                    <span class="fa fa-search"></span>
-                                    <input id="search-input" type="text" class="search-input" data-ic-class="search-input"
-                                           placeholder="Search"/>
-                                    <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
-                                    <div id ='search-div' data-ic-class="search-div">
 
-                                    </div>
-                                </div>
-                            </div>
-
-                            <% if(!user){ %>
-
-                        <li class="nav-item mr-2 mr-xl-4">
-                            <a href='/login' class="nav-link" type="button">
-                                <%= staticData.login %>
+                        <li class="<%= URL === '/shop' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                            <a class="nav-link" href="/shop">
+                                <%= staticData.shop %>
+                                <% if(URL === '/shop'){ %>
+                                    <span class="sr-only">(current)</span>
+                                <% } %>
                             </a>
                         </li>
-                        <li class="nav-item mr-2 mr-xl-4">
-                            <a href="/signup" class="nav-link" type="button">
-                                <%= staticData.signup %>
+                        <li class="<%= URL === '/brand' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                            <a class="nav-link" href="/brand">
+                                <%= staticData.brands %>
+                                <% if(URL === '/brand'){ %>
+                                    <span class="sr-only">(current)</span>
+                                <% } %>
+                            </a>
+                        <li class="<%= URL === '/blog' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                            <a class="nav-link" href="/blog">
+                                <%= staticData.blog %>
+                                <% if(URL === '/blog'){ %>
+                                    <span class="sr-only">(current)</span>
+                                <% } %>
                             </a>
                         </li>
-
-                        <% }else { %>
-                            <li class="nav-item mr-2 mr-xl-4">
-                                <a href="/logout" class="nav-link" type="button">
-                                    <%= staticData.logOut %>
+                        <% if(user && user.roleType === 'admin'){ %>
+                            <li class="<%= URL === '/admin-home' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
+                                <a class="nav-link" href="/admin-home">
+                                    <%= staticData.dashboard %>
+                                    <% if(URL === '/admin-home'){ %>
+                                        <span class="sr-only">(current)</span>
+                                    <% } %>
                                 </a>
                             </li>
-                            <li class="nav-item mr-2 mr-xl-4" id="avatar">
-                                <img style="
+                        <% } %>
+                    </ul>
+                    <div class="d-flex ml-auto">
+                        <ul class="navbar-nav align-items-lg-center pl-2 pl-lg-0 flex-wrap">
+                            <li class=" mr-4 d-none d-md-none d-xl-block d-lg-block ">
+                                <div class="d-flex">
+                                    <div class="icon-search-container" data-ic-class="search-trigger">
+                                        <span class="fa fa-search"></span>
+                                        <input id="search-input" type="text" class="search-input"
+                                               data-ic-class="search-input"
+                                               placeholder="Search"/>
+                                        <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
+                                        <div id='search-div' data-ic-class="search-div">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <% if(!user){ %>
+                            <li class="nav-item mr-2 mr-xl-4">
+                                <a href='/login' class="nav-link" type="button">
+                                    <%= staticData.login %>
+                                </a>
+                            </li>
+                            <li class="nav-item mr-2 mr-xl-4">
+                                <a href="/signup" class="nav-link" type="button">
+                                    <%= staticData.signup %>
+                                </a>
+                            </li>
+
+                            <% }else { %>
+                                <li class="nav-item mr-2 mr-xl-4"
+                                    firstName=<%= user.firstName %>
+                                    lastName=<%= user.lastName %>
+                                    email=<%= user.email %>
+                                    id="logOut">
+                                    <a onclick="userLogOut(this)" class="nav-link" type="button">
+                                        <%= staticData.logOut %>
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2 mr-xl-4" id="avatar">
+                                    <img style="
                                       border-radius: 50%;
                                     border:2px solid silver;
                                     cursor:pointer;" src=<%= user.avatar %> height="50" alt="?">
-                            </li>
-                        <% } %>
-                        <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block position-relative">
+                                </li>
+                            <% } %>
+                            <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block position-relative">
                                 <span id="shoppingCardNumber" class="cart-products-count">0</span>
-                                <a onclick="goToSelectedPage()" class="nav-link" id="shoppingCard"><i class="fa fa-cart-arrow-down"></i></a>
-                        </li>
-                        <li class="nav-item dropdown">
+                                <a onclick="goToSelectedPage()" class="nav-link" id="shoppingCard"><i
+                                            class="fa fa-cart-arrow-down"></i></a>
+                            </li>
+                            <li class="nav-item dropdown">
 
-                            <select class="example" name="example" id="example">
-                                <% if(staticData.language === 'eng' ){ %>
-                                    <option name="eng" value="eng" selected>Eng</option>
-                                    <option name="ru" value="ru">Ru</option>
-                                    <option name="spain" value="spain">Spain</option>
-                                <% }else if(staticData.language === 'ru'){ %>
-                                    <option name="eng" value="eng">Eng</option>
-                                    <option name="ru" value="ru" selected>Ru</option>
-                                    <option name="spain" value="spain">Spain</option>
-                                <% }else if(staticData.language === 'spain'){ %>
-                                    <option name="eng" value="eng">Eng</option>
-                                    <option name="ru" value="ru" selected>Ru</option>
-                                    <option name="spain" value="spain" selected>Spain</option>
-                                <% } %>
-                            </select>
-                        </li>
+                                <select class="example" name="example" id="example">
+                                    <% if(staticData.language === 'eng' ){ %>
+                                        <option name="eng" value="eng" selected>Eng</option>
+                                        <option name="ru" value="ru">Ru</option>
+                                        <option name="spain" value="spain">Spain</option>
+                                    <% }else if(staticData.language === 'ru'){ %>
+                                        <option name="eng" value="eng">Eng</option>
+                                        <option name="ru" value="ru" selected>Ru</option>
+                                        <option name="spain" value="spain">Spain</option>
+                                    <% }else if(staticData.language === 'spain'){ %>
+                                        <option name="eng" value="eng">Eng</option>
+                                        <option name="ru" value="ru" selected>Ru</option>
+                                        <option name="spain" value="spain" selected>Spain</option>
+                                    <% } %>
+                                </select>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <%}%>
+            <% } %>
         </nav>
     </div>
 </header>
@@ -167,8 +172,25 @@
 <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
         crossorigin="anonymous"></script>
 <script>
+    let logOut = document.getElementById('logOut');
+    if (logOut) {
+        let user = {
+            firstName: logOut.getAttribute('firstName'),
+            lastName: logOut.getAttribute('lastName'),
+            email: logOut.getAttribute('email'),
+        }
+        localStorage.setItem('user', JSON.stringify(user));
+        logOut.getAttribute('firstName');
+        logOut.getAttribute('lastName');
+        logOut.getAttribute('email');
+    } else {
+        localStorage.removeItem('user');
+    }
 
-
+    function userLogOut(element) {
+        localStorage.clear('user');
+        element.setAttribute('href', '/logout');
+    }
 
     function goToSelectedPage() {
         let basket = document.getElementById('shoppingCard');
@@ -176,7 +198,7 @@
         if (local && local.length) {
             basket.setAttribute('href', '/selectedProducts');
         }
-    }
+    };
     $(function () {
 
         document.getElementById('example').addEventListener('change', function () {
@@ -210,31 +232,32 @@
         $input.on('keydown', function () {
             clearTimeout(typingTimer);
         });
+
         function doneTyping() {
             let obj = {
-                search:$input.val()
+                search: $input.val()
             }
             $.ajax({
                 url: '/search',
                 method: 'post',
-                data:obj,
+                data: obj,
                 success: function (response) {
                     $('#search-div').html("");
-                    const {brands,products} = response.results;
+                    const {brands, products} = response.results;
                     console.log(brands)
                     console.log(products)
                     let div = document.createElement(`div`);
                     $('#search-div').append(div);
-                    if(brands.length){
-                        brands.forEach(function(item){
-                            let a= document.createElement(`a`);
+                    if (brands.length) {
+                        brands.forEach(function (item) {
+                            let a = document.createElement(`a`);
                             a.href = `shop?brandId=${item._id}`
                             a.innerHTML = `${item.name} <br/>`;
                             div.append(a);
                         })
                     }
-                    if(products.length){
-                        products.forEach(function(item){
+                    if (products.length) {
+                        products.forEach(function (item) {
                             let a = document.createElement(`a`);
                             a.href = `shop?type=${item.type}`
                             a.innerHTML = `${item.name}  <br/>`;
@@ -248,8 +271,7 @@
                 }
             });
         }
-    })
-    ;
+    });
 
 </script>
 
