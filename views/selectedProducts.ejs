@@ -205,14 +205,19 @@
         } else if (!localStorage.getItem('user')) {
             alert('Please login for continue to shipping.');
         } else {
+
             var values = [];
             if ($('input[type=checkbox]').is(':checked')) {
                 $.each($('input:checked'), function (index, input) {
                     if (input.getAttribute('id') !== 'agreeTerms' && input.getAttribute('id') !== 'select-all') {
                         const id = input.getAttribute('_id');
+                        let price =  document.getElementById(`saleProductPrice${id}`).innerHTML;
+                        let count = document.getElementById(`qtyInput${id}`).getAttribute('value');
+                        price = (Number(price.substring(0,price.length-1))/Number(count)).toString();
                         let obj = {
                             productId: id,
-                            count: document.getElementById(`qtyInput${id}`).getAttribute('value'),
+                            onePrice:price,
+                            count: count,
                             price: document.getElementById(`productPriceBasket${id}`).innerHTML,
                             priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
                             images: document.getElementById(`productImage${id}`).getAttribute('src'),

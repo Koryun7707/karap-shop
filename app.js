@@ -9,8 +9,9 @@ const apiRoutes = require('./routes');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport')
-const  {LocalStorage} =   require ("node-localstorage");
-localStorage = new LocalStorage('./scratch')
+const LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
+const ShippingAddress = require('./models/shipingAddress');
 
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
@@ -68,22 +69,12 @@ paypal.configure({
 app.post('/pay', function(req, res){
     //build PayPal payment request
     const order = JSON.parse(req.body.order);
-    console.log(order);
-    const array  = []
-    let total = 0 ;
-    order.forEach((item)=>{
-        let newObj = {
-            name: item.name,
-            sku: item.name,
-            price: item.priceSale.substring(0,item.priceSale.length - 1),
-            currency: "USD",
-            quantity: item.count
-        }
-        array.push(JSON.parse(JSON.stringify(newObj)));
-        total+= Number(item.priceSale.substring(0,item.priceSale.length - 1));
+    const {deliveryPrice} = JSON.parse(req.body.shippingAddress)
+    const shippingAddress = req.body.shippingAddress
+    let subTotal =0 ;
+    order.forEach((item)=> {
+        subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
     })
-    console.log(array)
-    console.log(total)
     const create_payment_json = {
         "intent": "sale",
         "payer": {
@@ -95,23 +86,37 @@ app.post('/pay', function(req, res){
         },
         "transactions": [{
             "item_list": {
-                "items": array
+                "items":  order.map((order) => {
+                    return {
+                        name: order.name,
+                        sku: order._id,
+                        price:order.onePrice,
+                        currency: "USD",
+                        quantity: order.count
+                    }
+                }),
             },
             "amount": {
                 "currency": "USD",
-                "total": "1.00"
+                "total": eval(subTotal+deliveryPrice),
+                "details": {
+                    "subtotal": subTotal,
+                    "tax": 0,
+                    "shipping":deliveryPrice
+                }
             },
             "description": "This is the payment description."
         }]
     };
+    localStorage.setItem('amount',JSON.stringify({subTotal:subTotal,deliveryPrice:deliveryPrice}));
+    localStorage.setItem('order',JSON.stringify(order));
+    localStorage.setItem('shippingAddress',shippingAddress);
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             throw error;
         } else {
             for(let i = 0;i < payment.links.length;i++){
                 if(payment.links[i].rel === 'approval_url'){
-                    console.log(666);
-
                    return res.redirect(payment.links[i].href);
                 }
             }
@@ -119,29 +124,57 @@ app.post('/pay', function(req, res){
         }
     });
 });
-app.get('/success', (req, res) => {
-    const payerId = req.query.PayerID;
-    const paymentId = req.query.paymentId;
+app.get  ('/success', async (req, res) => {
+    try{
+        const payerId = req.query.PayerID;
+        const paymentId = req.query.paymentId;
+        const amount = JSON.parse(localStorage.getItem('amount'));
+        console.log(amount.subTotal)
+        const execute_payment_json = {
+            "payer_id": payerId,
+            "transactions": [{
+                "amount": {
+                    "currency": "USD",
+                    "total": eval(amount.subTotal + amount.deliveryPrice),
+                    "details": {
+                        "subtotal":amount.subTotal,
+                        "tax": 0,
+                        "shipping":amount.deliveryPrice
+                    }
+                }
+            }]
+        };
 
-    const execute_payment_json = {
-        "payer_id": payerId,
-        "transactions": [{
-            "amount": {
-                "currency": "USD",
-                "total": "1.00"
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            if (error) {
+                console.log(error.response);
+                throw error;
+            } else {
+                const order = JSON.parse(localStorage.getItem('order'));
+                const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress'));
+                console.log(order)
+                console.log(shippingAddress)
+
+                let shipping = new ShippingAddress({
+                    userId: req.session.user._id,
+                    address: shippingAddress.address,
+                    apartment: shippingAddress.apartment,
+                    city: shippingAddress.city,
+                    country: shippingAddress.country,
+                    phone: shippingAddress.phone,
+                    productIds: order,
+                });
+                shipping.save();
+                // console.log(JSON.stringify(payment));
+                return res.redirect('/shipping');
             }
-        }]
-    };
+        })
+    }catch (e){
+        logger.error(`Payment Success Error: ${e}`)
+        res.redirect('/');
+    }
 
-    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-        if (error) {
-            console.log(error.response);
-            throw error;
-        } else {
-            console.log(JSON.stringify(payment));
-            res.send('Success');
-        }
-    });
+
 });
 app.get('/cancel', (req, res) => res.send('Cancelled'));
 app.use('/', apiRoutes);
