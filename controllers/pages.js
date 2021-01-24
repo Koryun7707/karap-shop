@@ -25,8 +25,8 @@ module.exports = {
         res.end();
     },
     getUserDashboard: async (req, res, next) => {
+        logger.info(`Start getUserDashboard Page Data - - -`);
         try {
-            // let staticData =
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
@@ -50,43 +50,61 @@ module.exports = {
                 pages: countOfBrands.length
             });
         } catch (e) {
-            console.log(e);
+            logger.error(`Start Home Page Data Error:${e}`)
+            req.flash('error_msg',e.message);
+            res.redirect('/');
         }
     },//done
     getAboutPage: async (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
+        logger.info('Start About Page Data Get - - -');
+        try{
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            let pageData = await PageData.find({language: req.session.language}).select('imagesAboutSlider textAboutSlider ourPhilosophy textOnAboutSlider titleOurPhilosophy').exec();
+            if (req.session.language !== 'eng' && pageData.length) {
+                const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesAboutSlider').exec();
+                pageData[0].imagesAboutSlider = arrayImages.imagesAboutSlider;
+            }
+            res.render('aboutUs', {
+                URL: '/about',
+                user: req.session.user,
+                pageData: pageData,
+                staticData: await getStaticData(req.session.language),
+            });
+        }catch(e){
+            logger.error(`Get About Page Data Error:${e}`)
+            req.flash('error_msg',e.message);
+            res.redirect('/')
         }
-        let pageData = await PageData.find({language: req.session.language}).select('imagesAboutSlider textAboutSlider ourPhilosophy textOnAboutSlider titleOurPhilosophy').exec();
-        if (req.session.language !== 'eng' && pageData.length) {
-            const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesAboutSlider').exec();
-            pageData[0].imagesAboutSlider = arrayImages.imagesAboutSlider;
-        }
-        res.render('aboutUs', {
-            URL: '/about',
-            user: req.session.user,
-            pageData: pageData,
-            staticData: await getStaticData(req.session.language),
-        });
+
     },
     getBlogPage: async (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
+        logger.info(`Start Blog Page Data Get - - -`);
+        try{
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            const brands = await Brand.find({language: req.session.language}).exec();
+            res.render('blog', {
+                URL: '/blog',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language),
+                brands: brands,
+            });
+        }catch(e){
+            logger.error(`Get Blog Page Data Error:${e}`);
+            req.flash('error_msg',e.message);
+            res.redirect('/');
         }
-        const brands = await Brand.find({language: req.session.language}).exec();
-        res.render('blog', {
-            URL: '/blog',
-            user: req.session.user,
-            staticData: await getStaticData(req.session.language),
-            brands: brands,
-        });
+
     },//done
     getShopPage: async (req, res) => {
         logger.info('Start Shop get - - -');
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
             const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
@@ -109,14 +127,22 @@ module.exports = {
         }
     },
     getSelectedProducts: async (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
+        logger.info(`Start SelectedProduct Page Data Get - - -`);
+        try{
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            res.render('selectedProducts', {
+                URL: '/selectedProducts',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language),
+            });
+        }catch(e){
+            logger.error(`SelectedProduct Page Data Error:${e.message}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/');
         }
-        res.render('selectedProducts', {
-            URL: '/selectedProducts',
-            user: req.session.user,
-            staticData: await getStaticData(req.session.language),
-        });
+
     },
     getProduct: async (req, res) => {
         logger.info('Start get Product - - -');
@@ -131,10 +157,11 @@ module.exports = {
             });
         } catch (e) {
             req.flash("error_msg", e.message);
-            return res.redirect("/shop");
+            return res.redirect("/");
         }
     },
     getBrandPage: async (req, res) => {
+        logger.info(`Start Get Brand Page Data - - -`);
         try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
@@ -154,28 +181,38 @@ module.exports = {
                 brands: brands,
                 pages: brands.length
             });
-        } catch (err) {
-            req.flash("error_msg", err.message);
-            return res.redirect("/brand");
+        } catch (e) {
+            logger.error(`Brand Page Data Get Error:${e}`)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
         }
     },//done
     getContactPage: async (req, res) => {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
+        logger.info('Start Get Contact Page Data - - -');
+        try{
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            let pageData = await PageData.find({language: req.session.language}).select('imagesContactSlider textContactSlider').exec();
+            if (req.session.language !== 'eng' && pageData.length) {
+                const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesContactSlider').exec();
+                pageData[0].imagesContactSlider = arrayImages.imagesContactSlider;
+            }
+            res.render('contactUs', {
+                URL: '/contact',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language),
+                pageData: pageData,
+            });
+        }catch(e){
+            logger.error(`Get Contact Page Data Error:${e}`);
+            req.flash('error_msg',e.message);
+            res.redirect('/');
         }
-        let pageData = await PageData.find({language: req.session.language}).select('imagesContactSlider textContactSlider').exec();
-        if (req.session.language !== 'eng' && pageData.length) {
-            const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesContactSlider').exec();
-            pageData[0].imagesContactSlider = arrayImages.imagesContactSlider;
-        }
-        res.render('contactUs', {
-            URL: '/contact',
-            user: req.session.user,
-            staticData: await getStaticData(req.session.language),
-            pageData: pageData,
-        });
+
     },
     getJoinOurTeamPage: async (req, res) => {
+        logger.info('Start Get Page Data Join Our Team - - -');
         try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
@@ -191,9 +228,10 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
             });
-        } catch (err) {
-            req.flash("error_msg", err.message);
-            return res.redirect("/join-our-team");
+        } catch (e) {
+            logger.error(`Start Get Data JoinOurTeam Data Error:${e}`)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
         }
     },
     //start admin pages ->
