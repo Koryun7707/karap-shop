@@ -92,10 +92,14 @@
                     <hr>
                     <div class="d-flex">
                         <div class="col-3 p-0">
-                            <a class="btn-green-gradient" style="height: 180px; width: 300px; border-radius:5px"
-                               onclick="handleOrderAddress(this)">
-                                Apply
-                            </a>
+                            <form action="/pay" method="post">
+                                <input name="order" type="hidden" id="orderProducts">
+                                <input name="shippingAddress" type="hidden" id="shippingAddress">
+                                <button class="btn-green-gradient" style="height: 50px; width: 300px; border-radius:5px"
+                                   onclick="handleOrderAddress(this)">
+                                    Apply
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <hr>
@@ -287,7 +291,13 @@
             };
             const shippingAddress = JSON.stringify(newObj);
             localStorage.setItem('shippingAddress', shippingAddress);
-            element.setAttribute('href', '/')
+            const order = localStorage.getItem('order');
+            //shippingAddress
+            document.getElementById('orderProducts').setAttribute('value',order);
+            document.getElementById('shippingAddress').setAttribute('value',shippingAddress);
+            //element.setAttribute('href', '/')
+
+
         }
     }
 
