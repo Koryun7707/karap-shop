@@ -166,12 +166,14 @@ app.get  ('/success', async (req, res) => {
                 });
                 shipping.save();
                 // console.log(JSON.stringify(payment));
+                req.flash('success_msg','Pay Completed');
                 return res.redirect('/shipping');
             }
         })
     }catch (e){
         logger.error(`Payment Success Error: ${e}`)
-        res.redirect('/');
+        req.flash('error_msg',`Pay Error ${e}`)
+        res.redirect('/shipping');
     }
 
 
