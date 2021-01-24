@@ -46,31 +46,13 @@
             </div>
         </div>
     </section>
-    <section id="section-brand-3" value=<%= pages %> class="section3">
+    <section id="section-brand-3" class="section3">
         <div class="container-fluid">
             <div class="row justify-content-around  px-md-5" id="brands-render-place">
-
             </div>
             <div class="mb-5 d-flex justify-content-end px-md-5">
-                <% if (pages > 0) { %>
-                    <div class="pagination">
-                        <a onclick="handelChosenPage(this)" id="-1" value="-1">&laquo;</a>
-                        <% for (let i = 1;  i <= pages; i++) { %>
-                            <% if (i == 1) { %>
-                                <a class="active" id="<%= i %>" onclick="handelChosenPage(this)"
-                                   value="<%= i %>">
-                                    <%= i %>
-                                </a>
-                            <% }else{ %>
-                                <a class="page-item" id="<%= i %>" onclick="handelChosenPage(this)"
-                                   value="<%= i %>">
-                                    <%= i %>
-                                </a>
-                            <% } %>
-                        <% } %>
-                        <a id="+1" onclick="handelChosenPage(this)" value="+1">&raquo;</a>
-                    </div>
-                <% } %>
+                <div class="pagination" id="pagination">
+                </div>
             </div>
         </div>
     </section>
@@ -141,6 +123,36 @@
                 page: 1,
             },
             success: function (result) {
+                if (result.results.pageCount > 0) {
+                    document.getElementById('section-brand-3').setAttribute('value', result.results.pageCount);
+                    let paginationPlace = document.getElementById('pagination');
+                    for (let i = -1; i < result.results.pageCount + 1; i++) {
+                        let a = document.createElement('a');
+                        a.setAttribute('onclick', 'handelChosenPage(this);');
+                        if (i === -1) {
+                            a.setAttribute('id', `-1`);
+                            a.setAttribute('value', `-1`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `&laquo;`
+                        } else if (i === 0) {
+                            a.setAttribute('id', '1');
+                            a.setAttribute('value', '1');
+                            a.setAttribute('class', `active`);
+                            a.innerHTML = '1'
+                        } else if (i > 0 && i !== result.results.pageCount) {
+                            a.setAttribute('id', `${i + 1}`);
+                            a.setAttribute('value', `${i + 1}`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `${i + 1}`
+                        } else {
+                            a.setAttribute('id', `+1`);
+                            a.setAttribute('value', `+1`);
+                            a.setAttribute('class', `page-item`);
+                            a.innerHTML = `&raquo;`
+                        }
+                        paginationPlace.append(a);
+                    }
+                }
                 $("#brands-render-place").empty();
                 result.results.brands.map((item) => {
                     let brandsRenderPlace = document.getElementById('brands-render-place');
