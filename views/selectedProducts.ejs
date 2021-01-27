@@ -101,7 +101,7 @@
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${item.name}</div>
-                            <div class="product-color my-2">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}</div>
+                            <div class="product-color my-2">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color || ''}</div>
                             <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
                         </div>
                     </div>

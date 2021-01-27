@@ -3,6 +3,7 @@
     <div class="container my-5">
         <div class="row">
             <% if(product.length){ %>
+              <%if(product[0].images.length){%>
                 <div class="col-7">
                     <div class="row">
                         <div class="col-2">
@@ -21,6 +22,7 @@
                         </div>
                     </div>
                 </div>
+                <%}%>
                 <div class="col-5">
                     <div class="product-name">
                         <h2 class="mb-2"><%= product[0].name %></h2>
@@ -34,30 +36,34 @@
                             <h5>Sale <%= product[0].sale %> %</h5>
                         </div>
                     <% } %>
-                    <div class="product-size">
-                        <h5>Size</h5>
-                        <ul class="list-unstyled d-flex" id="productSizesDiv" value=<%= product[0].sizes %>>
-                            <% if(product[0].sizes){ %>
-                                <% product[0].sizes.forEach(function(item){ %>
-                                    <input type="radio" name="productSize" id=<%= item %>>
-                                        <%= item %>
-                                    </input>
-                                <% }) %>
-                            <% } %>
-                        </ul>
-                    </div>
-                    <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
-                        <h5>Color</h5>
-                        <ul class="list-unstyled d-flex">
-                            <% if(product[0].colors){ %>
-                                <% product[0].colors.forEach(function(item){ %>
-                                    <input type="radio" name="productColor" id=<%= item %>>
-                                        <%= item %>
-                                    </input>
-                                <% }) %>
-                            <% } %>
-                        </ul>
-                    </div>
+                    <%if(product[0].sizes[0]!=''){%>
+                        <div class="product-size">
+                            <h5>Size</h5>
+                            <ul class="list-unstyled d-flex" id="productSizesDiv" value=<%= product[0].sizes %>>
+                                <% if(product[0].sizes){ %>
+                                    <% product[0].sizes.forEach(function(item){ %>
+                                        <input type="radio" name="productSize" id=<%= item %>>
+                                            <%= item %>
+                                        </input>
+                                    <% }) %>
+                                <% } %>
+                            </ul>
+                        </div>
+                    <%}%>
+                    <%if(product[0].colors[0]!=''){%>
+                        <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
+                            <h5>Color</h5>
+                            <ul class="list-unstyled d-flex">
+                                <% if(product[0].colors){ %>
+                                    <% product[0].colors.forEach(function(item){ %>
+                                        <input type="radio" name="productColor" id=<%= item %>>
+                                            <%= item %>
+                                        </input>
+                                    <% }) %>
+                                <% } %>
+                            </ul>
+                        </div>
+                    <%}%>
                     <div class="product-count">
                         <h5>Count of product</h5>
                         <div class="qtySelector text-center">
@@ -138,13 +144,15 @@
                         let productSize;
                         let productColor;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
-                        if (!document.querySelector('input[name="productSize"]:checked')) {
+                        if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
                             alert('Choose product size.');
-                        } else if (!document.querySelector('input[name="productColor"]:checked')) {
+                        } else if (!document.querySelector('input[name="productColor"]:checked')&&document.querySelector('input[name="productColor"]')) {
                             alert('Select product color.');
                         } else {
+                            if(document.querySelector('input[name="productSize"]'))
                             productSize = document.querySelector('input[name="productSize"]:checked').id;
-                            productColor = document.querySelector('input[name="productColor"]:checked').id;
+                            if(document.querySelector('input[name="productColor"]'))
+                                productColor = document.querySelector('input[name="productColor"]:checked').id;
                             if (Cardlocal && Cardlocal.length) {
                                 Cardlocal.forEach((item) => {
                                     if (item.productId === response.results._id) {

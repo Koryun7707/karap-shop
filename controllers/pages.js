@@ -149,6 +149,7 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
+            console.log(product)
             res.render('product', {
                 URL: '/product',
                 user: req.session.user,
