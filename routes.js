@@ -73,6 +73,9 @@ router.get('/', pagesController.getUserDashboard);
 //forgot password
 router.get('/forgotPassword',pagesController.forgotPassword);
 router.post('/forgotPassword',pagesController.sendEmailForgotPassword);
+router.get('/resetPassword/:token',pagesController.resetPassword);
+router.post('/resetPassword',pagesController.userResetPassword);
+router.get('/reset-password',pagesController.getresetPassword);
 
 //send message contact us
 router.post('/sendMessageContactUs', usersController.sendMessageContactUs);

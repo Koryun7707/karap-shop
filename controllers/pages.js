@@ -17,6 +17,10 @@ const Brand = require('../models/brands');
 const Product = require('../models/product');
 const User = require('../models/user')
 const {logger} = require('../utils/logger')
+const jwt = require('jsonwebtoken');
+const {sendMessageToMail} = require('../services/mailService');
+const LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
 
 module.exports = {
     changeLanguage: async (req, res) => {
@@ -1002,12 +1006,83 @@ module.exports = {
     sendEmailForgotPassword:async(req,res)=>{
         logger.info('Start sendEmailForgotPassword api - - ');
         try{
-            console.log(req.body);
-            res.end();
+            const {email} = req.body;
+            const user = await User.findOne({email:email});
+            console.log(user)
+            if(!user){
+                req.flash('error_msg','User with this email already exists');
+                return res.redirect('/forgotPassword');
+            }
+            const {_id} = user
+            const token = jwt.sign({_id},process.env.SECRET_KEY,{expiresIn: '1m'});
+            const data = {
+                from:process.env.MAIL_AUTH_EMAIL,
+                to:email,
+                subject:`Forgot Password link`,
+                html: `
+                     <h2>Please click on given link to reset your password</h2>
+                     <button>
+                            <a href="${process.env.CLIENT_URL}/resetPassword/${token}"> Reset Password</a>
+                     </button>
+`
+            }
+            sendMessageToMail(data);
+            req.flash('success_msg','Link send to mail');
+            return res.redirect('/forgotPassword');
         }catch(e){
             logger.error(`Send Forgot Password Error:${e}`);
             req.flash("error_msg",e.message);
             return res.redirect("/forgotPassword");
+        }
+    },
+    getresetPassword:async(req,res)=>{
+        const staticData = await getStaticData(req.session.language);
+        const userId = JSON.parse(localStorage.getItem('userId'))
+        localStorage.removeItem('userId');
+
+        return res.render('resetPassword',{
+            URL:'/resetPassword',
+            user:req.session.user,
+            staticData: staticData,
+            userId:userId,
+        })
+    },
+    resetPassword:async (req,res)=>{
+        try{
+            logger.info('Start Reset Password api - - -');
+            const {token} = req.params;
+            const staticData = await getStaticData(req.session.language);
+            console.log(token);
+            jwt.verify(token,process.env.SECRET_KEY,function  (err,decodedData) {
+                if (err) {
+                    req.flash('error_msg', 'Incorrect token or it is expired');
+                    return res.redirect('/forgotPassword');
+                }
+                console.log(decodedData);
+                localStorage.setItem('userId',JSON.stringify(decodedData._id));
+                return res.redirect('/reset-password');
+            })
+
+        }catch(e){
+            logger.error(`Start Reset Password Error:${e}`);
+
+        }
+    },
+    userResetPassword:async(req,res)=>{
+        try{
+            logger.info('Start userResetPAssword - - -');
+            const {password,confirmPassword,userId} = req.body;
+            if(password != confirmPassword){
+                req.flash("error_msg",'Password Does Not Match!');
+                return res.redirect('/reset-password');
+            }
+            const result = await User.updateOne({_id:userId},{password:password});
+            req.flash('success_msg','Password is updated you can login');
+            return res.redirect('/login');
+        }catch(e){
+            logger.error(`Updated Password Error:${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/reset-password');
         }
     }
 };

@@ -47,7 +47,7 @@ const userSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
 });
 
 //have a bcrypt error must be resolve
