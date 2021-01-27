@@ -75,6 +75,15 @@ module.exports =
         login_footer_button_left: 'Forgot Password?',
         login_footer_button_right: 'Registration',
         language: 'eng',
+        //forgotPassword
+        forgot_header:'Forgot Password?',
+        forgot_text:'Enter your email address and we’ll\n' +
+            'send you a link to reset your password',
+        forgot_email:'Email Address',
+        forgot_left_button:'Cancel',
+        forgot_right_button:'send',
+        forgot_footer_text:'Dont have an account? ',
+        forgot_footer_button:'Sign Up',
     }
         , {
         dashboard: 'Дашборд',
@@ -151,4 +160,12 @@ module.exports =
         login_footer_button_left: 'Забыли пароль?',
         login_footer_button_right: 'Регистрация',
         language: 'ru',
+        //Forgot
+        forgot_header:'Забыли пароль?',
+        forgot_text:'Введите свой адрес электронной почты, и мы пришлем вам ссылку для сброса пароля.',
+        forgot_email:'Адрес электронной почты',
+        forgot_left_button:'отменить',
+        forgot_right_button:'Отправить',
+        forgot_footer_text:'Нет учетной записи?',
+        forgot_footer_button:'Регистрация',
     }]

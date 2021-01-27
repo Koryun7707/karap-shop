@@ -70,6 +70,9 @@ router.get('/signup', forwardAuthenticated, pagesController.getSignUpPage);
 router.get('/login', forwardAuthenticated, pagesController.getLogInPage);
 router.get('/logout', pagesController.userLogOut);
 router.get('/', pagesController.getUserDashboard);
+//forgot password
+router.get('/forgotPassword',pagesController.forgotPassword);
+router.post('/forgotPassword',pagesController.sendEmailForgotPassword);
 
 //send message contact us
 router.post('/sendMessageContactUs', usersController.sendMessageContactUs);

@@ -149,7 +149,6 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
-            console.log(product)
             res.render('product', {
                 URL: '/product',
                 user: req.session.user,
@@ -982,5 +981,33 @@ module.exports = {
             return res.redirect("/");
         }
 
+    },
+    forgotPassword:async(req,res)=>{
+      logger.info('Start Forgot Password api - - - ');
+      try{
+          if (req.session.language === undefined) {
+              req.session.language = 'eng';
+          }
+          res.render('forgotPassword',{
+              URL:'/forgotPassword',
+              user:req.session.user,
+              staticData: await getStaticData(req.session.language)
+          })
+      }catch(e){
+          logger.error(`Forgot Password Error:${e}`);
+          req.flash("error_msg",e.message);
+          return res.redirect("/login");
+      }
+    },
+    sendEmailForgotPassword:async(req,res)=>{
+        logger.info('Start sendEmailForgotPassword api - - ');
+        try{
+            console.log(req.body);
+            res.end();
+        }catch(e){
+            logger.error(`Send Forgot Password Error:${e}`);
+            req.flash("error_msg",e.message);
+            return res.redirect("/forgotPassword");
+        }
     }
 };
