@@ -72,6 +72,8 @@ module.exports = function (passport) {
             if (!user) {
                 return done(null, false, {message: 'That email is not registered'});
             }
+            let hash = bcrypt.hashSync('12345678', 10);
+            console.log(hash)
             const isMatch = bcrypt.compareSync(password,user.password);
             if (!isMatch) {
                 return done(null, false, {message: 'Password incorrect'});

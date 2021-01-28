@@ -19,6 +19,7 @@ const User = require('../models/user')
 const {logger} = require('../utils/logger')
 const jwt = require('jsonwebtoken');
 const {sendMessageToMail} = require('../services/mailService');
+const bcrypt = require('bcrypt');
 const LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
@@ -1077,7 +1078,8 @@ module.exports = {
                 req.flash("error_msg",'Password Does Not Match!');
                 return res.redirect('/reset-password');
             }
-            const result = await User.updateOne({_id:userId},{password:password});
+            let hash = bcrypt.hashSync(password,10);
+            const result = await User.updateOne({_id:userId},{password:hash});
             req.flash('success_msg','Password is updated you can login');
             return res.redirect('/login');
         }catch(e){
