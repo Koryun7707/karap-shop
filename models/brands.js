@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 
@@ -13,25 +14,31 @@ const brandSchema = new Schema({
         required: true,
     },
     info: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
     },
     type: {
         type: String,
+        required: true,
     },
     hTag: {
         type: String,
+        required: true,
     },
-    logo: {
+    images: {
+        type: Array,
+        required: true,
+    },
+    registrationAddress: {
         type: String,
-        required:true,
+        required: true,
     },
-    image:{
-        type:String,
-        required:true,
+    language: {
+        type: String,
+        enum: ['eng', 'ru', 'spain'],
     }
 });
 
-
+brandSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Brand', brandSchema);

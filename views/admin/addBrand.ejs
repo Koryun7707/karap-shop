@@ -1,0 +1,55 @@
+<%- include ('adminHeader') -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <form method="post" enctype="multipart/form-data" action="brand" class="py-5">
+            <div class="row page-titles important">Add brand</div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Name</label>
+                <input required type="text" class="form-control" name="brandName" id="exampleInputEmail1"
+                       placeholder="Brand name.">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail22">Type</label>
+                <input required type="text" class="form-control" name="brandType" id="exampleInputEmail1"
+                       placeholder="Brand type.">
+            </div>
+
+            <div class="form-group important">
+                <label for="exampleInputEmail11">Brand registration address(*this case for count delevery, from where
+                    delivary brand product.)</label><br>
+                <select name="registrationAddress">
+                    <option name="spain" value="spain" selected>Spain</option>
+                    <option name="armenia" value="armenia">Armenia</option>
+                </select>
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">hTag</label>
+                <input required type="text" class="form-control" name="brandHashTag" id="exampleInputEmail1"
+                       placeholder="Brand hash/tag.">
+            </div>
+            <div class="form-group d-flex flex-column important">
+                <label>Info</label>
+                <textarea name="brandInfo" id="" rows="6" class="form-control"
+                          placeholder="Some info about brand."></textarea>
+            </div>
+            <div class="form-group important" id="upload_add_brand_image">
+                <label for="exampleInputEmail1 important">Upload brand logo, and brand home/brands/blog images(* images
+                    must be
+                    chosen by order[logo/home/brands/blog]).)</label>
+                <input required type="file" name="brandImages" multiple="multiple" class="form-control"
+                       id="uploadImagesBySize">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language">
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                    <option name="spain" value="spain">Spain</option>
+                    <option name="arm" value="arm">Arm</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+<%- include ('adminFooter') -%>

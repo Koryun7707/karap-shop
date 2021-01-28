@@ -1,0 +1,26 @@
+<%- include ('adminHeader') -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <form method="post" enctype="multipart/form-data"  action="admin-shop" class="py-5">
+            <div class="row page-titles">Shop</div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Text on slider</label>
+                <input required type="text" class="form-control" name="textShopSlider" id="exampleInputEmail1" placeholder="Text on slider.">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Upload shop general image.</label>
+                <input required type="file" name='shopSliderImages' class="form-control" id="uploadImagesBySize">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language">
+                    <option name="spain" value="spain" >Spain</option>
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+<%- include ('adminFooter') -%>

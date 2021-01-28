@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 
@@ -8,7 +9,9 @@ const productSchema = new Schema({
         auto: true
     },
     brandId: {
-        type:mongoose.Schema.Types.ObjectId,
+        type: ObjectId,
+        ref: 'Brand',
+        // type: mongoose.Schema.Types.ObjectId,
     },
     type: {
         type: String,
@@ -22,23 +25,33 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    size: {
-        type: Number,
+    sizes: {
+        type: Array,
     },
-    color: {
-        type: String,
+    colors: {
+        type: Array,
     },
     sale: {
-        type: Number,
+        type: String,
+    },
+    productWeight:{
+        type: String,
+        required: true,
     },
     count: {
-        type: Number,
+        type: String,
         required: true,
     },
     images: {
         type: Array,
         required: true,
-    }
+    },
+    language: {
+        type: String,
+        enum: ['eng', 'ru', 'spain'],
+    },
 });
+
+productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);

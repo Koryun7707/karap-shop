@@ -1,0 +1,86 @@
+<%- include ('adminHeader') -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <form method="post" enctype="multipart/form-data" action="admin-join-our-team" class="py-5">
+            <div class="row page-titles important">Join our team</div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Enter text on general image.</label>
+                <input required type="text" name="textJoinOurTeamSlider" class="form-control" id="exampleInputEmail1"
+                       placeholder="Text on general image.">
+            </div>
+            <div class="form-group important" id="upload_join_us">
+                <label for="exampleInputEmail1">Upload join our team general image, and looking partners image(* images
+                    must be chosen by this order generalImage/Looking partner image).</label>
+                <input required type="file" multiple="multiple" name="imagesJoinOurTeamSlider" class="form-control"
+                       id="uploadImagesBySize">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Title work with us</label>
+                <input required type="text" name="joinOurTeamWorkUs" class="form-control" id="exampleInputEmail1"
+                       placeholder="Title title work with us">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Column-1 title</label>
+                <input required type="text" name="joinOurCol1Title" class="form-control" id="exampleInputEmail1"
+                       placeholder="Column-1 title">
+            </div>
+            <div class="form-group d-flex flex-column important">
+                <label>Column-1 text</label>
+                <textarea name="joinOurCol1Text" id="" rows="6" class="form-control"
+                          placeholder="Column-1 text"></textarea>
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Column-2 title</label>
+                <input required type="text" name="joinOurCol2Title" class="form-control" id="exampleInputEmail1"
+                       placeholder="Column-2 title">
+            </div>
+            <div class="form-group d-flex flex-column important">
+                <label>Column-2 text</label>
+                <textarea name="joinOurCol2Text" id="" rows="6" class="form-control"
+                          placeholder="Column-2 text"></textarea>
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Column-3 title</label>
+                <input required type="text" name="joinOurCol3Title" class="form-control" id="exampleInputEmail1"
+                       placeholder="Column-3 title">
+            </div>
+            <div class="form-group d-flex flex-column important">
+                <label>Column-3 text</label>
+                <textarea name="joinOurCol3Text" id="" rows="6" class="form-control"
+                          placeholder="Column-3 text"></textarea>
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">We are looking partners</label>
+                <input required type="text" name="joinOurTeamPartnersTitle" class="form-control" id="exampleInputEmail1"
+                       placeholder="Title">
+            </div>
+            <div class="form-group d-flex flex-column important">
+                <label for="exampleInputEmail1">We are looking partners</label>
+                <textarea name="joinOurTeamPartners" id="" rows="6" class="form-control"
+                          placeholder="Text"></textarea>
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language" id="select_join_us">
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                    <option name="spain" value="spain">Spain</option>
+                    <option name="spain" value="spain">Arm</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        document.getElementById('select_join_us').addEventListener('change', function () {
+            if (this.value !== 'eng') {
+                document.getElementById('upload_join_us').style.display = 'none';
+            } else {
+                document.getElementById('upload_join_us').style.display = 'block';
+            }
+        });
+    });
+</script>
+<%- include ('adminFooter') -%>

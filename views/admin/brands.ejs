@@ -1,0 +1,40 @@
+<%- include ('adminHeader') -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <form method="post" enctype="multipart/form-data" action="admin-brand" class="py-5">
+            <div class="row page-titles">Brands</div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Enter text on general image.</label>
+                <input required type="text" name="textBrandSlider" class="form-control" id="exampleInputEmail1"
+                       placeholder="Enter text on general image.">
+            </div>
+            <div class="form-group important" id="upload_brand_image">
+                <label for="exampleInputEmail1">Upload brands page general image(*maximum selected image count must be
+                    1).</label>
+                <input required type="file" name="imagesBrandSlider" class="form-control" id="uploadImagesBySize">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language" id="select_brand_language">
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="ru" value="ru">Ru</option>
+                    <option name="spain" value="spain">Spain</option>
+                    <option name="spain" value="spain">Arm</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        document.getElementById('select_brand_language').addEventListener('change', function () {
+            if (this.value !== 'eng') {
+                document.getElementById('upload_brand_image').style.display = 'none';
+            } else {
+                document.getElementById('upload_brand_image').style.display = 'block';
+            }
+        });
+    });
+</script>
+<%- include ('adminFooter') -%>

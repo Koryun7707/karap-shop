@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 const roleTypes = require('../configs/constants').ROLE_TYPES;
-const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 
@@ -18,19 +17,19 @@ const userSchema = new Schema({
     firstName: {
         type: String,
         minLength: 2,
-        maxLength:256,
+        maxLength: 256,
         required: true,
     },
     lastName: {
         type: String,
         minLength: 2,
-        maxLength:256,
+        maxLength: 256,
         required: true,
     },
     email: {
         type: String,
         minLength: 2,
-        maxLength:256,
+        maxLength: 256,
         required: true,
     },
     password: {
@@ -41,15 +40,24 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    avatar: {
+        type: String,
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 });
 
-userSchema.pre('save', async function (next) {
-    this.password = await bcrypt.hash(this.password, saltRounds);
-    next();
-});
+//have a bcrypt error must be resolve
+// userSchema.pre('save', async function (next) {
+//     this.password = await bcrypt.hash(this.password, saltRounds);
+//     next();
+// });
 
 userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compare(password, this.password);
+    return password === this.password;
+    // return bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.toJSON = function () {

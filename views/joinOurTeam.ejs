@@ -1,106 +1,67 @@
-<%-include ('header')-%>
+<%- include ('header') -%>
 
-<main  style="padding-top: 100px" class="contact-section">
-    <section class="join-section-bg">
-        <div class="container">
-            <h1 class="text-center">JOIN OUR TEAM</h1>
-        </div>
-    </section>
+<main style="padding-top: 100px" class="contact-section">
+    <%if(pageData.length){%>
+        <section class="join-section-bg" style="background-image: url(<%= pageData[0].imagesJoinOurTeamSlider[0] %>)">
+            <div class="container">
+                <h1 class="text-center"><%= pageData[0].textJoinOurTeamSlider %></h1>
+            </div>
+        </section>
+
     <section class="section py-5">
         <div class="container container-1730">
-            <h2 class="text-center mb-5 ">WHY WORK WITH US</h2>
+            <h2 class="text-center mb-5 "><%= pageData[0].joinOurTeamWorkUs %></h2>
             <div class="row mb-5 justify-content-between">
                 <div class="col-12 col-md-3">
-                    <div class="title">1 Reason</div>
+                    <div class="title"><%= pageData[0].joinOurCol1Title %></div>
                     <div class="text">
                         <p>
-                            Manage your charitable giving through
-                            an existing giving account or create a
-                            DAF with The Nature Conservancy.
-                        </p>
-                        <p>
-                            Have you met one of our friendly fundraising
-                            ambassadors?
+                            <%= pageData[0].joinOurCol1Text %>
                         </p>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
-                    <div class="title">2 Reason</div>
+                    <div class="title"><%= pageData[0].joinOurCol2Title %></div>
                     <div class="text">
                         <p>
-                            Recognize loved ones with a donation in their
-                            honor or as a memorial gift.
-                        </p>
-                        <p>
-                            Easy and always under your control, monthly giving
-                            helps defend our natural world all year long.
-                        </p>
-                        <p>
-                            Share the inspiration of taking on
-                            nature’s biggest challenges by giving a gift
-                            membership.
-                        </p>
-                        <p>
-                            Manage your charitable giving through
-                            an existing giving account or create a
-                            DAF with The Nature Conservancy.
+                            <%= pageData[0].joinOurCol2Text %>
                         </p>
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
-                    <div class="title">3 Reason</div>
+                    <div class="title"><%= pageData[0].joinOurCol3Title %></div>
                     <div class="text">
                         <p>
-                            Recognize loved ones with a donation in their
-                            honor or as a memorial gift.
+                            <%= pageData[0].joinOurCol3Text %>
                         </p>
-                        <p>
-                            Have you met one of our friendly fundraising
-                            ambassadors? Learn more about
-                            how they are helping us
-                            broaden the reach of conservation.
-                        </p>
-                        <p>
-                            Share the inspiration of taking on
-                            nature’s biggest challenges by giving a gift
-                            membership.
-                        </p>
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <section>
         <div class="container">
             <div class="row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5">
                 <div class="col-12 col-md-7 ">
-                    <h2 class="mb-5 ">WE ARE LOOKING FOR PARTNERS</h2>
+                    <h2 class="mb-5 "><%= pageData[0].joinOurTeamPartnersTitle %></h2>
                     <div class="pr-5">
                         <div class="info-text mb-5 mb-md-0">
-                            Order Armenian designer clothing shoes,
-                            conceptual accsessories and interior items, Jjgyufo8ojgvgsd  mytrwirqgy
-                            awujrtashvfh..liuaioefuhjjdv
-                            ijjyfa  of thekjgsf
-                            aygdfliaeyf  kutodfe aetiu   wefkiy <br>
-                            Order Armenian designer clothing shoes,
-                            conceptual accsessories and interior items, Jjgyufo8ojgvgsd  mytrwirqgy
-                            awujrtashvfh..liuaioefuhjjdv
-                            ijjyfa  of thekjgsf
-                            aygdfliaeyf  kutodfe aetiu   wefkiy
+                            <%= pageData[0].joinOurTeamPartners %>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-5 ">
                     <div class="rose-border">
-                        <img src="images/brand-pic1.jpg" alt="" class="brand-img">
+                        <img src=<%= pageData[0].imagesJoinOurTeamSlider[1] %> alt="" class="brand-img">
                     </div>
                 </div>
             </div>
         </div>
     </section>
+        <%}%>
 </main>
-<%-include ('footer')-%>
+<%- include ('footer') -%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
