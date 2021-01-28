@@ -1089,24 +1089,49 @@ module.exports = {
         }
     },
     getDelevry:async(req,res)=>{
-        res.render('delevry', {
-            URL: '/delevry',
-            user: req.session.user,
-            staticData: await getStaticData(req.session.language),
-        });
+        logger.info('Start Get Data Page Delevry - - -');
+        try{
+            const staticData = await getStaticData(req.session.language);
+            return res.render('delevry', {
+                URL: '/delevry',
+                user: req.session.user,
+                staticData: staticData,
+            });
+        }catch(e){
+            logger.error(`Start Get Data Page Delevry Error:${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/');
+        }
+
     },
     getPrivacyPolicy:async(req,res)=>{
-        res.render('privacyPolicy', {
-            URL: '/privacyPolicy',
-            user: req.session.user,
-            staticData: await getStaticData(req.session.language),
-        });
+        logger.info('Start Get Data Page privacyPolicy - - -');
+        try{
+            const staticData = await getStaticData(req.session.language);
+            return res.render('privacyPolicy', {
+                URL: '/privacyPolicy',
+                user: req.session.user,
+                staticData: staticData,
+            });
+        }catch(e){
+            logger.error(`Start Get Data Page privacyPolicy Error:${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/');
+        }
     },
     getTermAndConditions:async(req,res)=>{
-        res.render('termAndConditions', {
-            URL: '/termAndConditions',
-            user: req.session.user,
-            staticData: await getStaticData(req.session.language),
-        });
+        logger.info('Start Get Data Page termAndConditions - - -');
+        try{
+            const staticData = await getStaticData(req.session.language);
+            return res.render('termAndConditions', {
+                URL: '/termAndConditions',
+                user: req.session.user,
+                staticData: staticData,
+            });
+        }catch(e){
+            logger.error(`Start Get Data Page termAndConditions Error:${e}`);
+            req.flash('error_msg',e.message);
+            return res.redirect('/');
+        }
     }
 };
