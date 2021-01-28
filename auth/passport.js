@@ -4,6 +4,8 @@ const User = require('../models/user');
 const {generateAvatar} = require('../utils/helper');
 const roleTypes = require('../configs/constants').ROLE_TYPES;
 const {sendMessageToMail} = require('../services/mailService')
+const bcrypt = require('bcrypt');
+
 
 module.exports = function (passport) {
     passport.use('signup', new LocalStrategy({
@@ -29,11 +31,12 @@ module.exports = function (passport) {
                 return done(null, false, {message: 'This email is already in use. Please use another one.'});
             }
             const userAvatar = generateAvatar(req.body.firstName, req.body.lastName);
+            let hash = bcrypt.hashSync(value.password, 10);
             const user = new User({
                 firstName: value.firstName,
                 lastName: value.lastName,
                 email: value.email,
-                password: value.password,
+                password: hash,
                 roleType: roleTypes.USER,
                 status: true,
                 avatar: userAvatar
@@ -69,7 +72,7 @@ module.exports = function (passport) {
             if (!user) {
                 return done(null, false, {message: 'That email is not registered'});
             }
-            const isMatch = await user.comparePassword(password);
+            const isMatch = bcrypt.compareSync(password,user.password);
             if (!isMatch) {
                 return done(null, false, {message: 'Password incorrect'});
             }

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 const roleTypes = require('../configs/constants').ROLE_TYPES;
-const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 

@@ -338,9 +338,10 @@ module.exports = {
         }
     },//done
     getSignUpPage: async (req, res) => {
+        const staticData = await getStaticData(req.session.language);
         res.render('signup', {
             user: req.session.user,
-            staticData: await getStaticData(req.session.language),
+            staticData: staticData
         });
     },
     getLogInPage: async (req, res) => {
