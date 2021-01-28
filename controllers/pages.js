@@ -1087,5 +1087,26 @@ module.exports = {
             req.flash('error_msg',e.message);
             return res.redirect('/reset-password');
         }
+    },
+    getDelevry:async(req,res)=>{
+        res.render('delevry', {
+            URL: '/delevry',
+            user: req.session.user,
+            staticData: await getStaticData(req.session.language),
+        });
+    },
+    getPrivacyPolicy:async(req,res)=>{
+        res.render('privacyPolicy', {
+            URL: '/privacyPolicy',
+            user: req.session.user,
+            staticData: await getStaticData(req.session.language),
+        });
+    },
+    getTermAndConditions:async(req,res)=>{
+        res.render('termAndConditions', {
+            URL: '/termAndConditions',
+            user: req.session.user,
+            staticData: await getStaticData(req.session.language),
+        });
     }
 };
