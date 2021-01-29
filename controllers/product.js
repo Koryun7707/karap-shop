@@ -253,6 +253,7 @@ const getProductsShopFilter = async (req, res) => {
         } else {
             data = await Product.paginate(search, options);
         }
+        console.log(data)
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,

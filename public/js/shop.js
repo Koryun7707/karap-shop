@@ -86,12 +86,20 @@ function searchByPrice() {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                          <div>
-                                            <h2>${item.price}</h2>
+                                            <h2>${item.price}€</h2>
+                                           
+                                        </div>
+                                      
+                                          <div id="${item._id}" style="display: none">
+                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
                                 </div>
                             `;
+                        if(item.sale.length){
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -191,7 +199,11 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                          <div>
-                                            <h2>${item.price}</h2>
+                                            <h2>${item.price}€</h2>
+                         
+                                        </div>
+                                        <div id="${item._id}" style="display: none">
+                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -199,7 +211,9 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-
+                        if(item.sale.length){
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }
 
                     })
                 } else {
@@ -279,6 +293,17 @@ $(document).ready(function () {
         //get price product
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
+        if ($('input[type=checkbox]').is(':checked')) {
+            var values = [];
+            var brandId = [];
+            $.each($('input:checked'), function (index, input) {
+                if (input.value.length > 20) {
+                    brandId.push(input.value);
+                } else {
+                    values.push(input.value);
+                }
+            });
+        }
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -286,6 +311,9 @@ $(document).ready(function () {
                 page: pageNumber,
                 priceFrom: priceFrom,
                 priceTo: priceTo,
+                types: values,
+                brandIds: brandId,
+
             },
             success: function (response) {
                 let filterDiv = document.getElementById('shopFilter');
@@ -302,13 +330,20 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                          <div>
-                                            <h2>${item.price}</h2>
+                                            <h2>${item.price}€</h2>
+                                         
+                                        </div>
+                                          <div id="${item._id}" style="display: none">
+                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a> 
                                 </div>
                             `
                         ;
+                        if(item.sale.length){
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }
                         filterDiv.append(newDiv);
                     })
                 } else {
@@ -387,7 +422,6 @@ $(document).ready(function () {
         return handeleOnchangeValue(pageNumber);
     };
 
-    //page = return givePageNumber function
     function doneTyping(page) {
         let pageNumber;
         if (page > 0) {
@@ -467,7 +501,10 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                          <div>
-                                            <h2>${item.price}</h2>
+                                            <h2>${item.price}€</h2>
+                                        </div>
+                                         <div id="${item._id}" style="display: none">
+                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -475,7 +512,9 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-
+                        if(item.sale.length){
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -492,18 +531,8 @@ $(document).ready(function () {
 
     //page = return givePageNumber function
     function handeleOnchangeValue(page) {
-        // let pagesCount = Number(document.getElementById('pagination-place').getAttribute('value'));
         let pageNumber;
         if (page > 0) {
-            // for (let i = 1; i < pagesCount; i++) {
-            //     console.log('i', i, 'page', page);
-            //     if (i === page) {
-            //         console.log(1, page)
-            //         document.getElementById(`${page}`).setAttribute('class', 'page-item active');
-            //     } else {
-            //         document.getElementById(`${i}`).setAttribute('class', 'page-item disable');
-            //     }
-            // }
             pageNumber = page;
         } else {
             pageNumber = undefined;
@@ -615,7 +644,10 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                         <div>
-                                            <h2>${item.price}</h2>
+                                            <h2>${item.price}€</h2>
+                                        </div>
+                                         <div id="${item._id}" style="display: none">
+                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -623,6 +655,9 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
+                        if(item.sale.length){
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }
 
                     })
                 } else {

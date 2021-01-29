@@ -115,13 +115,19 @@
                     </div>
                     <div class="d-flex justify-content-end">
                         <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
-                        <div  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}€</div>
+                        <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}€</div>
 
                     </div>
                      <div class="d-flex justify-content-end">
                         <button value="${item._id}" class="btn btn-danger" onclick="deleteProduct(this)" type="submit">Delete</button>
                     </div>
                `
+                    if(item.sale.length){
+                        document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
+                    }
+                    if(!item.sale.length){
+                        document.getElementById(`productPriceBasket${item._id}`).removeAttribute('style');
+                    }
                 })
             }
         },
@@ -166,7 +172,7 @@
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
                 productStartPrice.innerHTML = `${productPrice}`
-                afterSale.innerHTML = `${productPrice - productSalePrice}`;
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(1)}`;
                 document.getElementById('total').innerHTML = sum;
             } else {
                 countProduct.innerHTML = '0';
@@ -283,7 +289,7 @@
         if (sum) {
             countProduct.innerHTML = `${productCount}`;
             productStartPrice.innerHTML = `${productPrice}`
-            afterSale.innerHTML = `${productPrice - productSalePrice}`;
+            afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(1)}`;
             document.getElementById('total').innerHTML = sum;
         } else {
             countProduct.innerHTML = `0`;

@@ -28,12 +28,16 @@
                         <h2 class="mb-2"><%= product[0].name %></h2>
                     </div>
                     <div class="product-price" id="productPrice" value="<%= product[0].price %>">
-                        <h5>Price</h5>
-                        <h2><b id="pricePlace"><%= product[0].price %> $</b></h2>
+
+                        <%if(product[0].sale){%>
+                            <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                        <%}else{%>
+                            <h2 ><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                        <%}%>
                     </div>
                     <% if(product[0].sale){ %>
-                        <div class="product-price">
-                            <h5>Sale <%= product[0].sale %> %</h5>
+                        <div class="product-price" id="productSalePrice" value="<%=product[0].sale%>">
+                            <h5 id="saleValue"> <%= product[0].price-product[0].price*product[0].sale/100%>€</h5>
                         </div>
                     <% } %>
                     <%if(product[0].sizes[0]!=''){%>
@@ -113,6 +117,8 @@
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
+        let productSalePrice = document.getElementById('productSalePrice').getAttribute('value');
+
         if (element.id === 'fa-plus') {
             count++;
         } else {
@@ -120,7 +126,10 @@
         }
         if (count > 0) {
             let payPrice = Number(productPrice) * count;
-            document.getElementById('pricePlace').innerHTML = `${payPrice} $`;
+            let payPriceSale = Number(productPrice)-Number(productSalePrice)*Number(productPrice)/100;
+            payPriceSale*=count;
+            document.getElementById('pricePlace').innerHTML = `${payPrice}€`;
+            document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
         }
     }
 
