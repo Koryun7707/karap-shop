@@ -146,10 +146,15 @@ $(document).ready(function () {
 
     //when shop page render first time called ==>
     function getProductByPagination() {
-        const type = gup('type', location.href);
+        console.log(7777)
+
+        let type = gup('type', location.href);
         const brandId = gup('brandId', location.href);
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
+        if(type){
+            type = decodeURI(type);
+        }
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -232,6 +237,7 @@ $(document).ready(function () {
     window.addEventListener('load', getProductByPagination);
     //works when user click on page items
     window.giveChosenPage = (item) => {
+
         let pagesCount = document.getElementById('pagination-place').getAttribute('value');
         const elementValue = item.getAttribute('value');
         const elementAttributes = item.getAttribute('class');
@@ -304,6 +310,7 @@ $(document).ready(function () {
                 }
             });
         }
+
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -359,7 +366,6 @@ $(document).ready(function () {
         });
     };
 
-// user is "finished typing, or choose checkbox" get page number and send to back end
     window.givePageNumber = (item) => {
         let pagesCount = document.getElementById('pagination-place').getAttribute('value');
         const elementValue = item.getAttribute('value');
@@ -421,6 +427,7 @@ $(document).ready(function () {
         }
         return handeleOnchangeValue(pageNumber);
     };
+// user is "finished typing, or choose checkbox" get page number and send to back end
 
     function doneTyping(page) {
         let pageNumber;
@@ -555,6 +562,7 @@ $(document).ready(function () {
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
+
         $.ajax({
             type: 'post',
             url: '/shop-filter',

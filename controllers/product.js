@@ -253,7 +253,6 @@ const getProductsShopFilter = async (req, res) => {
         } else {
             data = await Product.paginate(search, options);
         }
-        console.log(data)
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,
@@ -270,8 +269,11 @@ const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
     try {
         if (req.body.productCount && req.body.productId) {
+            console.log(544)
             const product = await Product.findById(req.body.productId).populate('brandId').exec();
             if (Number(product.count) >= Number(req.body.productCount)) {
+                console.log(88888888888)
+                console.log(product)
                 return res.status(200).json(success('Product exists',
                     product, res.statusCode));
             } else {

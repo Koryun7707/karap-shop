@@ -139,34 +139,35 @@
             productCount: document.getElementById('qtyValueProduct').value,
             productId: id.value,
         }
-        $.ajax({
-                type: 'post',
-                url: '/product-by-id',
-                data: product,
-                success: (response) => {
-                    if (response.message && response.error) {
-                        alert(`${response.message}`);
-                    } else {
-                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
-                        shoppingCard++;
-                        let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
-                        let productSize;
-                        let productColor;
-                        const productCount = Number(document.getElementById('qtyValueProduct').value);
-                        if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
-                            alert('Choose product size.');
-                        } else if (!document.querySelector('input[name="productColor"]:checked')&&document.querySelector('input[name="productColor"]')) {
-                            alert('Select product color.');
+        const language = document.getElementById('example').value;
+        let productSize;
+        let productColor;
+        let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
+        if (document.querySelector('input[name="productSize"]'))
+            productSize = document.querySelector('input[name="productSize"]:checked').id;
+        if (document.querySelector('input[name="productColor"]'))
+            productColor = document.querySelector('input[name="productColor"]:checked').id;
+
+        if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
+            alert('Choose product size.');
+        }else if(!document.querySelector('input[name="productColor"]:checked')&&document.querySelector('input[name="productColor"]')) {
+            alert('Select product color.');
+        }else
+        if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
+                alert('Sorry but product is already added');}
+        else {
+            $.ajax({
+                    type: 'post',
+                    url: '/product-by-id',
+                    data: product,
+                    success: (response) => {
+                        if (response.message && response.error) {
+                            alert(`${response.message}`);
                         } else {
-                            if(document.querySelector('input[name="productSize"]'))
-                            productSize = document.querySelector('input[name="productSize"]:checked').id;
-                            if(document.querySelector('input[name="productColor"]'))
-                                productColor = document.querySelector('input[name="productColor"]:checked').id;
+                            let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
+                            shoppingCard++;
+                            const productCount = Number(document.getElementById('qtyValueProduct').value);
                             if (Cardlocal && Cardlocal.length) {
-                                Cardlocal.forEach((item) => {
-                                    if (item.productId === response.results._id) {
-                                        alert('Sorry but product is already added');
-                                    } else {
                                         document.getElementById('addToCardButton').innerHTML = 'Added';
                                         document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
                                         document.getElementById('addToCardButton').classList.add('btn-dark');
@@ -180,11 +181,10 @@
                                             size: productSize,
                                             color: productColor,
                                             count: productCount,
+                                            language: language
                                         });
                                         Cardlocal = JSON.stringify(Cardlocal);
                                         localStorage.setItem('shoppingCard', Cardlocal);
-                                    }
-                                });
                             } else {
                                 document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                                 document.getElementById('addToCardButton').innerHTML = 'Added';
@@ -200,15 +200,16 @@
                                     size: productSize,
                                     color: productColor,
                                     count: productCount,
+                                    language: language
                                 });
                                 array = JSON.stringify(array);
                                 localStorage.setItem('shoppingCard', array);
                             }
                         }
                     }
-                },
-            }
-        )
+                })
+        }
+
     }
 
 </script>

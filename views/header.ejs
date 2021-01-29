@@ -196,19 +196,34 @@
             basket.setAttribute('href', '/selectedProducts');
         }
     };
+    function gup(name, url) {
+        if (!url) url = location.href;
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(url);
+        return results == null ? null : results[1];
+    }
+
+
     $(function () {
 
         document.getElementById('example').addEventListener('change', function () {
             console.log('You selected: ', this.value);
             const obj = {
-                language: this.value
+                language: this.value,
             }
+            localStorage.removeItem('shoppingCard');
+
             $.ajax({
                 url: '/change-language',
                 method: 'post',
                 data: obj,
                 success: function () {
-                    window.location.reload();
+                    if(window.location.pathname.split( '/' )[1] === 'product'){
+                        location.replace("http://localhost:3000/")
+                    }
+
                 },
                 error: function (data) {
                     console.log('User creation failed :' + data);
