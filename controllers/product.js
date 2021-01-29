@@ -24,13 +24,13 @@ const createProduct = async (req, res) => {
             req.flash("error_msg", error.message);
             return res.redirect("/admin-create-product");
         }
-        if (files.length !== 5) {
+        if (files.length < 2) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err);
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
             return res.redirect("/admin-create-product");
         }
         let dir = `./public/uploads/product`;

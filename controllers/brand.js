@@ -23,13 +23,13 @@ const createBrand = async (req, res) => {
             req.flash("error_msg", error.message);
             return res.redirect("/admin-create-brand");
         }
-        if (files.length !== 4) {
+        if (files.length !== 4 && value.language === 'eng') {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err)
                 })
             });
-            req.flash("error", "Files is required.!");
+            req.flash("error_msg", "Files is required.!");
             return res.redirect("/admin-create-brand");
         }
         let dir = `./public/uploads/brands`;
@@ -105,7 +105,7 @@ const updateBrand = async (req, res) => {
                     })
                 });
             }
-            req.flash("error_msg", error);
+            req.flash("error_msg", error.message);
             return res.redirect(`/admin-editBrand?_id=${_id}`);
         }
         if (files.length !== 4) {
@@ -114,7 +114,7 @@ const updateBrand = async (req, res) => {
                     if (err) logger.error(err)
                 })
             });
-            req.flash("error_msg", "Files is required.! ");
+            req.flash("error_msg", "Files is required.!");
             return res.redirect(`/admin-editBrand?_id=${_id}`);
         }
         let dir = `./public/uploads/brands`;
@@ -127,6 +127,7 @@ const updateBrand = async (req, res) => {
         brand.info = value.brandInfo;
         brand.type = value.brandType;
         brand.hTag = value.brandHashTag;
+        brand.registrationAddress = value.registrationAddress;
         brand.language = value.language;
         brand.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
@@ -180,10 +181,11 @@ const getBrands = async (req, res, next) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+
 const getAllBrands = async (req, res) => {
     logger.info('Start Get All Brands - - -');
     try {
-        const Brands = await Brand.find({language: req.session.language}).lean().exec();
+        const Brands = await Brand.find({}).lean().exec();
         return res.status(200).json(success("success", Brands, res.statusCode));
     } catch (e) {
         logger.error(`Brand Get All Error: ${e}`);

@@ -6,7 +6,7 @@
         <th id="2"  role="button" scope="col">Info</th>
         <th id="3"  role="button" scope="col">Type</th>
         <th id="4"  role="button" scope="col">hTag</th>
-
+        <th id="5"  role="button" scope="col">Address</th>
     </tr>
     </thead>
     <tbody id="tbody">
@@ -37,13 +37,12 @@
                     <td>${item.info}</td>
                     <td>${item.type}</td>
                     <td>${item.hTag}</td>
+                    <td>${item.registrationAddress}</td>
                     <td><a href ='/admin-editBrand?_id=${item._id}' type="button" class="btn btn-info">Edit</a></td>
                     <td><a onclick="deleteBrand(this)" value='${item._id}' type="button" class="btn btn-danger">Delete</a></td>`
                         tbody.append(tr);
                     })
                 }
-
-                // window.location.reload();
             },
             error: function (data) {
                 console.log('Product Get failed :' + data);
