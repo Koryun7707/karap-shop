@@ -1191,8 +1191,12 @@ module.exports = {
         logger.info('Start Get Data Page Delevry - - -');
         try {
             const staticData = await getStaticData(req.session.language);
-            return res.render('delevry', {
-                URL: '/delevry',
+            let langPage = 'delevry'
+            if(req.session.language === 'ru'){
+                langPage = 'delevryARM'
+            }
+            return res.render(langPage, {
+                URL: `/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
@@ -1207,8 +1211,12 @@ module.exports = {
         logger.info('Start Get Data Page privacyPolicy - - -');
         try {
             const staticData = await getStaticData(req.session.language);
-            return res.render('privacyPolicy', {
-                URL: '/privacyPolicy',
+            let langPage = 'privacyPolicy';
+            if(req.session.language === 'ru'){
+                langPage = 'privacyPolicyARM';
+            }
+            return res.render(langPage, {
+                URL:`/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
@@ -1222,8 +1230,12 @@ module.exports = {
         logger.info('Start Get Data Page termAndConditions - - -');
         try {
             const staticData = await getStaticData(req.session.language);
-            return res.render('termAndConditions', {
-                URL: '/termAndConditions',
+            let langPage = 'termAndConditions';
+            if(req.session.language === 'ru'){
+                langPage = 'termAndConditionsARM';
+            }
+            return res.render(langPage, {
+                URL:`/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
