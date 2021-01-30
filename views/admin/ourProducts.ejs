@@ -34,14 +34,13 @@
                 response.results.data.forEach(function(item){
                     let tr = document.createElement('tr');
                     tr.id = `${item._id}`;
-
                     tr.innerHTML = `
                     <td>${item.name}</td>
                     <td>${item.type}</td>
                     <td>${item.price}</td>
                     <td>${item.count}</td>
-                    <td>${item.color}</td>
-                    <td>${item.size}</td>
+                    <td>${[...item.colors]}</td>
+                    <td>${[...item.sizes]}</td>
                     <td><a href ='/admin-editProduct?_id=${item._id}' type="button" class="btn btn-info">Edit</a></td>
                     <td><a onclick="deleteProduct(this)" value='${item._id}' type="button" class="btn btn-danger">Delete</a></td>`
                     tbody.append(tr);

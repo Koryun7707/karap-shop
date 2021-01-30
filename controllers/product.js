@@ -197,6 +197,7 @@ const getProducts = async (req, res) => {
         } else {
             data = await Product.find({language: req.session.language});
         }
+        console.log(data);
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
