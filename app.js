@@ -68,6 +68,7 @@ paypal.configure({
 });
 app.post('/pay', function(req, res){
     //build PayPal payment request
+    console.log(111122212121212)
     const order = JSON.parse(req.body.order);
     const {deliveryPrice} = JSON.parse(req.body.shippingAddress)
     const shippingAddress = req.body.shippingAddress

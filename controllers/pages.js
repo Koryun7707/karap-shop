@@ -1247,5 +1247,13 @@ module.exports = {
             req.flash('error_msg', e.message);
             return res.redirect('/');
         }
+    },
+    getCheckouts:async(req,res)=>{
+        const staticData = await getStaticData(req.session.language);
+        return res.render('checkouts', {
+            URL:`/checkouts`,
+            user: req.session.user,
+            staticData: staticData,
+        });
     }
 };
