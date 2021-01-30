@@ -133,7 +133,7 @@ const updateProduct = async (req, res) => {
             req.flash("error_msg", error);
             return res.redirect(`/admin-editProduct?_id=${_id}`);
         }
-        if (files.length !== 5) {
+        if (files.length < 2) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err);
@@ -156,6 +156,7 @@ const updateProduct = async (req, res) => {
         if (value.productSale != '' || Number(value.productSale) >= 1) {
             product.sale = value.productSale;
         }
+        product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
         product.count = value.productCount;
         product.language = value.language;

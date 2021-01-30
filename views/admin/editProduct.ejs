@@ -18,8 +18,14 @@
                        placeholder="Product name.">
             </div>
             <div class="form-group">
+                <label for="exampleInputEmail1">Product weight(*enter only in kg example 0.5.)</label>
+                <input required type="text" value="<%= product.productWeight %>" name="productWeight" class="form-control"
+                       id="exampleInputEmail111"
+                       placeholder="Product weight.">
+            </div>
+            <div class="form-group">
                 <label for="exampleInputEmail1">Color</label>
-                <input value="<%= product.color %>" type="text" name="productColor" class="form-control"
+                <input value="<%= product.colors.join('/') %>" type="text" name="productColor" class="form-control"
                        id="exampleInputEmail1"
                        placeholder="Product color.">
             </div>
@@ -43,7 +49,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Size</label>
-                <input value="<%= product.size %>" type="text" name="productSize" class="form-control"
+                <input value="<%= product.sizes.join('/') %>" type="text" name="productSize" class="form-control"
                        id="exampleInputEmail1"
                        placeholder="Product size.">
             </div>
