@@ -49,13 +49,10 @@ const createBrand = async (req, res) => {
         brand.images = moveFile(files, dir);
         brand.save((err, result) => {
             if (err) {
-                fs.readdir(dir, (error, files) => {
-                    if (error) throw error;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
+                files.map((file) => {
+                    rimraf(`${dir}/${file.filename}`, (err) => {
+                        if (err) logger.error(err);
+                    })
                 });
                 req.flash("error_msg", err.message);
                 return res.redirect("/admin-create-brand");
@@ -137,13 +134,10 @@ const updateBrand = async (req, res) => {
         brand.images = moveFile(files, dir);
         brand.save((err, result) => {
             if (err) {
-                fs.readdir(dir, (error, files) => {
-                    if (error) throw error;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
+                files.map((file) => {
+                    rimraf(`${dir}/${file.filename}`, (err) => {
+                        if (err) logger.error(err);
+                    })
                 });
                 req.flash("error_msg", err.message);
                 return res.redirect(`/admin-editBrand?_id=${_id}`);

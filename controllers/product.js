@@ -22,7 +22,7 @@ const createProduct = async (req, res) => {
                     })
                 });
             }
-            logger.error('ValidationError',error.message);
+            logger.error('ValidationError', error.message);
             req.flash("error_msg", error.message);
             return res.redirect("/admin-create-product");
         }
@@ -44,10 +44,10 @@ const createProduct = async (req, res) => {
             });
         }
         let newProduct;
-        if(value.productSale!='' || Number(value.productSale)>=1){
-             newProduct = new Product({
+        if (value.productSale != '' || Number(value.productSale) >= 1) {
+            newProduct = new Product({
                 brandId: value.brandId,
-                brandName:brandName.name,
+                brandName: brandName.name,
                 name: value.productName,
                 type: value.productType,
                 price: value.productPrice,
@@ -58,10 +58,10 @@ const createProduct = async (req, res) => {
                 productWeight: value.productWeight,
                 language: value.language,
             });
-        }else{
-                newProduct = new Product({
+        } else {
+            newProduct = new Product({
                 brandId: value.brandId,
-                brandName:brandName.name,
+                brandName: brandName.name,
                 name: value.productName,
                 type: value.productType,
                 price: value.productPrice,
@@ -75,13 +75,10 @@ const createProduct = async (req, res) => {
         newProduct.images = moveFile(files, dir);
         newProduct.save((err, result) => {
             if (err) {
-                fs.readdir(dir, (error, files) => {
-                    if (error) throw error;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
+                files.map((file) => {
+                    rimraf(`${dir}/${file.filename}`, (err) => {
+                        if (err) logger.error(err);
+                    })
                 });
                 req.flash("error_msg", err.message);
                 return res.redirect("/admin-create-product");
@@ -121,7 +118,7 @@ const updateProduct = async (req, res) => {
         const files = req.files;
         const _id = req.params._id;
         const product = await Product.findById(_id).exec();
-        req.body.brandId = product.brandId;
+        req.body.brandId = product.brandId.toString();
 
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
@@ -156,7 +153,7 @@ const updateProduct = async (req, res) => {
         product.type = value.productType;
         product.price = value.productPrice;
         product.sizes = value.productSize.split('/');
-        if(value.productSale!='' || Number(value.productSale)>=1) {
+        if (value.productSale != '' || Number(value.productSale) >= 1) {
             product.sale = value.productSale;
         }
         product.colors = value.productColor.split('/');
@@ -171,13 +168,10 @@ const updateProduct = async (req, res) => {
         product.images = moveFile(files, dir);
         product.save((err, result) => {
             if (err) {
-                fs.readdir(dir, (error, files) => {
-                    if (error) throw error;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
+                files.map((file) => {
+                    rimraf(`${dir}/${file.filename}`, (err) => {
+                        if (err) logger.error(err);
+                    })
                 });
                 req.flash("error_msg", err.message);
                 return res.redirect(`/admin-editProduct?_id=${_id}`);
