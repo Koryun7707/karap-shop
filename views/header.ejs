@@ -196,6 +196,7 @@
             basket.setAttribute('href', '/selectedProducts');
         }
     };
+
     function gup(name, url) {
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -214,22 +215,19 @@
                 language: this.value,
             }
             localStorage.removeItem('shoppingCard');
-
+            localStorage.removeItem('order');
             $.ajax({
-                url: '/change-language',
-                method: 'post',
-                data: obj,
-                success: function () {
-                    if(window.location.pathname.split( '/' )[1] === 'product'){
+                    url: '/change-language',
+                    method: 'post',
+                    data: obj,
+                    success: function () {
+                        window.location.reload(1);
                         location.replace("http://localhost:3000/")
+                    },
+                    error: function (data) {
+                        console.log('User creation failed :' + data);
                     }
-                    window.location.reload(1);
-
-                },
-                error: function (data) {
-                    console.log('User creation failed :' + data);
-                }
-            });
+                });
         });
         let searchValue;
         var typingTimer;                //timer identifier

@@ -3,44 +3,45 @@
     <div class="container my-5">
         <div class="row">
             <% if(product.length){ %>
-              <%if(product[0].images.length){%>
-                <div class="col-7">
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="mb-2 small-images">
-                                <img src="<%= product[0].images[1] %>" alt="" class="w-100">
+                <% if(product[0].images.length){ %>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="mb-2 small-images">
+                                    <img src="<%= product[0].images[1] %>" alt="" class="w-100">
+                                </div>
+                                <div class="mb-2 small-images">
+                                    <img src="<%= product[0].images[2] %>" alt="" class="w-100">
+                                </div>
+                                <div class="mb-2 small-images">
+                                    <img src="<%= product[0].images[3] %>" alt="" class="w-100">
+                                </div>
                             </div>
-                            <div class="mb-2 small-images">
-                                <img src="<%= product[0].images[2] %>" alt="" class="w-100">
+                            <div class="col-10">
+                                <img src="<%= product[0].images[0] %>" alt="" class="w-100">
                             </div>
-                            <div class="mb-2 small-images">
-                                <img src="<%= product[0].images[3] %>" alt="" class="w-100">
-                            </div>
-                        </div>
-                        <div class="col-10">
-                            <img src="<%= product[0].images[0] %>" alt="" class="w-100">
                         </div>
                     </div>
-                </div>
-                <%}%>
+                <% } %>
                 <div class="col-5">
                     <div class="product-name">
                         <h2 class="mb-2"><%= product[0].name %></h2>
                     </div>
                     <div class="product-price" id="productPrice" value="<%= product[0].price %>">
 
-                        <%if(product[0].sale){%>
-                            <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b></h2>
-                        <%}else{%>
-                            <h2 ><b id="pricePlace"><%= product[0].price %>€</b></h2>
-                        <%}%>
+                        <% if(product[0].sale){ %>
+                            <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b>
+                            </h2>
+                        <% }else{ %>
+                            <h2><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                        <% } %>
                     </div>
                     <% if(product[0].sale){ %>
-                        <div class="product-price" id="productSalePrice" value="<%=product[0].sale%>">
-                            <h5 id="saleValue"> <%= product[0].price-product[0].price*product[0].sale/100%>€</h5>
+                        <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
+                            <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>€</h5>
                         </div>
                     <% } %>
-                    <%if(product[0].sizes[0]!=''){%>
+                    <% if(product[0].sizes[0] != ''){ %>
                         <div class="product-size">
                             <h5>Size</h5>
                             <ul class="list-unstyled d-flex" id="productSizesDiv" value=<%= product[0].sizes %>>
@@ -53,8 +54,8 @@
                                 <% } %>
                             </ul>
                         </div>
-                    <%}%>
-                    <%if(product[0].colors[0]!=''){%>
+                    <% } %>
+                    <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
                             <h5>Color</h5>
                             <ul class="list-unstyled d-flex">
@@ -67,12 +68,12 @@
                                 <% } %>
                             </ul>
                         </div>
-                    <%}%>
+                    <% } %>
                     <div class="product-count">
                         <h5>Count of product</h5>
                         <div class="qtySelector text-center">
                             <i class="fa fa-minus decreaseQty" id="'fa-minus" onclick="countPrice(this)"></i>
-                            <input type="text" id="qtyValueProduct" class="qtyValue" value="1"/>
+                            <input type="text" disabled id="qtyValueProduct" class="qtyValue" value="1"/>
                             <i class="fa fa-plus increaseQty" id="fa-plus" onclick="countPrice(this)"></i>
                         </div>
                     </div>
@@ -126,8 +127,8 @@
         }
         if (count > 0) {
             let payPrice = Number(productPrice) * count;
-            let payPriceSale = Number(productPrice)-Number(productSalePrice)*Number(productPrice)/100;
-            payPriceSale*=count;
+            let payPriceSale = Number(productPrice) - Number(productSalePrice) * Number(productPrice) / 100;
+            payPriceSale *= count;
             document.getElementById('pricePlace').innerHTML = `${payPrice}€`;
             document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
         }
@@ -150,64 +151,65 @@
 
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
             alert('Choose product size.');
-        }else if(!document.querySelector('input[name="productColor"]:checked')&&document.querySelector('input[name="productColor"]')) {
+        } else if (!document.querySelector('input[name="productColor"]:checked') && document.querySelector('input[name="productColor"]')) {
             alert('Select product color.');
-        }else
-        if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
-                alert('Sorry but product is already added');}
-        else {
+        } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
+            alert('Sorry but product is already added');
+        } else {
             $.ajax({
-                    type: 'post',
-                    url: '/product-by-id',
-                    data: product,
-                    success: (response) => {
-                        if (response.message && response.error) {
-                            alert(`${response.message}`);
+                type: 'post',
+                url: '/product-by-id',
+                data: product,
+                success: (response) => {
+                    if (response.message && response.error) {
+                        alert(`${response.message}`);
+                    } else {
+                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
+                        shoppingCard++;
+                        const productCount = Number(document.getElementById('qtyValueProduct').value);
+                        if (Cardlocal && Cardlocal.length) {
+                            document.getElementById('addToCardButton').innerHTML = 'Added';
+                            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                            document.getElementById('addToCardButton').classList.add('btn-dark');
+                            setTimeout(() => {
+                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                            }, 1000)
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            Cardlocal.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                                existProductCount: response.results.count,
+                                language: language
+                            });
+                            Cardlocal = JSON.stringify(Cardlocal);
+                            localStorage.setItem('shoppingCard', Cardlocal);
                         } else {
-                            let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
-                            shoppingCard++;
-                            const productCount = Number(document.getElementById('qtyValueProduct').value);
-                            if (Cardlocal && Cardlocal.length) {
-                                        document.getElementById('addToCardButton').innerHTML = 'Added';
-                                        document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                                        document.getElementById('addToCardButton').classList.add('btn-dark');
-                                        setTimeout(() => {
-                                            document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                            document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                                        }, 1000)
-                                        document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
-                                        Cardlocal.push({
-                                            productId: id.value,
-                                            size: productSize,
-                                            color: productColor,
-                                            count: productCount,
-                                            language: language
-                                        });
-                                        Cardlocal = JSON.stringify(Cardlocal);
-                                        localStorage.setItem('shoppingCard', Cardlocal);
-                            } else {
-                                document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
-                                document.getElementById('addToCardButton').innerHTML = 'Added';
-                                document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                                document.getElementById('addToCardButton').classList.add('btn-dark');
-                                setTimeout(() => {
-                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                                }, 500)
-                                let array = [];
-                                array.push({
-                                    productId: id.value,
-                                    size: productSize,
-                                    color: productColor,
-                                    count: productCount,
-                                    language: language
-                                });
-                                array = JSON.stringify(array);
-                                localStorage.setItem('shoppingCard', array);
-                            }
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('addToCardButton').innerHTML = 'Added';
+                            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                            document.getElementById('addToCardButton').classList.add('btn-dark');
+                            setTimeout(() => {
+                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                            }, 500)
+                            let array = [];
+                            array.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                                existProductCount: response.results.count,
+                                language: language
+                            });
+                            array = JSON.stringify(array);
+                            localStorage.setItem('shoppingCard', array);
                         }
                     }
-                })
+                }
+            })
         }
 
     }

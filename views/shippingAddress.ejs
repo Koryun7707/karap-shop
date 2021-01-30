@@ -343,7 +343,7 @@
                         <div class="price ml-auto">${item.priceSale} </div>
 `
             })
-            salePrice.innerHTML = `-${productSalePrice - productTotalPrice}€`;
+            salePrice.innerHTML = `-${(productSalePrice - productTotalPrice).toFixed(1)}€`;
             productPrice.innerHTML = `${productTotalPrice}€`;
         }
 

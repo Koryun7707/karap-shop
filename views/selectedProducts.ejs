@@ -74,23 +74,24 @@
 <script src="js/script.js"></script>
 <script>
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
-    let currentDiv = document.getElementById('shoppingCardDiv');
-    let array = []
-    shoppingCard.forEach((item) => {
-        array.push(item.productId)
-    })
-    $.ajax({
-        type: 'post',
-        url: '/product-by-id',
-        data: {shoppingCard: array},
-        success: (response) => {
-            if (response.results.length) {
-                response.results.forEach(function (item) {
-                    let newDiv = document.createElement('div');
-                    currentDiv.append(newDiv);
-                    newDiv.setAttribute('class', 'selected-product-cart');
-                    newDiv.id = item._id;
-                    newDiv.innerHTML = `
+    if (shoppingCard) {
+        let currentDiv = document.getElementById('shoppingCardDiv');
+        let array = []
+        shoppingCard.forEach((item) => {
+            array.push(item.productId)
+        })
+        $.ajax({
+            type: 'post',
+            url: '/product-by-id',
+            data: {shoppingCard: array},
+            success: (response) => {
+                if (response.results.length) {
+                    response.results.forEach(function (item) {
+                        let newDiv = document.createElement('div');
+                        currentDiv.append(newDiv);
+                        newDiv.setAttribute('class', 'selected-product-cart');
+                        newDiv.id = item._id;
+                        newDiv.innerHTML = `
                     <div  class="shop-check d-flex">
                         <div class="form-group mr-2">
                             <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
@@ -109,32 +110,34 @@
                     <div class="product-count">
                         <div class="qtySelector text-center">
                             <i onclick="countPriceForBasket(this)" id="faMinu${item._id}" class="fa fa-minus decreaseQty" ></i>
-                            <input type="text" class="qtyValue" id="qtyInput${item._id}" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
+                            <input type="text" class="qtyValue" disabled id="qtyInput${item._id}" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
                             <i onclick="countPriceForBasket(this)"  id="faPlus${item._id}" class="fa fa-plus increaseQty"></i>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
                         <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
-                        <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}€</div>
+                        <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${((Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)).toFixed(1)}€</div>
 
                     </div>
                      <div class="d-flex justify-content-end">
                         <button value="${item._id}" class="btn btn-danger" onclick="deleteProduct(this)" type="submit">Delete</button>
                     </div>
                `
-                    if(item.sale.length){
-                        document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
-                    }
-                    if(!item.sale.length){
-                        document.getElementById(`productPriceBasket${item._id}`).removeAttribute('style');
-                    }
-                })
+                        if (item.sale.length) {
+                            document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
+                        }
+                        if (!item.sale.length) {
+                            document.getElementById(`productPriceBasket${item._id}`).removeAttribute('style');
+                        }
+                    })
+                }
+            },
+            error: (e) => {
+                console.log(e)
             }
-        },
-        error: (e) => {
-            console.log(e)
-        }
-    })
+        })
+    }
+
 
     function checkFluency() {
         let productStartPrice = document.getElementById('productStartPrice');
@@ -171,9 +174,9 @@
             }
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${productPrice}`
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(1)}`;
-                document.getElementById('total').innerHTML = sum;
+                productStartPrice.innerHTML = `${productPrice}€`
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(1)}€`;
+                document.getElementById('total').innerHTML = sum + '€';
             } else {
                 countProduct.innerHTML = '0';
                 productStartPrice.innerHTML = '0';
@@ -217,12 +220,12 @@
                 $.each($('input:checked'), function (index, input) {
                     if (input.getAttribute('id') !== 'agreeTerms' && input.getAttribute('id') !== 'select-all') {
                         const id = input.getAttribute('_id');
-                        let price =  document.getElementById(`saleProductPrice${id}`).innerHTML;
+                        let price = document.getElementById(`saleProductPrice${id}`).innerHTML;
                         let count = document.getElementById(`qtyInput${id}`).getAttribute('value');
-                        price = (Number(price.substring(0,price.length-1))/Number(count)).toString();
+                        price = (Number(price.substring(0, price.length - 1)) / Number(count)).toString();
                         let obj = {
                             productId: id,
-                            onePrice:price,
+                            onePrice: price,
                             count: count,
                             price: document.getElementById(`productPriceBasket${id}`).innerHTML,
                             priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
@@ -245,6 +248,10 @@
     }
 
     function countPriceForBasket(element) {
+        let shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
+        const id = element.id.substring(6, element.id.length);
+        let basketProductCount = Number(document.getElementById(`qtyInput${id}`).getAttribute('value'));
+
         //pay for order
         let productCount = 0;
         let productPrice = 0;
@@ -253,49 +260,56 @@
         const countProduct = document.getElementById('countProduct');
         const afterSale = document.getElementById('afterSale');
         //end
-        const id = element.id.substring(6, element.id.length);
-        let basketProductCount = Number(document.getElementById(`qtyInput${id}`).getAttribute('value'));
         if (element.id.substring(0, 6) === 'faMinu' && Number(basketProductCount) >= 2) {
             basketProductCount--;
         } else if (element.id.substring(0, 6) === 'faPlus') {
             basketProductCount++;
         }
-        document.getElementById(`qtyInput${id}`).setAttribute('value', `${basketProductCount}`);
-        const price = Number(basketProductCount) * Number(document.getElementById(`productPriceBasket${id}`).getAttribute('value'));
-        const saleCount = price - (price * Number(document.getElementById(`saleProductPrice${id}`).getAttribute('value')) / 100);
-        document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount}€`;
-        document.getElementById(`productPriceBasket${id}`).innerHTML = `${price}€`;
-        let shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
+
+        let notExist = true;
         shoppingCard.forEach((item) => {
             if (id === item.productId) {
-                item.count = basketProductCount;
+                if (basketProductCount > item.existProductCount) {
+                    item.count = item.existProductCount;
+                    alert(`Sorry we have only ${item.existProductCount}`);
+                    notExist = false;
+                } else {
+                    item.count = basketProductCount;
+                }
             }
         })
-        localStorage.setItem('shoppingCard', JSON.stringify(shoppingCard));
-        let sum = 0;
-        $.each($('input:checked'), function (index, input) {
-            if (input.id != 'select-all' && input.id != "agreeTerms") {
-                const _id = input.getAttribute('_id')
-                let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-                value = value.substring(0, value.length - 1);
-                sum += Number(value);
-                productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
-                let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
-                let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
-                productPrice += Number(template.substring(0, template.length - 1))
-                productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
+        if (notExist) {
+            localStorage.setItem('shoppingCard', JSON.stringify(shoppingCard));
+            document.getElementById(`qtyInput${id}`).setAttribute('value', `${basketProductCount}`);
+            const price = Number(basketProductCount) * Number(document.getElementById(`productPriceBasket${id}`).getAttribute('value'));
+            const saleCount = price - (price * Number(document.getElementById(`saleProductPrice${id}`).getAttribute('value')) / 100);
+            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount}€`;
+            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price}€`;
+            let sum = 0;
+            $.each($('input:checked'), function (index, input) {
+                if (input.id != 'select-all' && input.id != "agreeTerms") {
+                    const _id = input.getAttribute('_id')
+                    let value = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+                    value = value.substring(0, value.length - 1);
+                    sum += Number(value);
+                    productCount += Number(document.getElementById(`qtyInput${_id}`).getAttribute('value'))
+                    let template = document.getElementById(`productPriceBasket${_id}`).innerHTML;
+                    let afterSale = document.getElementById(`saleProductPrice${_id}`).innerHTML;
+                    productPrice += Number(template.substring(0, template.length - 1))
+                    productSalePrice += Number(afterSale.substring(0, afterSale.length - 1));
+                }
+            });
+            if (sum) {
+                countProduct.innerHTML = `${productCount}`;
+                productStartPrice.innerHTML = `${productPrice}`
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(1)}`;
+                document.getElementById('total').innerHTML = sum;
+            } else {
+                countProduct.innerHTML = `0`;
+                productStartPrice.innerHTML = `0`
+                afterSale.innerHTML = `0`;
+                document.getElementById('total').innerHTML = '0';
             }
-        });
-        if (sum) {
-            countProduct.innerHTML = `${productCount}`;
-            productStartPrice.innerHTML = `${productPrice}`
-            afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(1)}`;
-            document.getElementById('total').innerHTML = sum;
-        } else {
-            countProduct.innerHTML = `0`;
-            productStartPrice.innerHTML = `0`
-            afterSale.innerHTML = `0`;
-            document.getElementById('total').innerHTML = '0';
         }
     }
 
