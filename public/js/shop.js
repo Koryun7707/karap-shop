@@ -1,4 +1,3 @@
-
 //This part vor product price
 function searchByPrice() {
     const priceFrom = document.getElementById('priceFrom').value;
@@ -13,7 +12,7 @@ function searchByPrice() {
         }, 1000);
 
     } else {
-
+        console.log(priceFrom, priceTo);
         //write our code here
         let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
@@ -21,10 +20,10 @@ function searchByPrice() {
             var brandNames = [];
             $.each($('input:checked'), function (index, input) {
                 console.log(input.value);
-                if (input.value.includes('11') ) {
-                    let val = input.value.substring(0,input.value.length - 2);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
-                }  else {
+                } else {
                     values.push(input.value);
                 }
             });
@@ -93,13 +92,13 @@ function searchByPrice() {
                                         </div>
                                       
                                           <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
+                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
                                 </div>
                             `;
-                        if(item.sale){
+                        if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                     })
@@ -154,7 +153,7 @@ $(document).ready(function () {
         const brandNames = gup('brandName', location.href);
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
-        if(type){
+        if (type) {
             type = decodeURI(type);
         }
 
@@ -212,7 +211,7 @@ $(document).ready(function () {
                          
                                         </div>
                                         <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
+                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -220,7 +219,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale){
+                        if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
 
@@ -308,10 +307,10 @@ $(document).ready(function () {
             var brandNames = [];
             $.each($('input:checked'), function (index, input) {
                 console.log(84848484848484848484);
-                if (input.value.includes('11') ) {
-                    let val = input.value.substring(0,input.value.length - 2);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
-                }  else {
+                } else {
                     values.push(input.value);
                 }
             });
@@ -347,14 +346,14 @@ $(document).ready(function () {
                                          
                                         </div>
                                           <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
+                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a> 
                                 </div>
                             `
                         ;
-                        if(item.sale){
+                        if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                         filterDiv.append(newDiv);
@@ -433,6 +432,7 @@ $(document).ready(function () {
         }
         return handeleOnchangeValue(pageNumber);
     };
+
 // user is "finished typing, or choose checkbox" get page number and send to back end
 
     function doneTyping(page) {
@@ -451,10 +451,10 @@ $(document).ready(function () {
             var brandNames = [];
             $.each($('input:checked'), function (index, input) {
                 console.log(input.value);
-                if (input.value.includes('11') ) {
-                    let val = input.value.substring(0,input.value.length - 2);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
-                }  else {
+                } else {
                     values.push(input.value);
                 }
             });
@@ -519,7 +519,7 @@ $(document).ready(function () {
                                             <h2>${item.price}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
+                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -527,7 +527,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale){
+                        if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                     })
@@ -559,8 +559,8 @@ $(document).ready(function () {
             var onSale;
             $.each($('input:checked'), function (index, input) {
                 console.log(input.value);
-                if (input.value.includes('11') ) {
-                    let val = input.value.substring(0,input.value.length - 2);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
                 } else if (input.value === 'on') {
                     onSale = input.value;
@@ -664,7 +664,7 @@ $(document).ready(function () {
                                             <h2>${item.price}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price)-Math.round(Number(item.price)*Number(item.sale)/100)}€</h2>
+                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -672,7 +672,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale){
+                        if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
 
@@ -691,7 +691,9 @@ $(document).ready(function () {
         })
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
-    $("amount").on("change", function () {console.log(this.value)});
+    $("amount").on("change", function () {
+        console.log(this.value)
+    });
 
 
 })

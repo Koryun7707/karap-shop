@@ -195,7 +195,7 @@ const getProducts = async (req, res) => {
         if (filterByType) {
             data = await Product.find({type: filterByType});
         } else {
-            data = await Product.find({}).sort({brandName:1});
+            data = await Product.find({}).sort({brandName: 1});
         }
         console.log(data);
         return res.status(200).json(success('Products Data!', {
@@ -225,7 +225,6 @@ const getProductsShopFilter = async (req, res) => {
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
-        console.log(req.body);
         const search = {
             $and: [
                 {
@@ -242,21 +241,21 @@ const getProductsShopFilter = async (req, res) => {
         let data;
         if (!brandNames.length && !types.length && searchValue === undefined) {
             data = await Product.paginate({language: req.session.language}, options);
-        } else if (Number(priceTo) && Number(priceFrom) && brandNames.length > 0 && types.length > 0) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0 && types.length > 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             search['$and'].push({type: {"$in": types}});
             search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom) && brandNames.length > 0) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom) && types.length > 0) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && types.length > 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom)) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             data = await Product.paginate(search, options);
         } else if (brandNames.length > 0 && types.length > 0) {
             search['$and'].push({brandName: {"$in": brandNames}});
@@ -268,7 +267,6 @@ const getProductsShopFilter = async (req, res) => {
         } else if (types.length > 0) {
             search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
-
         } else {
             data = await Product.paginate(search, options);
         }

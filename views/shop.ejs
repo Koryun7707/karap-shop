@@ -56,19 +56,22 @@
                         <div class="sidebar-title"><%= staticData.shop_price %></div>
                         <div class="mb-5 d-flex flex-column">
                             <div class="d-flex align-items-center mb-5">
-                                <input type="number" min="0" id='priceFrom' value="0"
+                                <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
+                                       onchange="changeSlide(this)" value="0"
                                        class="form-control range-slide-input"/>
                                 <span class="px-2">TO</span>
-                                <input type="number" min="0" id='priceTo' value="<%=maxPrice%>"
+                                <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
+                                       onchange="changeSlide(this)"
+                                       value="<%= maxPrice %>"
                                        class="form-control range-slide-input"/>
                                 <button class="btn-rose border-0 px-3 py-1 ml-2" onclick="searchByPrice()">GO</button>
                             </div>
                             <div style="display: none;" id="price-div-message"></div>
-                            <div class="price-range-slider" id="price-range-slider" value="<%=maxPrice%>">
+                            <div class="price-range-slider" id="price-range-slider" value="<%= maxPrice %>">
                                 <p class="range-value">
                                     <input type="text" id="amount"/>
                                 </p>
-                                <div id="slider-range"  class="range-bar"></div>
+                                <div id="slider-range" class="range-bar"></div>
                             </div>
                         </div>
                         <div class="sidebar-title "><%= staticData.shop_brand %></div>
@@ -80,10 +83,11 @@
                                             <div class="form-group">
                                                 <% if(brandName === item.name.toString()){ %>
                                                     <input checked type="checkbox"
-                                                           id=<%= item.name %> value="<%= item.name+'11' %>">
+                                                           id=<%= item.name %> value="<%= item.name + '11' %>">
                                                     <label for="<%= item.name %>"><%= item.name %></label>
                                                 <% }else{ %>
-                                                    <input type="checkbox" id=<%= item.name %> value="<%= item.name+'11' %>">
+                                                    <input type="checkbox"
+                                                           id=<%= item.name %> value="<%= item.name + '11' %>">
                                                     <label for="<%= item.name %>"><%= item.name %></label>
                                                 <% } %>
                                             </div>
@@ -112,6 +116,15 @@
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+    function changeSlide(element) {
+        let priceFrom, priceTo;
+        if (element.id === 'priceFrom') {
+            priceFrom = Number(element.value);
+        } else {
+            priceTo = Number(element.value);
+        }
+    }
+
     $(function () {
         const maxPrice = document.getElementById('price-range-slider').getAttribute('value');
         $("#slider-range").slider({
