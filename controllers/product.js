@@ -1,10 +1,9 @@
 const rimraf = require('rimraf');
 const fs = require('fs');
-const path = require('path');
 const Product = require('../models/product');
 const {logger} = require('../utils/logger');
 const {validateProduct} = require('../validations/product')
-const {success, validation, err} = require('../utils/responseApi');
+const {success, err} = require('../utils/responseApi');
 const {moveFile} = require('../utils/helper');
 const Brand = require('../models/brands')
 
