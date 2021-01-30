@@ -118,7 +118,12 @@
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
-        let productSalePrice = document.getElementById('productSalePrice').getAttribute('value');
+        let productSalePrice;
+        if(!document.getElementById('productSalePrice')){
+             productSalePrice = 0
+        }else{
+            productSalePrice = document.getElementById('productSalePrice').getAttribute('value');
+        }
 
         if (element.id === 'fa-plus') {
             count++;
@@ -130,7 +135,9 @@
             let payPriceSale = Number(productPrice) - Number(productSalePrice) * Number(productPrice) / 100;
             payPriceSale *= count;
             document.getElementById('pricePlace').innerHTML = `${payPrice}€`;
-            document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
+            if(document.getElementById('saleValue')){
+                document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
+            }
         }
     }
 

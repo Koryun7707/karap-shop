@@ -99,7 +99,7 @@ function searchByPrice() {
                                     </a>
                                 </div>
                             `;
-                        if(item.sale!== undefined || item.sale.length){
+                        if(item.sale){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                     })
@@ -220,7 +220,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale!==undefined||item.sale.length){
+                        if(item.sale){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
 
@@ -354,7 +354,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale!==undefined||item.sale.length){
+                        if(item.sale){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                         filterDiv.append(newDiv);
@@ -527,7 +527,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale!==undefined||item.sale.length){
+                        if(item.sale){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                     })
@@ -672,7 +672,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale !== undefined||item.sale.length){
+                        if(item.sale){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
 
