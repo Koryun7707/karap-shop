@@ -195,7 +195,7 @@ const getProducts = async (req, res) => {
         if (filterByType) {
             data = await Product.find({type: filterByType});
         } else {
-            data = await Product.find({language: req.session.language});
+            data = await Product.find({}).sort({brandName:1});
         }
         console.log(data);
         return res.status(200).json(success('Products Data!', {
