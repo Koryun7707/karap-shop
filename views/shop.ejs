@@ -78,12 +78,12 @@
                                     <% if(brands.length){ %>
                                         <% brands.forEach(function(item){ %>
                                             <div class="form-group">
-                                                <% if(brandId === item._id.toString()){ %>
+                                                <% if(brandName === item.name.toString()){ %>
                                                     <input checked type="checkbox"
-                                                           id=<%= item.name %> value="<%= item._id %>">
+                                                           id=<%= item.name %> value="<%= item.name+'11' %>">
                                                     <label for="<%= item.name %>"><%= item.name %></label>
                                                 <% }else{ %>
-                                                    <input type="checkbox" id=<%= item.name %> value="<%= item._id %>">
+                                                    <input type="checkbox" id=<%= item.name %> value="<%= item.name+'11' %>">
                                                     <label for="<%= item.name %>"><%= item.name %></label>
                                                 <% } %>
                                             </div>

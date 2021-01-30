@@ -15,26 +15,28 @@ function searchByPrice() {
     } else {
 
         //write our code here
-        let searchValue = document.querySelector('input[type=search]').value || ''
+        let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
-
+            var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
-                } else {
+                console.log(input.value);
+                if (input.value.includes('11') ) {
+                    let val = input.value.substring(0,input.value.length - 2);
+                    brandNames.push(val);
+                }  else {
                     values.push(input.value);
                 }
             });
         }
+
 
         $.ajax({
             type: 'post',
             url: '/shop-filter',
             data: {
                 types: values,
-                brandIds: brandId,
+                brandNames: brandNames,
                 searchValue: searchValue,
                 page: 1,
                 priceFrom: priceFrom,
@@ -97,7 +99,7 @@ function searchByPrice() {
                                     </a>
                                 </div>
                             `;
-                        if(item.sale.length){
+                        if(item.sale!== undefined || item.sale.length){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                     })
@@ -149,16 +151,18 @@ $(document).ready(function () {
         console.log(7777)
 
         let type = gup('type', location.href);
-        const brandId = gup('brandId', location.href);
+        const brandNames = gup('brandName', location.href);
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
         if(type){
             type = decodeURI(type);
         }
+
+        console.log(brandNames)
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo},
+            data: {page: 1, type: type, brandNames: brandNames, priceFrom: priceFrom, priceTo: priceTo},
             success: (response) => {
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -216,7 +220,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale.length){
+                        if(item.sale!==undefined||item.sale.length){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
 
@@ -301,11 +305,13 @@ $(document).ready(function () {
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
+            var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
-                } else {
+                console.log(84848484848484848484);
+                if (input.value.includes('11') ) {
+                    let val = input.value.substring(0,input.value.length - 2);
+                    brandNames.push(val);
+                }  else {
                     values.push(input.value);
                 }
             });
@@ -319,7 +325,7 @@ $(document).ready(function () {
                 priceFrom: priceFrom,
                 priceTo: priceTo,
                 types: values,
-                brandIds: brandId,
+                brandNames: brandNames,
 
             },
             success: function (response) {
@@ -348,7 +354,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale.length){
+                        if(item.sale!==undefined||item.sale.length){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                         filterDiv.append(newDiv);
@@ -442,11 +448,13 @@ $(document).ready(function () {
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
+            var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
-                } else {
+                console.log(input.value);
+                if (input.value.includes('11') ) {
+                    let val = input.value.substring(0,input.value.length - 2);
+                    brandNames.push(val);
+                }  else {
                     values.push(input.value);
                 }
             });
@@ -456,7 +464,7 @@ $(document).ready(function () {
             url: '/shop-filter',
             data: {
                 types: values,
-                brandIds: brandId,
+                brandNames: brandNames,
                 searchValue: searchValue,
                 page: pageNumber,
                 priceFrom: priceFrom,
@@ -519,7 +527,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale.length){
+                        if(item.sale!==undefined||item.sale.length){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
                     })
@@ -547,11 +555,13 @@ $(document).ready(function () {
         searchValue = ''
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
+            var brandNames = [];
             var onSale;
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                console.log(input.value);
+                if (input.value.includes('11') ) {
+                    let val = input.value.substring(0,input.value.length - 2);
+                    brandNames.push(val);
                 } else if (input.value === 'on') {
                     onSale = input.value;
                 } else {
@@ -562,7 +572,6 @@ $(document).ready(function () {
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
-
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -570,7 +579,7 @@ $(document).ready(function () {
                 types: values,
                 priceFrom: priceFrom,
                 priceTo: priceTo,
-                brandIds: brandId,
+                brandNames: brandNames,
                 searchValue: searchValue,
                 onSale: onSale,
                 page: pageNumber
@@ -663,7 +672,7 @@ $(document).ready(function () {
                                 </div>
                             `
                         ;
-                        if(item.sale.length){
+                        if(item.sale !== undefined||item.sale.length){
                             document.getElementById(`${item._id}`).style.display = 'block';
                         }
 
@@ -682,7 +691,7 @@ $(document).ready(function () {
         })
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
-    $("amount").on("change", function () {nsole.log(this.value)
+    $("amount").on("change", function () {console.log(this.value)
     });
 
 

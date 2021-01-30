@@ -13,6 +13,9 @@ const productSchema = new Schema({
         ref: 'Brand',
         // type: mongoose.Schema.Types.ObjectId,
     },
+    brandName:{
+        type:String,
+    },
     type: {
         type: String,
         required: true,

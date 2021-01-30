@@ -118,7 +118,7 @@ module.exports = {
             const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             const type = req.query.type || null;
-            const brandId = req.query.brandId || null;
+            const brandName = req.query.brandName || null;
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -127,7 +127,7 @@ module.exports = {
                 productsType: productsType,
                 brands: brands,
                 type: type,
-                brandId: brandId,
+                brandName: brandName,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)
