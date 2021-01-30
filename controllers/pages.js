@@ -117,6 +117,8 @@ module.exports = {
             }
             const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
+            let maxPrice = await Product.find({language:req.session.language}).select('-_id price');
+            maxPrice =Math.max.apply(Math, maxPrice.map(function(o) { return o.price; }))
             const type = req.query.type || null;
             const brandName = req.query.brandName || null;
             res.render('shop', {
@@ -128,6 +130,7 @@ module.exports = {
                 brands: brands,
                 type: type,
                 brandName: brandName,
+                maxPrice:maxPrice,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)

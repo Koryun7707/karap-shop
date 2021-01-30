@@ -691,8 +691,7 @@ $(document).ready(function () {
         })
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
-    $("amount").on("change", function () {console.log(this.value)
-    });
+    $("amount").on("change", function () {console.log(this.value)});
 
 
 })

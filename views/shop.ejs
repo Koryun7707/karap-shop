@@ -56,19 +56,19 @@
                         <div class="sidebar-title"><%= staticData.shop_price %></div>
                         <div class="mb-5 d-flex flex-column">
                             <div class="d-flex align-items-center mb-5">
-                                <input type="number" min="0" id='priceFrom' value=""
+                                <input type="number" min="0" id='priceFrom' value="0"
                                        class="form-control range-slide-input"/>
                                 <span class="px-2">TO</span>
-                                <input type="number" min="0" id='priceTo' value=""
+                                <input type="number" min="0" id='priceTo' value="<%=maxPrice%>"
                                        class="form-control range-slide-input"/>
                                 <button class="btn-rose border-0 px-3 py-1 ml-2" onclick="searchByPrice()">GO</button>
                             </div>
                             <div style="display: none;" id="price-div-message"></div>
-                            <div class="price-range-slider">
+                            <div class="price-range-slider" id="price-range-slider" value="<%=maxPrice%>">
                                 <p class="range-value">
                                     <input type="text" id="amount"/>
                                 </p>
-                                <div id="slider-range" class="range-bar"></div>
+                                <div id="slider-range"  class="range-bar"></div>
                             </div>
                         </div>
                         <div class="sidebar-title "><%= staticData.shop_brand %></div>
@@ -113,19 +113,20 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
     $(function () {
+        const maxPrice = document.getElementById('price-range-slider').getAttribute('value');
         $("#slider-range").slider({
             range: true,
             min: 0,
-            max: 50000,
-            values: [0, 50000],
+            max: maxPrice,
+            values: [0, maxPrice],
             slide: function (event, ui) {
-                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                $("#amount").val("€" + ui.values[0] + " - €" + ui.values[1]);
                 $("#priceFrom").val(ui.values[0]);
                 $("#priceTo").val(ui.values[1]);
             }
         });
-        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-            " - $" + $("#slider-range").slider("values", 1));
+        $("#amount").val("€" + $("#slider-range").slider("values", 0) +
+            " - €" + $("#slider-range").slider("values", 1));
     });
 </script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
