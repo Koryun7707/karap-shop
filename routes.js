@@ -108,7 +108,7 @@ router.get('/shipping', checkIsAuthenticated, pagesController.getShipping);
 router.get('/delevry', pagesController.getDelevry);
 router.get('/privacyPolicy', pagesController.getPrivacyPolicy);
 router.get('/termAndConditions', pagesController.getTermAndConditions);
-router.get('/checkouts', pagesController.getCheckouts);
+router.post('/checkouts',checkIsAuthenticated, pagesController.getCheckouts);
 
 //Create shipping address
 router.post('/shipping-address', checkIsAuthenticated, createShippingAddress);
