@@ -1,7 +1,27 @@
 <%- include ('header') -%>
 <main style="padding-top: 100px;">
-
+    <div>
+        <h2>You can pay in out website, with two pay type.</h2>
+        <form action="/pay" method="post">
+            <input name="order" type="hidden" id="orderProducts">
+            <input name="shippingAddress" type="hidden" id="shippingAddress">
+            <input type="radio" id="paypal" name="paypal" value="paypal">
+            <label for="paypal">PayPal</label><br>
+            <input type="radio" id="stripe" name="stripe" value="stripe">
+            <label for="stripe">Stripe</label><br>
+            <input type="submit" onclick="setValue()" value="Submit">
+        </form>
+    </div>
     <script src="js/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
-</main>>
-    <%- include ('footer') -%>
+</main>
+<script>
+    function setValue() {
+        const shippingAddress = localStorage.getItem('shippingAddress');
+        const order = localStorage.getItem('order');
+        //shippingAddress
+        document.getElementById('orderProducts').setAttribute('value', order);
+        document.getElementById('shippingAddress').setAttribute('value', shippingAddress);
+    }
+</script>
+<%- include ('footer') -%>
