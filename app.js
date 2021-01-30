@@ -60,20 +60,23 @@ app.use(function (req, res, next) {
 });
 
 const paypal = require('paypal-rest-sdk');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
     'client_id': 'AXhKNfoEALsLzAgqE9xrmLyDRWmaKq8qp9DfWV1o3Zj7PfxKvyLCy8qyQcIGDNkKqbXMZDVmmyHH-0IY',
     'client_secret': 'EH0QllZbxmHclQfyELMxQjeIaA_ccgCEm9gkbRUrA_ewa5abiyqul68uNK8-nW76ar8L11UULfbLz9m1'
 });
-app.post('/pay', function(req, res){
+
+app.post('/pay', function (req, res) {
+    console.log(req.body);
     //build PayPal payment request
     console.log(111122212121212)
     const order = JSON.parse(req.body.order);
     const {deliveryPrice} = JSON.parse(req.body.shippingAddress)
     const shippingAddress = req.body.shippingAddress
-    let subTotal =0 ;
-    order.forEach((item)=> {
+    let subTotal = 0;
+    order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
     })
     const create_payment_json = {
@@ -87,11 +90,11 @@ app.post('/pay', function(req, res){
         },
         "transactions": [{
             "item_list": {
-                "items":  order.map((order) => {
+                "items": order.map((order) => {
                     return {
                         name: order.name,
                         sku: order._id,
-                        price:order.onePrice,
+                        price: order.onePrice,
                         currency: "USD",
                         quantity: order.count
                     }
@@ -99,34 +102,35 @@ app.post('/pay', function(req, res){
             },
             "amount": {
                 "currency": "USD",
-                "total": eval(subTotal+deliveryPrice),
+                "total": eval(subTotal + deliveryPrice),
                 "details": {
                     "subtotal": subTotal,
                     "tax": 0,
-                    "shipping":deliveryPrice
+                    "shipping": deliveryPrice
                 }
             },
             "description": "This is the payment description."
         }]
     };
-    localStorage.setItem('amount',JSON.stringify({subTotal:subTotal,deliveryPrice:deliveryPrice}));
-    localStorage.setItem('order',JSON.stringify(order));
-    localStorage.setItem('shippingAddress',shippingAddress);
+    localStorage.setItem('amount', JSON.stringify({subTotal: subTotal, deliveryPrice: deliveryPrice}));
+    localStorage.setItem('order', JSON.stringify(order));
+    localStorage.setItem('shippingAddress', shippingAddress);
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             throw error;
         } else {
-            for(let i = 0;i < payment.links.length;i++){
-                if(payment.links[i].rel === 'approval_url'){
-                   return res.redirect(payment.links[i].href);
+            for (let i = 0; i < payment.links.length; i++) {
+                if (payment.links[i].rel === 'approval_url') {
+                    return res.redirect(payment.links[i].href);
                 }
             }
 
         }
     });
 });
-app.get  ('/success', async (req, res) => {
-    try{
+
+app.get('/success', async (req, res) => {
+    try {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
         const amount = JSON.parse(localStorage.getItem('amount'));
@@ -138,9 +142,9 @@ app.get  ('/success', async (req, res) => {
                     "currency": "USD",
                     "total": eval(amount.subTotal + amount.deliveryPrice),
                     "details": {
-                        "subtotal":amount.subTotal,
+                        "subtotal": amount.subTotal,
                         "tax": 0,
-                        "shipping":amount.deliveryPrice
+                        "shipping": amount.deliveryPrice
                     }
                 }
             }]
@@ -167,19 +171,58 @@ app.get  ('/success', async (req, res) => {
                 });
                 shipping.save();
                 // console.log(JSON.stringify(payment));
-                req.flash('success_msg','Pay Completed');
+                req.flash('success_msg', 'Pay Completed');
                 return res.redirect('/shipping');
             }
         })
-    }catch (e){
+    } catch (e) {
         logger.error(`Payment Success Error: ${e}`)
-        req.flash('error_msg',`Pay Error ${e}`)
+        req.flash('error_msg', `Pay Error ${e}`)
         res.redirect('/shipping');
     }
 
 
 });
+
 app.get('/cancel', (req, res) => res.send('Cancelled'));
+
+//Stripe integration
+app.post('/purchase', function (req, res) {
+
+    // Moreover you can take more details from user
+    // like Address, Name, etc from form
+    console.log(req.body.stripeToken);
+    console.log(req.body.stripeEmail);
+
+    stripe.customers.create({
+        email: req.body.stripeEmail,
+        source: req.body.stripeToken,
+        name: 'Gautam Sharma',
+        address: {
+            line1: 'TC 9/4 Old MES colony',
+            postal_code: '110092',
+            city: 'New Delhi',
+            state: 'Delhi',
+            country: 'India',
+        }
+    })
+        .then((customer) => {
+
+            return stripe.charges.create({
+                amount: 7000,    // Charing Rs 25
+                description: 'Web Development Product',
+                currency: 'USD',
+                customer: customer.id
+            });
+        })
+        .then((charge) => {
+            res.send("Success") // If no error occurs
+        })
+        .catch((err) => {
+            res.send(err)    // If some error occurs
+        });
+});
+
 app.use('/', apiRoutes);
 
 

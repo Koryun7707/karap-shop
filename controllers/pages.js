@@ -117,8 +117,10 @@ module.exports = {
             }
             const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
-            let maxPrice = await Product.find({language:req.session.language}).select('-_id price');
-            maxPrice =Math.max.apply(Math, maxPrice.map(function(o) { return o.price; }))
+            let maxPrice = await Product.find({language: req.session.language}).select('-_id price');
+            maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
+                return o.price;
+            }))
             const type = req.query.type || null;
             const brandName = req.query.brandName || null;
             res.render('shop', {
@@ -130,7 +132,7 @@ module.exports = {
                 brands: brands,
                 type: type,
                 brandName: brandName,
-                maxPrice:maxPrice,
+                maxPrice: maxPrice,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)
@@ -1195,7 +1197,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'delevry'
-            if(req.session.language === 'ru'){
+            if (req.session.language === 'ru') {
                 langPage = 'delevryARM'
             }
             return res.render(langPage, {
@@ -1215,11 +1217,11 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'privacyPolicy';
-            if(req.session.language === 'ru'){
+            if (req.session.language === 'ru') {
                 langPage = 'privacyPolicyARM';
             }
             return res.render(langPage, {
-                URL:`/${langPage}`,
+                URL: `/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
@@ -1234,11 +1236,11 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'termAndConditions';
-            if(req.session.language === 'ru'){
+            if (req.session.language === 'ru') {
                 langPage = 'termAndConditionsARM';
             }
             return res.render(langPage, {
-                URL:`/${langPage}`,
+                URL: `/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
@@ -1248,11 +1250,12 @@ module.exports = {
             return res.redirect('/');
         }
     },
-    getCheckouts:async(req,res)=>{
+    getCheckouts: async (req, res) => {
         const staticData = await getStaticData(req.session.language);
         return res.render('checkouts', {
-            URL:`/checkouts`,
+            URL: `/checkouts`,
             user: req.session.user,
+            key: process.env.STRIPE_PUBLIC_KEY,
             staticData: staticData,
         });
     }

@@ -42,6 +42,7 @@
     "passport-local": "^1.0.0",
     "paypal-rest-sdk": "^1.8.1",
     "rimraf": "^3.0.2",
+    "stripe": "^8.132.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   }
