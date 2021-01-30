@@ -120,8 +120,11 @@
         let priceFrom, priceTo;
         if (element.id === 'priceFrom') {
             priceFrom = Number(element.value);
+           // $("#slider-range").slider('values', 0,priceFrom);
+          //  $("#amount").val("€" + ui.values[0] + " - €" + ui.values[1]);
         } else {
             priceTo = Number(element.value);
+           // $("#slider-range").slider('values', 0,priceTo);
         }
     }
 
@@ -141,6 +144,26 @@
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
+
+   // $("#priceFrom").val($("#slider-range").slider("values", 0));
+   // $("#priceTo").val($("#slider-range").slider("values", 1));
+    $('#priceFrom').on('input', function() {
+
+        if ($(this).val() < $("#priceTo").val()) {
+            $("#slider-range").slider('values', 0, $(this).val());
+        }
+
+    });
+
+    $('#priceTo').on('input', function() {
+        console.log(111,$(this).val())
+        console.log(222,$("#priceFrom").val())
+        console.log(Number($(this).val()) > Number($("#priceFrom").val()))
+        if ($(this).val() > $("#priceFrom").val()) {
+            $("#slider-range").slider('values', 1, $(this).val());
+        }
+    });
+
 </script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
