@@ -11,11 +11,11 @@
             </div>
         </div>
         <div class="row">
-            <div id="shoppingCardDiv" class="col-12 col-lg-9">
+            <div id="shoppingCardDiv" class="col-12 col-md-7 col-lg-8">
 
 
             </div>
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-md-5 col-lg-4">
                 <div class="total-section pt-5">
                     <div class="mb-3 d-flex justify-content-between">
                         <h2 class="title"><b>TOTAL</b></h2>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="my-4">
                         <a onclick="sendData()" id="shippingPage" class="btn btn-green-gradient mb-3"
-                           style="font-size: 20px; color: #fff; text-transform: capitalize">Continue shipping</a>
+                           style="font-size: 18px; color: #fff; text-transform: capitalize">Continue shipping</a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
                                 <input type="checkbox" id="agreeTerms">
@@ -96,12 +96,12 @@
                         newDiv.setAttribute('class', 'selected-product-cart');
                         newDiv.id = item._id;
                         newDiv.innerHTML = `
-                    <div  class="shop-check d-flex flex-wrap">
+                    <div  class="shop-check d-flex flex-1 mb-2 mb-md-0">
                         <div class="form-group mr-2">
                             <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
                             <label for="${item.name}" class=""></label>
                         </div>
-                        <div class="img-area mr-3">
+                        <div class="img-area mx-2 mx-md-5">
                             <img id='productImage${item._id}' src="${item.images[0]}" alt="" class="w-100">
                         </div>
                         <div>
@@ -110,20 +110,21 @@
                             <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
                         </div>
                     </div>
+                    <div class="d-flex align-items-center flex-1 justify-content-around">
+                         <div class="product-count mx-3">
+                            <div class="qtySelector text-center">
+                                <i onclick="countPriceForBasket(this)" id="faMinu${item._id}" class="fa fa-minus decreaseQty" ></i>
+                                <input type="text" class="qtyValue" disabled id="qtyInput${item._id}" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
+                                <i onclick="countPriceForBasket(this)"  id="faPlus${item._id}" class="fa fa-plus increaseQty"></i>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
+                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)).toFixed(1)}€</div>
 
-                    <div class="product-count">
-                        <div class="qtySelector text-center">
-                            <i onclick="countPriceForBasket(this)" id="faMinu${item._id}" class="fa fa-minus decreaseQty" ></i>
-                            <input type="text" class="qtyValue" disabled id="qtyInput${item._id}" value="${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count}" />
-                            <i onclick="countPriceForBasket(this)"  id="faPlus${item._id}" class="fa fa-plus increaseQty"></i>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
-                        <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)).toFixed(1)}€</div>
-
-                    </div>
-                     <div class="d-flex justify-content-end">
+                     <div class="d-flex justify-content-end abs">
                         <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
                `

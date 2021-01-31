@@ -16,24 +16,26 @@
     font-family: "Gagalin-Regular";
     src: url("../fonts/Gagalin-Regular.otf");
 }
-
 .logoStyles {
-    font-family: "Gagalin-Regular", sans-serif;
-    font-size: 35px;
-    line-height: 35px;
-    text-shadow: 1px 3px #c4b3ab;
-    /*transform: rotate(-20deg);*/
-    color: #fff;
+
+    color: #c4b3ab;
     margin: 14px 7px 15px 7px;
     font-style: italic;
     transition: all 0.4s;
+    font-family: "Gagalin-Regular", sans-serif;
+    font-size: 35px;
+    line-height: 35px;
+    text-shadow: 1px 6px transparent;
+    transform: scale(1.2);
+
 }
 .logoStyles:hover {
-    text-shadow: 1px 6px transparent;
-    color: #c4b3ab;
-    transform: rotate(-20deg);
-    transform: scale(1.2);
+
+    text-shadow: 1px 3px #c4b3ab;
+    color: #fff;
+    transform: scale(1);
 }
+
 
 body {
     font-family: 'MYRIADPRO-REGULAR', sans-serif;
@@ -277,6 +279,9 @@ section h2 {
 
 footer ul li a {
     color: #000000;
+}
+.links-for-pages li.active a{
+    color: #c4aa9d;
 }
 
 footer h4 {
@@ -940,7 +945,7 @@ button:focus {
     border: 1px solid #ddd;
     width: 107px;
     height: 35px;
-    margin: 10px 0 0;
+    margin: 0;
 }
 
 .qtySelector .fa {
@@ -1020,12 +1025,18 @@ button:focus {
     align-items: flex-start;
     justify-content: space-between;
     background-color: #fff;
-    padding: 10px 16px;
+    padding: 10px 60px 10px 16px;
     min-height: 135px;
     margin-bottom: 8px;
     border-radius: 5px;
     border: 1px solid #c4aa9d;
     flex-wrap: wrap;
+    position: relative;
+}
+.selected-product-cart .abs{
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .small-images,
@@ -1058,11 +1069,14 @@ button:focus {
 .selected-product-cart .product-color {
     color: #c4aa9d;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 21px;
+    line-height: 30px;
     border-radius: 4px;
     border: 1px solid #c4aa9d;
-    padding: 4px 16px;
+    padding: 0;
+    width: 36px;
+    height: 30px;
+    text-align: center;
 }
 
 .total-section {
@@ -1137,4 +1151,37 @@ button:focus {
 }
 .br-0{
     border-radius: 0;
+}
+
+.stripe-button-el span {
+    background: linear-gradient(90deg, #033d29, #097814)!important;
+    background-image: none!important;
+    width: 100%;
+    /* max-width: 250px; */
+    height: 40px !important;
+    padding: 0 100px!important;
+    display: flex!important;
+    align-items: center;
+}
+.checkout-page {
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    flex-direction: column;
+    background-color: #bc8f8f38;
+}
+.checkout-page .btn-green-gradient {
+    max-width: 294px;
+    height: 40px;
+    border-radius: 4px;
+    color: #fff;
+}
+.checkout-page .bg-rose {
+    background-color: #c4aa9d;
+    padding:0  30px;
+    color: #FFFFFF;
+}
+.flex-1 {
+    flex: 1;
 }
