@@ -17,23 +17,22 @@
     src: url("../fonts/Gagalin-Regular.otf");
 }
 .logoStyles {
-
     color: #c4b3ab;
-    margin: 14px 7px 15px 7px;
+    /*margin: 14px 7px 15px 7px;*/
     font-style: italic;
     transition: all 0.4s;
     font-family: "Gagalin-Regular", sans-serif;
     font-size: 35px;
     line-height: 35px;
     text-shadow: 1px 6px transparent;
-    transform: scale(1.2);
+    transform: scale(1);
 
 }
 .logoStyles:hover {
 
-    text-shadow: 1px 3px #c4b3ab;
+    /*text-shadow: 1px 3px #c4b3ab;*/
     color: #fff;
-    transform: scale(1);
+    transform: scale(0.8);
 }
 
 
@@ -171,7 +170,7 @@ body {
 
 .section1 .abs h1 {
     color: #e3e3e3;
-    font-size: 6.5rem;
+    font-size: 6rem;
     letter-spacing: -5px;
     line-height: 5rem;
     font-family: "MYRIADPRO-SEMIBOLD", sans-serif;
@@ -390,8 +389,8 @@ footer .abs {
 
 h1 {
     color: #e3e3e3;
-    font-size: 145px;
-    letter-spacing: -10px;
+    font-size: 6rem;
+    letter-spacing: -2px;
     font-family: "MYRIADPRO-BOLD", sans-serif;
     text-transform: uppercase;
 }
@@ -591,6 +590,9 @@ h1 {
     border: 0;
     margin: 32px 0;
 }
+.shop-card h2 {
+    color: #000;
+}
 
 .shop-card > a:hover {
     opacity: 0.5;
@@ -621,8 +623,8 @@ h1 {
 }
 
 .sidebar-title {
-    font-size: 38px;
-    line-height: 40px;
+    font-size: 30px;
+    line-height: 36px;
     border-bottom: 2px solid #000000;
     font-family: "MYRIADPRO-BOLD", sans-serif;
     margin-bottom: 40px;

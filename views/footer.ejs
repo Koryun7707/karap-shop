@@ -2,9 +2,7 @@
     <div class="container container-1730 pt-lg-5">
         <div class="row flex-wrap align-items-center">
             <div class="col-4 offset-lg-2 col-lg-2">
-                <a href="/" class="footer-logo">
-                    <img src="images/logo/logo%20kanach.png" alt="">
-                </a>
+
             </div>
             <%if(staticData){%>
             <div class="col-8 col-lg-5">
@@ -14,32 +12,32 @@
                                 <%= staticData.pages %>
                         </h4>
                         <ul class="list-unstyled links-for-pages">
-                            <li>
+                            <li class="active" id="1" onclick="changeActive(this)">
                                 <a href="/delevry">
                                         <%= staticData.delevery_returns %>
                                 </a>
                             </li>
-                            <li>
+                            <li class="active" id="2" onclick="changeActive(this)">
                                 <a href="/privacyPolicy">
                                         <%= staticData.privacy_policy %>
                                 </a>
                             </li>
-                            <li>
+                            <li class="active" id="3" onclick="changeActive(this)">
                                 <a href="/termAndConditions">
                                         <%= staticData.terms_conditions %>
                                 </a>
                             </li>
-                            <li>
+                            <li class="active" id="4" onclick="changeActive(this)">
                                 <a href="/about">
                                         <%= staticData.about %>
                                 </a>
                             </li>
-                            <li>
+                            <li class="active" id="5" onclick="changeActive(this)">
                                 <a href="/contact">
                                         <%= staticData.contact %>
                                 </a>
                             </li>
-                            <li>
+                            <li class="active" id="6" onclick="changeActive(this)">
                                 <a href="/join-our-team">
                                         <%= staticData.join_our_team %>
                                 </a>
@@ -105,12 +103,14 @@
 </footer>
 <script>
     $(document).ready(function () {
+
         $(".modal.fade").click(function () {
             $(".modal.fade").removeClass('show');
             $(".modal-backdrop.fade").removeClass('show');
             $("this").addClass('show');
         });
         $('.scrollup').click(function() {
+            console.log(2222);
             // переместиться в верхнюю часть страницы
             $("html, body").animate({
                 scrollTop:0
@@ -120,5 +120,23 @@
     $('#closemodal').click(function () {
         $('#loginModal').modal('hide');
     });
+    // $(document).ready(function () {
+    //     let li = $(".links-for-pages li");
+    //     li.click(function () {
+    //         console.log(li);
+    //         // $(".links-for-pages li").removeClass('active');
+    //         // $("this").addClass('active');
+    //     });
+    // })
 
+    function changeActive(element){
+        for (let i = 1;i<=6;i++){
+            if(element.id === `${i}`){
+                document.getElementById(${i}).removeAttribute('class', 'active');
+            }else {
+                document.getElementById(${i}).setAttribute('class', 'active');
+            }
+
+        }
+    }
 </script>

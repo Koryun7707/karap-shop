@@ -23,7 +23,7 @@
 
 <header class="fixed-top header-bg">
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg navbar-light py-0">
             <a class="navbar-brand mr-2 mr-xl-5 header-logo" href="/">
                 <div class="d-flex flex-column logoStyles">
                     <span>Armat</span>
@@ -194,8 +194,13 @@
         element.setAttribute('href', '/logout');
     }
 
-    function goToSelectedPage() {
-        let basket = document.getElementById('shoppingCard');
+    function goToSelectedPage(element) {
+        let basket ;
+            if(element.id === 'shoppingCard'){
+                basket = document.getElementById('shoppingCard');
+            }else {
+                basket = document.getElementById('shoppingCardS');
+            }
         const local = JSON.parse(localStorage.getItem('shoppingCard'));
         if (local && local.length) {
             basket.setAttribute('href', '/selectedProducts');
