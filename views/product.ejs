@@ -157,9 +157,9 @@
         let productSize;
         let productColor;
         let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
-        if (document.querySelector('input[name="productSize"]'))
+        if (document.querySelector('input[name="productSize"]:checked'))
             productSize = document.querySelector('input[name="productSize"]:checked').id;
-        if (document.querySelector('input[name="productColor"]'))
+        if (document.querySelector('input[name="productColor"]:checked'))
             productColor = document.querySelector('input[name="productColor"]:checked').id;
 
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {

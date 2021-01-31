@@ -183,7 +183,7 @@
                 console.log(productSalePrice,'sale')
                 countProduct.innerHTML = `${productCount}`;
                 productStartPrice.innerHTML = `${productPrice}€`
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice)}€`;
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
                 document.getElementById('total').innerHTML = sum + '€';
             } else {
                 countProduct.innerHTML = '0';

@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const {logger} = require('./utils/logger');
 const bodyParser = require('body-parser');
@@ -11,7 +10,11 @@ const flash = require('connect-flash');
 const passport = require('passport')
 const ShippingAddress = require('./models/shipingAddress');
 const {sendMessageToMail} = require('./services/mailService');
+const compression =   require('compression');
 const Product = require('./models/product');
+
+const app = express();
+app.use(compression());
 
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
@@ -292,7 +295,10 @@ app.post('/purchase', function (req, res) {
 
 app.use('/', apiRoutes);
 
-
+app.get('*', (req, res) => {
+    logger.error(`APP INVALID ROUTE ${req.originalUrl}`)
+    res.json({ status: 404, description: 'Invalid api address!' })
+});
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
 });

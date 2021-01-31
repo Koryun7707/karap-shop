@@ -265,7 +265,7 @@
                     if (brands.length) {
                         brands.forEach(function (item) {
                             let a = document.createElement(`a`);
-                            a.href = `shop?brandId=${item._id}`
+                            a.href = `shop?brandName=${item.name}`
                             a.innerHTML = `${item.name} <br/>`;
                             div.append(a);
                         })

@@ -88,12 +88,12 @@ function searchByPrice() {
                                         </div>
                                         <div class="d-flex ">
                                           <div class="mr-3"> 
-                                            <h2>${item.price}€</h2>
+                                            <h2 id='styleDiv' style="text-decoration: line-through">${item.price}€</h2>
                                            
                                         </div>
                                       
                                           <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>                                     
                                         
                                         </div>
@@ -104,6 +104,9 @@ function searchByPrice() {
                             `;
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+
                         }
                     })
                 } else {
@@ -212,11 +215,11 @@ $(document).ready(function () {
                                         </div>
                                         <div class="d-flex">
                                            <div class="mr-3">
-                                            <h2>${item.price}€</h2>
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                          
                                         </div>
                                         <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         
 </div>
@@ -229,6 +232,9 @@ $(document).ready(function () {
                         ;
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+
                         }
 
                     })
@@ -350,11 +356,11 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                          <div>
-                                            <h2>${item.price}€</h2>
+                                            <h2 id="styleDiv" style="text-decoration: line-through"   >${item.price}€</h2>
                                          
                                         </div>
                                           <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a> 
@@ -363,6 +369,8 @@ $(document).ready(function () {
                         ;
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
                         }
                         filterDiv.append(newDiv);
                     })
@@ -524,10 +532,10 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                          <div>
-                                            <h2>${item.price}€</h2>
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -537,6 +545,8 @@ $(document).ready(function () {
                         ;
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
                         }
                     })
                 } else {
@@ -669,10 +679,10 @@ $(document).ready(function () {
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
                                         <div>
-                                            <h2>${item.price}€</h2>
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         <div class="title">${item.name}</div>
                                     </a>
@@ -682,6 +692,9 @@ $(document).ready(function () {
                         ;
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+
                         }
 
                     })
