@@ -89,10 +89,9 @@ function searchByPrice() {
                                         <div class="d-flex ">
                                           <div class="mr-3"> 
                                             <h2 id='styleDiv' style="text-decoration: line-through">${item.price}€</h2>
-                                           
                                         </div>
                                       
-                                          <div id="${item._id}" style="display: none">
+                                        <div id="${item._id}" style="display: none">
                                             <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>                                     
                                         
@@ -213,6 +212,7 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
+                                       
                                         <div class="d-flex">
                                            <div class="mr-3">
                                             <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
@@ -355,14 +355,10 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-<<<<<<< Updated upstream
-                                         <div>
-                                            <h2 id="styleDiv" style="text-decoration: line-through"   >${item.price}€</h2>
-=======
+
                                     <div class="d-flex">
                                        <div class="mr-3">
-                                            <h2>${item.price}€</h2>
->>>>>>> Stashed changes
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                          
                                         </div>
                                           <div id="${item._id}" style="display: none">
@@ -540,14 +536,9 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-<<<<<<< Updated upstream
-                                         <div>
-                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
-=======
                                         <div class="d-flex">
                                           <div class="mr-3">
-                                            <h2>${item.price}€</h2>
->>>>>>> Stashed changes
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
                                             <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
@@ -695,14 +686,9 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-<<<<<<< Updated upstream
-                                        <div>
-                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
-=======
                                         <div class="d-flex">
                                          <div class="mr-3">
-                                            <h2>${item.price}€</h2>
->>>>>>> Stashed changes
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
                                             <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
