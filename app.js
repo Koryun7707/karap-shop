@@ -68,9 +68,12 @@ paypal.configure({
 
 app.post('/pay', function (req, res) {
     //build PayPal payment request
+    logger.info('Start paymant with paypal - - -');
     const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
     const {deliveryPrice} = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
-    // const shippingAddress = req.body.shippingAddress
+    console.log(order,'order');
+    console.log(deliveryPrice,'delevry');
+
     let subTotal = 0;
     order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
@@ -119,7 +122,7 @@ app.post('/pay', function (req, res) {
         } else {
             for (let i = 0; i < payment.links.length; i++) {
                 if (payment.links[i].rel === 'approval_url') {
-                    return res.status(200).json({url: payment.links[i].href});
+                    return res.redirect( payment.links[i].href);
                 }
             }
 
@@ -198,33 +201,32 @@ app.get('/cancel', (req, res) => {
 
 //Stripe integration
 app.post('/purchase', function (req, res) {
-    const shippingAddress = localStorage.getItem('shippingAddress');
-    // Moreover you can take more details from user
-    // like Address, Name, etc from form
+    const {address,postalCode,city,country,apartment,deliveryPrice} = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
+    const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
+    let subTotal = 0;
+    order.forEach((item) => {
+        subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
+    })
     console.log(req.body.stripeToken);
     console.log(req.body.stripeEmail);
     console.log(req.body)
-    // const order = JSON.parse(req.body.order);
-    // const shippingAddress = JSON.parse(req.body.shippingAddress);
-    // console.log(order)
-    // console.log(shippingAddress)
+
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
         name: req.session.user.firstName + '' + req.session.user.lastName,
         address: {
-            line1: 'TC 9/4 Old MES colony',
-            postal_code: '110092',
-            city: 'New Delhi',
-            state: 'Delhi',
-            country: 'India',
+            line1:address+" "+ apartment,
+            postal_code: postalCode,
+            city: city,
+            state: address,
+            country: country,
         }
     })
         .then((customer) => {
-
             return stripe.charges.create({
-                amount: 7000,    // Charing Rs 25
-                description: 'Web Development Product',
+                amount: (Number(subTotal)+Number(deliveryPrice)*100),
+                description: 'Armat Concept',
                 currency: 'USD',
                 customer: customer.id
             });

@@ -7,49 +7,20 @@
                     src="https://checkout.stripe.com/checkout.js"
                     class="stripe-button"
                     data-key="<%= key %>"
-                    data-name="Custom t-shirt"
-                    data-description="Your custom designed t-shirt"
+                    data-name="Armat Concept pay"
+                    data-description="<%=names%>"
                     data-amount="<%= sum * 100 %>"
                     data-currency="usd"
             >
 
             </script>
         </form>
-        <button class="btn btn-success" type="submit" onclick="setValue()">Pay with Paypal</button>
+        <form action="/pay" method="post">
+             <button class="btn btn-success" type="submit" >Pay with Paypal</button>
+        </form>
     </div>
     <script src="js/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
 </main>
-<script>
-    function setValue() {
-        console.log('444')
-        const shippingAddress = localStorage.getItem('shippingAddress');
-        const order = localStorage.getItem('order');
-        console.log(order)
-        //shippingAddress
-        document.getElementById('orderProducts').setAttribute('value', order);
-        document.getElementById('shippingAddress').setAttribute('value', shippingAddress);
-        $.ajax({
-            type: 'post',
-            url: '/pay',
-            data: {
-                order: order,
-                shippingAddress: shippingAddress,
 
-            },
-            success: (response) => {
-                console.log(response)
-                if (response) {
-                    window.location.replace(response.url);
-                } else {
-                    window.location.replace('http://localhost:3000/shipping')
-                }
-
-            },
-            error: (e) => {
-                console.log(e)
-            }
-        })
-    }
-</script>
 <%- include ('footer') -%>

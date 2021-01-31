@@ -1254,6 +1254,7 @@ module.exports = {
     getCheckouts: async (req, res) => {
         try {
             logger.info('Start get checkout page.');
+
             localStorage.setItem(`order${req.session.user._id}`, req.body.order);
             localStorage.setItem(`shippingAddress${req.session.user._id}`, req.body.shippingAddress);
             const staticData = await getStaticData(req.session.language);
@@ -1262,12 +1263,20 @@ module.exports = {
                 sum += Number(item.priceSale.substring(0, item.priceSale.length - 1))
             });
             sum += Number(JSON.parse(req.body.shippingAddress).deliveryPrice);
-            console.log(sum);
+            let names = '';
+            const order = JSON.parse(req.body.order)
+            order.forEach((item)=>{
+                console.log(item)
+                names+=item.name+' ';
+            })
+
+
             return res.render('checkouts', {
                 URL: `/checkouts`,
                 user: req.session.user,
                 key: process.env.STRIPE_PUBLIC_KEY,
                 sum: sum,
+                names:names,
                 staticData: staticData,
             });
         } catch (e) {
