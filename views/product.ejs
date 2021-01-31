@@ -4,9 +4,9 @@
         <div class="row">
             <% if(product.length){ %>
                 <% if(product[0].images.length){ %>
-                    <div class="col-7">
+                    <div class="col-12 col-md-7">
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-4 col-md-3 col-lg-2">
                                 <div class="mb-2 small-images">
                                     <img src="<%= product[0].images[1] %>" alt="" class="w-100">
                                 </div>
@@ -17,38 +17,42 @@
                                     <img src="<%= product[0].images[3] %>" alt="" class="w-100">
                                 </div>
                             </div>
-                            <div class="col-10">
+                            <div class="col-8 col-md-9 col-lg-10">
                                 <img src="<%= product[0].images[0] %>" alt="" class="w-100">
                             </div>
                         </div>
                     </div>
                 <% } %>
-                <div class="col-5">
+                <div class="col-12 col-md-5">
                     <div class="product-name">
                         <h2 class="mb-2"><%= product[0].name %></h2>
                     </div>
-                    <div class="product-price" id="productPrice" value="<%= product[0].price %>">
+                    <div class="d-flex">
+                        <div class="product-price mr-4" id="productPrice" value="<%= product[0].price %>">
+                            <% if(product[0].sale){ %>
+                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b>
+                                </h2>
+                            <% }else{ %>
+                                <h2><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                            <% } %>
+                        </div>
                         <% if(product[0].sale){ %>
-                            <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b>
-                            </h2>
-                        <% }else{ %>
-                            <h2><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                            <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
+                                <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>€</h5>
+                            </div>
                         <% } %>
                     </div>
-                    <% if(product[0].sale){ %>
-                        <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
-                            <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>€</h5>
-                        </div>
-                    <% } %>
                     <% if(product[0].sizes[0] != ''){ %>
                         <div class="product-size">
                             <h5>Size</h5>
-                            <ul class="list-unstyled d-flex" id="productSizesDiv" value=<%= product[0].sizes %>>
+                            <ul class="list-unstyled d-flex align-items-center" id="productSizesDiv" value=<%= product[0].sizes %>>
                                 <% if(product[0].sizes){ %>
                                     <% product[0].sizes.forEach(function(item){ %>
+                                    <div class="mr-2">
                                         <input type="radio" name="productSize" id=<%= item %>>
                                             <%= item %>
                                         </input>
+                                    </div>
                                     <% }) %>
                                 <% } %>
                             </ul>
@@ -57,12 +61,15 @@
                     <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
                             <h5>Color</h5>
-                            <ul class="list-unstyled d-flex">
+                            <ul class="list-unstyled d-flex align-items-center">
                                 <% if(product[0].colors){ %>
                                     <% product[0].colors.forEach(function(item){ %>
-                                        <input type="radio" name="productColor" id=<%= item %>>
-                                            <%= item %>
+                                    <div class="mr-2 d-flex align-items-center">
+                                        <input type="radio" name="productColor"  id=<%= item %>>
+<!--                                            <%= item %>-->
+                                            <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"> </div>
                                         </input>
+                                    </div>
                                     <% }) %>
                                 <% } %>
                             </ul>
@@ -170,7 +177,7 @@
                     if (response.message && response.error) {
                         alert(`${response.message}`);
                     } else {
-                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML);
+                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML) || Number(document.getElementById('shoppingCardNumberS').innerHTML);
                         shoppingCard++;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
                         if (Cardlocal && Cardlocal.length) {
@@ -182,6 +189,7 @@
                                 document.getElementById('addToCardButton').classList.add('btn-green-gradient');
                             }, 1000)
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
                             Cardlocal.push({
                                 productId: id.value,
                                 size: productSize,
@@ -194,6 +202,7 @@
                             localStorage.setItem('shoppingCard', Cardlocal);
                         } else {
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
                             document.getElementById('addToCardButton').innerHTML = 'Added';
                             document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
                             document.getElementById('addToCardButton').classList.add('btn-dark');

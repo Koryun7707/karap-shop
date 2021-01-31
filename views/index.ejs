@@ -21,7 +21,7 @@
         </div>
     </section>
     <section id="section2" class="section2 py-5" value=<%= products.length %>>
-        <div class="container pb-5 px-5">
+        <div class="container container-1730 pb-5 px-5">
             <h2 class="text-center mb-3 mb-md-5">
                 <% if(pageData.length){ %>
                     <%= pageData[0].homeProductTypeTitle %>
@@ -88,7 +88,7 @@
             smartSpeed: 800,
             nav: true,
             dots: false,
-            items: Number(document.getElementById('section2').getAttribute('value')),
+            items: 7,
             margin: 40,
             responsive: {
                 0: {
@@ -96,19 +96,16 @@
                 },
 
                 600: {
-                    items: Number(document.getElementById('section2').getAttribute('value')) - 3
+                    items: 2
                 },
 
                 1024: {
-                    items: Number(document.getElementById('section2').getAttribute('value')) - 2
+                    items: 4
                 },
                 1199: {
-                    items: Number(document.getElementById('section2').getAttribute('value'))
+                    items: 5
                 },
 
-                1366: {
-                    items: Number(document.getElementById('section2').getAttribute('value'))
-                }
             },
 
         });
@@ -157,7 +154,7 @@
                 result.results.brands.map((item) => {
                     let brandsRenderPlace = document.getElementById('brands-render-place');
                     let div = document.createElement('div');
-                    div.setAttribute('class', 'col-6 col-md-4 col-lg-3 overflow-hidden');
+                    div.setAttribute('class', 'col-12 col-xs-6 col-md-4 col-lg-3 overflow-hidden');
 
                     div.innerHTML = `  <a href="/shop?brandName=${item.name}" class="home-card-pagination">
                            <img src=${item.images[1]} alt="pic"/>

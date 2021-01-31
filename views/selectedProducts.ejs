@@ -11,11 +11,11 @@
             </div>
         </div>
         <div class="row">
-            <div id="shoppingCardDiv" class="col-12 col-md-8 col-lg-9">
+            <div id="shoppingCardDiv" class="col-12 col-lg-9">
 
 
             </div>
-            <div class="col-12 col-md-4 col-lg-3">
+            <div class="col-12 col-lg-3">
                 <div class="total-section pt-5">
                     <div class="mb-3 d-flex justify-content-between">
                         <h2 class="title"><b>TOTAL</b></h2>
@@ -96,7 +96,7 @@
                         newDiv.setAttribute('class', 'selected-product-cart');
                         newDiv.id = item._id;
                         newDiv.innerHTML = `
-                    <div  class="shop-check d-flex">
+                    <div  class="shop-check d-flex flex-wrap">
                         <div class="form-group mr-2">
                             <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
                             <label for="${item.name}" class=""></label>
@@ -106,7 +106,7 @@
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${item.name}</div>
-                            <div class="product-color my-2">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color || ''}</div>
+                            <div class="product-color my-2 py-3" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color || ''}"></div>
                             <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
                         </div>
                     </div>
@@ -119,12 +119,12 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
+                        <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
                         <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)).toFixed(1)}€</div>
 
                     </div>
                      <div class="d-flex justify-content-end">
-                        <button value="${item._id}" class="btn btn-danger" onclick="deleteProduct(this)" type="submit">Delete</button>
+                        <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
                `
                         if (item.sale) {
@@ -205,6 +205,7 @@
         local = local.filter(item => item.productId != button.value);
         localStorage.setItem('shoppingCard', JSON.stringify(local));
         document.getElementById('shoppingCardNumber').innerHTML = local.length;
+        document.getElementById('shoppingCardNumberS').innerHTML = local.length;
         checkFluency();
     }
 

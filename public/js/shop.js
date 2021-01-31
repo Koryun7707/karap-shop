@@ -86,14 +86,18 @@ function searchByPrice() {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                         <div>
+                                        <div class="d-flex ">
+                                          <div class="mr-3"> 
                                             <h2>${item.price}€</h2>
                                            
                                         </div>
                                       
                                           <div id="${item._id}" style="display: none">
                                             <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                        </div>                                     
+                                        
                                         </div>
+                                       
                                         <div class="title">${item.name}</div>
                                     </a>
                                 </div>
@@ -206,13 +210,17 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                         <div>
+                                        <div class="d-flex">
+                                           <div class="mr-3">
                                             <h2>${item.price}€</h2>
                          
                                         </div>
                                         <div id="${item._id}" style="display: none">
                                             <h2 style="text-decoration: line-through">${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
+                                        
+</div>
+                                      
                                         <div class="title">${item.name}</div>
                                     </a>
                                                      

@@ -12,6 +12,28 @@
     font-family: "MYRIADPRO-SEMIBOLD";
     src: url("../fonts/MYRIADPRO-SEMIBOLD.OTF");
 }
+@font-face {
+    font-family: "Gagalin-Regular";
+    src: url("../fonts/Gagalin-Regular.otf");
+}
+
+.logoStyles {
+    font-family: "Gagalin-Regular", sans-serif;
+    font-size: 35px;
+    line-height: 35px;
+    text-shadow: 1px 3px #c4b3ab;
+    /*transform: rotate(-20deg);*/
+    color: #fff;
+    margin: 14px 7px 15px 7px;
+    font-style: italic;
+    transition: all 0.4s;
+}
+.logoStyles:hover {
+    text-shadow: 1px 6px transparent;
+    color: #c4b3ab;
+    transform: rotate(-20deg);
+    transform: scale(1.2);
+}
 
 body {
     font-family: 'MYRIADPRO-REGULAR', sans-serif;
@@ -140,8 +162,9 @@ body {
 .section1 .abs {
     position: absolute;
     z-index: 11;
-    bottom: 30%;
-    left: 19%;
+    top: 40%;
+    left: 5%;
+    max-width: 50%;
 }
 
 .section1 .abs h1 {
@@ -167,7 +190,8 @@ section h2 {
 }
 
 .section2 .card .img-area {
-    width: 180px;
+    max-width: 180px;
+    width: 100%;
     height: 200px;
     display: flex;
     align-items: center;
@@ -193,6 +217,7 @@ section h2 {
     width: 100%;
     border: 1px solid transparent;
     transition: all 0.5s;
+    margin: 0 auto;
 }
 
 .btn.btn-green-gradient:hover {
@@ -310,11 +335,12 @@ footer .abs {
 .blog-card .btn-green-gradient {
     font-size: 30px;
     color: #ffffff;
-    width: 320px;
+    max-width: 320px;
     display: block;
     text-align: center;
     text-decoration: none;
     margin-bottom: 40px;
+    width: 100%;
 }
 
 .blog-img {
@@ -339,6 +365,14 @@ footer .abs {
     margin-right: 15px;
 }
 
+
+#section1 #carousel1.owl-carousel .owl-item img {
+    display: block;
+    width: 100%;
+    max-height: 100vh;
+    height: 100%;
+}
+
 /*----brand-----*/
 .brand-section-bg {
     background-size: 100%;
@@ -346,7 +380,7 @@ footer .abs {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 13% 0;
 }
 
 h1 {
@@ -478,7 +512,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 13% 0;
 }
 
 .about-sections h2 {
@@ -543,7 +577,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 13% 0;
 }
 
 .shop-card {
@@ -560,7 +594,7 @@ h1 {
 
 .shop-card .img-area {
     width: 300px;
-    height: 435px;
+    height: 340px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -573,7 +607,7 @@ h1 {
 .shop-card .title {
     font-size: 30px;
     color: #c4aa9d;
-    margin: 30px 0 12px;
+    margin: 0 0 12px;
     text-transform: uppercase;
 }
 
@@ -719,6 +753,9 @@ h1 {
     align-items: center;
     justify-content: center;
 }
+.bright {
+    border-right: 1px solid;
+}
 
 .contact-section .text {
     margin: 48px auto 0;
@@ -785,7 +822,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 14% 0;
 }
 
 
@@ -984,10 +1021,11 @@ button:focus {
     justify-content: space-between;
     background-color: #fff;
     padding: 10px 16px;
-    height: 135px;
+    min-height: 135px;
     margin-bottom: 8px;
     border-radius: 5px;
     border: 1px solid #c4aa9d;
+    flex-wrap: wrap;
 }
 
 .small-images,
@@ -1072,4 +1110,31 @@ button:focus {
 }
 .activeColorItem {
     color: black;
+}
+#loginModal,
+#RegistrationModal,
+#forgotPassword,
+#resetPassword {
+    background-color: #c4b3ab42;
+   min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#loginModal .modal-content,
+#RegistrationModal .modal-content,
+#forgotPassword .modal-content,
+#resetPassword .modal-content {
+    max-width: 600px;
+}
+.text-content-page {
+    background-color: #bc8f8f38;
+    padding: 50px 0;
+}
+.text-content-page  h2{
+    background-color: #c4aa9d;
+    margin-top: 30px;
+}
+.br-0{
+    border-radius: 0;
 }

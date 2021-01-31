@@ -72,9 +72,12 @@ $(document).ready(function () {
         let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
         if(Cardlocal){
             document.getElementById('shoppingCardNumber').innerHTML = `${Cardlocal.length}`;
+            document.getElementById('shoppingCardNumberS').innerHTML = `${Cardlocal.length}`;
+
         }
         else{
             document.getElementById('shoppingCardNumber').innerHTML = '0';
+            document.getElementById('shoppingCardNumberS').innerHTML = '0';
 
         }
     }

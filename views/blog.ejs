@@ -5,12 +5,12 @@
             <% if(brands.length > 0){ %>
                 <% brands.forEach(function(item, index){ %>
                     <div class="row blog-card mb-5">
-                        <div class="col-5">
-                            <div class="rose-bg d-flex justify-content-center align-items-center w-100 h-100">
+                        <div class="col-6 col-md-5">
+                            <div class="rose-bg d-flex justify-content-center align-items-center p-5 w-100 h-100">
                                 <img src=<%= item.images[0] %> alt="logo">
                             </div>
                         </div>
-                        <div class="col-7 blog-img">
+                        <div class="col-6 col-md-7 blog-img">
                             <img src=<%= item.images[3] %> alt="" class="w-100 h-100 blog-img-anim">
                         </div>
                         <div class="col-12">
