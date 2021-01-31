@@ -10,6 +10,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport')
 const ShippingAddress = require('./models/shipingAddress');
+const {sendMessageToMail} = require('./services/mailService');
+const Product = require('./models/product');
 
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
@@ -151,7 +153,7 @@ app.get('/success', async (req, res) => {
             }]
         };
 
-        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+        paypal.payment.execute(paymentId, execute_payment_json, function  (error, payment) {
             if (error) {
                 console.log(error.response);
                 throw error;
@@ -171,6 +173,43 @@ app.get('/success', async (req, res) => {
                     productIds: order,
                 });
                 shipping.save();
+                let orderUser = '';
+                const ids =[];
+                order.forEach(item=> {
+                    ids.push(item.productId);
+                    orderUser += item.name + ' ' + 'Count:' + item.count + ' ' + 'Cost:' + item.priceSale + ' ' + 'Delivery:' + shippingAddress.deliveryPrice + '</br>';
+                })
+                // Product.find({'$in': ids} ).populate('brandId').exec( function(err, data){
+                //     if(err){
+                //         console.log(err);
+                //     };
+                //
+                //     console.log(data);
+                // });
+                const messageUser = {
+                    from: process.env.MAIL_AUTH_EMAIL,
+                    to: req.session.user.email,
+                    subject: 'Thank you for your order',
+                    html: `<h4>Hello ${req.session.user.firstName} </h4>
+                               <div>
+                                    ${orderUser}                                  
+                                </div> `,
+                }
+                const messageAdmin = {
+                    from: process.env.MAIL_AUTH_EMAIL,
+                    to: process.env.MAIL_AUTH_EMAIL,
+                    subject: `From website buys product ${req.session.user.firstName} | ${req.session.user.firstName} | ${req.session.user._id}`,
+                    html: `
+                               <div>
+                                     ${orderUser}                              
+                                </div> 
+                                <div>
+                                     ${shippingAddress}                              
+                                </div>`,
+                }
+                sendMessageToMail(messageUser)
+                sendMessageToMail(messageAdmin)
+
                 localStorage.removeItem(`order${req.session.user._id}`);
                 localStorage.removeItem(`shippingAddress${req.session.user._id}`);
                 localStorage.removeItem(`amount${req.session.user._id}`);
@@ -210,7 +249,10 @@ app.post('/purchase', function (req, res) {
     console.log(req.body.stripeToken);
     console.log(req.body.stripeEmail);
     console.log(req.body)
-
+    let amount = (Number(subTotal)+Number(deliveryPrice))*100;
+    console.log(amount)
+    console.log(Number(subTotal))
+    console.log(Number(deliveryPrice))
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
@@ -225,19 +267,23 @@ app.post('/purchase', function (req, res) {
     })
         .then((customer) => {
             return stripe.charges.create({
-                amount: (Number(subTotal)+Number(deliveryPrice)*100),
+                amount: amount,
                 description: 'Armat Concept',
                 currency: 'USD',
                 customer: customer.id
             });
         })
         .then((charge) => {
+            localStorage.removeItem(`order${req.session.user._id}`);
+            localStorage.removeItem(`shippingAddress${req.session.user._id}`);
             req.flash('success_msg', 'Pay Completed');
             return res.redirect('/selectedProducts');
             // If no error occurs
         })
         .catch((e) => {
-            logger.error(`Payment Success Error: ${e}`)
+            localStorage.removeItem(`order${req.session.user._id}`);
+            localStorage.removeItem(`shippingAddress${req.session.user._id}`);
+            logger.error(`Payment Error: ${e}`)
             req.flash('error_msg', `Pay Error ${e}`)
             res.redirect('/shipping');
             // If some error occurs
