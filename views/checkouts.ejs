@@ -9,18 +9,13 @@
                     data-key="<%= key %>"
                     data-name="Custom t-shirt"
                     data-description="Your custom designed t-shirt"
-                    data-amount="7000"
+                    data-amount="<%= sum * 100 %>"
                     data-currency="usd"
             >
 
             </script>
-<!--            <input name="order" type="hidden" id="orderProducts">-->
-<!--            <input name="shippingAddress" type="hidden" id="shippingAddress">-->
         </form>
-
-
         <button class="btn btn-success" type="submit" onclick="setValue()">Pay with Paypal</button>
-
     </div>
     <script src="js/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
@@ -44,17 +39,16 @@
             },
             success: (response) => {
                 console.log(response)
-                if(response){
+                if (response) {
                     window.location.replace(response.url);
-                }
-                else{
+                } else {
                     window.location.replace('http://localhost:3000/shipping')
                 }
 
             },
-            error:(e)=>{
-            console.log(e)
-        }
+            error: (e) => {
+                console.log(e)
+            }
         })
     }
 </script>

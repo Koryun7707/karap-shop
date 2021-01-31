@@ -9,8 +9,6 @@ const apiRoutes = require('./routes');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport')
-const LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
 const ShippingAddress = require('./models/shipingAddress');
 
 
@@ -69,14 +67,10 @@ paypal.configure({
 });
 
 app.post('/pay', function (req, res) {
-    console.log(req.body);
     //build PayPal payment request
-    console.log(111122212121212)
-    const order = JSON.parse(req.body.order);
-    const {deliveryPrice} = JSON.parse(req.body.shippingAddress)
-    console.log(deliveryPrice,'delevryPrice')
-    console.log(order,'order')
-    const shippingAddress = req.body.shippingAddress
+    const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
+    const {deliveryPrice} = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
+    // const shippingAddress = req.body.shippingAddress
     let subTotal = 0;
     order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
@@ -115,16 +109,17 @@ app.post('/pay', function (req, res) {
         }]
     };
 
-    localStorage.setItem('amount', JSON.stringify({subTotal: subTotal, deliveryPrice: deliveryPrice}));
-    localStorage.setItem('order', JSON.stringify(order));
-    localStorage.setItem('shippingAddress', shippingAddress);
+    localStorage.setItem(`amount${req.session.user._id}`, JSON.stringify({
+        subTotal: subTotal,
+        deliveryPrice: deliveryPrice
+    }));
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             throw error;
         } else {
             for (let i = 0; i < payment.links.length; i++) {
                 if (payment.links[i].rel === 'approval_url') {
-                    return res.status(200).json({url:payment.links[i].href});
+                    return res.status(200).json({url: payment.links[i].href});
                 }
             }
 
@@ -136,7 +131,7 @@ app.get('/success', async (req, res) => {
     try {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
-        const amount = JSON.parse(localStorage.getItem('amount'));
+        const amount = JSON.parse(localStorage.getItem(`amount${req.session.user._id}`));
         console.log(amount.subTotal)
         const execute_payment_json = {
             "payer_id": payerId,
@@ -158,8 +153,8 @@ app.get('/success', async (req, res) => {
                 console.log(error.response);
                 throw error;
             } else {
-                const order = JSON.parse(localStorage.getItem('order'));
-                const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress'));
+                const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
+                const shippingAddress = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
                 console.log(order)
                 console.log(shippingAddress)
 
@@ -173,12 +168,19 @@ app.get('/success', async (req, res) => {
                     productIds: order,
                 });
                 shipping.save();
+                localStorage.removeItem(`order${req.session.user._id}`);
+                localStorage.removeItem(`shippingAddress${req.session.user._id}`);
+                localStorage.removeItem(`amount${req.session.user._id}`);
+
                 // console.log(JSON.stringify(payment));
                 req.flash('success_msg', 'Pay Completed');
                 return res.redirect('/selectedProducts');
             }
         })
     } catch (e) {
+        localStorage.removeItem(`order${req.session.user._id}`);
+        localStorage.removeItem(`shippingAddress${req.session.user._id}`);
+        localStorage.removeItem(`amount${req.session.user._id}`);
         logger.error(`Payment Success Error: ${e}`)
         req.flash('error_msg', `Pay Error ${e}`)
         res.redirect('/shipping');
@@ -187,11 +189,16 @@ app.get('/success', async (req, res) => {
 
 });
 
-app.get('/cancel', (req, res) => res.send('Cancelled'));
+app.get('/cancel', (req, res) => {
+    localStorage.removeItem(`order${req.session.user._id}`);
+    localStorage.removeItem(`shippingAddress${req.session.user._id}`);
+    localStorage.removeItem(`amount${req.session.user._id}`);
+    res.send('Cancelled')
+});
 
 //Stripe integration
 app.post('/purchase', function (req, res) {
-
+    const shippingAddress = localStorage.getItem('shippingAddress');
     // Moreover you can take more details from user
     // like Address, Name, etc from form
     console.log(req.body.stripeToken);
@@ -204,7 +211,7 @@ app.post('/purchase', function (req, res) {
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
-        name: 'Gautam Sharma',
+        name: req.session.user.firstName + '' + req.session.user.lastName,
         address: {
             line1: 'TC 9/4 Old MES colony',
             postal_code: '110092',
@@ -231,7 +238,7 @@ app.post('/purchase', function (req, res) {
             logger.error(`Payment Success Error: ${e}`)
             req.flash('error_msg', `Pay Error ${e}`)
             res.redirect('/shipping');
-             // If some error occurs
+            // If some error occurs
         });
 });
 

@@ -21,7 +21,7 @@ const jwt = require('jsonwebtoken');
 const {sendMessageToMail} = require('../services/mailService');
 const bcrypt = require('bcrypt');
 const LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
+localStorage = new LocalStorage('./userStorage');
 
 module.exports = {
     changeLanguage: async (req, res) => {
@@ -1250,13 +1250,28 @@ module.exports = {
             return res.redirect('/');
         }
     },
+
     getCheckouts: async (req, res) => {
-        const staticData = await getStaticData(req.session.language);
-        return res.render('checkouts', {
-            URL: `/checkouts`,
-            user: req.session.user,
-            key: process.env.STRIPE_PUBLIC_KEY,
-            staticData: staticData,
-        });
+        try {
+            logger.info('Start get checkout page.');
+            localStorage.setItem(`order${req.session.user._id}`, req.body.order);
+            localStorage.setItem(`shippingAddress${req.session.user._id}`, req.body.shippingAddress);
+            const staticData = await getStaticData(req.session.language);
+            let sum = 0;
+            JSON.parse(req.body.order).forEach((item) => {
+                sum += Number(item.priceSale.substring(0, item.priceSale.length - 1))
+            });
+            sum += Number(JSON.parse(req.body.shippingAddress).deliveryPrice);
+            console.log(sum);
+            return res.render('checkouts', {
+                URL: `/checkouts`,
+                user: req.session.user,
+                key: process.env.STRIPE_PUBLIC_KEY,
+                sum: sum,
+                staticData: staticData,
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 };
