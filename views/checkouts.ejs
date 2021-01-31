@@ -10,39 +10,52 @@
                     data-name="Custom t-shirt"
                     data-description="Your custom designed t-shirt"
                     data-amount="7000"
-                    data-currency="usd">
+                    data-currency="usd"
+            >
+
             </script>
+<!--            <input name="order" type="hidden" id="orderProducts">-->
+<!--            <input name="shippingAddress" type="hidden" id="shippingAddress">-->
         </form>
 
-        <!--        <form action="/pay" method="post">-->
-        <!--            <input name="order" type="hidden" id="orderProducts">-->
-        <!--            <input name="shippingAddress" type="hidden" id="shippingAddress">-->
 
+        <button class="btn btn-success" type="submit" onclick="setValue()">Pay with Paypal</button>
 
-        <!--&lt;!&ndash;            <input type="radio" id="paypalId" name="paypal" value="paypalId">&ndash;&gt;-->
-        <!--&lt;!&ndash;            <label for="paypalId">PayPAl</label><br>&ndash;&gt;-->
-        <!--&lt;!&ndash;            <input type="radio" id="stripeId" name="stripe" value="stripeId">&ndash;&gt;-->
-        <!--&lt;!&ndash;            <label for="stripeId">Stripe</label><br>&ndash;&gt;-->
-        <!--&lt;!&ndash;            <input type="submit" onclick="setValue()" value="Submit">&ndash;&gt;-->
-        <!--            <input type="radio" id="paypalId" name="payment" value="paypal">-->
-        <!--            <label for="paypalId">PayPal</label><br>-->
-        <!--            <input type="radio" id="stripeId" name="payment" value="stripe">-->
-        <!--            <label for="stripeId">Stripe</label><br>-->
-
-        <!--            <input type="submit" onclick="setValue()" value="Submit">-->
-
-        <!--        </form>-->
     </div>
     <script src="js/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
 </main>
 <script>
     function setValue() {
+        console.log('444')
         const shippingAddress = localStorage.getItem('shippingAddress');
         const order = localStorage.getItem('order');
+        console.log(order)
         //shippingAddress
         document.getElementById('orderProducts').setAttribute('value', order);
         document.getElementById('shippingAddress').setAttribute('value', shippingAddress);
+        $.ajax({
+            type: 'post',
+            url: '/pay',
+            data: {
+                order: order,
+                shippingAddress: shippingAddress,
+
+            },
+            success: (response) => {
+                console.log(response)
+                if(response){
+                    window.location.replace(response.url);
+                }
+                else{
+                    window.location.replace('http://localhost:3000/shipping')
+                }
+
+            },
+            error:(e)=>{
+            console.log(e)
+        }
+        })
     }
 </script>
 <%- include ('footer') -%>

@@ -74,6 +74,8 @@ app.post('/pay', function (req, res) {
     console.log(111122212121212)
     const order = JSON.parse(req.body.order);
     const {deliveryPrice} = JSON.parse(req.body.shippingAddress)
+    console.log(deliveryPrice,'delevryPrice')
+    console.log(order,'order')
     const shippingAddress = req.body.shippingAddress
     let subTotal = 0;
     order.forEach((item) => {
@@ -112,6 +114,7 @@ app.post('/pay', function (req, res) {
             "description": "This is the payment description."
         }]
     };
+
     localStorage.setItem('amount', JSON.stringify({subTotal: subTotal, deliveryPrice: deliveryPrice}));
     localStorage.setItem('order', JSON.stringify(order));
     localStorage.setItem('shippingAddress', shippingAddress);
@@ -121,7 +124,7 @@ app.post('/pay', function (req, res) {
         } else {
             for (let i = 0; i < payment.links.length; i++) {
                 if (payment.links[i].rel === 'approval_url') {
-                    return res.redirect(payment.links[i].href);
+                    return res.status(200).json({url:payment.links[i].href});
                 }
             }
 
@@ -172,7 +175,7 @@ app.get('/success', async (req, res) => {
                 shipping.save();
                 // console.log(JSON.stringify(payment));
                 req.flash('success_msg', 'Pay Completed');
-                return res.redirect('/shipping');
+                return res.redirect('/selectedProducts');
             }
         })
     } catch (e) {
@@ -193,7 +196,11 @@ app.post('/purchase', function (req, res) {
     // like Address, Name, etc from form
     console.log(req.body.stripeToken);
     console.log(req.body.stripeEmail);
-
+    console.log(req.body)
+    // const order = JSON.parse(req.body.order);
+    // const shippingAddress = JSON.parse(req.body.shippingAddress);
+    // console.log(order)
+    // console.log(shippingAddress)
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
@@ -216,10 +223,15 @@ app.post('/purchase', function (req, res) {
             });
         })
         .then((charge) => {
-            res.send("Success") // If no error occurs
+            req.flash('success_msg', 'Pay Completed');
+            return res.redirect('/selectedProducts');
+            // If no error occurs
         })
-        .catch((err) => {
-            res.send(err)    // If some error occurs
+        .catch((e) => {
+            logger.error(`Payment Success Error: ${e}`)
+            req.flash('error_msg', `Pay Error ${e}`)
+            res.redirect('/shipping');
+             // If some error occurs
         });
 });
 
