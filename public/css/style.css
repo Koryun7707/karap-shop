@@ -171,9 +171,10 @@ body {
 .section1 .abs h1 {
     color: #e3e3e3;
     font-size: 6rem;
-    letter-spacing: -5px;
+    letter-spacing: -2px;
     line-height: 5rem;
     font-family: "MYRIADPRO-SEMIBOLD", sans-serif;
+    white-space: nowrap;
 }
 
 section h2 {
@@ -1186,4 +1187,15 @@ button:focus {
 }
 .flex-1 {
     flex: 1;
+}
+
+.icon-search-container.active #search-div {
+  visibility: visible;
+    position: relative;
+    margin-top: 38px;
+    padding: 30px;
+    background-color: #c4b3ab;
+}
+#search-div a{
+    color: #ffffff;
 }

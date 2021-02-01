@@ -153,7 +153,7 @@ $(document).ready(function () {
 
     //when shop page render first time called ==>
     function getProductByPagination() {
-        console.log(7777)
+
 
         let type = gup('type', location.href);
         const brandNames = gup('brandName', location.href);
