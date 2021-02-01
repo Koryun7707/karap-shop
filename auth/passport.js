@@ -51,7 +51,7 @@ module.exports = function (passport) {
                                 please follow via "link" link to verify your account.</h4>
                                <div>
                                <button >
-                              <a href="http://localhost:3000/">visit to eb site</a> 
+                              <a href="${process.env.CLIENT_URL}">visit to eb site</a> 
                                </button>
                                 </div> `,
             }

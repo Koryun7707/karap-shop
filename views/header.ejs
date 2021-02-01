@@ -232,7 +232,7 @@
                     data: obj,
                     success: function () {
                         window.location.reload(1);
-                        location.replace("http://localhost:3000/")
+                        location.replace(`${process.env.CLIENT_URL}`)
                     },
                     error: function (data) {
                         console.log('User creation failed :' + data);

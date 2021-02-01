@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.17.1",
+    "http": "0.0.1-security",
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
     "joi-password-complexity": "^5.0.2",

@@ -5,6 +5,8 @@ const multer = require('multer');
 const path = require('path');
 const usersController = require('./controllers/user');
 const pagesController = require('./controllers/pages');
+const {paymentPaypal,paypalSuccess,paypalCancel} = require('./services/paypal');
+const {paymentStripe} = require('./services/stripe');
 const {
     createProduct,
     deleteProduct,
@@ -140,5 +142,11 @@ router.get('/admin-all-products', checkIsAuthenticated, isAdmin, pagesController
 //edit
 router.get('/admin-editProduct', checkIsAuthenticated, isAdmin, pagesController.editProduct);
 router.get('/admin-editBrand', checkIsAuthenticated, isAdmin, pagesController.editBrand);
+
+//payment
+router.post('/pay',checkIsAuthenticated,paymentPaypal);
+router.get('/success',checkIsAuthenticated,paypalSuccess);
+router.get('/cancel',checkIsAuthenticated,paypalCancel);
+router.post('/purchase',checkIsAuthenticated,paymentStripe);
 
 module.exports = router;
