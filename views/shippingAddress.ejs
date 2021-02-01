@@ -1,10 +1,10 @@
 <%- include ('header') -%>
 <main style="padding-top: 100px;">
     <div class="container mt-5">
-        <div class="row inform">
+        <div class="row inform py-5">
             <div class="col-12 col-md-7 col-lg-7">
                 <h3 class="mb-5">Contact Information</h3>
-                <form>
+                <form method="POST" action="/checkouts"  id="payForm">
                     <%- include ('partials/messages') -%>
                     <h5 class="mb-2">Email Address</h5>
                     <div class="form-group">
@@ -21,25 +21,21 @@
                     </div>
                     <div class="form-group">
                         <input required type="text" class="form-control" value="" id="address" placeholder="Address">
-                        <div id="addressMessage"></div>
                     </div>
                     <div class="form-group">
                         <input required type="text" class="form-control" value="" id="apartment" placeholder="Apartment">
-                        <div id="apartmentMessage"></div>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div class="form-group mr-1">
                             <input required type="text" class="form-control" value="" id="postalCode" placeholder="Postal Code">
-                            <div id="postalCodeMessage"></div>
                         </div>
                         <div class="form-group ml-1">
                             <input required type="text" class="form-control" value="" id="city" placeholder="City">
-                            <div id="cityMessage"></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <select id="selectCountry" onchange="handleSelectChange()" name="country">
-                            <option value="Country/Region" selected="selected">Country/Region</option>
+                        <label for="country">Choose a Country/Region:</label>
+                        <select required id="selectCountry" onchange="handleSelectChange()" name="country" class="form-control">
                             <option value="Austria">Austria</option>
                             <option value="Austria">Austria</option>
                             <option value="Belgium">Belgium</option>
@@ -78,28 +74,22 @@
                             <option value="San Marino"> San Marino</option>
                             <option value="Macedonia">Macedonia</option>
                         </select>
-                        <div id="countryMessage"></div>
                     </div>
                     <div class="form-group">
-                        <input required type="text" class="form-control" value="" id="phone" placeholder="Phone">
-                        <div id="phoneMessage"></div>
+                        <input required type="number" class="form-control" value="" id="phone" placeholder="Phone">
                     </div>
+                    <input name="order" type="hidden" id="orderProducts">
+                    <input name="shippingAddress" type="hidden" id="shippingAddress">
+                    <button class="btn-green-gradient mb-3" style="height: 50px; width: 300px; border-radius:5px"
+                            onclick="handleOrderAddress(this)">
+                             Continue To Shipping
+                    </button>
                 </form>
             </div>
             <div class="col-12 col-md-5 col-lg-5 total-info">
                 <div class="total-section" id='currentDiv'>
                     <hr>
                     <div class="d-flex">
-                        <div class="col-3 p-0">
-                            <form action="/pay" method="post">
-                                <input name="order" type="hidden" id="orderProducts">
-                                <input name="shippingAddress" type="hidden" id="shippingAddress">
-                                <button class="btn-green-gradient" style="height: 50px; width: 300px; border-radius:5px"
-                                   onclick="handleOrderAddress(this)">
-                                    Apply
-                                </button>
-                            </form>
-                        </div>
                     </div>
                     <hr>
                     <div>
@@ -130,47 +120,7 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
 <script>
-    // var shippingCountries = [
-    //     {
-    //         "from": 'spain',
-    //         "Austria": 11.5,
-    //         "Belgium": 11.5,
-    //         "Bulgaria": 11.5,
-    //         "Croatia": 11.5,
-    //         "Cyprus": 11.5,
-    //         "Czech Republic": 11.5,
-    //         "Denmark": 11.5,
-    //         "Estonia": 11.5,
-    //         "Finland": 11.5,
-    //         "France": 11.5,
-    //         "Germany": 11.5,
-    //         "Greece": 11.5,
-    //         "Hungary": 11.5,
-    //         "Ireland": 11.5,
-    //         "Italy": 11.5,
-    //         "Latvia": 11.5,
-    //         "Lithuania": 11.5,
-    //         "Luxembourg": 11.5,
-    //         "Malta": 11.5,
-    //         "Lalov": 11.5,
-    //         "Netherlands": 11.5,
-    //         "P Spain": 11.5,
-    //         "Sweden": 11.5,
-    //         "Switzerland": 11.5,
-    //         "Serbia": 11.5,
-    //         "Norway": 11.5,
-    //         "Bosnia and Herzegovina": 11.5,
-    //         "Albania": 11.5,
-    //         "Montenegro": 11.5,
-    //         "Iceland": 11.5,
-    //         "Andorra": 11.5,
-    //         "Monaco": 11.5,
-    //         "Vatican": 11.5,
-    //         "Liechtenstein": 11.5,
-    //         "San Marino": 11.5,
-    //         "Macedonia": 11.5,
-    //     }
-    // ];
+
     function handleSelectChange() {
         let totalPrice = document.getElementById('productPrice').innerHTML;
         totalPrice = Number(totalPrice.substring(0, totalPrice.length - 1));
@@ -232,52 +182,13 @@
     }
 
     function handleOrderAddress(element) {
+
         let address = document.getElementById('address');
         let apartment = document.getElementById('apartment');
         let postalCode = document.getElementById('postalCode');
         let city = document.getElementById('city');
         let country = $("#selectCountry").val();
         const phone = document.getElementById('phone');
-        if (!address.value || !apartment.value || !postalCode.value || !city.value || country === 'Country/Region' || !phone.value) {
-            let addressMessage = document.getElementById('addressMessage');
-            let apartmentMessage = document.getElementById('apartmentMessage');
-            let postalCodeMessage = document.getElementById('postalCodeMessage');
-            let cityMessage = document.getElementById('cityMessage');
-            let countryMessage = document.getElementById('countryMessage');
-            let phoneMessage = document.getElementById('phoneMessage')
-
-            if (!address.value) {
-                addressMessage.innerHTML = 'Address is required';
-                setTimeout(() => {
-                    addressMessage.innerHTML = '';
-                }, 1000);
-            } else if (!apartment.value) {
-                apartmentMessage.innerHTML = 'Apartment is required';
-                setTimeout(() => {
-                    apartmentMessage.innerHTML = '';
-                }, 1000);
-            } else if (!postalCode.value) {
-                postalCodeMessage.innerHTML = 'Postal code is required';
-                setTimeout(() => {
-                    postalCodeMessage.innerHTML = '';
-                }, 1000);
-            } else if (!city.value) {
-                cityMessage.innerHTML = 'City is required';
-                setTimeout(() => {
-                    cityMessage.innerHTML = '';
-                }, 1000);
-            } else if (country === 'Country/Region') {
-                countryMessage.innerHTML = 'Please select country ';
-                setTimeout(() => {
-                    countryMessage.innerHTML = '';
-                }, 1000);
-            } else if (!phone.value) {
-                phoneMessage.innerHTML = 'Phone is required, in case we need to contact you about your order';
-                setTimeout(() => {
-                    phoneMessage.innerHTML = '';
-                }, 1000);
-            }
-        } else {
             let totalDelivery = document.getElementById('delivery').innerHTML;
             totalDelivery = Number(totalDelivery.substring(0, totalDelivery.length - 1));
             const newObj = {
@@ -287,8 +198,8 @@
                 city: city.value,
                 country: country,
                 deliveryPrice: totalDelivery,
-                phone:phone.value,
-            };
+                phone: phone.value,
+            }
             const shippingAddress = JSON.stringify(newObj);
             localStorage.setItem('shippingAddress', shippingAddress);
             const order = localStorage.getItem('order');
@@ -296,9 +207,8 @@
             document.getElementById('orderProducts').setAttribute('value',order);
             document.getElementById('shippingAddress').setAttribute('value',shippingAddress);
             //element.setAttribute('href', '/')
-
-
-        }
+        // document.getElementById('payForm').setAttribute('action','/checkouts');
+        // document.getElementById('payForm').setAttribute('method','/post');
     }
 
     window.onload = () => {
@@ -343,7 +253,7 @@
                         <div class="price ml-auto">${item.priceSale} </div>
 `
             })
-            salePrice.innerHTML = `-${productSalePrice - productTotalPrice}€`;
+            salePrice.innerHTML = `-${(productSalePrice - productTotalPrice).toFixed(1)}€`;
             productPrice.innerHTML = `${productTotalPrice}€`;
         }
 

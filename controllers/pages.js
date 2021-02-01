@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
-const {success, validation, err} = require('../utils/responseApi');
+const {err} = require('../utils/responseApi');
 const {
     validateHomeData,
     validateShopData,
@@ -21,7 +21,7 @@ const jwt = require('jsonwebtoken');
 const {sendMessageToMail} = require('../services/mailService');
 const bcrypt = require('bcrypt');
 const LocalStorage = require('node-localstorage').LocalStorage;
-localStorage = new LocalStorage('./scratch');
+localStorage = new LocalStorage('./userStorage');
 
 module.exports = {
     changeLanguage: async (req, res) => {
@@ -56,13 +56,13 @@ module.exports = {
             });
         } catch (e) {
             logger.error(`Start Home Page Data Error:${e}`)
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             res.redirect('/');
         }
     },//done
     getAboutPage: async (req, res) => {
         logger.info('Start About Page Data Get - - -');
-        try{
+        try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
@@ -77,16 +77,16 @@ module.exports = {
                 pageData: pageData,
                 staticData: await getStaticData(req.session.language),
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`Get About Page Data Error:${e}`)
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             res.redirect('/')
         }
 
     },
     getBlogPage: async (req, res) => {
         logger.info(`Start Blog Page Data Get - - -`);
-        try{
+        try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
@@ -97,9 +97,9 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
                 brands: brands,
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`Get Blog Page Data Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             res.redirect('/');
         }
 
@@ -111,10 +111,18 @@ module.exports = {
                 req.session.language = 'eng';
             }
             const pageData = await PageData.find({language: req.session.language}).select('textShopSlider imagesShopSlider -_id').exec();
+            if (req.session.language !== 'eng' && pageData.length) {
+                const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesShopSlider').exec();
+                pageData[0].imagesShopSlider = arrayImages.imagesShopSlider;
+            }
             const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
+            let maxPrice = await Product.find({language: req.session.language}).select('-_id price');
+            maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
+                return o.price;
+            }))
             const type = req.query.type || null;
-            const brandId = req.query.brandId || null;
+            const brandName = req.query.brandName || null;
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -123,7 +131,8 @@ module.exports = {
                 productsType: productsType,
                 brands: brands,
                 type: type,
-                brandId: brandId,
+                brandName: brandName,
+                maxPrice: maxPrice,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)
@@ -133,7 +142,7 @@ module.exports = {
     },
     getSelectedProducts: async (req, res) => {
         logger.info(`Start SelectedProduct Page Data Get - - -`);
-        try{
+        try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
@@ -142,9 +151,9 @@ module.exports = {
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`SelectedProduct Page Data Error:${e.message}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/');
         }
 
@@ -194,7 +203,7 @@ module.exports = {
     },//done
     getContactPage: async (req, res) => {
         logger.info('Start Get Contact Page Data - - -');
-        try{
+        try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
@@ -209,9 +218,9 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`Get Contact Page Data Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             res.redirect('/');
         }
 
@@ -263,7 +272,7 @@ module.exports = {
                 return res.redirect('/admin-home');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', 'Files is required.!');
+                req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-home');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -282,32 +291,48 @@ module.exports = {
                 if (value.language === 'eng') {
                     newData.homeSliderImages = moveFile(files, dir);
                 } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
                     newData.homeSliderImages = [];
                 }
                 newData.save((err, result) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('success_msg', "Home Page Data Add Completed!");
+                        return res.redirect('/admin-home');
                     }
                     req.flash('success_msg', "Home Page Data Add Completed!");
                     return res.redirect('/admin-home');
                 });
             } else {
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
+                if (files.length && value.language === 'eng') {
+                    fs.readdir(dir, (error, files) => {
+                        if (error) throw error;
+                        for (const file of files) {
+                            fs.unlink(path.join(dir, file), err => {
+                                if (err) throw err;
+                            });
+                        }
+                    });
+                } else {
+                    files.forEach((file) => {
+                        fs.unlink(file.path, err => {
                             if (err) throw err;
                         });
-                    }
-                });
+                    })
+                }
                 myPageData.homeSliderText = value.textOnHomeSlider;
                 myPageData.homeProductTypeTitle = value.homeProductTypeTitle;
                 myPageData.language = value.language;
@@ -318,15 +343,18 @@ module.exports = {
                 }
                 myPageData.save((err, result) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-home');
                     }
                     req.flash('success_msg', "Home Page Data Add Completed!");
                     return res.redirect('/admin-home');
@@ -393,7 +421,7 @@ module.exports = {
                 req.flash('error_msg', error.message);
                 return res.redirect('/admin-shop');
             }
-            if (!files.length) {
+            if (!files.length && value.language === 'eng') {
                 req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-shop');
             }
@@ -409,45 +437,72 @@ module.exports = {
                     textShopSlider: value.textShopSlider,
                     language: value.language
                 });
-                newData.imagesShopSlider = moveFile(files, dir);
+                if (value.language === 'eng') {
+                    newData.imagesShopSlider = moveFile(files, dir);
+                } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
+                    newData.imagesShopSlider = [];
+                }
                 newData.save((err, result) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-shop');
                     }
                     req.flash('success_msg', "Shop Page Data Add Completed!");
                     return res.redirect('/admin-shop');
                 });
             } else {
-                myPageData.textShopSlider = value.textShopSlider;
-                myPageData.language = value.language;
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
+                if (files.length && value.language === 'eng') {
+                    fs.readdir(dir, (error, files) => {
+                        if (error) throw error;
+                        for (const file of files) {
+                            fs.unlink(path.join(dir, file), err => {
+                                if (err) throw err;
+                            });
+                        }
+                    });
+                } else {
+                    files.forEach((file) => {
+                        fs.unlink(file.path, err => {
                             if (err) throw err;
                         });
-                    }
-                });
-                myPageData.imagesShopSlider = moveFile(files, dir);
+                    })
+                }
+                myPageData.textShopSlider = value.textShopSlider;
+                myPageData.language = value.language;
+                if (value.language === "eng") {
+                    myPageData.imagesShopSlider = moveFile(files, dir);
+                } else {
+                    myPageData.imagesShopSlider = [];
+                }
                 myPageData.save((err, data) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-shop');
                     }
                     req.flash('success_msg', "Shop Page Data Add Completed!");
                     return res.redirect('/admin-shop');
@@ -500,32 +555,48 @@ module.exports = {
                 if (value.language === 'eng') {
                     newData.imagesBrandSlider = moveFile(files, dir);
                 } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
                     newData.imagesBrandSlider = [];
                 }
                 newData.save((err, data) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-brand');
                     }
                     req.flash('success_msg', "Brand Page Data Add Completed!");
                     return res.redirect('/admin-brand');
                 });
             } else {
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
+                if (files.length && value.language === 'eng') {
+                    fs.readdir(dir, (error, files) => {
+                        if (error) throw error;
+                        for (const file of files) {
+                            fs.unlink(path.join(dir, file), err => {
+                                if (err) throw err;
+                            });
+                        }
+                    });
+                } else {
+                    files.forEach((file) => {
+                        fs.unlink(file.path, err => {
                             if (err) throw err;
                         });
-                    }
-                });
+                    })
+                }
                 myPageData.textBrandSlider = value.textBrandSlider;
                 myPageData.language = value.language;
                 if (value.language === 'eng') {
@@ -535,15 +606,18 @@ module.exports = {
                 }
                 myPageData.save((err, result) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-brand');
                     }
                     req.flash('success_msg', "Brand Page Data Add Completed!");
                     return res.redirect('/admin-brand');
@@ -584,7 +658,7 @@ module.exports = {
                 req.flash('error_msg', error.message);
                 return res.redirect('/admin-about');
             }
-            if (!files.length && value.language) {
+            if (!files.length && value.language === 'eng') {
                 req.flash('error_msg', "Files is required.!");
                 return res.redirect('/admin-about');
             }
@@ -603,60 +677,75 @@ module.exports = {
                     titleAboutSlider: value.titleOfSlider,
                     language: value.language
                 });
-                // if (value.language === 'eng') {
-                newData.imagesAboutSlider = moveFile(files, dir);
-                // } else {
-                //     newData.imagesAboutSlider = [];
-                // }
+                if (value.language === 'eng') {
+                    newData.imagesAboutSlider = moveFile(files, dir);
+                } else {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) console.log(err);
+                        })
+                    });
+                    newData.imagesAboutSlider = [];
+                }
                 newData.save(function (err, data) {
-                    if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                    if (err && value.language) {
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-about');
                     }
                     req.flash('success_msg', "Data About Add Completed!");
                     return res.redirect('/admin-about');
                 });
             } else {
+                if (files.length && value.language === 'eng') {
+                    fs.readdir(dir, (error, files) => {
+                        if (error) throw error;
+                        for (const file of files) {
+                            fs.unlink(path.join(dir, file), err => {
+                                if (err) throw err;
+                            });
+                        }
+                    });
+                } else {
+                    files.forEach((file) => {
+                        fs.unlink(file.path, err => {
+                            if (err) throw err;
+                        });
+                    })
+                }
                 myPageData.textAboutSlider = value.textAboutSlider;
                 myPageData.ourPhilosophy = value.ourPhilosophy;
                 myPageData.textOnAboutSlider = value.titleOfSlider;
                 myPageData.language = value.language;
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
-                });
-                // if (value.language === 'eng') {
-                myPageData.imagesAboutSlider = moveFile(files, dir);
-                // } else {
-                //     files.map((file) => {
-                //         rimraf(`./public/uploads/${file.filename}`, (err) => {
-                //             if (err) console.log(err);
-                //         })
-                //     });
-                //     myPageData.imagesAboutSlider = [];
-                // }
+
+                if (value.language === 'eng') {
+                    myPageData.imagesAboutSlider = moveFile(files, dir);
+                } else {
+                    myPageData.imagesAboutSlider = [];
+                }
                 myPageData.save((err, data) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-about');
                     }
                     req.flash('success_msg', "Data About Add Completed!");
                     return res.redirect('/admin-about');
@@ -719,31 +808,42 @@ module.exports = {
                 }
                 newData.save((err, result) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-contact');
                     }
                     req.flash('success_msg', 'Contact Page Data Add Completed!');
                     return res.redirect('/admin-contact');
                 });
             } else {
+                if (files.length && value.language === 'eng') {
+                    fs.readdir(dir, (error, files) => {
+                        if (error) throw error;
+                        for (const file of files) {
+                            fs.unlink(path.join(dir, file), err => {
+                                if (err) throw err;
+                            });
+                        }
+                    });
+                } else {
+                    files.forEach((file) => {
+                        fs.unlink(file.path, err => {
+                            if (err) throw err;
+                        });
+                    })
+                }
                 myPageData.textContactSlider = value.textContactSlider;
                 myPageData.imagesContactSlider = value.imagesContactSlider;
                 myPageData.language = value.language;
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
-                });
                 if (value.language === 'eng') {
                     myPageData.imagesContactSlider = moveFile(files, dir);
                 } else {
@@ -751,15 +851,18 @@ module.exports = {
                 }
                 myPageData.save((err, data) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
-                        throw err;
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+                        req.flash('error_msg', err.message);
+                        return res.redirect('/admin-contact');
                     }
                     req.flash('success_msg', 'Contact Page Data Add Completed!');
                     return res.redirect('/admin-contact');
@@ -794,11 +897,6 @@ module.exports = {
                 return res.redirect('/admin-join-our-team');
             }
             if (!files.length && value.language === 'eng') {
-                files.map((file) => {
-                    rimraf(`./public/uploads/${file.filename}`, (err) => {
-                        if (err) console.log(err);
-                    })
-                });
                 req.flash('error_msg', 'Files is required.!');
                 return res.redirect('/admin-join-our-team');
             }
@@ -835,14 +933,17 @@ module.exports = {
                 }
                 newData.save((err, result) => {
                     if (err) {
-                        fs.readdir(dir, (error, files) => {
-                            if (error) throw error;
-                            for (const file of files) {
-                                fs.unlink(path.join(dir, file), err => {
-                                    if (err) throw err;
-                                });
-                            }
-                        });
+                        if (value.language === 'eng') {
+                            fs.readdir(dir, (error, files) => {
+                                if (error) throw error;
+                                for (const file of files) {
+                                    fs.unlink(path.join(dir, file), err => {
+                                        if (err) throw err;
+                                    });
+                                }
+                            });
+                        }
+
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
@@ -850,6 +951,22 @@ module.exports = {
                     return res.redirect('/admin-join-our-team');
                 });
             } else {
+                if (files.length && value.language === 'eng') {
+                    fs.readdir(dir, (error, files) => {
+                        if (error) throw error;
+                        for (const file of files) {
+                            fs.unlink(path.join(dir, file), err => {
+                                if (err) throw err;
+                            });
+                        }
+                    });
+                } else {
+                    files.forEach((file) => {
+                        fs.unlink(file.path, err => {
+                            if (err) throw err;
+                        });
+                    })
+                }
                 myPageData.textJoinOurTeamSlider = value.textJoinOurTeamSlider;
                 myPageData.joinOurTeamWorkUs = value.joinOurTeamWorkUs;
                 myPageData.joinOurCol1Title = value.joinOurCol1Title;
@@ -862,26 +979,13 @@ module.exports = {
                 myPageData.joinOurTeamPartnersTitle = value.joinOurTeamPartnersTitle;
                 myPageData.language = value.language;
 
-                fs.readdir(dir, (err, files) => {
-                    if (err) throw err;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
-                });
                 if (value.language === 'eng') {
                     myPageData.imagesJoinOurTeamSlider = moveFile(files, dir);
                 } else {
-                    files.map((file) => {
-                        rimraf(`./public/uploads/${file.filename}`, (err) => {
-                            if (err) console.log(err);
-                        })
-                    });
                     myPageData.imagesJoinOurTeamSlider = [];
                 }
                 myPageData.save((err, result) => {
-                    if (err) {
+                    if (err && value.language === 'eng') {
                         fs.readdir(dir, (error, files) => {
                             if (error) throw error;
                             for (const file of files) {
@@ -988,39 +1092,39 @@ module.exports = {
         }
 
     },
-    forgotPassword:async(req,res)=>{
-      logger.info('Start Forgot Password api - - - ');
-      try{
-          if (req.session.language === undefined) {
-              req.session.language = 'eng';
-          }
-          res.render('forgotPassword',{
-              URL:'/forgotPassword',
-              user:req.session.user,
-              staticData: await getStaticData(req.session.language)
-          })
-      }catch(e){
-          logger.error(`Forgot Password Error:${e}`);
-          req.flash("error_msg",e.message);
-          return res.redirect("/login");
-      }
+    forgotPassword: async (req, res) => {
+        logger.info('Start Forgot Password api - - - ');
+        try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
+            res.render('forgotPassword', {
+                URL: '/forgotPassword',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language)
+            })
+        } catch (e) {
+            logger.error(`Forgot Password Error:${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/login");
+        }
     },
-    sendEmailForgotPassword:async(req,res)=>{
+    sendEmailForgotPassword: async (req, res) => {
         logger.info('Start sendEmailForgotPassword api - - ');
-        try{
+        try {
             const {email} = req.body;
-            const user = await User.findOne({email:email});
+            const user = await User.findOne({email: email});
             console.log(user)
-            if(!user){
-                req.flash('error_msg','User with this email already exists');
+            if (!user) {
+                req.flash('error_msg', 'User with this email already exists');
                 return res.redirect('/forgotPassword');
             }
             const {_id} = user
-            const token = jwt.sign({_id},process.env.SECRET_KEY,{expiresIn: '1m'});
+            const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '1m'});
             const data = {
-                from:process.env.MAIL_AUTH_EMAIL,
-                to:email,
-                subject:`Forgot Password link`,
+                from: process.env.MAIL_AUTH_EMAIL,
+                to: email,
+                subject: `Forgot Password link`,
                 html: `
                      <h2>Please click on given link to reset your password</h2>
                      <button>
@@ -1029,109 +1133,154 @@ module.exports = {
 `
             }
             sendMessageToMail(data);
-            req.flash('success_msg','Link send to mail');
+            req.flash('success_msg', 'Link send to mail');
             return res.redirect('/forgotPassword');
-        }catch(e){
+        } catch (e) {
             logger.error(`Send Forgot Password Error:${e}`);
-            req.flash("error_msg",e.message);
+            req.flash("error_msg", e.message);
             return res.redirect("/forgotPassword");
         }
     },
-    getresetPassword:async(req,res)=>{
+    getresetPassword: async (req, res) => {
         const staticData = await getStaticData(req.session.language);
         const userId = JSON.parse(localStorage.getItem('userId'))
         localStorage.removeItem('userId');
 
-        return res.render('resetPassword',{
-            URL:'/resetPassword',
-            user:req.session.user,
+        return res.render('resetPassword', {
+            URL: '/resetPassword',
+            user: req.session.user,
             staticData: staticData,
-            userId:userId,
+            userId: userId,
         })
     },
-    resetPassword:async (req,res)=>{
-        try{
+    resetPassword: async (req, res) => {
+        try {
             logger.info('Start Reset Password api - - -');
             const {token} = req.params;
             const staticData = await getStaticData(req.session.language);
             console.log(token);
-            jwt.verify(token,process.env.SECRET_KEY,function  (err,decodedData) {
+            jwt.verify(token, process.env.SECRET_KEY, function (err, decodedData) {
                 if (err) {
                     req.flash('error_msg', 'Incorrect token or it is expired');
                     return res.redirect('/forgotPassword');
                 }
                 console.log(decodedData);
-                localStorage.setItem('userId',JSON.stringify(decodedData._id));
+                localStorage.setItem('userId', JSON.stringify(decodedData._id));
                 return res.redirect('/reset-password');
             })
 
-        }catch(e){
+        } catch (e) {
             logger.error(`Start Reset Password Error:${e}`);
 
         }
     },
-    userResetPassword:async(req,res)=>{
-        try{
+    userResetPassword: async (req, res) => {
+        try {
             logger.info('Start userResetPAssword - - -');
-            const {password,confirmPassword,userId} = req.body;
-            if(password != confirmPassword){
-                req.flash("error_msg",'Password Does Not Match!');
+            const {password, confirmPassword, userId} = req.body;
+            if (password != confirmPassword) {
+                req.flash("error_msg", 'Password Does Not Match!');
                 return res.redirect('/reset-password');
             }
-            let hash = bcrypt.hashSync(password,10);
-            const result = await User.updateOne({_id:userId},{password:hash});
-            req.flash('success_msg','Password is updated you can login');
+            let hash = bcrypt.hashSync(password, 10);
+            const result = await User.updateOne({_id: userId}, {password: hash});
+            req.flash('success_msg', 'Password is updated you can login');
             return res.redirect('/login');
-        }catch(e){
+        } catch (e) {
             logger.error(`Updated Password Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/reset-password');
         }
     },
-    getDelevry:async(req,res)=>{
+    getDelevry: async (req, res) => {
         logger.info('Start Get Data Page Delevry - - -');
-        try{
+        try {
             const staticData = await getStaticData(req.session.language);
-            return res.render('delevry', {
-                URL: '/delevry',
+            let langPage = 'delevry'
+            if (req.session.language === 'ru') {
+                langPage = 'delevryARM'
+            }
+            return res.render(langPage, {
+                URL: `/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`Start Get Data Page Delevry Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/');
         }
 
     },
-    getPrivacyPolicy:async(req,res)=>{
+    getPrivacyPolicy: async (req, res) => {
         logger.info('Start Get Data Page privacyPolicy - - -');
-        try{
+        try {
             const staticData = await getStaticData(req.session.language);
-            return res.render('privacyPolicy', {
-                URL: '/privacyPolicy',
+            let langPage = 'privacyPolicy';
+            if (req.session.language === 'ru') {
+                langPage = 'privacyPolicyARM';
+            }
+            return res.render(langPage, {
+                URL: `/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`Start Get Data Page privacyPolicy Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/');
         }
     },
-    getTermAndConditions:async(req,res)=>{
+    getTermAndConditions: async (req, res) => {
         logger.info('Start Get Data Page termAndConditions - - -');
-        try{
+        try {
             const staticData = await getStaticData(req.session.language);
-            return res.render('termAndConditions', {
-                URL: '/termAndConditions',
+            let langPage = 'termAndConditions';
+            if (req.session.language === 'ru') {
+                langPage = 'termAndConditionsARM';
+            }
+            return res.render(langPage, {
+                URL: `/${langPage}`,
                 user: req.session.user,
                 staticData: staticData,
             });
-        }catch(e){
+        } catch (e) {
             logger.error(`Start Get Data Page termAndConditions Error:${e}`);
-            req.flash('error_msg',e.message);
+            req.flash('error_msg', e.message);
             return res.redirect('/');
+        }
+    },
+
+    getCheckouts: async (req, res) => {
+        try {
+            logger.info('Start get checkout page.');
+
+            localStorage.setItem(`order${req.session.user._id}`, req.body.order);
+            localStorage.setItem(`shippingAddress${req.session.user._id}`, req.body.shippingAddress);
+            const staticData = await getStaticData(req.session.language);
+            let sum = 0;
+            JSON.parse(req.body.order).forEach((item) => {
+                sum += Number(item.priceSale.substring(0, item.priceSale.length - 1))
+            });
+            sum += Number(JSON.parse(req.body.shippingAddress).deliveryPrice);
+            let names = '';
+            const order = JSON.parse(req.body.order)
+            order.forEach((item)=>{
+                console.log(item)
+                names+=item.name+' ';
+            })
+
+
+            return res.render('checkouts', {
+                URL: `/checkouts`,
+                user: req.session.user,
+                key: process.env.STRIPE_PUBLIC_KEY,
+                sum: sum,
+                names:names,
+                staticData: staticData,
+            });
+        } catch (e) {
+            console.log(e);
         }
     }
 };

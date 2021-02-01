@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        Home
+        Armat Concept
     </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
@@ -23,9 +23,12 @@
 
 <header class="fixed-top header-bg">
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg navbar-light py-0">
             <a class="navbar-brand mr-2 mr-xl-5 header-logo" href="/">
-                <img src="images/logo/spitak%20logo.png" alt="">
+                <div class="d-flex flex-column logoStyles">
+                    <span>Armat</span>
+                    <span class="pl-3">Concept</span>
+                </div>
             </a>
             <div class="d-block d-xl-none d-lg-none ml-auto">
                 <ul class="navbar-nav d-flex flex-row  align-items-center ">
@@ -36,8 +39,10 @@
                             <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
                         </div>
                     </li>
-                    <li class="nav-item mr-4">
-                        <a class="nav-link" href="#"><i class="fa fa-cart-arrow-down"></i></a>
+                    <li class="nav-item mr-2 mr-xl-4 d-block d-xl-none d-lg-none position-relative">
+                        <span id="shoppingCardNumberS" class="cart-products-count">0</span>
+                        <a onclick="goToSelectedPage(this)" class="nav-link" id="shoppingCardS"><i
+                                    class="fa fa-cart-arrow-down"></i></a>
                     </li>
                 </ul>
             </div>
@@ -101,6 +106,7 @@
                                                data-ic-class="search-input"
                                                placeholder="Search"/>
                                         <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
+
                                         <div id='search-div' data-ic-class="search-div">
 
                                         </div>
@@ -138,7 +144,7 @@
                             <% } %>
                             <li class="nav-item mr-2 mr-xl-4 d-none d-xl-block d-lg-block position-relative">
                                 <span id="shoppingCardNumber" class="cart-products-count">0</span>
-                                <a onclick="goToSelectedPage()" class="nav-link" id="shoppingCard"><i
+                                <a onclick="goToSelectedPage(this)" class="nav-link" id="shoppingCard"><i
                                             class="fa fa-cart-arrow-down"></i></a>
                             </li>
                             <li class="nav-item dropdown">
@@ -147,15 +153,12 @@
                                     <% if(staticData.language === 'eng' ){ %>
                                         <option name="eng" value="eng" selected>Eng</option>
                                         <option name="ru" value="ru">Ru</option>
-                                        <option name="spain" value="spain">Spain</option>
                                     <% }else if(staticData.language === 'ru'){ %>
                                         <option name="eng" value="eng">Eng</option>
                                         <option name="ru" value="ru" selected>Ru</option>
-                                        <option name="spain" value="spain">Spain</option>
                                     <% }else if(staticData.language === 'spain'){ %>
                                         <option name="eng" value="eng">Eng</option>
                                         <option name="ru" value="ru" selected>Ru</option>
-                                        <option name="spain" value="spain" selected>Spain</option>
                                     <% } %>
                                 </select>
                             </li>
@@ -192,31 +195,50 @@
         element.setAttribute('href', '/logout');
     }
 
-    function goToSelectedPage() {
-        let basket = document.getElementById('shoppingCard');
+    function goToSelectedPage(element) {
+        let basket ;
+            if(element.id === 'shoppingCard'){
+                basket = document.getElementById('shoppingCard');
+            }else {
+                basket = document.getElementById('shoppingCardS');
+            }
         const local = JSON.parse(localStorage.getItem('shoppingCard'));
         if (local && local.length) {
             basket.setAttribute('href', '/selectedProducts');
         }
     };
+
+    function gup(name, url) {
+        if (!url) url = location.href;
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(url);
+        return results == null ? null : results[1];
+    }
+
+
     $(function () {
 
         document.getElementById('example').addEventListener('change', function () {
             console.log('You selected: ', this.value);
             const obj = {
-                language: this.value
+                language: this.value,
             }
+            localStorage.removeItem('shoppingCard');
+            localStorage.removeItem('order');
             $.ajax({
-                url: '/change-language',
-                method: 'post',
-                data: obj,
-                success: function () {
-                    window.location.reload();
-                },
-                error: function (data) {
-                    console.log('User creation failed :' + data);
-                }
-            });
+                    url: '/change-language',
+                    method: 'post',
+                    data: obj,
+                    success: function () {
+                        window.location.reload(1);
+                        location.replace(`${process.env.CLIENT_URL}`)
+                    },
+                    error: function (data) {
+                        console.log('User creation failed :' + data);
+                    }
+                });
         });
         let searchValue;
         var typingTimer;                //timer identifier
@@ -249,7 +271,7 @@
                     if (brands.length) {
                         brands.forEach(function (item) {
                             let a = document.createElement(`a`);
-                            a.href = `shop?brandId=${item._id}`
+                            a.href = `shop?brandName=${item.name}`
                             a.innerHTML = `${item.name} <br/>`;
                             div.append(a);
                         })

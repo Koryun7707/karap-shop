@@ -1,4 +1,3 @@
-
 //This part vor product price
 function searchByPrice() {
     const priceFrom = document.getElementById('priceFrom').value;
@@ -13,28 +12,30 @@ function searchByPrice() {
         }, 1000);
 
     } else {
-
+        console.log(priceFrom, priceTo);
         //write our code here
-        let searchValue = document.querySelector('input[type=search]').value || ''
+        let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
-
+            var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                console.log(input.value);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
+                    brandNames.push(val);
                 } else {
                     values.push(input.value);
                 }
             });
         }
 
+
         $.ajax({
             type: 'post',
             url: '/shop-filter',
             data: {
                 types: values,
-                brandIds: brandId,
+                brandNames: brandNames,
                 searchValue: searchValue,
                 page: 1,
                 priceFrom: priceFrom,
@@ -85,13 +86,27 @@ function searchByPrice() {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                         <div>
-                                            <h2>${item.price}</h2>
+                                        <div class="d-flex ">
+                                          <div class="mr-3"> 
+                                            <h2 id='styleDiv' style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
+                                      
+                                        <div id="${item._id}" style="display: none">
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                        </div>                                     
+                                        
+                                        </div>
+                                       
                                         <div class="title">${item.name}</div>
                                     </a>
                                 </div>
                             `;
+                        if (item.sale) {
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+
+                        }
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -138,14 +153,21 @@ $(document).ready(function () {
 
     //when shop page render first time called ==>
     function getProductByPagination() {
-        const type = gup('type', location.href);
-        const brandId = gup('brandId', location.href);
+
+
+        let type = gup('type', location.href);
+        const brandNames = gup('brandName', location.href);
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
+        if (type) {
+            type = decodeURI(type);
+        }
+
+        console.log(brandNames)
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo},
+            data: {page: 1, type: type, brandNames: brandNames, priceFrom: priceFrom, priceTo: priceTo},
             success: (response) => {
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -190,16 +212,30 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                         <div>
-                                            <h2>${item.price}</h2>
+                                       
+                                        <div class="d-flex">
+                                           <div class="mr-3">
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
+                         
                                         </div>
+                                        <div  id="${item._id}" style="display: none">
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                        </div>
+                                        
+</div>
+                                      
                                         <div class="title">${item.name}</div>
                                     </a>
                                                      
                                 </div>
                             `
                         ;
+                        if (item.sale) {
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
 
+                        }
 
                     })
                 } else {
@@ -218,6 +254,7 @@ $(document).ready(function () {
     window.addEventListener('load', getProductByPagination);
     //works when user click on page items
     window.giveChosenPage = (item) => {
+
         let pagesCount = document.getElementById('pagination-place').getAttribute('value');
         const elementValue = item.getAttribute('value');
         const elementAttributes = item.getAttribute('class');
@@ -279,6 +316,20 @@ $(document).ready(function () {
         //get price product
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
+        if ($('input[type=checkbox]').is(':checked')) {
+            var values = [];
+            var brandNames = [];
+            $.each($('input:checked'), function (index, input) {
+                console.log(84848484848484848484);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
+                    brandNames.push(val);
+                } else {
+                    values.push(input.value);
+                }
+            });
+        }
+
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -286,6 +337,9 @@ $(document).ready(function () {
                 page: pageNumber,
                 priceFrom: priceFrom,
                 priceTo: priceTo,
+                types: values,
+                brandNames: brandNames,
+
             },
             success: function (response) {
                 let filterDiv = document.getElementById('shopFilter');
@@ -301,14 +355,28 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                         <div>
-                                            <h2>${item.price}</h2>
+
+                                    <div class="d-flex">
+                                       <div class="mr-3">
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
+                                         
                                         </div>
+                                          <div id="${item._id}" style="display: none">
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                        </div>
+
+                                    </div>
+                                      
                                         <div class="title">${item.name}</div>
                                     </a> 
                                 </div>
                             `
                         ;
+                        if (item.sale) {
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+                        }
                         filterDiv.append(newDiv);
                     })
                 } else {
@@ -324,7 +392,6 @@ $(document).ready(function () {
         });
     };
 
-// user is "finished typing, or choose checkbox" get page number and send to back end
     window.givePageNumber = (item) => {
         let pagesCount = document.getElementById('pagination-place').getAttribute('value');
         const elementValue = item.getAttribute('value');
@@ -387,7 +454,8 @@ $(document).ready(function () {
         return handeleOnchangeValue(pageNumber);
     };
 
-    //page = return givePageNumber function
+// user is "finished typing, or choose checkbox" get page number and send to back end
+
     function doneTyping(page) {
         let pageNumber;
         if (page > 0) {
@@ -401,10 +469,12 @@ $(document).ready(function () {
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
+            var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                console.log(input.value);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
+                    brandNames.push(val);
                 } else {
                     values.push(input.value);
                 }
@@ -415,7 +485,7 @@ $(document).ready(function () {
             url: '/shop-filter',
             data: {
                 types: values,
-                brandIds: brandId,
+                brandNames: brandNames,
                 searchValue: searchValue,
                 page: pageNumber,
                 priceFrom: priceFrom,
@@ -466,16 +536,26 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                         <div>
-                                            <h2>${item.price}</h2>
+                                        <div class="d-flex">
+                                          <div class="mr-3">
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
+                                         <div id="${item._id}" style="display: none">
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                        </div>
+</div>
+                                       
                                         <div class="title">${item.name}</div>
                                     </a>
                                     
                                 </div>
                             `
                         ;
-
+                        if (item.sale) {
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+                        }
                     })
                 } else {
                     let newDiv = document.createElement('div');
@@ -492,18 +572,8 @@ $(document).ready(function () {
 
     //page = return givePageNumber function
     function handeleOnchangeValue(page) {
-        // let pagesCount = Number(document.getElementById('pagination-place').getAttribute('value'));
         let pageNumber;
         if (page > 0) {
-            // for (let i = 1; i < pagesCount; i++) {
-            //     console.log('i', i, 'page', page);
-            //     if (i === page) {
-            //         console.log(1, page)
-            //         document.getElementById(`${page}`).setAttribute('class', 'page-item active');
-            //     } else {
-            //         document.getElementById(`${i}`).setAttribute('class', 'page-item disable');
-            //     }
-            // }
             pageNumber = page;
         } else {
             pageNumber = undefined;
@@ -511,11 +581,13 @@ $(document).ready(function () {
         searchValue = ''
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandId = [];
+            var brandNames = [];
             var onSale;
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                console.log(input.value);
+                if (input.value.includes('11')) {
+                    let val = input.value.substring(0, input.value.length - 2);
+                    brandNames.push(val);
                 } else if (input.value === 'on') {
                     onSale = input.value;
                 } else {
@@ -533,7 +605,7 @@ $(document).ready(function () {
                 types: values,
                 priceFrom: priceFrom,
                 priceTo: priceTo,
-                brandIds: brandId,
+                brandNames: brandNames,
                 searchValue: searchValue,
                 onSale: onSale,
                 page: pageNumber
@@ -614,15 +686,28 @@ $(document).ready(function () {
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                        <div>
-                                            <h2>${item.price}</h2>
+                                        <div class="d-flex">
+                                         <div class="mr-3">
+                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
+                                         <div id="${item._id}" style="display: none">
+                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                        </div>
+                                        
+</div>
+                                       
                                         <div class="title">${item.name}</div>
                                     </a>
                                     
                                 </div>
                             `
                         ;
+                        if (item.sale) {
+                            document.getElementById(`${item._id}`).style.display = 'block';
+                        }else{
+                            document.getElementById('styleDiv').removeAttribute('style');
+
+                        }
 
                     })
                 } else {
@@ -639,7 +724,8 @@ $(document).ready(function () {
         })
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
-    $("amount").on("change", function () {nsole.log(this.value)
+    $("amount").on("change", function () {
+        console.log(this.value)
     });
 
 

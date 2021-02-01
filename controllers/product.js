@@ -1,10 +1,9 @@
 const rimraf = require('rimraf');
 const fs = require('fs');
-const path = require('path');
 const Product = require('../models/product');
 const {logger} = require('../utils/logger');
 const {validateProduct} = require('../validations/product')
-const {success, validation, err} = require('../utils/responseApi');
+const {success, err} = require('../utils/responseApi');
 const {moveFile} = require('../utils/helper');
 const Brand = require('../models/brands')
 
@@ -13,6 +12,7 @@ const createProduct = async (req, res) => {
     try {
         const files = req.files;
         const {error, value} = validateProduct(req.body);
+        console.log(req.body);
         if (error) {
             if (files.length > 0) {
                 files.map((file) => {
@@ -21,16 +21,19 @@ const createProduct = async (req, res) => {
                     })
                 });
             }
+            logger.error('ValidationError', error.message);
             req.flash("error_msg", error.message);
             return res.redirect("/admin-create-product");
         }
-        if (files.length !== 5) {
+        const brandName = await Brand.findById(value.brandId).select('name').lean().exec()
+        console.log(brandName);
+        if (files.length < 2) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err);
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
             return res.redirect("/admin-create-product");
         }
         let dir = `./public/uploads/product`;
@@ -39,28 +42,42 @@ const createProduct = async (req, res) => {
                 if (err) logger.error(err);
             });
         }
-        const newProduct = new Product({
-            brandId: value.brandId,
-            name: value.productName,
-            type: value.productType,
-            price: value.productPrice,
-            sizes: value.productSize.split('/'),
-            sale: value.productSale,
-            colors: value.productColor.split('/'),
-            count: value.productCount,
-            productWeight: value.productWeight,
-            language: value.language,
-        });
+        let newProduct;
+        if (value.productSale != '' || Number(value.productSale) >= 1) {
+            newProduct = new Product({
+                brandId: value.brandId,
+                brandName: brandName.name,
+                name: value.productName,
+                type: value.productType,
+                price: value.productPrice,
+                sizes: value.productSize.split('/'),
+                sale: value.productSale,
+                colors: value.productColor.split('/'),
+                count: value.productCount,
+                productWeight: value.productWeight,
+                language: value.language,
+            });
+        } else {
+            newProduct = new Product({
+                brandId: value.brandId,
+                brandName: brandName.name,
+                name: value.productName,
+                type: value.productType,
+                price: value.productPrice,
+                sizes: value.productSize.split('/'),
+                colors: value.productColor.split('/'),
+                count: value.productCount,
+                productWeight: value.productWeight,
+                language: value.language,
+            });
+        }
         newProduct.images = moveFile(files, dir);
         newProduct.save((err, result) => {
             if (err) {
-                fs.readdir(dir, (error, files) => {
-                    if (error) throw error;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
+                files.map((file) => {
+                    rimraf(`${dir}/${file.filename}`, (err) => {
+                        if (err) logger.error(err);
+                    })
                 });
                 req.flash("error_msg", err.message);
                 return res.redirect("/admin-create-product");
@@ -100,7 +117,7 @@ const updateProduct = async (req, res) => {
         const files = req.files;
         const _id = req.params._id;
         const product = await Product.findById(_id).exec();
-        req.body.brandId = product.brandId;
+        req.body.brandId = product.brandId.toString();
 
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
@@ -115,7 +132,7 @@ const updateProduct = async (req, res) => {
             req.flash("error_msg", error);
             return res.redirect(`/admin-editProduct?_id=${_id}`);
         }
-        if (files.length !== 5) {
+        if (files.length < 2) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err);
@@ -135,7 +152,10 @@ const updateProduct = async (req, res) => {
         product.type = value.productType;
         product.price = value.productPrice;
         product.sizes = value.productSize.split('/');
-        product.sale = value.productSale;
+        if (value.productSale != '' || Number(value.productSale) >= 1) {
+            product.sale = value.productSale;
+        }
+        product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
         product.count = value.productCount;
         product.language = value.language;
@@ -148,13 +168,10 @@ const updateProduct = async (req, res) => {
         product.images = moveFile(files, dir);
         product.save((err, result) => {
             if (err) {
-                fs.readdir(dir, (error, files) => {
-                    if (error) throw error;
-                    for (const file of files) {
-                        fs.unlink(path.join(dir, file), err => {
-                            if (err) throw err;
-                        });
-                    }
+                files.map((file) => {
+                    rimraf(`${dir}/${file.filename}`, (err) => {
+                        if (err) logger.error(err);
+                    })
                 });
                 req.flash("error_msg", err.message);
                 return res.redirect(`/admin-editProduct?_id=${_id}`);
@@ -178,8 +195,9 @@ const getProducts = async (req, res) => {
         if (filterByType) {
             data = await Product.find({type: filterByType});
         } else {
-            data = await Product.find({language: req.session.language});
+            data = await Product.find({}).sort({brandName: 1});
         }
+        console.log(data);
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
@@ -197,13 +215,13 @@ const getProductsShopFilter = async (req, res) => {
             req.session.language = 'eng';
         }
         const page = Number(req.body.page) || 1;
-        const limit = 1;
+        const limit = 21;
         const options = {
             page: page,
             limit: limit,
         }
         const types = req.body['types[]'] || req.body.type || [];
-        const brandIds = req.body['brandIds[]'] || req.body.brandId || [];
+        const brandNames = req.body['brandNames[]'] || req.body.brandNames || [];
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
@@ -221,38 +239,38 @@ const getProductsShopFilter = async (req, res) => {
             search['$and'].push({sale: {$exists: true}});
         }
         let data;
-        if (!brandIds.length && !types.length && searchValue === undefined) {
+        if (!brandNames.length && !types.length && searchValue === undefined) {
             data = await Product.paginate({language: req.session.language}, options);
-        } else if (Number(priceTo) && Number(priceFrom) && brandIds.length > 0 && types.length > 0) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0 && types.length > 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             search['$and'].push({type: {"$in": types}});
-            search['$and'].push({brandId: {"$in": brandIds}});
+            search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom) && brandIds.length > 0) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
-            search['$and'].push({brandId: {"$in": brandIds}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
+            search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom) && types.length > 0) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
-            search['$and'].push({type: {"$in": types}});
-            data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom)) {
-            search['$and'].push({price: {$gt: Number(priceFrom), $lt: Number(priceTo)}});
-            data = await Product.paginate(search, options);
-        } else if (brandIds.length > 0 && types.length > 0) {
-            search['$and'].push({brandId: {"$in": brandIds}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && types.length > 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
-        } else if (brandIds.length > 0) {
-            search['$and'].push({brandId: {"$in": brandIds}});
+        } else if (Number(priceTo) && Number(priceFrom) >= 0) {
+            search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
+            data = await Product.paginate(search, options);
+        } else if (brandNames.length > 0 && types.length > 0) {
+            search['$and'].push({brandName: {"$in": brandNames}});
+            search['$and'].push({type: {"$in": types}});
+            data = await Product.paginate(search, options);
+        } else if (brandNames.length > 0) {
+            search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
         } else if (types.length > 0) {
             search['$and'].push({type: {"$in": types}});
             data = await Product.paginate(search, options);
-
         } else {
             data = await Product.paginate(search, options);
         }
+        console.log(data);
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,
@@ -269,8 +287,11 @@ const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
     try {
         if (req.body.productCount && req.body.productId) {
+            console.log(544)
             const product = await Product.findById(req.body.productId).populate('brandId').exec();
             if (Number(product.count) >= Number(req.body.productCount)) {
+                console.log(88888888888)
+                console.log(product)
                 return res.status(200).json(success('Product exists',
                     product, res.statusCode));
             } else {

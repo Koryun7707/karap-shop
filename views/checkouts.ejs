@@ -1,0 +1,29 @@
+<%- include ('header') -%>
+<main style="padding-top: 100px;">
+    <div class="checkout-page">
+        <h2 class="py-3 bg-rose">You can pay in out website, with two pay type.</h2>
+        <div class="mt-5">
+            <form action="/purchase" method="POST" class="mb-4">
+                <script
+                        src="https://checkout.stripe.com/checkout.js"
+                        class="stripe-button btn-green-gradient"
+                        data-key="<%= key %>"
+                        data-name="Armat Concept pay"
+                        data-description="<%=names%>"
+                        data-amount="<%= sum * 100 %>"
+                        data-currency="usd"
+                >
+
+                </script>
+            </form>
+            <form action="/pay" method="post">
+                <button class="btn-green-gradient" type="submit" >Pay with Paypal</button>
+            </form>
+        </div>
+
+    </div>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+</main>
+
+<%- include ('footer') -%>

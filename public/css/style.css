@@ -12,6 +12,29 @@
     font-family: "MYRIADPRO-SEMIBOLD";
     src: url("../fonts/MYRIADPRO-SEMIBOLD.OTF");
 }
+@font-face {
+    font-family: "Gagalin-Regular";
+    src: url("../fonts/Gagalin-Regular.otf");
+}
+.logoStyles {
+    color: #c4b3ab;
+    /*margin: 14px 7px 15px 7px;*/
+    font-style: italic;
+    transition: all 0.4s;
+    font-family: "Gagalin-Regular", sans-serif;
+    font-size: 35px;
+    line-height: 35px;
+    text-shadow: 1px 6px transparent;
+    transform: scale(1);
+
+}
+.logoStyles:hover {
+
+    /*text-shadow: 1px 3px #c4b3ab;*/
+    color: #fff;
+    transform: scale(0.8);
+}
+
 
 body {
     font-family: 'MYRIADPRO-REGULAR', sans-serif;
@@ -140,16 +163,18 @@ body {
 .section1 .abs {
     position: absolute;
     z-index: 11;
-    bottom: 30%;
-    left: 19%;
+    top: 40%;
+    left: 5%;
+    max-width: 50%;
 }
 
 .section1 .abs h1 {
     color: #e3e3e3;
-    font-size: 6.5rem;
-    letter-spacing: -5px;
+    font-size: 6rem;
+    letter-spacing: -2px;
     line-height: 5rem;
     font-family: "MYRIADPRO-SEMIBOLD", sans-serif;
+    white-space: nowrap;
 }
 
 section h2 {
@@ -167,7 +192,8 @@ section h2 {
 }
 
 .section2 .card .img-area {
-    width: 180px;
+    max-width: 180px;
+    width: 100%;
     height: 200px;
     display: flex;
     align-items: center;
@@ -193,6 +219,7 @@ section h2 {
     width: 100%;
     border: 1px solid transparent;
     transition: all 0.5s;
+    margin: 0 auto;
 }
 
 .btn.btn-green-gradient:hover {
@@ -253,6 +280,9 @@ section h2 {
 footer ul li a {
     color: #000000;
 }
+.links-for-pages li.active a{
+    color: #c4aa9d;
+}
 
 footer h4 {
     color: #07601d;
@@ -310,11 +340,12 @@ footer .abs {
 .blog-card .btn-green-gradient {
     font-size: 30px;
     color: #ffffff;
-    width: 320px;
+    max-width: 320px;
     display: block;
     text-align: center;
     text-decoration: none;
     margin-bottom: 40px;
+    width: 100%;
 }
 
 .blog-img {
@@ -339,6 +370,14 @@ footer .abs {
     margin-right: 15px;
 }
 
+
+#section1 #carousel1.owl-carousel .owl-item img {
+    display: block;
+    width: 100%;
+    max-height: 100vh;
+    height: 100%;
+}
+
 /*----brand-----*/
 .brand-section-bg {
     background-size: 100%;
@@ -346,13 +385,13 @@ footer .abs {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 13% 0;
 }
 
 h1 {
     color: #e3e3e3;
-    font-size: 145px;
-    letter-spacing: -10px;
+    font-size: 6rem;
+    letter-spacing: -2px;
     font-family: "MYRIADPRO-BOLD", sans-serif;
     text-transform: uppercase;
 }
@@ -478,7 +517,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 13% 0;
 }
 
 .about-sections h2 {
@@ -543,7 +582,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 13% 0;
 }
 
 .shop-card {
@@ -551,6 +590,9 @@ h1 {
     background-color: #f3f3f3;
     border: 0;
     margin: 32px 0;
+}
+.shop-card h2 {
+    color: #000;
 }
 
 .shop-card > a:hover {
@@ -560,7 +602,7 @@ h1 {
 
 .shop-card .img-area {
     width: 300px;
-    height: 435px;
+    height: 340px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -573,7 +615,7 @@ h1 {
 .shop-card .title {
     font-size: 30px;
     color: #c4aa9d;
-    margin: 30px 0 12px;
+    margin: 0 0 12px;
     text-transform: uppercase;
 }
 
@@ -582,8 +624,8 @@ h1 {
 }
 
 .sidebar-title {
-    font-size: 38px;
-    line-height: 40px;
+    font-size: 30px;
+    line-height: 36px;
     border-bottom: 2px solid #000000;
     font-family: "MYRIADPRO-BOLD", sans-serif;
     margin-bottom: 40px;
@@ -719,6 +761,9 @@ h1 {
     align-items: center;
     justify-content: center;
 }
+.bright {
+    border-right: 1px solid;
+}
 
 .contact-section .text {
     margin: 48px auto 0;
@@ -785,7 +830,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 190px 0;
+    padding: 14% 0;
 }
 
 
@@ -903,7 +948,7 @@ button:focus {
     border: 1px solid #ddd;
     width: 107px;
     height: 35px;
-    margin: 10px 0 0;
+    margin: 0;
 }
 
 .qtySelector .fa {
@@ -983,11 +1028,18 @@ button:focus {
     align-items: flex-start;
     justify-content: space-between;
     background-color: #fff;
-    padding: 10px 16px;
-    height: 135px;
+    padding: 10px 60px 10px 16px;
+    min-height: 135px;
     margin-bottom: 8px;
     border-radius: 5px;
     border: 1px solid #c4aa9d;
+    flex-wrap: wrap;
+    position: relative;
+}
+.selected-product-cart .abs{
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .small-images,
@@ -1020,11 +1072,14 @@ button:focus {
 .selected-product-cart .product-color {
     color: #c4aa9d;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 21px;
+    line-height: 30px;
     border-radius: 4px;
     border: 1px solid #c4aa9d;
-    padding: 4px 16px;
+    padding: 0;
+    width: 36px;
+    height: 30px;
+    text-align: center;
 }
 
 .total-section {
@@ -1072,4 +1127,75 @@ button:focus {
 }
 .activeColorItem {
     color: black;
+}
+#loginModal,
+#RegistrationModal,
+#forgotPassword,
+#resetPassword {
+    background-color: #c4b3ab42;
+   min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#loginModal .modal-content,
+#RegistrationModal .modal-content,
+#forgotPassword .modal-content,
+#resetPassword .modal-content {
+    max-width: 600px;
+}
+.text-content-page {
+    background-color: #bc8f8f38;
+    padding: 50px 0;
+}
+.text-content-page  h2{
+    background-color: #c4aa9d;
+    margin-top: 30px;
+}
+.br-0{
+    border-radius: 0;
+}
+
+.stripe-button-el span {
+    background: linear-gradient(90deg, #033d29, #097814)!important;
+    background-image: none!important;
+    width: 100%;
+    /* max-width: 250px; */
+    height: 40px !important;
+    padding: 0 100px!important;
+    display: flex!important;
+    align-items: center;
+}
+.checkout-page {
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    flex-direction: column;
+    background-color: #bc8f8f38;
+}
+.checkout-page .btn-green-gradient {
+    max-width: 294px;
+    height: 40px;
+    border-radius: 4px;
+    color: #fff;
+}
+.checkout-page .bg-rose {
+    background-color: #c4aa9d;
+    padding:0  30px;
+    color: #FFFFFF;
+}
+.flex-1 {
+    flex: 1;
+}
+
+.icon-search-container.active #search-div {
+  visibility: visible;
+    position: relative;
+    margin-top: 38px;
+    padding: 30px;
+    background-color: #c4b3ab;
+}
+#search-div a{
+    color: #ffffff;
 }

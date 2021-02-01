@@ -15,6 +15,9 @@
         height: 100%;
         padding: 50px;
     }
+    .sidebar-title {
+        font-size: 25px;
+    }
 }
 @media screen and (max-width: 991px) {
     main {
@@ -41,7 +44,7 @@
         letter-spacing: -5px;
     }
     .brand-section .btn-green-gradient {
-        margin-bottom: 50px;
+        margin-bottom: 70px;
     }
     .brand-section .title {
         font-size: 40px;
@@ -58,8 +61,12 @@
         width: 100px;
         height: 90px;
     }
-    .blog-section .blog-card .rose-bg img {
-        width: 75%;
+
+    .form-info li span {
+        font-size: 20px;
+    }
+    .form-info li a {
+        font-size: 16px;
     }
 }
 @media screen and (max-width: 767px){
@@ -83,5 +90,26 @@
         width: 100px;
         min-width: 100px;
     }
+    .bright {
+        border-right: 0;
+        border-bottom: 1px solid;
+        margin-bottom: 24px;
+    }
+    .form-info li span {
+        font-size: 16px;
+    }
+    .form-info li a {
+        font-size: 14px;
+    }
+    .logoStyles {
+        font-size: 30px;
+        line-height: 30px;
+        margin-left: -10px;
+    }
 
+}
+@media screen and (max-width: 420px){
+    .blog-section .blog-card .rose-bg img {
+        width: 100%;
+    }
 }
