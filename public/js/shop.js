@@ -218,7 +218,7 @@ $(document).ready(function () {
                                             <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
                          
                                         </div>
-                                        <div id="${item._id}" style="display: none">
+                                        <div  id="${item._id}" style="display: none">
                                             <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                         
