@@ -66,7 +66,7 @@ app.get('*', (req, res) => {
     logger.error(`APP INVALID ROUTE ${req.originalUrl}`)
     res.json({ status: 404, description: 'Invalid api address!' })
 });
-
-app.listen(PORT, () => {
-    console.log(`Server is running on PORT: ${PORT}`);
-});
+module.exports = app;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on PORT: ${PORT}`);
+// });
