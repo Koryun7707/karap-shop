@@ -184,7 +184,6 @@ section h2 {
     letter-spacing: 0;
     font-variant: all-petite-caps;
 }
-
 .section2 .card {
     justify-content: center;
     align-items: center;
@@ -278,10 +277,14 @@ section h2 {
 }
 
 footer ul li a {
-    color: #000000;
+    color: #c4aa9d;
+}
+footer ul li a:hover {
+    color: #c4aa9d;
+    text-decoration: none;
 }
 .links-for-pages li.active a{
-    color: #c4aa9d;
+    color: #0b2e13;
 }
 
 footer h4 {
@@ -601,11 +604,12 @@ h1 {
 }
 
 .shop-card .img-area {
-    width: 300px;
-    height: 340px;
+    max-width: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    max-height: 340px;
 }
 
 .shop-card img {

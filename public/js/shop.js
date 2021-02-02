@@ -79,14 +79,14 @@ function searchByPrice() {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
                                         <div class="img-area">
                                             <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
                                         </div>
-                                        <div class="d-flex ">
+                                        <div class="d-flex">
                                           <div class="mr-3"> 
                                             <h2 id='styleDiv' style="text-decoration: line-through">${item.price}€</h2>
                                         </div>
@@ -205,7 +205,7 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -348,7 +348,7 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -529,7 +529,7 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -679,7 +679,7 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
                         newDiv.innerHTML = `
                                    <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
