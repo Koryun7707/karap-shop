@@ -369,6 +369,7 @@ module.exports = {
     getSignUpPage: async (req, res) => {
         const staticData = await getStaticData(req.session.language);
         res.render('signup', {
+            URL: '/signup',
             user: req.session.user,
             staticData: staticData
         });

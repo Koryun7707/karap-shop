@@ -59,6 +59,9 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+process.on('uncaughtException', function(err) {
+    logger.error(`Oops Unhandled Exception !!!!! = ${err.stack}`);
+});
 
 app.use('/', apiRoutes);
 
@@ -70,3 +73,4 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
 });
+//module.exports = app;
