@@ -2,6 +2,8 @@ const ShippingAddress = require('../models/shipingAddress');
 const {logger} = require('../utils/logger');
 const {success, err} = require('../utils/responseApi');
 const {validateShippingAddress} = require('../validations/shippingAddress');
+const {getStaticData} = require('../utils/helper');
+const User = require('../models/user')
 
 const createShippingAddress = async (req, res) => {
     //TODO must be work sended data after success payed
@@ -32,14 +34,24 @@ const createShippingAddress = async (req, res) => {
 const getShippingAddresses = async (req, res) => {
     logger.info('Start get shipping addresses - - -');
     try {
-        const getShippingAddresses = await ShippingAddress.find({date: -1,});
+        const getShippingAddresses = await ShippingAddress.find({}).populate({
+            path:'userId',
+            select:'firstName lastName -_id',
+        });
+        const staticData =  await getStaticData(req.session.language);
         if (!getShippingAddresses) {
             return res.status(500).json(err('Shipping model is empty', res.statusCode));
         }
-        return res.status(200).json(success('success', getShippingAddresses, res.statusCode));
-    } catch (error) {
-        logger.error(`createShippingAddress Error: ${error}`);
-        return res.status(500).json(err(error.message, res.statusCode));
+        return res.render('admin/shippingAddressUsers', {
+            URL: '/shipping-address',
+            user: req.session.user,
+            staticData: staticData,
+            shippingAddress:getShippingAddresses
+        });
+    } catch (e) {
+        logger.error(`Get Shipping Address Error: ${e}`);
+        req.flash('error_msg', e.message);
+        return res.redirect('/');
     }
 }
 module.exports = {

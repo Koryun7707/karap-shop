@@ -1,0 +1,45 @@
+<%- include ('adminHeader') -%>
+<table class="table table-hover" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th id="1"  role="button" scope="col">Name</th>
+        <th id="2"  role="button" scope="col">Address</th>
+        <th id="3"  role="button" scope="col">City</th>
+        <th id="4"  role="button" scope="col">Country</th>
+        <th id="5"  role="button" scope="col">Phone</th>
+        <th id="6"  role="button" scope="col">Date</th>
+        <th id="6"  role="button" scope="col">Product</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+    <%if(shippingAddress){%>
+        <%shippingAddress.forEach((item)=>{%>
+            <tr>
+                <td><%=item.userId.firstName+" "+item.userId.lastName%> </td>
+                <td><%=item.address%> </td>
+                <td><%=item.city%> </td>
+                <td><%=item.country%> </td>
+                <td><%=item.phone%> </td>
+                <td><%=new Date(item.date).toUTCString()%> </td>
+                <td><%item.productIds.forEach((item)=>{%>
+                    <li> Count: <%=item.count%></li>
+                    <li> One Price: <%=item.onePrice%></li>
+                    <li> Pay Price: <%=item.priceSale%></li>
+                    <li> Name:   <%=item.name%></li>
+                    <li> Weight: <%=item.productWeight%></li>
+                    <li> Registration Address: <%=item.registrationAddress%></li>
+                    <li><img width="50px" height="50px" src="<%=item.images%>" alt=""></li>
+                    <%})%>
+                </td>
+            </tr>
+       <% })%>
+    <%}%>
+    </tbody>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<%- include ('adminFooter') -%>
