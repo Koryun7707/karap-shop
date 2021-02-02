@@ -1,5 +1,6 @@
 module.exports =
-    [{
+    [
+        {
         //header
         home: 'Home',
         dashboard: 'Dashboard',
@@ -168,4 +169,81 @@ module.exports =
         forgot_right_button:'Отправить',
         forgot_footer_text:'Нет учетной записи?',
         forgot_footer_button:'Регистрация',
-    }]
+    },
+        {
+        dashboard: 'Վահանակ',
+        logOut: 'Դուրս գալ',
+        home: 'Գլխավոր',
+        shop: 'Խանութ',
+        brands: 'Ապրանքանիշեր',
+        blog: 'Բլոգ',
+        login: 'Մուտք',
+        signup: 'Գրանցում',
+        //footer
+        pages: 'Էջեր',
+        follow_us: 'Հետեւեք մեզ',
+        delevery_returns: 'Առաքում և վերադարձ',
+        privacy_policy: 'Գաղտնիության քաղաքականություն',
+        terms_conditions: 'Օգտվելու կանոններ',
+        about: 'Մեր մասին',
+        contact: 'Կապվեք մեզ հետ',
+        join_our_team: 'Միացեք մեր թիմին',
+        //home
+        home_header: 'ԴՈՒՔ ԿԱՐՈՂ ԵՔ ԳՏՆԵԼ ԴՐԱՆՔ ՄԵՐ ԿԱՅՔՈՒՄ',
+        //shop
+        shop_product_page: 'ԱՊՐԱՆՔՆԵՐԻ ԷՋԷՐ',
+        shop_search: 'Որոնում',
+        shop_sale: 'Վաճառք',
+        shop_price: 'Գինը',
+        shop_brand: 'Ապրանքանիշեր',
+        //brands
+        brand_button: 'ԳՆԵԼ',
+        //blog
+        blog_button: 'ԻՄԱՆԱԼ ԱՎԵԼԻՆ',
+        //about
+        about_header: 'ՄԵՐ ԳՈՐԾԸՆԿԵՐՆԵՐԻ ԼԱՎԱԳՈՒՅՆ ՄՈԴԵԼՆԵՐԸ',
+        about_header_second: 'ՄԵՐ ՓԻԼԻՍՈՖԻԱՆ',
+        about_button: 'Կապվեք մեզ հետ',
+        //contact form
+
+        contact_email:'Էլեկտրոնային հասցե',
+        contact_first_name:'Անուն',
+        contact_message: 'Հաղորդագրություն',
+        contact_button: 'Ուղարկել ',
+        //contact form info
+        contact_info_email:'ԷԼ-ՀԱՍՑԵ',
+        contact_telephone: 'ՀԵՌ',
+        contact_address: 'ՀԱՍՑԵ',
+        contact_working_hours: 'ԱՇԽ.ԺԱՄԵՐ',
+
+        //join our team
+        join_header: 'ԻՆՉՈՒ ԱՇԽԱՏԵԼ ՄԵԶ ՀԵՏ',
+        join_section: 'Պատճառ',
+        join_header_second: 'ՓՆՏՐՈՒՄ ԵՆ ԳՈՐԾԸՆԿԵՐՆԵՐԻՆ',
+//        Registration
+        signup_header: 'Ստեղծել հաշիվ',
+        signup_name: 'Անուն',
+        signup_last_name: 'Ազգանուն',
+        signup_email: ' Էլեկտրոնային հասցե',
+        signup_password: 'Գաղտնաբառ',
+        signup_retype_password: 'Հաստատել գաղտնաբառը',
+        signup_question: 'Արդեն ունեք հաշիվ',
+        signup_to_login: 'ՄՈՒՏՔ',
+        //Login
+        login_header: 'Մուտք',
+        login_email: 'Էլեկտրոնային հասցե',
+        login_password: ' Գաղտնաբառ',
+        login_button:'Մուտք',
+        login_footer_button_left: 'Մոռացել եք Ձեր գաղտնաբառը',
+        login_footer_button_right: 'Գրանցում',
+        language: 'arm',
+        //Forgot
+        forgot_header:'Մոռացել եք Ձեր գաղտնաբառը',
+        forgot_text:'Մուտքագրեք ձեր էլ. Փոստի հասցեն, և մենք ձեզ հղում կուղարկենք ՝ ձեր գաղտնաբառը վերականգնելու համար.',
+        forgot_email:'Էլեկտրոնային հասցե',
+        forgot_left_button:'Չեղարկել',
+        forgot_right_button:'Ուղարկել',
+        forgot_footer_text: 'Հաշիվ չկա',
+        forgot_footer_button:'Ստեղծել հաշիվ',
+    }
+    ]

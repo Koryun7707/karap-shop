@@ -1198,7 +1198,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'delevry'
-            if (req.session.language === 'ru') {
+            if (req.session.language === 'arm') {
                 langPage = 'delevryARM'
             }
             return res.render(langPage, {
@@ -1218,7 +1218,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'privacyPolicy';
-            if (req.session.language === 'ru') {
+            if (req.session.language === 'arm') {
                 langPage = 'privacyPolicyARM';
             }
             return res.render(langPage, {
@@ -1237,7 +1237,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'termAndConditions';
-            if (req.session.language === 'ru') {
+            if (req.session.language === 'arm') {
                 langPage = 'termAndConditionsARM';
             }
             return res.render(langPage, {
