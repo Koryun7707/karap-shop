@@ -21,7 +21,8 @@
                                 <li class="fashion-icon2"><%= item.type %></li>
                                 <li style="display: none" id="<%= index %>"><%= item.info %></li>
                             </ul>
-                            <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)" id="but<%= index %>">
+                            <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)"
+                               id="but<%= index %>">
                                 <%= staticData.blog_button %>
                             </a>
                         </div>
@@ -40,13 +41,13 @@
 <script>
     function isOpen(element) {
         const seeMore = element.id.slice(3, element.id.length);
-        const infoLiId = document.getElementById(seeMore);
+        const infoLiId =  document.getElementById(seeMore);
         if (infoLiId.style.display === 'none') {
+            document.getElementById(`but${seeMore}`).innerText = 'Close';
             infoLiId.style.display = 'block';
-            seeMore.innerText = 'Close';
         } else {
             infoLiId.style.display = 'none';
-            seeMore.innerText = 'SEE MORE';
+            document.getElementById(`but${seeMore}`).innerText = 'SEE MORE';
         }
     }
 
