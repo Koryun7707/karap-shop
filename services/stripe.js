@@ -32,7 +32,7 @@ const paymentStripe = (req,res)=>{
                     description: 'Armat Concept',
                     currency: 'USD',
                     customer: customer.id
-                });
+                  });
             })
             .then((charge) => {
                 localStorage.removeItem(`order${req.session.user._id}`);
