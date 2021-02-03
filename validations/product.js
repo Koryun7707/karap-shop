@@ -10,6 +10,7 @@ const validateProduct = (data) => {
         productPrice: Joi.number().required(),
         productSize: Joi.string().allow('', null),
         productSale: Joi.string().allow('', null),
+        productDescription: Joi.string().allow('', null),
         productColor: Joi.string().allow('', null),
         productCount: Joi.string().required(),
         productWeight: Joi.string().required(),

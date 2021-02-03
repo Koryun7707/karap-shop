@@ -37,6 +37,9 @@ const productSchema = new Schema({
     sale: {
         type: String,
     },
+    description: {
+        type: String,
+    },
     productWeight: {
         type: String,
         required: true,

@@ -3,11 +3,12 @@
     <thead>
     <tr>
         <th id="1" role="button" scope="col">Name</th>
-        <th id="2" role="button" scope="col">type</th>
-        <th id="3" role="button" scope="col">price</th>
-        <th id="4" role="button" scope="col">count</th>
-        <th id="5" role="button" scope="col">color</th>
-        <th id="6" role="button" scope="col">size</th>
+        <th id="2" role="button" scope="col">Type</th>
+        <th id="3" role="button" scope="col">Price</th>
+        <th id="4" role="button" scope="col">Count</th>
+        <th id="4" role="button" scope="col">Description</th>
+        <th id="5" role="button" scope="col">Color</th>
+        <th id="6" role="button" scope="col">Size</th>
         <th id="7" role="button" scope="col">Language</th>
         <th id="8" role="button" scope="col">Edit</th>
         <th id="9" role="button" scope="col">Delete</th>
@@ -41,6 +42,7 @@
                     <td>${item.type}</td>
                     <td>${item.price}</td>
                     <td>${item.count}</td>
+                    <td>${item.description}</td>
                     <td>${[...item.colors]}</td>
                     <td>${[...item.sizes]}</td>
                      <td>${item.language}</td>

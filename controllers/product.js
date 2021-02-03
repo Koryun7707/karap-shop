@@ -52,6 +52,7 @@ const createProduct = async (req, res) => {
                 price: value.productPrice,
                 sizes: value.productSize.split('/'),
                 sale: value.productSale,
+                description: value.productDescription,
                 colors: value.productColor.split('/'),
                 count: value.productCount,
                 productWeight: value.productWeight,
@@ -64,6 +65,7 @@ const createProduct = async (req, res) => {
                 name: value.productName,
                 type: value.productType,
                 price: value.productPrice,
+                description: value.productDescription,
                 sizes: value.productSize.split('/'),
                 colors: value.productColor.split('/'),
                 count: value.productCount,
@@ -157,6 +159,7 @@ const updateProduct = async (req, res) => {
         }
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
+        product.description = value.productDescription;
         product.count = value.productCount;
         product.language = value.language;
 

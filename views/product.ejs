@@ -86,6 +86,15 @@
                             <i class="fa fa-plus increaseQty" id="fa-plus" onclick="countPrice(this)"></i>
                         </div>
                     </div>
+                    <!--                    Start change from this-->
+                    <% if(product[0].description != ''){ %>
+                        <div class="product-size">
+                            <h5>Description</h5>
+                            <div><%= product[0].description %></div>
+                        </div>
+                    <% } %>
+                    <!--                  End here-->
+
                     <div class="col-8 my-3 p-0">
                         <button value="<%= product[0]._id %>" id="addToCardButton"
                                 class="btn btn-green-gradient py-3"
