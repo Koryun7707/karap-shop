@@ -3,7 +3,7 @@
 <main style="padding-top: 100px" class="selected-product-section">
     <div class="container container-1730 my-5">
         <h2 class="my-4"><b>Selected Products</b></h2>
-        <%- include ('partials/messages')%>
+        <%- include ('partials/messages') %>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
                 <input onclick="selectAll(this)" type="checkbox" id="select-all">
@@ -88,7 +88,7 @@
             success: (response) => {
                 if (response.results.length) {
                     response.results.forEach(function (item) {
-                        if(!item.sale){
+                        if (!item.sale) {
                             item.sale = 0;
                         }
                         let newDiv = document.createElement('div');
@@ -178,9 +178,9 @@
                 document.getElementById('select-all').checked = true;
             }
             if (sum) {
-                console.log(productCount,'Count')
-                console.log(productPrice,'price')
-                console.log(productSalePrice,'sale')
+                console.log(productCount, 'Count')
+                console.log(productPrice, 'price')
+                console.log(productSalePrice, 'sale')
                 countProduct.innerHTML = `${productCount}`;
                 productStartPrice.innerHTML = `${productPrice}€`
                 afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;

@@ -13,8 +13,8 @@ const productSchema = new Schema({
         ref: 'Brand',
         // type: mongoose.Schema.Types.ObjectId,
     },
-    brandName:{
-        type:String,
+    brandName: {
+        type: String,
     },
     type: {
         type: String,
@@ -37,7 +37,7 @@ const productSchema = new Schema({
     sale: {
         type: String,
     },
-    productWeight:{
+    productWeight: {
         type: String,
         required: true,
     },

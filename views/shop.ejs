@@ -131,16 +131,16 @@
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
-    $('#priceFrom').on('input', function() {
-        document.getElementById('priceFrom').setAttribute('max',`${$("#priceTo").val()}`) ;
-            $("#slider-range").slider('values', 0, $(this).val());
+    $('#priceFrom').on('input', function () {
+        document.getElementById('priceFrom').setAttribute('max', `${$("#priceTo").val()}`);
+        $("#slider-range").slider('values', 0, $(this).val());
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
 
-    $('#priceTo').on('input', function() {
-        document.getElementById('priceTo').setAttribute('min',`${$("#priceFrom").val()}`)
-            $("#slider-range").slider('values', 1, $(this).val());
+    $('#priceTo').on('input', function () {
+        document.getElementById('priceTo').setAttribute('min', `${$("#priceFrom").val()}`)
+        $("#slider-range").slider('values', 1, $(this).val());
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });

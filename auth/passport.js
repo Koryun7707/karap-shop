@@ -74,7 +74,7 @@ module.exports = function (passport) {
             }
             let hash = bcrypt.hashSync('12345678', 10);
             console.log(hash)
-            const isMatch = bcrypt.compareSync(password,user.password);
+            const isMatch = bcrypt.compareSync(password, user.password);
             if (!isMatch) {
                 return done(null, false, {message: 'Password incorrect'});
             }

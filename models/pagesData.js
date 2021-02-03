@@ -50,13 +50,13 @@ const pageDataSchema = new Schema({
     ourPhilosophy: {
         type: String,
     },
-    titleAboutSlider:{
+    titleAboutSlider: {
         type: String,
     },
     textContactSlider: {//Contact us page
         type: String,
     },
-    titleOfSliderContactUs:{
+    titleOfSliderContactUs: {
         type: String,
     },
     imagesContactSlider: {

@@ -1,16 +1,16 @@
 <%- include ('header') -%>
 <main style="padding-top: 100px;">
     <div id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <%if(staticData){%>
+        <% if(staticData){ %>
         <div class="modal-content">
             <div class="modal-header rose-bg">
-                <h5 class="modal-title"><%=staticData.login%></h5>
+                <h5 class="modal-title"><%= staticData.login %></h5>
             </div>
             <div class="modal-body">
-                <%- include ('partials/messages')%>
+                <%- include ('partials/messages') %>
                 <form action="/login" method="POST" id="newModalForm" class="offset-1 col-10">
                     <div class="form-group">
-                        <label  for="loginInputEmail" class="label"><%=staticData.login_email%><sup>*</sup></label>
+                        <label for="loginInputEmail" class="label"><%= staticData.login_email %><sup>*</sup></label>
                         <input pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                required name="email" type="email" class="form-control" id="loginInputEmail"
                                aria-describedby="emailHelp"
@@ -18,22 +18,23 @@
 
                     </div>
                     <div class="form-group">
-                        <label  for="loginPassword" class="label"><%=staticData.login_password%><sup>*</sup></label>
-                        <input required minlength="8" name="password" type="password" class="form-control" id="loginPassword" placeholder="**********">
+                        <label for="loginPassword" class="label"><%= staticData.login_password %><sup>*</sup></label>
+                        <input required minlength="8" name="password" type="password" class="form-control"
+                               id="loginPassword" placeholder="**********">
                     </div>
-                    <button type="submit" class="btn btn-green-gradient"><%=staticData.login_button%></button>
+                    <button type="submit" class="btn btn-green-gradient"><%= staticData.login_button %></button>
                 </form>
             </div>
             <div class="modal-footer">
                 <div class="d-flex justify-content-between mt-4 w-100">
-                    <a href ='/forgotPassword' type="button"
-                       class="ml-2"><%=staticData.login_footer_button_left%></a>
+                    <a href='/forgotPassword' type="button"
+                       class="ml-2"><%= staticData.login_footer_button_left %></a>
                     <a type="button" class="ml-2" href="/signup">
-                        <%=staticData.login_footer_button_right%></a>
+                        <%= staticData.login_footer_button_right %></a>
                 </div>
             </div>
         </div>
-        <%}%>
+        <% } %>
     </div>
 </main>
 

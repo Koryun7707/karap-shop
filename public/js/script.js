@@ -37,12 +37,12 @@ $(document).ready(function () {
 
     var minVal = 1, maxVal = 20; // Set Max and Min values
 // Increase product quantity on cart page
-    $(".increaseQty").on('click', function(){
+    $(".increaseQty").on('click', function () {
         var $parentElm = $(this).parents(".qtySelector");
         $(this).addClass("clicked");
-        setTimeout(function(){
+        setTimeout(function () {
             $(".clicked").removeClass("clicked");
-        },100);
+        }, 100);
         var value = $parentElm.find(".qtyValue").val();
         if (value < maxVal) {
             value++;
@@ -50,12 +50,12 @@ $(document).ready(function () {
         $parentElm.find(".qtyValue").val(value);
     });
 // Decrease product quantity on cart page
-    $(".decreaseQty").on('click', function(){
+    $(".decreaseQty").on('click', function () {
         var $parentElm = $(this).parents(".qtySelector");
         $(this).addClass("clicked");
-        setTimeout(function(){
+        setTimeout(function () {
             $(".clicked").removeClass("clicked");
-        },100);
+        }, 100);
         var value = $parentElm.find(".qtyValue").val();
         if (value > 1) {
             value--;
@@ -64,22 +64,22 @@ $(document).ready(function () {
     });
 
 
-    $(".product-size ul li, .product-color ul li").on('click', function() {
+    $(".product-size ul li, .product-color ul li").on('click', function () {
         $(this).toggleClass("active")
     });
 
-    function changeNumberShoppingCard(){
+    function changeNumberShoppingCard() {
         let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
-        if(Cardlocal){
+        if (Cardlocal) {
             document.getElementById('shoppingCardNumber').innerHTML = `${Cardlocal.length}`;
             document.getElementById('shoppingCardNumberS').innerHTML = `${Cardlocal.length}`;
 
-        }
-        else{
+        } else {
             document.getElementById('shoppingCardNumber').innerHTML = '0';
             document.getElementById('shoppingCardNumberS').innerHTML = '0';
 
         }
     }
+
     changeNumberShoppingCard();
 });

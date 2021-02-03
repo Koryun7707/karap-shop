@@ -35,10 +35,10 @@ const getShippingAddresses = async (req, res) => {
     logger.info('Start get shipping addresses - - -');
     try {
         const getShippingAddresses = await ShippingAddress.find({}).populate({
-            path:'userId',
-            select:'firstName lastName -_id',
+            path: 'userId',
+            select: 'firstName lastName -_id',
         });
-        const staticData =  await getStaticData(req.session.language);
+        const staticData = await getStaticData(req.session.language);
         if (!getShippingAddresses) {
             return res.status(500).json(err('Shipping model is empty', res.statusCode));
         }
@@ -46,7 +46,7 @@ const getShippingAddresses = async (req, res) => {
             URL: '/shipping-address',
             user: req.session.user,
             staticData: staticData,
-            shippingAddress:getShippingAddresses
+            shippingAddress: getShippingAddresses
         });
     } catch (e) {
         logger.error(`Get Shipping Address Error: ${e}`);

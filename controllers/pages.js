@@ -1266,9 +1266,9 @@ module.exports = {
             sum += Number(JSON.parse(req.body.shippingAddress).deliveryPrice);
             let names = '';
             const order = JSON.parse(req.body.order)
-            order.forEach((item)=>{
+            order.forEach((item) => {
                 console.log(item)
-                names+=item.name+' ';
+                names += item.name + ' ';
             })
 
 
@@ -1277,7 +1277,7 @@ module.exports = {
                 user: req.session.user,
                 key: process.env.STRIPE_PUBLIC_KEY,
                 sum: sum,
-                names:names,
+                names: names,
                 staticData: staticData,
             });
         } catch (e) {

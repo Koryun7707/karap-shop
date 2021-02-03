@@ -9,15 +9,15 @@
                         class="stripe-button btn-green-gradient"
                         data-key="<%= key %>"
                         data-name="Armat Concept pay"
-                        data-description="<%=names%>"
+                        data-description="<%= names %>"
                         data-amount="<%= sum * 100 %>"
-                        data-currency="usd"
+                        data-currency="eur"
                 >
 
                 </script>
             </form>
             <form action="/pay" method="post">
-                <button class="btn-green-gradient" type="submit" >Pay with Paypal</button>
+                <button class="btn-green-gradient" type="submit">Pay with Paypal</button>
             </form>
         </div>
 

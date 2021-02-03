@@ -30,7 +30,8 @@
                     <div class="d-flex">
                         <div class="product-price mr-4" id="productPrice" value="<%= product[0].price %>">
                             <% if(product[0].sale){ %>
-                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b>
+                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>
+                                        €</b>
                                 </h2>
                             <% }else{ %>
                                 <h2><b id="pricePlace"><%= product[0].price %>€</b></h2>
@@ -38,21 +39,23 @@
                         </div>
                         <% if(product[0].sale){ %>
                             <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
-                                <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>€</h5>
+                                <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>
+                                    €</h5>
                             </div>
                         <% } %>
                     </div>
                     <% if(product[0].sizes[0] != ''){ %>
                         <div class="product-size">
                             <h5>Size</h5>
-                            <ul class="list-unstyled d-flex align-items-center" id="productSizesDiv" value=<%= product[0].sizes %>>
+                            <ul class="list-unstyled d-flex align-items-center" id="productSizesDiv"
+                                value=<%= product[0].sizes %>>
                                 <% if(product[0].sizes){ %>
                                     <% product[0].sizes.forEach(function(item){ %>
-                                    <div class="mr-2">
-                                        <input type="radio" name="productSize" id=<%= item %>>
-                                            <%= item %>
-                                        </input>
-                                    </div>
+                                        <div class="mr-2">
+                                            <input type="radio" name="productSize" id=<%= item %>>
+                                                <%= item %>
+                                            </input>
+                                        </div>
                                     <% }) %>
                                 <% } %>
                             </ul>
@@ -64,12 +67,12 @@
                             <ul class="list-unstyled d-flex align-items-center">
                                 <% if(product[0].colors){ %>
                                     <% product[0].colors.forEach(function(item){ %>
-                                    <div class="mr-2 d-flex align-items-center">
-                                        <input type="radio" name="productColor"  id=<%= item %>>
-<!--                                            <%= item %>-->
-                                            <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"> </div>
-                                        </input>
-                                    </div>
+                                        <div class="mr-2 d-flex align-items-center">
+                                            <input type="radio" name="productColor" id=<%= item %>>
+                                            <!--                                            <%= item %>-->
+                                            <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
+                                            </input>
+                                        </div>
                                     <% }) %>
                                 <% } %>
                             </ul>
@@ -125,9 +128,9 @@
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
         let productSalePrice;
-        if(!document.getElementById('productSalePrice')){
-             productSalePrice = 0
-        }else{
+        if (!document.getElementById('productSalePrice')) {
+            productSalePrice = 0
+        } else {
             productSalePrice = document.getElementById('productSalePrice').getAttribute('value');
         }
 
@@ -141,7 +144,7 @@
             let payPriceSale = Number(productPrice) - Number(productSalePrice) * Number(productPrice) / 100;
             payPriceSale *= count;
             document.getElementById('pricePlace').innerHTML = `${payPrice}€`;
-            if(document.getElementById('saleValue')){
+            if (document.getElementById('saleValue')) {
                 document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
             }
         }

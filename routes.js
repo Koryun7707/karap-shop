@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const usersController = require('./controllers/user');
 const pagesController = require('./controllers/pages');
-const {paymentPaypal,paypalSuccess,paypalCancel} = require('./services/paypal');
+const {paymentPaypal, paypalSuccess, paypalCancel} = require('./services/paypal');
 const {paymentStripe} = require('./services/stripe');
 const {
     createProduct,
@@ -73,11 +73,11 @@ router.get('/login', forwardAuthenticated, pagesController.getLogInPage);
 router.get('/logout', pagesController.userLogOut);
 router.get('/', pagesController.getUserDashboard);
 //forgot password
-router.get('/forgotPassword',pagesController.forgotPassword);
-router.post('/forgotPassword',pagesController.sendEmailForgotPassword);
-router.get('/resetPassword/:token',pagesController.resetPassword);
-router.post('/resetPassword',pagesController.userResetPassword);
-router.get('/reset-password',pagesController.getresetPassword);
+router.get('/forgotPassword', pagesController.forgotPassword);
+router.post('/forgotPassword', pagesController.sendEmailForgotPassword);
+router.get('/resetPassword/:token', pagesController.resetPassword);
+router.post('/resetPassword', pagesController.userResetPassword);
+router.get('/reset-password', pagesController.getresetPassword);
 
 //send message contact us
 router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
@@ -110,7 +110,7 @@ router.get('/shipping', checkIsAuthenticated, pagesController.getShipping);
 router.get('/delevry', pagesController.getDelevry);
 router.get('/privacyPolicy', pagesController.getPrivacyPolicy);
 router.get('/termAndConditions', pagesController.getTermAndConditions);
-router.post('/checkouts',checkIsAuthenticated, pagesController.getCheckouts);
+router.post('/checkouts', checkIsAuthenticated, pagesController.getCheckouts);
 
 //Create shipping address
 router.post('/shipping-address', checkIsAuthenticated, createShippingAddress);
@@ -144,9 +144,9 @@ router.get('/admin-editProduct', checkIsAuthenticated, isAdmin, pagesController.
 router.get('/admin-editBrand', checkIsAuthenticated, isAdmin, pagesController.editBrand);
 
 //payment
-router.post('/pay',checkIsAuthenticated,paymentPaypal);
-router.get('/success',checkIsAuthenticated,paypalSuccess);
-router.get('/cancel',checkIsAuthenticated,paypalCancel);
-router.post('/purchase',checkIsAuthenticated,paymentStripe);
+router.post('/pay', checkIsAuthenticated, paymentPaypal);
+router.get('/success', checkIsAuthenticated, paypalSuccess);
+router.get('/cancel', checkIsAuthenticated, paypalCancel);
+router.post('/purchase', checkIsAuthenticated, paymentStripe);
 
 module.exports = router;

@@ -41,7 +41,7 @@
 <script>
     function isOpen(element) {
         const seeMore = element.id.slice(3, element.id.length);
-        const infoLiId =  document.getElementById(seeMore);
+        const infoLiId = document.getElementById(seeMore);
         if (infoLiId.style.display === 'none') {
             document.getElementById(`but${seeMore}`).innerText = 'Close';
             infoLiId.style.display = 'block';

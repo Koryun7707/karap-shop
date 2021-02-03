@@ -1,4 +1,5 @@
 console.log('Start utils build');
-function buildType(){
+
+function buildType() {
 
 }
