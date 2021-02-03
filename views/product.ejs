@@ -168,6 +168,7 @@
         const language = document.getElementById('example').value;
         let productSize;
         let productColor;
+        console.log( document.getElementById('example').value);
         let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
         if (document.querySelector('input[name="productSize"]:checked'))
             productSize = document.querySelector('input[name="productSize"]:checked').id;
@@ -175,9 +176,18 @@
             productColor = document.querySelector('input[name="productColor"]:checked').id;
 
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
-            alert('Choose product size.');
+            if(document.getElementById('example').value === 'eng'){
+                alert('Choose product size.');
+            }else{
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի չափը')
+            }
         } else if (!document.querySelector('input[name="productColor"]:checked') && document.querySelector('input[name="productColor"]')) {
-            alert('Select product color.');
+            if(document.getElementById('example').value === 'eng'){
+                alert('Select product color.');
+            }else{
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի գույնը')
+            }
+
         } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
             alert('Sorry but product is already added');
         } else {
