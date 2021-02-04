@@ -7,7 +7,7 @@
     <title>
         Armat Concept
     </title>
-    <link rel="stylesh¬eet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
     <link rel="stylesheet" href="css/range.css">
@@ -99,20 +99,21 @@
                     <div class="d-flex ml-auto">
                         <ul class="navbar-nav align-items-lg-center pl-2 pl-lg-0 flex-wrap">
                             <li class=" mr-3 d-none d-md-none d-xl-block d-lg-block ">
-                                <div class="d-flex">
-                                    <div class="icon-search-container " data-ic-class="search-trigger">
-                                        <span class="fa fa-search"></span>
-                                        <input id="search-input" type="text" class="search-input"
-                                               data-ic-class="search-input"
-                                               placeholder="Search"/>
-                                        <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
+                                <% if(!URL.includes('/shop')){ %>
+                                    <div class="d-flex">
+                                        <div class="icon-search-container " data-ic-class="search-trigger">
+                                            <span class="fa fa-search"></span>
+                                            <input id="search-input" type="text" class="search-input"
+                                                   data-ic-class="search-input"
+                                                   placeholder="Search"/>
+                                            <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
 
-                                        <div id='search-div' data-ic-class="search-div">
+                                            <div id='search-div' data-ic-class="search-div">
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
+                                <% } %>
                                 <% if(!user){ %>
                             <li class="<%= URL === '/login' ? 'nav-item mr-2 mr-xl-4 active' : 'nav-item mr-2 mr-xl-4' %>">
                                 <a class="nav-link" href="/login">
@@ -163,10 +164,10 @@
                                     <% }else if(staticData.language === 'ru'){ %>
                                         <option name="eng" value="eng">Eng</option>
                                         <option name="ru" value="ru" selected>Ru</option>
-                                        <option name="arm" value="arm" >Arm</option>
+                                        <option name="arm" value="arm">Arm</option>
                                     <% }else if(staticData.language === 'arm'){ %>
                                         <option name="eng" value="eng">Eng</option>
-                                        <option name="ru" value="ru" >Ru</option>
+                                        <option name="ru" value="ru">Ru</option>
                                         <option name="arm" value="arm" selected>Arm</option>
                                     <% } %>
                                 </select>
@@ -205,12 +206,12 @@
     }
 
     function goToSelectedPage(element) {
-        let basket ;
-            if(element.id === 'shoppingCard'){
-                basket = document.getElementById('shoppingCard');
-            }else {
-                basket = document.getElementById('shoppingCardS');
-            }
+        let basket;
+        if (element.id === 'shoppingCard') {
+            basket = document.getElementById('shoppingCard');
+        } else {
+            basket = document.getElementById('shoppingCardS');
+        }
         const local = JSON.parse(localStorage.getItem('shoppingCard'));
         if (local && local.length) {
             basket.setAttribute('href', '/selectedProducts');
@@ -238,24 +239,25 @@
             localStorage.removeItem('shoppingCard');
             localStorage.removeItem('order');
             $.ajax({
-                    url: '/change-language',
-                    method: 'post',
-                    data: obj,
-                    success: function () {
-                        window.location.reload(1);
-                        location.replace(`${process.env.CLIENT_URL}`)
-                    },
-                    error: function (data) {
-                        console.log('User creation failed :' + data);
-                    }
-                });
+                url: '/change-language',
+                method: 'post',
+                data: obj,
+                success: function () {
+                    window.location.reload(1);
+                    location.replace(`${process.env.CLIENT_URL}`)
+                },
+                error: function (data) {
+                    console.log('User creation failed :' + data);
+                }
+            });
         });
         let searchValue;
         var typingTimer;                //timer identifier
-        var doneTypingInterval = 1000;  //time in ms, 5 second for example
+        var doneTypingInterval = 500;  //time in ms, 5 second for example
         var $input = $('#search-input');
         //on keyup, start the countdown
         $input.on('keyup', function () {
+            document.getElementById('search-div').removeAttribute('style');
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
         });

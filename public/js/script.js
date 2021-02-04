@@ -5,27 +5,23 @@ $(document).ready(function () {
         $searchClear = $('[data-ic-class="search-clear"]');
 
     $searchTrigger.click(function () {
-    console.log(123);
+        console.log(123);
         var $this = $('[data-ic-class="search-trigger"]');
         $this.addClass('active');
         $searchInput.focus();
 
     });
 
-    $searchInput.blur(function () {
-
-        if ($searchInput.val().length > 0) {
-
-
-            return false;
-
-        } else {
-
-            $searchTrigger.removeClass('active');
-            $("#search-div").css("display", "none");
-        }
-
-    });
+    // $searchInput.blur(function () {
+    //
+    //     if ($searchInput.val().length > 0) {
+    //         $("#search-div").css("display", "block");
+    //     } else {
+    //         $("#search-div").css("display", "none");
+    //         $searchTrigger.removeClass('active');
+    //     }
+    //
+    // });
 
     $searchClear.click(function () {
         $searchInput.val('');
