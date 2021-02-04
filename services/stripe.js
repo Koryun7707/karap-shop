@@ -13,17 +13,20 @@ const paymentStripe = (req, res) => {
         deliveryPrice
     } = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
     const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
+
     let subTotal = 0;
     order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
-    })
+    });
+
     console.log(req.body.stripeToken);
     console.log(req.body.stripeEmail);
-    console.log(req.body)
+    console.log(req.body);
+
     let amount = (Number(subTotal) + Number(deliveryPrice)) * 100;
-    console.log(amount)
-    console.log(Number(subTotal))
-    console.log(Number(deliveryPrice))
+    console.log(amount);
+    console.log(Number(subTotal));
+    console.log(Number(deliveryPrice));
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
@@ -111,7 +114,8 @@ const paymentStripe = (req, res) => {
             // If some error occurs
         });
 }
+
 module.exports = {
-    paymentStripe: paymentStripe,
+    paymentStripe: paymentStripe
 }
 

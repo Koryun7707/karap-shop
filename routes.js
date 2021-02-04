@@ -6,7 +6,7 @@ const path = require('path');
 const usersController = require('./controllers/user');
 const pagesController = require('./controllers/pages');
 const {paymentPaypal, paypalSuccess, paypalCancel} = require('./services/paypal');
-const {paymentStripe} = require('./services/stripe');
+const {paymentStripe, stripeWebHook} = require('./services/stripe');
 const {
     createProduct,
     deleteProduct,
@@ -147,6 +147,9 @@ router.get('/admin-editBrand', checkIsAuthenticated, isAdmin, pagesController.ed
 router.post('/pay', checkIsAuthenticated, paymentPaypal);
 router.get('/success', checkIsAuthenticated, paypalSuccess);
 router.get('/cancel', checkIsAuthenticated, paypalCancel);
+
+
+//Stripe payment
 router.post('/purchase', checkIsAuthenticated, paymentStripe);
 
 module.exports = router;
