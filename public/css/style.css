@@ -55,6 +55,12 @@ body {
     display: flex;
     align-items: center;
 }
+header .nav-item.dropdown select{
+    border: 0;
+    background-color: transparent;
+    color: #c4aa9d;
+    outline: none;
+}
 
 .header-logo {
     width: 145px;

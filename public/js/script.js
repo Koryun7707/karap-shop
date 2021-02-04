@@ -5,7 +5,7 @@ $(document).ready(function () {
         $searchClear = $('[data-ic-class="search-clear"]');
 
     $searchTrigger.click(function () {
-
+    console.log(123);
         var $this = $('[data-ic-class="search-trigger"]');
         $this.addClass('active');
         $searchInput.focus();
@@ -16,12 +16,13 @@ $(document).ready(function () {
 
         if ($searchInput.val().length > 0) {
 
+
             return false;
 
         } else {
 
             $searchTrigger.removeClass('active');
-
+            $("#search-div").css("display", "none");
         }
 
     });
