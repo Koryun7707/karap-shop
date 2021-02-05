@@ -16,6 +16,9 @@
     font-family: "Gagalin-Regular";
     src: url("../fonts/Gagalin-Regular.otf");
 }
+.w-70 {
+    width: 70%!important;
+}
 .logoStyles {
     color: #c4b3ab;
     /*margin: 14px 7px 15px 7px;*/
@@ -50,7 +53,7 @@ body {
 }
 
 .header-bg {
-    background: linear-gradient(90deg, #033d29, #097814);
+    background: rgba(1,1,1, 0.5);
     min-height: 100px;
     display: flex;
     align-items: center;
@@ -176,7 +179,7 @@ header .nav-item.dropdown select{
 
 .section1 .abs h1 {
     color: #e3e3e3;
-    font-size: 6rem;
+    font-size: 5rem;
     letter-spacing: -2px;
     line-height: 5rem;
     font-family: "MYRIADPRO-SEMIBOLD", sans-serif;
@@ -207,9 +210,9 @@ section h2 {
 }
 
 .btn-green-gradient-border {
-    color: #033d29 !important;
-    background: #c0c0c0;
-    border: 1px solid #033d29;
+    color: #000000 !important;
+    background: #c4aa9d;
+    border: 1px solid #000000;
     border-radius: 0;
     width: 100%;
     display: flex;
@@ -218,8 +221,9 @@ section h2 {
 }
 
 .btn-green-gradient {
-    background: linear-gradient(90deg, #033d29, #097814);
-    color: #c0c0c0;
+    /*background: linear-gradient(90deg, #033d29, #097814);*/
+    background-color: #000000;
+    color: #c4aa9d;
     border-radius: 0;
     width: 100%;
     border: 1px solid transparent;
@@ -228,9 +232,9 @@ section h2 {
 }
 
 .btn.btn-green-gradient:hover {
-    color: #033d29 !important;
-    background: #c0c0c0;
-    border: 1px solid #033d29;
+    color: #000000 !important;
+    background: #c4aa9d;
+    border: 1px solid #000000;
     text-decoration: none;
     font-family: "MYRIADPRO-BOLD", sans-serif;
 }
@@ -278,23 +282,24 @@ section h2 {
 }
 
 .footer-bg {
-    background: url("../images/footer-bg.png") no-repeat;
+    /*background: url("../images/footer-bg.png") no-repeat;*/
     background-size: cover;
+    background-color: rgba(196, 170, 157, 0.6);
 }
 
 footer ul li a {
-    color: #c4aa9d;
+    color: #000000;
 }
 footer ul li a:hover {
     color: #c4aa9d;
     text-decoration: none;
 }
 .links-for-pages li.active a{
-    color: #0b2e13;
+    color: #000000;
 }
 
 footer h4 {
-    color: #07601d;
+    color: #000000;
     font-size: 22px;
     line-height: 30px;
     font-family: "MYRIADPRO-BOLD", sans-serif;
@@ -324,7 +329,7 @@ footer .abs {
 }
 
 .blog-card h2 {
-    color: #043927;
+    color: #000000;
     font-size: 50px;
     line-height: 54px;
     font-family: "MYRIADPRO-BOLD", sans-serif;
@@ -399,7 +404,7 @@ footer .abs {
 
 h1 {
     color: #e3e3e3;
-    font-size: 6rem;
+    font-size: 5rem;
     letter-spacing: -2px;
     font-family: "MYRIADPRO-BOLD", sans-serif;
     text-transform: uppercase;
@@ -530,7 +535,7 @@ h1 {
 }
 
 .about-sections h2 {
-    color: #34562e;
+    color: #000000;
 }
 
 .owl-slider-about {
@@ -584,6 +589,13 @@ h1 {
 }
 
 /*-----shop-----*/
+.shop-section .sidebar input[type=number]::-webkit-inner-spin-button,
+.shop-section .sidebar input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
 .shop-section-bg {
     background-image: url("../images/shop-cover-pic.jpg");
     background-size: 100%;
@@ -623,7 +635,8 @@ h1 {
 }
 
 .shop-card .title {
-    font-size: 30px;
+    font-size: 26px;
+    line-height: 20px;
     color: #c4aa9d;
     margin: 0 0 12px;
     text-transform: uppercase;
@@ -634,11 +647,11 @@ h1 {
 }
 
 .sidebar-title {
-    font-size: 30px;
+    font-size: 22px;
     line-height: 36px;
     border-bottom: 2px solid #000000;
     font-family: "MYRIADPRO-BOLD", sans-serif;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     text-transform: uppercase;
 }
 
@@ -788,7 +801,8 @@ h1 {
 }
 
 .contact-form .btn-green-gradient {
-    background: linear-gradient(90deg, #52796c, #56a15d);
+    /*background: linear-gradient(90deg, #52796c, #56a15d);*/
+    background: rgba(1,1,1, 0.5);
 }
 
 .contact-form label {
