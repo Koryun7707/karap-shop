@@ -46,7 +46,7 @@
                     </div>
                     <% if(product[0].sizes[0] != ''){ %>
                         <div class="product-size">
-                            <h5>Size</h5>
+                            <h5><h5><%= staticData.product_size %></h5></h5>
                             <ul class="list-unstyled d-flex align-items-center" id="productSizesDiv"
                                 value=<%= product[0].sizes %>>
                                 <% if(product[0].sizes){ %>
@@ -63,7 +63,7 @@
                     <% } %>
                     <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
-                            <h5>Color</h5>
+                            <h5><h5><%= staticData.product_color %></h5></h5>
                             <ul class="list-unstyled d-flex align-items-center">
                                 <% if(product[0].colors){ %>
                                     <% product[0].colors.forEach(function(item){ %>
@@ -79,7 +79,7 @@
                         </div>
                     <% } %>
                     <div class="product-count">
-                        <h5>Count of product</h5>
+                        <h5><%= staticData.product_qty %></h5>
                         <div class="qtySelector text-center">
                             <i class="fa fa-minus decreaseQty" id="'fa-minus" onclick="countPrice(this)"></i>
                             <input type="text" disabled id="qtyValueProduct" class="qtyValue" value="1"/>
@@ -89,7 +89,9 @@
                     <!--                    Start change from this-->
                     <% if(product[0].description != ''){ %>
                         <div class="product-size">
-                            <h5 class="mt-3">Description</h5>
+                            <h5 class="mt-3">
+                                <h5><h5><%= staticData.product_description %></h5></h5>
+                            </h5>
                             <div><%= product[0].description %></div>
                         </div>
                     <% } %>
@@ -99,7 +101,7 @@
                         <button value="<%= product[0]._id %>" id="addToCardButton"
                                 class="btn btn-green-gradient py-3"
                                 onclick="addToCard(this)">
-                            ADD TO CART
+                            <%= staticData.add_to_cart %>
                         </button>
                     </div>
                 </div>
@@ -168,7 +170,6 @@
         const language = document.getElementById('example').value;
         let productSize;
         let productColor;
-        console.log( document.getElementById('example').value);
         let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
         if (document.querySelector('input[name="productSize"]:checked'))
             productSize = document.querySelector('input[name="productSize"]:checked').id;
@@ -176,20 +177,24 @@
             productColor = document.querySelector('input[name="productColor"]:checked').id;
 
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
-            if(document.getElementById('example').value === 'eng'){
-                alert('Choose product size.');
-            }else{
-                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի չափը')
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your product size.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի չափը:')
             }
         } else if (!document.querySelector('input[name="productColor"]:checked') && document.querySelector('input[name="productColor"]')) {
-            if(document.getElementById('example').value === 'eng'){
-                alert('Select product color.');
-            }else{
-                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի գույնը')
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի գույնը:');
             }
 
         } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
-            alert('Sorry but product is already added');
+            if (document.getElementById('example').value === 'eng') {
+                alert('Sorry but product is already added.');
+            } else {
+                alert('Կներեք, բայց ապրանքն արդեն ավելացված է:');
+            }
         } else {
             $.ajax({
                 type: 'post',
@@ -225,13 +230,26 @@
                         } else {
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                             document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
                             document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
                             document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 500)
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
+
                             let array = [];
                             array.push({
                                 productId: id.value,

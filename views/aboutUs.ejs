@@ -9,7 +9,7 @@
         </section>
     <% } %>
     <section class="section py-5">
-        <h2 class="text-center mb-5"><%= staticData.about_header %></h2>
+        <h2 class="text-center mb-5"><%= pageData[0].titleAboutSlider %></h2>
         <div class="owl-slider owl-slider-about">
             <div id="carousel-about" class="owl-carousel owl-carousel-about">
                 <% if(pageData.length){ %>
@@ -28,7 +28,7 @@
     </section>
     <section class="section py-5">
         <div class="container">
-            <h2 class="text-center mb-5"><%= staticData.about_header_second %></h2>
+            <h2 class="text-center mb-5"><%= pageData[0].titleOurPhilosophy %></h2>
             <div class=" row py-4">
                 <div class="offset-1 col-10 offset-lg-3 col-lg-6">
                     <p class="mb-4">

@@ -10,7 +10,7 @@ const pageDataSchema = new Schema({
     },
     language: {//home page data in model
         type: String,
-        enum: ['eng', 'ru', 'spain'],
+        enum: ['eng', 'arm'],
         required: true,
     },
     homeSliderText: {
@@ -37,7 +37,7 @@ const pageDataSchema = new Schema({
         type: Array,
         required: true,
     },
-    textAboutGeneralImage: {//About page
+    textAboutSlider: {//About page
         type: String,
     },//about
     imagesAboutSlider: {

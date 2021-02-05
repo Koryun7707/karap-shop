@@ -2,12 +2,12 @@
 
 <main style="padding-top: 100px" class="selected-product-section">
     <div class="container container-1730 my-5">
-        <h2 class="my-4"><b>Selected Products</b></h2>
+        <h2 class="my-4"><b><%= staticData.selected_products %></b></h2>
         <%- include ('partials/messages') %>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
                 <input onclick="selectAll(this)" type="checkbox" id="select-all">
-                <label for="select-all" class="">Select All</label>
+                <label for="select-all" class=""><%= staticData.select_all %></label>
             </div>
         </div>
         <div class="row">
@@ -18,27 +18,28 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <div class="total-section pt-5">
                     <div class="mb-3 d-flex justify-content-between">
-                        <h2 class="title"><b>Subtotal</b></h2>
+                        <h2 class="title"><b><%= staticData.subtotal %></b></h2>
                         <div class="product-price">
                             <h2 id="total" style="color: #065a1f"><b>0 </b></h2>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>Quantity <span id="countProduct">0</span></div>
+                        <div><%= staticData.quantity %> <span id="countProduct">0</span></div>
                         <div id="productStartPrice" style="text-decoration: line-through;">0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>You save</div>
+                        <div><%= staticData.you_save %></div>
                         <div id="afterSale">0</div>
                     </div>
                     <div class="my-4">
                         <a onclick="sendData()" id="shippingPage" class="btn btn-green-gradient mb-3"
-                           style="font-size: 18px; color: #fff; text-transform: capitalize">Proceed to checkout</a>
+                           style="font-size: 18px; color: #fff; text-transform: capitalize"><%= staticData.checkout_button %></a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
                                 <input type="checkbox" id="agreeTerms">
-                                <label for="agreeTerms" class="">I Agree To The Website <a href="/termAndConditions">Terms &
-                                        Conditions </a> & <a href="/privacyPolicy">Privacy Policy</a></label>
+                                <label for="agreeTerms" class=""><%= staticData.i_agree_to_the_website %> <a
+                                            href="/termAndConditions"><%= staticData.terms_conditions %> </a> & <a
+                                            href="/privacyPolicy"><%= staticData.delevery_returns %></a></label>
                             </div>
                         </div>
                     </div>
@@ -178,9 +179,6 @@
                 document.getElementById('select-all').checked = true;
             }
             if (sum) {
-                console.log(productCount, 'Count')
-                console.log(productPrice, 'price')
-                console.log(productSalePrice, 'sale')
                 countProduct.innerHTML = `${productCount}`;
                 productStartPrice.innerHTML = `${productPrice}€`
                 afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
@@ -213,15 +211,29 @@
     function sendData() {
         const agreeTerms = document.getElementById('agreeTerms').checked;
         const count = Number(document.getElementById('countProduct').innerHTML);
+        let lang = document.getElementById('example').value;
+
         if (!agreeTerms || !count) {
             document.getElementById('shippingPage').removeAttribute('href');
             if (!count) {
-                alert('Please Select Product!');
+                if (lang === 'eng') {
+                    alert('Please select product!.');
+                } else {
+                    alert('Խնդրում ենք ընտրել ապրանքը:');
+                }
             } else if (!agreeTerms) {
-                alert('Please read Term and Conditions');
+                if (lang === 'eng') {
+                    alert('Are you agree to the website Terms & Conditions & Privacy Policy?');
+                } else {
+                    alert('Համաձայն եմ Կայքի Ընդհանուր Պայմանների և դրույթների ու Գաղտնիության  Քաղաքականության հետ:');
+                }
             }
         } else if (!localStorage.getItem('user')) {
-            alert('Please login for continue to shipping.');
+            if (lang === 'eng') {
+                alert('Please login for continue to shipping.');
+            } else {
+                alert('Խնդրում ենք մուտք գործել ՝ առաքումը շարունակելու համար:');
+            }
         } else {
 
             var values = [];
@@ -280,7 +292,11 @@
             if (id === item.productId) {
                 if (basketProductCount > item.existProductCount) {
                     item.count = item.existProductCount;
-                    alert(`Sorry we have only ${item.existProductCount}`);
+                    if (document.getElementById('example').value === 'eng') {
+                        alert(`Out of Stock.`);
+                    } else {
+                        alert(`Առկա չէ պահեստում:`);
+                    }
                     notExist = false;
                 } else {
                     item.count = basketProductCount;

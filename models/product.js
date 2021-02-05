@@ -54,7 +54,7 @@ const productSchema = new Schema({
     },
     language: {
         type: String,
-        enum: ['eng', 'ru', 'spain'],
+        enum: ['eng', 'arm'],
     },
 });
 

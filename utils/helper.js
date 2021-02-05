@@ -35,12 +35,9 @@ const getStaticData = (selectLang) => {
     let staticData;
     if (selectLang === 'eng') {
         staticData = data[0]
-    } else if (selectLang === 'ru') {
-        staticData = data[1]
     } else if (selectLang === 'arm') {
-        staticData = data[2]
+        staticData = data[1]
     }
-    console.log(selectLang)
     return staticData;
 }
 

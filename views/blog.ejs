@@ -42,12 +42,21 @@
     function isOpen(element) {
         const seeMore = element.id.slice(3, element.id.length);
         const infoLiId = document.getElementById(seeMore);
+        let lang = document.getElementById('example').value;
         if (infoLiId.style.display === 'none') {
-            document.getElementById(`but${seeMore}`).innerText = 'Close';
+            if (lang === 'eng') {
+                document.getElementById(`but${seeMore}`).innerText = 'Close';
+            } else {
+                document.getElementById(`but${seeMore}`).innerText = 'Փակել';
+            }
             infoLiId.style.display = 'block';
         } else {
             infoLiId.style.display = 'none';
-            document.getElementById(`but${seeMore}`).innerText = 'SEE MORE';
+            if (lang === 'eng') {
+                document.getElementById(`but${seeMore}`).innerText = 'Read more';
+            } else {
+                document.getElementById(`but${seeMore}`).innerText = 'Կարդալ ավելին';
+            }
         }
     }
 

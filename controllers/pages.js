@@ -672,7 +672,7 @@ module.exports = {
             }
             if (!myPageData) {
                 const newData = new PageData({
-                    textAboutGeneralImage: value.textAboutSlider,
+                    textAboutSlider: value.textAboutSlider,
                     titleOurPhilosophy: value.titleOurPhilosophy,
                     ourPhilosophy: value.ourPhilosophy,
                     titleAboutSlider: value.titleOfSlider,
@@ -724,8 +724,9 @@ module.exports = {
                     })
                 }
                 myPageData.textAboutSlider = value.textAboutSlider;
+                myPageData.titleOurPhilosophy = value.titleOurPhilosophy;
                 myPageData.ourPhilosophy = value.ourPhilosophy;
-                myPageData.textOnAboutSlider = value.titleOfSlider;
+                myPageData.titleAboutSlider = value.titleAboutSlider;
                 myPageData.language = value.language;
 
                 if (value.language === 'eng') {
@@ -1018,6 +1019,7 @@ module.exports = {
     getAdminAddProductPage: async (req, res) => {
         try {
             const brands = await Brand.find({language: req.session.language}).select('name _id');
+
             res.render('admin/addProduct', {
                 URL: 'admin-create-product',
                 user: req.session.user,
@@ -1115,7 +1117,6 @@ module.exports = {
         try {
             const {email} = req.body;
             const user = await User.findOne({email: email});
-            console.log(user)
             if (!user) {
                 req.flash('error_msg', 'User with this email already exists');
                 return res.redirect('/forgotPassword');
@@ -1159,13 +1160,11 @@ module.exports = {
             logger.info('Start Reset Password api - - -');
             const {token} = req.params;
             const staticData = await getStaticData(req.session.language);
-            console.log(token);
             jwt.verify(token, process.env.SECRET_KEY, function (err, decodedData) {
                 if (err) {
                     req.flash('error_msg', 'Incorrect token or it is expired');
                     return res.redirect('/forgotPassword');
                 }
-                console.log(decodedData);
                 localStorage.setItem('userId', JSON.stringify(decodedData._id));
                 return res.redirect('/reset-password');
             })
@@ -1267,7 +1266,6 @@ module.exports = {
             let names = '';
             const order = JSON.parse(req.body.order)
             order.forEach((item) => {
-                console.log(item)
                 names += item.name + ' ';
             })
 

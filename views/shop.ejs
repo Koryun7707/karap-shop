@@ -63,7 +63,8 @@
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
                                        value="<%= maxPrice %>"
                                        class="form-control range-slide-input"/>
-                                <button class="btn-rose border-0 px-3 py-1 ml-2" onclick="searchByPrice()">GO</button>
+                                <button class="btn-rose border-0 px-3 py-1 ml-2"
+                                        onclick="searchByPrice()"><%= staticData.find %></button>
                             </div>
                             <div style="display: none;" id="price-div-message"></div>
                             <div class="price-range-slider" id="price-range-slider" value="<%= maxPrice %>">

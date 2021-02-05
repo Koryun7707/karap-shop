@@ -13,9 +13,6 @@ const paymentPaypal = (req, res) => {
     logger.info('Start paymant with paypal - - -');
     const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
     const {deliveryPrice} = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
-    console.log(order, 'order');
-    console.log(deliveryPrice, 'delevry');
-
     let subTotal = 0;
     order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
@@ -76,7 +73,6 @@ const paypalSuccess = (req, res) => {
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
         const amount = JSON.parse(localStorage.getItem(`amount${req.session.user._id}`));
-        console.log(amount.subTotal)
         const execute_payment_json = {
             "payer_id": payerId,
             "transactions": [{
@@ -99,9 +95,6 @@ const paypalSuccess = (req, res) => {
             } else {
                 const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
                 const shippingAddress = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
-                console.log(order)
-                console.log(shippingAddress)
-
                 let shipping = new ShippingAddress({
                     userId: req.session.user._id,
                     address: shippingAddress.address,

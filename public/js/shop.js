@@ -12,14 +12,12 @@ function searchByPrice() {
         }, 1000);
 
     } else {
-        console.log(priceFrom, priceTo);
         //write our code here
         let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                console.log(input.value);
                 if (input.value.includes('11')) {
                     let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
@@ -162,8 +160,6 @@ $(document).ready(function () {
         if (type) {
             type = decodeURI(type);
         }
-
-        console.log(brandNames)
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -320,7 +316,6 @@ $(document).ready(function () {
             var values = [];
             var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                console.log(84848484848484848484);
                 if (input.value.includes('11')) {
                     let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
@@ -471,7 +466,6 @@ $(document).ready(function () {
             var values = [];
             var brandNames = [];
             $.each($('input:checked'), function (index, input) {
-                console.log(input.value);
                 if (input.value.includes('11')) {
                     let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);
@@ -584,7 +578,6 @@ $(document).ready(function () {
             var brandNames = [];
             var onSale;
             $.each($('input:checked'), function (index, input) {
-                console.log(input.value);
                 if (input.value.includes('11')) {
                     let val = input.value.substring(0, input.value.length - 2);
                     brandNames.push(val);

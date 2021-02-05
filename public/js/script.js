@@ -5,7 +5,6 @@ $(document).ready(function () {
         $searchClear = $('[data-ic-class="search-clear"]');
 
     $searchTrigger.click(function () {
-        console.log(123);
         var $this = $('[data-ic-class="search-trigger"]');
         $this.addClass('active');
         $searchInput.focus();

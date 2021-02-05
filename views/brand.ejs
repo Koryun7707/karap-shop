@@ -83,6 +83,13 @@
                 }
                 response.results.brands.map((item) => {
                     let brandsRenderPlace = document.getElementById('brands-section-place');
+                    let text;
+                    if (item.language === 'eng') {
+                        text = 'Shop now'
+                    } else {
+                        text = 'Գնել'
+                    }
+
                     let div = document.createElement('div');
                     div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
                     div.innerHTML = `<div class="col-12 col-md-6 col-xl-4">
@@ -91,7 +98,9 @@
                         <div class="info-text">
                             ${item.info}
                         </div>
-                        <a href="shop?brandName=${item.name}" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
+                        <a href="shop?brandName=${item.name}" class="btn btn-green-gradient px-5 py-3">
+                                ${text}
+                        </a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-4">

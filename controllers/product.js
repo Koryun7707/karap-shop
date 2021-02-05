@@ -12,7 +12,6 @@ const createProduct = async (req, res) => {
     try {
         const files = req.files;
         const {error, value} = validateProduct(req.body);
-        console.log(req.body);
         if (error) {
             if (files.length > 0) {
                 files.map((file) => {
@@ -26,7 +25,6 @@ const createProduct = async (req, res) => {
             return res.redirect("/admin-create-product");
         }
         const brandName = await Brand.findById(value.brandId).select('name').lean().exec()
-        console.log(brandName);
         if (files.length < 2) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
@@ -200,7 +198,6 @@ const getProducts = async (req, res) => {
         } else {
             data = await Product.find({}).sort({brandName: 1});
         }
-        console.log(data);
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
@@ -273,7 +270,6 @@ const getProductsShopFilter = async (req, res) => {
         } else {
             data = await Product.paginate(search, options);
         }
-        console.log(data);
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,
@@ -290,19 +286,24 @@ const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
     try {
         if (req.body.productCount && req.body.productId) {
-            console.log(544)
             const product = await Product.findById(req.body.productId).populate('brandId').exec();
             if (Number(product.count) >= Number(req.body.productCount)) {
-                console.log(88888888888)
-                console.log(product)
                 return res.status(200).json(success('Product exists',
                     product, res.statusCode));
             } else {
                 let mes;
                 if (Number(product.count) === 0) {
-                    mes = 'Product not exists';
+                    if (req.session.language === 'eng') {
+                        mes = 'Out of stock.';
+                    } else {
+                        mes = 'Առկա չէ պահեստում:';
+                    }
                 } else {
-                    mes = `Sorry now we have only ${product.count} product.`;
+                    if (req.session.language === 'eng') {
+                        mes = `You cannot add that amount to the cart — we have ${product.count}  in stock and you already have ${product.count}  in your cart.`;
+                    } else {
+                        mes = `Դուք չեք կարող ավելացնել այս ապրանքատեսակից ձեր զամբյուղում․ Մեր պահեստում մնացել է ${product.count} հատ:`;
+                    }
                 }
                 return res.send({message: mes, error: true});
                 // return res.status(500).json(err(mes, res.statusCode));

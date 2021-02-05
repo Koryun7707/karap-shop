@@ -3,14 +3,14 @@
     <div class="container mt-5">
         <div class="row inform py-5">
             <div class="col-12 col-md-7 col-lg-7">
-                <h3 class="mb-5">Contact Information</h3>
+                <h3 class="mb-5"><%= staticData.contact_information %></h3>
                 <form method="POST" action="/checkouts" id="payForm">
                     <%- include ('partials/messages') -%>
-                    <h5 class="mb-2">Email Address</h5>
+                    <h5 class="mb-2"><%= staticData.email_address %></h5>
                     <div class="form-group">
                         <input required type="email" class="form-control" id="shippingAddressEmail">
                     </div>
-                    <h5 class="mb-2">Shipping Address</h5>
+                    <h5 class="mb-2"><%= staticData.shipping_address %></h5>
                     <div class="d-flex justify-content-between">
                         <div class="form-group mr-1">
                             <input required type="text" class="form-control" id="firstName">
@@ -20,23 +20,25 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input required type="text" class="form-control" value="" id="address" placeholder="Address">
+                        <input required type="text" class="form-control" value="" id="address"
+                               placeholder="<%= staticData.address %>">
                     </div>
                     <div class="form-group">
                         <input required type="text" class="form-control" value="" id="apartment"
-                               placeholder="Apartment">
+                               placeholder="<%= staticData.apartment %>">
                     </div>
                     <div class="d-flex justify-content-between">
                         <div class="form-group mr-1">
                             <input required type="text" class="form-control" value="" id="postalCode"
-                                   placeholder="Postal Code">
+                                   placeholder="<%= staticData.postal_code %>">
                         </div>
                         <div class="form-group ml-1">
-                            <input required type="text" class="form-control" value="" id="city" placeholder="City">
+                            <input required type="text" class="form-control" value="" id="city"
+                                   placeholder="<%= staticData.city %>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="country">Choose a Country/Region:</label>
+                        <label for="country"><%= staticData.country_region %></label>
                         <select required id="selectCountry" onchange="handleSelectChange()" name="country"
                                 class="form-control">
                             <option value="Austria">Austria</option>
@@ -79,13 +81,14 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input required type="number" class="form-control" value="" id="phone" placeholder="Phone">
+                        <input required type="number" class="form-control" value="" id="phone"
+                               placeholder="<%= staticData.phone %>">
                     </div>
                     <input name="order" type="hidden" id="orderProducts">
                     <input name="shippingAddress" type="hidden" id="shippingAddress">
                     <button class="btn-green-gradient mb-3" style="height: 50px; width: 300px; border-radius:5px"
                             onclick="handleOrderAddress(this)">
-                        Continue To Shipping
+                        <%= staticData.continue_to_shipping %>
                     </button>
                 </form>
             </div>
@@ -97,16 +100,16 @@
                     <hr>
                     <div>
                         <div class="mb-3 d-flex justify-content-between">
-                            <div>Sale</div>
+                            <div><%= staticData.you_save %></div>
                             <div id="salePrice"></div>
                         </div>
                         <div class="mb-3 d-flex justify-content-between">
-                            <div>Delivery</div>
+                            <div><%= staticData.delivery %></div>
                             <div id="delivery">0</div>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <h2 class="title"><b>TOTAL</b></h2>
+                        <h2 class="title"><b><%= staticData.total %></b></h2>
                         <div class="product-price">
                             <h2 style="color: #065a1f"><b id="productPrice"></b></h2>
                         </div>
