@@ -6,21 +6,24 @@ $(document).ready(function () {
 
     $searchTrigger.click(function () {
         var $this = $('[data-ic-class="search-trigger"]');
-        $this.addClass('active');
-        $searchInput.focus();
-
+        if ($this[0].getAttribute('class').includes('active')) {
+            $this.removeClass('active');
+            document.getElementById('search-div').style.display = 'none'
+        } else {
+            $this.addClass('active');
+            $searchInput.focus();
+            document.getElementById('search-div').style.display = 'block'
+        }
     });
 
-    // $searchInput.blur(function () {
-    //
-    //     if ($searchInput.val().length > 0) {
-    //         $("#search-div").css("display", "block");
-    //     } else {
-    //         $("#search-div").css("display", "none");
-    //         $searchTrigger.removeClass('active');
-    //     }
-    //
-    // });
+    $searchInput.blur(function () {
+        if ($searchInput.val().length > 0) {
+            document.getElementById('search-div').style.display = 'block'
+        } else {
+            document.getElementById('search-div').style.display = 'none'
+            $searchTrigger.removeClass('active');
+        }
+    });
 
     $searchClear.click(function () {
         $searchInput.val('');

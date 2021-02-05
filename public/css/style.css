@@ -1009,11 +1009,11 @@ button:focus {
 
 /*admin css*/
 .back-side {
-    background-color: #b7b2ae;
+    background-color: whitesmoke;
 }
 
 .admin-header {
-    background-color: #c8c4c2;
+    background-color: #c4aa9d;
     color: white;
     font-size: 16px;
     font-family: fantasy;
