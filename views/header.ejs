@@ -35,6 +35,9 @@
                             <span class="fa fa-search"></span>
                             <input type="text" class="search-input" data-ic-class="search-input" placeholder="Search"/>
                             <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
+                            <div id='search-div-mobile' data-ic-class="search-div-mobile">
+
+                            </div>
                         </div>
                     </li>
                     <li class="nav-item mr-2 mr-xl-4 d-block d-xl-none d-lg-none position-relative">
@@ -250,6 +253,7 @@
         //on keyup, start the countdown
         $input.on('keyup', function () {
             document.getElementById('search-div').removeAttribute('style');
+            document.getElementById('search-div-mobile').removeAttribute('style');
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
         });
@@ -260,6 +264,7 @@
         });
 
         function doneTyping() {
+            console.log(11111);
             let obj = {
                 search: $input.val()
             }
@@ -269,9 +274,12 @@
                 data: obj,
                 success: function (response) {
                     $('#search-div').html("");
+                    $('#search-div-mobile').html("");
                     const {brands, products} = response.results;
                     let div = document.createElement(`div`);
                     $('#search-div').append(div);
+                    $('#search-div-mobile').append(div);
+                    console.log(response);
                     if (brands.length) {
                         brands.forEach(function (item) {
                             let a = document.createElement(`a`);

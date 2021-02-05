@@ -16,14 +16,17 @@ $(document).ready(function () {
         }
     });
 
-    $searchInput.blur(function () {
-        if ($searchInput.val().length > 0) {
-            document.getElementById('search-div').style.display = 'block'
-        } else {
-            document.getElementById('search-div').style.display = 'none'
-            $searchTrigger.removeClass('active');
-        }
-    });
+    // $searchInput.blur(function () {
+    //     if ($searchInput.val().length > 0) {
+    //         document.getElementById('search-div').style.display = 'block';
+    //         var $this = $('[data-ic-class="search-trigger"]');
+    //
+    //         $this.addClass('active');
+    //     } else {
+    //         document.getElementById('search-div').style.display = 'none'
+    //         $searchTrigger.removeClass('active');
+    //     }
+    // });
 
     $searchClear.click(function () {
         $searchInput.val('');

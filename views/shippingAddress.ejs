@@ -253,7 +253,9 @@
                             </div>
                         <div>
                             <h5>${item.name}</h5>
-                            <div><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color}</span>/<span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size}</span></div>
+                            <div class="d-flex align-items-center">
+
+                           <span style="display:inline-block; background-color:${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color}" class="px-3 py-2 ml-1"></span><span class="mx-1">/</span><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size}</span></div>
                         </div>
                         <div class="price ml-auto" style="text-decoration: line-through;">${item.price} </div>
                         <div class="price ml-auto">${item.priceSale} </div>
