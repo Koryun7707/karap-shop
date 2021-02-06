@@ -98,7 +98,10 @@ header .nav-item.dropdown select{
 .icon-search-container.active .search-input {
     width: 200px;
 }
-
+/*mobile*/
+.icon-search-container.active .search-input-mobile {
+    width: 200px;
+}
 .icon-search-container .fa-search {
     color: #c4b3ab;
     font-size: 20px;
@@ -134,7 +137,22 @@ header .nav-item.dropdown select{
     transition: width 0.2s ease-out;
     color: #c4b3ab;
 }
-
+/*mobile*/
+.icon-search-container .search-input-mobile {
+    position: absolute;
+    cursor: default;
+    left: 45px;
+    top: 2px;
+    width: 0;
+    padding: 5px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    line-height: 20px;
+    background-color: rgba(255, 255, 255, 0);
+    transition: width 0.2s ease-out;
+    color: #c4b3ab;
+}
 .cart-products-count {
     position: absolute;
     top: 6px;

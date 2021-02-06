@@ -33,7 +33,10 @@
                     <li class="d-flex mr-1 mr-xs-3">
                         <div class="icon-search-container " data-ic-class="search-trigger">
                             <span class="fa fa-search"></span>
-                            <input type="text" class="search-input" data-ic-class="search-input" placeholder="Search"/>
+                            <input type="text" id='search-input-mobile'
+                                   class="search-input-mobile"
+                                   data-ic-class="search-input-mobile"
+                                   placeholder="Search"/>
                             <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
                             <div id='search-div-mobile' data-ic-class="search-div-mobile">
 
@@ -104,7 +107,8 @@
                                     <div class="d-flex">
                                         <div class="icon-search-container " data-ic-class="search-trigger">
                                             <span class="fa fa-search"></span>
-                                            <input id="search-input" type="text" class="search-input"
+                                            <input id="search-input" type="text"
+                                                   class="search-input"
                                                    data-ic-class="search-input"
                                                    placeholder="Search"/>
                                             <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
@@ -222,7 +226,6 @@
         return results == null ? null : results[1];
     }
 
-
     $(function () {
 
         document.getElementById('example').addEventListener('change', function () {
@@ -246,24 +249,72 @@
                 }
             });
         });
+
+
         let searchValue;
         var typingTimer;                //timer identifier
         var doneTypingInterval = 500;  //time in ms, 5 second for example
         var $input = $('#search-input');
+        var $inputMobile = $('#search-input-mobile');//*
+        $inputMobile.on('keyup', function () {
+            document.getElementById('search-div-mobile').removeAttribute('style');
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTypingMobile, doneTypingInterval);
+        });
+        $inputMobile.on('keydown', function () {
+            clearTimeout(typingTimer);
+        });
+
+        function doneTypingMobile() {
+            let obj = {
+                search: $inputMobile.val()
+            }
+            $.ajax({
+                url: '/search',
+                method: 'post',
+                data: obj,
+                success: function (response) {
+                    $('#search-div-mobile').html("");
+                    const {brands, products} = response.results;
+                    let div = document.createElement(`div`);
+                    $('#search-div-mobile').append(div);
+                    console.log(response);
+                    if (brands.length) {
+                        brands.forEach(function (item) {
+                            let a = document.createElement(`a`);
+                            a.href = `shop?brandName=${item.name}`
+                            a.innerHTML = `${item.name} <br/>`;
+                            div.append(a);
+                        })
+                    }
+                    if (products.length) {
+                        products.forEach(function (item) {
+                            let a = document.createElement(`a`);
+                            a.href = `shop?type=${item.type}`
+                            a.innerHTML = `${item.name}  <br/>`;
+                            div.append(a);
+                        })
+                    }
+
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
         //on keyup, start the countdown
         $input.on('keyup', function () {
             document.getElementById('search-div').removeAttribute('style');
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
         });
-
         //on keydown, clear the countdown
         $input.on('keydown', function () {
             clearTimeout(typingTimer);
         });
 
         function doneTyping() {
-            console.log(11111);
             let obj = {
                 search: $input.val()
             }
@@ -300,6 +351,7 @@
                 }
             });
         }
+
     });
 
 </script>

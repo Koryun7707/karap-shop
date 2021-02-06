@@ -2,17 +2,21 @@ $(document).ready(function () {
 
     var $searchTrigger = $('[data-ic-class="search-trigger"]'),
         $searchInput = $('[data-ic-class="search-input"]'),
+        $searchInputMobile = $('[data-ic-class="search-input-mobile"]'),
         $searchClear = $('[data-ic-class="search-clear"]');
 
     $searchTrigger.click(function () {
         var $this = $('[data-ic-class="search-trigger"]');
         if ($this[0].getAttribute('class').includes('active')) {
             $this.removeClass('active');
+            document.getElementById('search-div-mobile').style.display = 'none'
             document.getElementById('search-div').style.display = 'none'
         } else {
             $this.addClass('active');
             $searchInput.focus();
+            $searchInputMobile.focus();
             document.getElementById('search-div').style.display = 'block'
+            document.getElementById('search-div-mobile').style.display = 'block'
         }
     });
 
@@ -30,11 +34,16 @@ $(document).ready(function () {
 
     $searchClear.click(function () {
         $searchInput.val('');
+        $searchInputMobile.val('');
+
     });
 
     $searchInput.focus(function () {
         $searchTrigger.addClass('active');
+    });
 
+    $searchInputMobile.focus(function () {
+        $searchTrigger.addClass('active');
     });
 
     var minVal = 1, maxVal = 20; // Set Max and Min values
