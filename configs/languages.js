@@ -26,7 +26,8 @@ module.exports =
             shop_search: 'Search',
             shop_sale: 'On Sale',
             shop_price: 'Price',
-            find:'Go',
+            find: 'Go',
+            to_text: "TO",
             shop_brand: 'Brands',
             //brands
             brand_button: 'Գնել հիմա',
@@ -45,7 +46,7 @@ module.exports =
             contact_address: 'Address',
             contact_working_hours: 'WORKING HOURS',
             contact_info_email: 'Email',
-            hour:'24 h',
+            hour: '24 h',
 
 
             contact_email: 'E - mail address',
@@ -99,6 +100,8 @@ module.exports =
             subtotal: 'Subtotal',
             quantity: 'Quantity',
             you_save: 'You save',
+            order_shipping: 'Shipping',
+            order_shipping_text: 'Shipping calculated at checkout',
             checkout_button: "Proceed to checkout",
             i_agree_to_the_website: 'I Agree To The Website',
 
@@ -111,7 +114,7 @@ module.exports =
             apartment: 'Apartment',
             postal_code: "Postal code",
             city: 'City',
-            country_region: 'Choose a Country/Region',
+            country_region: 'Country/Region',
             phone: 'Phone',
             delivery: 'Delivery',
             total: 'Total'
@@ -142,7 +145,8 @@ module.exports =
             shop_product_page: 'Ապրանքատեսակի Ֆիլտրեր',
             shop_search: 'Որոնում',
             shop_sale: 'Զեղչված',
-            find:'Փնտրել',
+            find: 'Փնտրել',
+            to_text: "դեպի",
             shop_price: 'Գինը',
             shop_brand: 'Ապրանքանիշեր',
             //brands
@@ -160,7 +164,7 @@ module.exports =
             //contact form info
             contact_info_email: 'Էլ-հասցե',
             contact_working_hours: 'Աշխ. ժամեր',
-            hour:'24 ժամ',
+            hour: '24 ժամ',
 
             //join our team
             join_header: 'ԻՆՉՈՒ ԱՇԽԱՏԵԼ ՄԵԶ ՀԵՏ',
@@ -205,6 +209,8 @@ module.exports =
             subtotal: 'Ենթագումար',
             quantity: 'Քանակը',
             you_save: 'Զեղչ',
+            order_shipping: 'Առաքում',
+            order_shipping_text: 'Առաքումը հաշվարկվում է հաջորդ քայլին',
             checkout_button: "Ձևակերպել պատվերը",
             i_agree_to_the_website: 'Ես համաձայն եմ կայքի հետ',
 
@@ -215,7 +221,7 @@ module.exports =
             address: 'Հասցե',
             apartment: 'Բնակարան',
             postal_code: "Փոստային ինդեքս",
-            country_region: 'Ընտրեք երկիր/տարածաշրջան',
+            country_region: 'Երկիր/տարածաշրջան',
             city: 'Քաղաք',
             continue_to_shipping: 'Շարունակեք առաքմանը',
             phone: 'Հեռախոս',
