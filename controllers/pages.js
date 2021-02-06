@@ -1154,7 +1154,7 @@ module.exports = {
                 html: `
                      <h2>Please click on given link to reset your password</h2>
                      <button>
-                            <a href="${`http://localhost`}/resetPassword/${token}"> Reset Password</a>
+                            <a href="${process.env.CLIENT_URL}/resetPassword/${token}"> Reset Password</a>
                      </button>
 `
             }
