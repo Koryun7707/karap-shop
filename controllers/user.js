@@ -55,7 +55,7 @@ const signUp = async (req, res, next) => {
                                     please follow via "link" link to verify your account.</h4>
                                    <div>
                                    <button>
-                                       <a href="${process.env.CLIENT_URL}/activate-account/${token}"> Activate account</a>
+                                       <a href="https://armatconcept.com/activate-account/${token}"> Activate account</a>
                                       </button>
                                     </div> `,
                 }
