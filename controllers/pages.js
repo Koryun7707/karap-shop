@@ -35,7 +35,19 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            req.session.user = req.user;
+            if (req.user) {
+                const userObjWithoutPassword = {
+                    _id: req.user._id,
+                    status: req.user.status,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    roleType: req.user.roleType,
+                    avatar: req.user.avatar,
+                    id: req.user._id,
+                }
+                req.session.user = userObjWithoutPassword;
+            }
             let pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             if (req.session.language !== 'eng' && pageData.length) {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
@@ -180,7 +192,19 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            req.session.user = req.user;
+            if (req.user) {
+                const userObjWithoutPassword = {
+                    _id: req.user._id,
+                    status: req.user.status,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    roleType: req.user.roleType,
+                    avatar: req.user.avatar,
+                    id: req.user._id,
+                }
+                req.session.user = userObjWithoutPassword;
+            }
             let pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider').exec();
             if (req.session.language !== 'eng' && pageData.length) {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesBrandSlider').exec();
@@ -1118,11 +1142,11 @@ module.exports = {
             const {email} = req.body;
             const user = await User.findOne({email: email});
             if (!user) {
-                req.flash('error_msg', 'User with this email already exists');
+                req.flash('error_msg', 'User with this email not exist.');
                 return res.redirect('/forgotPassword');
             }
             const {_id} = user
-            const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '1m'});
+            const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '5m'});
             const data = {
                 from: process.env.MAIL_AUTH_EMAIL,
                 to: email,

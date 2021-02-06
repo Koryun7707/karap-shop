@@ -59,6 +59,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+
 process.on('uncaughtException', function (err) {
     logger.error(`Oops Unhandled Exception !!!!! = ${err.stack}`);
 });

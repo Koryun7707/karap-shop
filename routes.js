@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const multer = require('multer');
 const path = require('path');
-const usersController = require('./controllers/user');
+const {sendMessageContactUs, signUp, activateAccount} = require('./controllers/user');
 const pagesController = require('./controllers/pages');
 const {paymentPaypal, paypalSuccess, paypalCancel} = require('./services/paypal');
 const {paymentStripe, stripeWebHook} = require('./services/stripe');
@@ -59,14 +59,17 @@ router.post('/login',
             failureFlash: true
         })(req, res, next);
     });
-router.post('/signup',
-    (req, res, next) => {
-        passport.authenticate('signup', {
-            successRedirect: '/',
-            failureRedirect: '/signup',
-            failureFlash: true
-        })(req, res, next);
-    });
+// router.post('/signup',
+//     (req, res, next) => {
+//         passport.authenticate('signup', {
+//             successRedirect: '/',
+//             failureRedirect: '/signup',
+//             failureFlash: true
+//         })(req, res, next);
+//     });
+
+router.post('/signup', signUp);
+router.get('/activate-account/:token', activateAccount);
 
 router.get('/signup', forwardAuthenticated, pagesController.getSignUpPage);
 router.get('/login', forwardAuthenticated, pagesController.getLogInPage);
@@ -80,7 +83,7 @@ router.post('/resetPassword', pagesController.userResetPassword);
 router.get('/reset-password', pagesController.getresetPassword);
 
 //send message contact us
-router.post('/sendMessageContactUs', usersController.sendMessageContactUs);
+router.post('/sendMessageContactUs', sendMessageContactUs);
 
 //Brands
 router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages', 4), createBrand);//+

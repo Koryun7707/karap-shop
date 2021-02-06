@@ -160,7 +160,7 @@ const getBrands = async (req, res, next) => {
             req.session.language = 'eng';
         }
         const page = Number(req.query.page) || 1;
-        const limit = 4;
+        const limit = 12;
         const options = {
             page: page,
             limit: limit,

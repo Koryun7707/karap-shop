@@ -253,7 +253,6 @@
         //on keyup, start the countdown
         $input.on('keyup', function () {
             document.getElementById('search-div').removeAttribute('style');
-            document.getElementById('search-div-mobile').removeAttribute('style');
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
         });
@@ -274,11 +273,9 @@
                 data: obj,
                 success: function (response) {
                     $('#search-div').html("");
-                    $('#search-div-mobile').html("");
                     const {brands, products} = response.results;
                     let div = document.createElement(`div`);
                     $('#search-div').append(div);
-                    $('#search-div-mobile').append(div);
                     console.log(response);
                     if (brands.length) {
                         brands.forEach(function (item) {
