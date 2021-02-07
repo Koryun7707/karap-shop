@@ -3,6 +3,7 @@ const fs = require('fs');
 const {logger} = require('../utils/logger');
 const {validateBrand} = require('../validations/brand');
 const Brand = require('../models/brands');
+const Product = require('../models/product');
 const {success, err} = require('../utils/responseApi');
 const {moveFile} = require('../utils/helper');
 
@@ -71,7 +72,23 @@ const deleteBrand = async (req, res) => {
     const {id} = req.params;
     try {
         //code must be changed, and optimized
-        const brand = await Brand.findById(id).lean();
+        const brand = await Brand.findById(id).populate('products').lean();
+
+        if (brand.products.length > 0) {
+            brand.products.forEach((item) => {
+                if (item.images.length) {
+                    item.images.map((item) => {
+                        rimraf(`./public/${item}`, (err) => {
+                            if (err) logger.error(err);
+                        })
+                    })
+                }
+            });
+            brand.products.map(async (item) => {
+                await Product.findByIdAndRemove({_id: item._id}).lean();
+            })
+        }
+
         brand.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
                 if (err) logger.error(err)

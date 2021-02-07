@@ -59,23 +59,24 @@ const paymentStripe = (req, res) => {
                 productIds: order,
             });
             shipping.save();
-            ejs.renderFile("./orderEmailTemplate.ejs", { name: req.session.user.firstName ,
-                date:shipping.date,
-                orderId:shipping._id,
-                order:order,
-                subTotal:subTotal,
-                shipping:deliveryPrice,
-                total:amount/100
+            ejs.renderFile("./orderEmailTemplate.ejs", {
+                name: req.session.user.firstName,
+                date: shipping.date,
+                orderId: shipping._id,
+                order: order,
+                subTotal: subTotal,
+                shipping: deliveryPrice,
+                total: amount / 100
             }, function (err, data) {
                 if (err) {
                     console.log(err);
                 } else {
                     const attachments = [];
-                    order.forEach((item)=>{
+                    order.forEach((item) => {
                         attachments.push({
-                            filename:item.images.split('/')[2],
-                            path:`./public/${item.images}`,
-                            cid:item.productId
+                            filename: item.images.split('/')[2],
+                            path: `./public/${item.images}`,
+                            cid: item.productId
                         })
                     })
                     const messageUser = {
@@ -96,29 +97,29 @@ const paymentStripe = (req, res) => {
                 }
             });
             ejs.renderFile("./orderEmailTemplateAdmin.ejs", {
-                name: req.session.user.firstName ,
-                email:req.session.user.email,
-                phone:shipping.phone,
-                city:shipping.city,
-                country:shipping.country,
-                apartment:shipping.apartment,
-                address:shipping.address,
-                date:shipping.date,
-                orderId:shipping._id,
-                order:order,
-                subTotal:subTotal,
-                shipping:deliveryPrice,
-                total:amount/100
+                name: req.session.user.firstName,
+                email: req.session.user.email,
+                phone: shipping.phone,
+                city: shipping.city,
+                country: shipping.country,
+                apartment: shipping.apartment,
+                address: shipping.address,
+                date: shipping.date,
+                orderId: shipping._id,
+                order: order,
+                subTotal: subTotal,
+                shipping: deliveryPrice,
+                total: amount / 100
             }, function (err, data) {
                 if (err) {
                     console.log(err);
                 } else {
                     const attachments = [];
-                    order.forEach((item)=>{
+                    order.forEach((item) => {
                         attachments.push({
-                            filename:item.images.split('/')[2],
-                            path:`./public/${item.images}`,
-                            cid:item.productId
+                            filename: item.images.split('/')[2],
+                            path: `./public/${item.images}`,
+                            cid: item.productId
                         })
                     })
                     const messageAdmin = {
@@ -133,7 +134,11 @@ const paymentStripe = (req, res) => {
             });
             localStorage.removeItem(`order${req.session.user._id}`);
             localStorage.removeItem(`shippingAddress${req.session.user._id}`);
-            req.flash('success_msg', 'Pay Completed');
+            if (req.session.language === 'eng') {
+                req.flash('success_msg', 'Pay Completed.');
+            } else {
+                req.flash('success_msg', 'Վճարն ավարտված է:');
+            }
             return res.redirect('/selectedProducts');
             // If no error occurs
         })
@@ -141,7 +146,11 @@ const paymentStripe = (req, res) => {
             localStorage.removeItem(`order${req.session.user._id}`);
             localStorage.removeItem(`shippingAddress${req.session.user._id}`);
             logger.error(`Payment Error: ${e}`)
-            req.flash('error_msg', `Pay Error ${e}`)
+            if (req.session.language === 'eng') {
+                req.flash('error_msg', `Pay Error ${e}`)
+            } else {
+                req.flash('error_msg', 'Վճարման սխալ:');
+            }
             res.redirect('/shipping');
             // If some error occurs
         });

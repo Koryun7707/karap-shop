@@ -177,7 +177,11 @@ const paypalSuccess = (req, res) => {
                 localStorage.removeItem(`amount${req.session.user._id}`);
 
                 // console.log(JSON.stringify(payment));
-                req.flash('success_msg', 'Pay Completed');
+                if (req.session.language === 'eng'){
+                    req.flash('success_msg', 'Pay Completed.');
+                }else {
+                    req.flash('success_msg', 'Վճարն ավարտված է:');
+                }
                 return res.redirect('/selectedProducts');
             }
         })
@@ -186,7 +190,11 @@ const paypalSuccess = (req, res) => {
         localStorage.removeItem(`shippingAddress${req.session.user._id}`);
         localStorage.removeItem(`amount${req.session.user._id}`);
         logger.error(`Payment Success Error: ${e}`)
-        req.flash('error_msg', `Pay Error ${e}`)
+        if (req.session.language === 'eng'){
+            req.flash('error_msg', `Pay Error ${e}`)
+        }else {
+            req.flash('error_msg', 'Վճարման սխալ:');
+        }
         res.redirect('/shipping');
     }
 

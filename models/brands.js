@@ -41,4 +41,13 @@ const brandSchema = new Schema({
 
 brandSchema.plugin(mongoosePaginate);
 
+brandSchema.virtual('products', {
+    ref: 'Product',
+    localField: '_id',
+    foreignField: 'brandId',
+});
+
+brandSchema.set('toObject', {virtuals: true});
+brandSchema.set('toJSON', {virtuals: true});
+
 module.exports = mongoose.model('Brand', brandSchema);
