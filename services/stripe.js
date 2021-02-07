@@ -8,7 +8,7 @@ const Product = require('../models/product');
 const paymentStripe = (req, res) => {
     const {
         address,
-        postalCode,¬
+        postalCode,
         city,
         country,
         apartment,
