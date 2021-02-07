@@ -21,9 +21,6 @@ const paymentStripe = (req, res) => {
     });
 
     let amount = (Number(subTotal) + Number(deliveryPrice)) * 100;
-    console.log(amount);
-    console.log(Number(subTotal));
-    console.log(Number(deliveryPrice));
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,

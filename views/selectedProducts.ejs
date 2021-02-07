@@ -253,7 +253,6 @@
                 $.each($('input:checked'), function (index, input) {
                     if (input.getAttribute('id') !== 'agreeTerms' && input.getAttribute('id') !== 'select-all') {
                         const id = input.getAttribute('_id');
-                        console.log(document.getElementById(`nameArm${id}`))
                         let price = document.getElementById(`saleProductPrice${id}`).innerHTML;
                         let count = document.getElementById(`qtyInput${id}`).getAttribute('value');
                         price = (Number(price.substring(0, price.length - 1)) / Number(count)).toString();

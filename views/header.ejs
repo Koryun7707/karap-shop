@@ -229,7 +229,6 @@
     $(function () {
 
         document.getElementById('example').addEventListener('change', function () {
-            console.log('You selected: ', this.value);
             const obj = {
                 language: this.value,
             }
@@ -278,7 +277,6 @@
                     const {brands, products} = response.results;
                     let div = document.createElement(`div`);
                     $('#search-div-mobile').append(div);
-                    console.log(response);
                     if (brands.length) {
                         brands.forEach(function (item) {
                             let a = document.createElement(`a`);
@@ -333,7 +331,6 @@
                     const {brands, products} = response.results;
                     let div = document.createElement(`div`);
                     $('#search-div').append(div);
-                    console.log(response);
                     if (brands.length) {
                         brands.forEach(function (item) {
                             let a = document.createElement(`a`);

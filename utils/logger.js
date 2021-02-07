@@ -21,7 +21,6 @@ const logger = createLogger([
     }),
     new winston.transports.Console({
         log: ({message}, next) => {
-            console.log(message)
             next()
         }
     })

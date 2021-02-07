@@ -206,7 +206,6 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
-                        console.log(item.sale);
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -604,7 +603,6 @@ $(document).ready(function () {
                 }
             });
         }
-        console.log(values);
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
@@ -739,7 +737,6 @@ $(document).ready(function () {
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
     $("amount").on("change", function () {
-        console.log(this.value)
     });
 
 

@@ -402,7 +402,6 @@ const getDataSearch = async (req, res) => {
     }else{
         arrayProduct = await Product.find(searchFilterProduct).select('nameArm typeArm').lean();
     }
-    console.log(arrayProduct)
     Promise.all([
         arrayProduct,
         Brand.find(searchFilterBrand).select('name')

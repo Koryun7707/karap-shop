@@ -91,7 +91,6 @@ const paypalSuccess = (req, res) => {
 
         paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
             if (error) {
-                console.log(error.response);
                 throw error;
             } else {
                 const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));

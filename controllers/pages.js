@@ -146,7 +146,6 @@ module.exports = {
             }))
             const type = req.query.type || null;
             const brandName = req.query.brandName || null;
-            console.log(productsType)
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
