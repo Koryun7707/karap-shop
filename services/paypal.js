@@ -25,8 +25,8 @@ const paymentPaypal = (req, res) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": `${process.env.CLIENT_URL}/success`,
-            "cancel_url": `${process.env.CLIENT_URL}/cancel`
+            "return_url": `${process.env.PRODUCTION_URL}/success`,
+            "cancel_url": `${process.env.PRODUCTION_URL}/cancel`
         },
         "transactions": [{
             "item_list": {
