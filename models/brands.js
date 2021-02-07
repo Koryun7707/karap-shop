@@ -21,10 +21,6 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
-    hTag: {
-        type: String,
-        required: true,
-    },
     images: {
         type: Array,
         required: true,

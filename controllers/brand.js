@@ -24,7 +24,7 @@ const createBrand = async (req, res) => {
             req.flash("error_msg", error.message);
             return res.redirect("/admin-create-brand");
         }
-        if (files.length !== 4 && value.language === 'eng') {
+        if (files.length !== 3 && value.language === 'eng') {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err)
@@ -43,7 +43,6 @@ const createBrand = async (req, res) => {
             name: value.brandName,
             info: value.brandInfo,
             type: value.brandType,
-            hTag: value.brandHashTag,
             registrationAddress: value.registrationAddress,
             language: value.language,
         });
@@ -123,7 +122,7 @@ const updateBrand = async (req, res) => {
             req.flash("error_msg", error.message);
             return res.redirect(`/admin-editBrand?_id=${_id}`);
         }
-        if (files.length !== 4) {
+        if (files.length !== 3) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err)
@@ -141,7 +140,6 @@ const updateBrand = async (req, res) => {
         brand.name = value.brandName;
         brand.info = value.brandInfo;
         brand.type = value.brandType;
-        brand.hTag = value.brandHashTag;
         brand.registrationAddress = value.registrationAddress;
         brand.language = value.language;
         brand.images.map((item) => {

@@ -9,7 +9,8 @@ const {
     validateBrandData,
     validateAboutData,
     validateContactData,
-    validateJoinOurTeamData
+    validateJoinOurTeamData,
+    validateBlogData
 } = require('../validations/pagesData');
 const {moveFile, getStaticData} = require('../utils/helper');
 const PageData = require('../models/pagesData');
@@ -20,6 +21,7 @@ const {logger} = require('../utils/logger')
 const jwt = require('jsonwebtoken');
 const {sendMessageToMail} = require('../services/mailService');
 const bcrypt = require('bcrypt');
+const Blog = require('../models/blog');
 const LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./userStorage');
 
@@ -108,12 +110,12 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            const brands = await Brand.find({language: req.session.language}).exec();
+            const blog = await Blog.find({language: req.session.language}).exec();
             res.render('blog', {
                 URL: '/blog',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
-                brands: brands,
+                blog:blog
             });
         } catch (e) {
             logger.error(`Get Blog Page Data Error:${e}`);
@@ -318,7 +320,7 @@ module.exports = {
             let dir = `./public/uploads/home`;
             if (!fs.existsSync(dir)) {
                 fs.mkdir(dir, (err) => {
-                    if (err) console.log(888888, err);
+                    if (err) console.log(err);
                 });
             }
             if (!myPageData) {
@@ -1116,6 +1118,22 @@ module.exports = {
             return res.redirect("/");
         }
     },
+    editBlog: async (req, res) => {
+        logger.info('Start edit blog - - -');
+        try {
+            const {_id} = req.query;
+            const blog = await Blog.find({_id: _id}).lean().exec();
+            res.render('admin/editBlog', {
+                URL: '/admin-editBlog',
+                user: req.session.user,
+                blog: blog[0],
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
     getShipping: async (req, res) => {
         logger.info('Start Shipping address get - - -');
         try {
@@ -1319,5 +1337,178 @@ module.exports = {
         } catch (e) {
             console.log(e);
         }
-    }
+    },
+    getAdminBlog:async(req,res)=>{
+        try {
+            res.render('admin/adminBlog', {
+                URL: '/admin-blog',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            console.log(e)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    createAdminBlog:async (req,res)=> {
+        logger.info('Start Create Blog - - -');
+        try {
+            const files = req.files;
+            const {error, value} = validateBlogData(req.body);
+            if (error) {
+                if (files.length > 0) {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) logger.error(err)
+                        })
+                    });
+                }
+                req.flash("error_msg", error.message);
+                return res.redirect("/admin-blog");
+            }
+            if (files.length !== 2 && value.language === 'eng') {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) logger.error(err)
+                    })
+                });
+                req.flash("error_msg", "Files is required.!");
+                return res.redirect("/admin-blog");
+            }
+            let dir = `./public/uploads/blog`;
+            if (!fs.existsSync(dir)) {
+                fs.mkdir(dir, (err) => {
+                    if (err) logger.error(err);
+                });
+            }
+            const blog = new Blog({
+                infoBlog: value.infoBlog,
+                textBlogTitle: value.textBlogTitle,
+                title1: value.title1,
+                title2: value.title2,
+                language: value.language,
+            });
+            blog.blogImages = moveFile(files, dir);
+            blog.save((err, result) => {
+                if (err) {
+                    files.map((file) => {
+                        rimraf(`${dir}/${file.filename}`, (err) => {
+                            if (err) logger.error(err);
+                        })
+                    });
+                    req.flash("error_msg", err.message);
+                    return res.redirect("/admin-blog");
+                }
+                req.flash("success_msg", "Blog Data add complete!");
+                return res.redirect("/admin-blog");
+            });
+        } catch (e) {
+            req.flash("error", e.message);
+            return res.redirect("/admin-blog");
+        }
+    },
+     deleteBlog:async (req, res) => {
+        logger.info('Start Delete Blog - - -');
+        const {id} = req.params;
+        try {
+            //code must be changed, and optimized
+            const blog = await Blog.findById({_id:id}).lean();
+
+            blog.blogImages.map((item) => {
+                rimraf(`./public/${item}`, (err) => {
+                    if (err) logger.error(err)
+                })
+            });
+
+            await Blog.findByIdAndRemove({_id: id}).lean();
+            return res.status(200).json({success: true, message: 'Delete Blog Completed'});
+        } catch (e) {
+            logger.error(`Blog Delete Error: ${e}`);
+            req.flash("error", e.message);
+            return res.redirect("/admin-blog");
+        }
+    },
+    getAllBlogsData:async(req,res)=>{
+        logger.info('Start Get All Blog Data - - -');
+        try {
+            const blogs = await Blog.find({}).lean().exec();
+            res.render('admin/ourBlogs', {
+                URL: '/admin-all-blogs',
+                user: req.session.user,
+                blogs:blogs,
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            logger.error(`Blog Get All Error: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    updateBlog:async(req,res)=>{
+        logger.info('Start Blog update - - -');
+        try {
+            const _id = req.params._id;
+            const files = req.files;
+            const blog = await Blog.findById(_id).exec();
+            const {error, value} = validateBlogData(req.body);
+            if (error && error.details) {
+                logger.error(`Validate Error: ${error}`);
+                if (files.length > 0) {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) logger.error(err)
+                        })
+                    });
+                }
+                req.flash("error_msg", error.message);
+                return res.redirect(`/admin-editBlog?_id=${_id}`);
+            }
+            if (files.length !== 2) {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) logger.error(err)
+                    })
+                });
+                req.flash("error_msg", "Files is required.!");
+                return res.redirect(`/admin-editBlog?_id=${_id}`);
+            }
+            let dir = `./public/uploads/blog`;
+            if (!fs.existsSync(dir)) {
+                fs.mkdir(dir, (err) => {
+                    if (err) logger.error(err)
+                });
+            }
+                blog.infoBlog = value.infoBlog
+                blog.textBlogTitle = value.textBlogTitle
+                blog.title1 = value.title1
+                blog.title2 = value.title2
+                blog.language = value.language
+                blog.blogImages.map((item) => {
+                rimraf(`./public/${item}`, (err) => {
+                    if (err) logger.error(err)
+                })
+            });
+            blog.blogImages = moveFile(files, dir);
+            blog.save((err, result) => {
+                if (err) {
+                    files.map((file) => {
+                        rimraf(`${dir}/${file.filename}`, (err) => {
+                            if (err) logger.error(err);
+                        })
+                    });
+                    req.flash("error_msg", err.message);
+                    return res.redirect(`/admin-editBlog?_id=${_id}`);
+                }
+                req.flash("success_msg", 'Blog Update Completed!');
+                return res.redirect(`/admin-editBlog?_id=${_id}`);
+            });
+
+        } catch (e) {
+            const _id = req.params._id;
+            logger.error(`Blog Update Error: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect(`/admin-editBlog?_id=${_id}`);
+        }
+    },
 };

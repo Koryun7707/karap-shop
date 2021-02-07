@@ -2,24 +2,23 @@
 <main style="padding-top: 100px">
     <section class="blog-section py-5">
         <div class="container pt-5">
-            <% if(brands.length > 0){ %>
-                <% brands.forEach(function(item, index){ %>
+            <% if(blog.length > 0){ %>
+                <% blog.forEach(function(item, index){ %>
                     <div class="row blog-card mb-5">
                         <div class="col-6 col-md-5">
                             <div class="rose-bg d-flex justify-content-center align-items-center p-5 w-100 h-100">
-                                <img src=<%= item.images[0] %> alt="logo">
+                                <img src=<%= item.blogImages[0] %> alt="logo">
                             </div>
                         </div>
                         <div class="col-6 col-md-7 blog-img">
-                            <img src=<%= item.images[3] %> alt="" class="w-70 h-100 blog-img-anim">
+                            <img src=<%= item.blogImages[1] %> alt="" class="w-70 h-100 blog-img-anim">
                         </div>
                         <div class="col-12">
-                            <h2><%= item.type %></h2>
-                            <div class="subtitle"><%= item.name %></div>
+                            <h2><%= item.textBlogTitle %></h2>
                             <ul class="list-unstyled">
-                                <li class="fashion-icon1"><%= item.hTag %> </li>
-                                <li class="fashion-icon2"><%= item.type %></li>
-                                <li style="display: none" id="<%= index %>"><%= item.info %></li>
+                                <li class="fashion-icon1"><%= item.title1 %> </li>
+                                <li class="fashion-icon2"><%= item.title2 %></li>
+                                <li style="display: none" id="<%= index %>"><%= item.infoBlog %></li>
                             </ul>
                             <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)"
                                id="but<%= index %>">

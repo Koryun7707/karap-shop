@@ -1,0 +1,42 @@
+<%- include ('adminHeader') -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <form method="post" enctype="multipart/form-data" action="blog-edit/<%= blog._id %>"class="py-5" >
+            <div class="row page-titles">Blog Edit</div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Blog Title</label>
+                <input value="<%= blog.textBlogTitle %>"  required type="text" name="textBlogTitle" class="form-control" id="exampleInputEmail1"
+                       placeholder="Enter text on blog title.">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Title 1</label>
+                <input value="<%= blog.title1 %>" required type="text" name="title1" class="form-control" id="exampleInputEmail1"
+                       placeholder="Title 1">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Title 2</label>
+                <input value="<%= blog.title2 %>" required type="text" name="title2" class="form-control" id="exampleInputEmail1"
+                       placeholder="Title 2">
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Info</label>
+                <input value="<%= blog.infoBlog %>" required type="text" name="infoBlog" class="form-control"
+                       placeholder="infoBlog">
+            </div>
+            <div class="form-group important" id="upload_blog_image">
+                <label for="exampleInputEmail1">Upload Images Blog(*maximum selected image count must be
+                    2).</label>
+                <input type="file" multiple name="uploadImagesBlogEdit" class="form-control" >
+            </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail1">Language</label>
+                <select name="language" id="select_brand_language">
+                    <option name="eng" value="eng" selected>Eng</option>
+                    <option name="arm" value="arm">Հայ</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+<%- include ('adminFooter') -%>

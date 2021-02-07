@@ -20,6 +20,10 @@ const pageDataSchema = new Schema({
         type: Array,
         required: true,
     },
+    blogImages: {
+        type: Array,
+        required: true,
+    },
     homeProductTypeTitle: {
         type: String,
     },
@@ -97,7 +101,20 @@ const pageDataSchema = new Schema({
     },
     joinOurTeamPartnersTitle: {
         type: String,
+    },
+    infoBlog:{
+        type:String,
+    },
+    textBlogTitle:{
+        type:String,
+    },
+    title1:{
+        type:String,
+    },
+    title2:{
+        type:String,
     }
+
 });
 
 

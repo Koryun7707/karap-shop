@@ -86,9 +86,9 @@ router.get('/reset-password', pagesController.getresetPassword);
 router.post('/sendMessageContactUs', sendMessageContactUs);
 
 //Brands
-router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages', 4), createBrand);//+
+router.post('/brand', checkIsAuthenticated, isAdmin, upload.array('brandImages', 3), createBrand);//+
 router.delete('/brand/:id', checkIsAuthenticated, isAdmin, deleteBrand);
-router.post('/brand-edit/:_id/', checkIsAuthenticated, isAdmin, upload.array('brandImagesUpdate', 4), updateBrand);
+router.post('/brand-edit/:_id/', checkIsAuthenticated, isAdmin, upload.array('brandImagesUpdate', 3), updateBrand);
 router.get('/brands', getBrands);
 router.get('/all-brands', getAllBrands)
 
@@ -142,9 +142,18 @@ router.get('/admin-create-brand', checkIsAuthenticated, isAdmin, pagesController
 router.get('/admin-create-product', checkIsAuthenticated, isAdmin, pagesController.getAdminAddProductPage);
 router.get('/admin-all-brands', checkIsAuthenticated, isAdmin, pagesController.getAdminOurBrandsPage);
 router.get('/admin-all-products', checkIsAuthenticated, isAdmin, pagesController.getAdminOurProductsPage);
+
+//blog
+router.get('/admin-blog', checkIsAuthenticated, isAdmin, pagesController.getAdminBlog);
+router.post('/admin-blog', checkIsAuthenticated, isAdmin,upload.array('uploadImagesBlog', 2), pagesController.createAdminBlog);
+router.get('/admin-all-blogs', checkIsAuthenticated, isAdmin, pagesController.getAllBlogsData);
+router.delete('/blog/:id', checkIsAuthenticated, isAdmin, pagesController.deleteBlog);
+router.post('/blog-edit/:_id', checkIsAuthenticated, isAdmin, upload.array('uploadImagesBlogEdit', 2), pagesController.updateBlog);
+
 //edit
 router.get('/admin-editProduct', checkIsAuthenticated, isAdmin, pagesController.editProduct);
 router.get('/admin-editBrand', checkIsAuthenticated, isAdmin, pagesController.editBrand);
+router.get('/admin-editBlog', checkIsAuthenticated, isAdmin, pagesController.editBlog);
 
 //payment
 router.post('/pay', checkIsAuthenticated, paymentPaypal);
