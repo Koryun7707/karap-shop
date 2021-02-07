@@ -2,6 +2,7 @@ const paypal = require('paypal-rest-sdk');
 const {logger} = require('../utils/logger');
 const {sendMessageToMail} = require('./mailService');
 const ShippingAddress = require('../models/shipingAddress');
+const Product = require('../models/product');
 const ejs = require('ejs');
 
 
@@ -105,23 +106,24 @@ const paypalSuccess = (req, res) => {
                     productIds: order,
                 });
                 shipping.save();
-                ejs.renderFile("./orderEmailTemplate.ejs", { name: req.session.user.firstName ,
-                    date:shipping.date,
-                    orderId:shipping._id,
-                    order:order,
-                    subTotal:amount.subTotal,
-                    shipping:amount.deliveryPrice,
-                    total:eval(amount.subTotal + amount.deliveryPrice)
+                ejs.renderFile("./orderEmailTemplate.ejs", {
+                    name: req.session.user.firstName,
+                    date: shipping.date,
+                    orderId: shipping._id,
+                    order: order,
+                    subTotal: amount.subTotal,
+                    shipping: amount.deliveryPrice,
+                    total: eval(amount.subTotal + amount.deliveryPrice)
                 }, function (err, data) {
                     if (err) {
                         console.log(err);
                     } else {
                         const attachments = [];
-                        order.forEach((item)=>{
+                        order.forEach((item) => {
                             attachments.push({
-                                filename:item.images.split('/')[2],
-                                path:`./public/${item.images}`,
-                                cid:item.productId
+                                filename: item.images.split('/')[2],
+                                path: `./public/${item.images}`,
+                                cid: item.productId
                             })
                         })
                         const messageUser = {
@@ -135,29 +137,29 @@ const paypalSuccess = (req, res) => {
                     }
                 });
                 ejs.renderFile("./orderEmailTemplateAdmin.ejs", {
-                    name: req.session.user.firstName ,
-                    email:req.session.user.email,
-                    phone:shipping.phone,
-                    city:shipping.city,
-                    country:shipping.country,
-                    apartment:shipping.apartment,
-                    address:shipping.address,
-                    date:shipping.date,
-                    orderId:shipping._id,
-                    order:order,
-                    subTotal:amount.subTotal,
-                    shipping:amount.deliveryPrice,
-                    total:eval(amount.subTotal + amount.deliveryPrice)
+                    name: req.session.user.firstName,
+                    email: req.session.user.email,
+                    phone: shipping.phone,
+                    city: shipping.city,
+                    country: shipping.country,
+                    apartment: shipping.apartment,
+                    address: shipping.address,
+                    date: shipping.date,
+                    orderId: shipping._id,
+                    order: order,
+                    subTotal: amount.subTotal,
+                    shipping: amount.deliveryPrice,
+                    total: eval(amount.subTotal + amount.deliveryPrice)
                 }, function (err, data) {
                     if (err) {
                         console.log(err);
                     } else {
                         const attachments = [];
-                        order.forEach((item)=>{
+                        order.forEach((item) => {
                             attachments.push({
-                                filename:item.images.split('/')[2],
-                                path:`./public/${item.images}`,
-                                cid:item.productId
+                                filename: item.images.split('/')[2],
+                                path: `./public/${item.images}`,
+                                cid: item.productId
                             })
                         })
                         const messageAdmin = {
@@ -171,14 +173,18 @@ const paypalSuccess = (req, res) => {
                     }
                 });
 
+                order.forEach(async (item) => {
+                    let eachProduct = await Product.findById(item.productId);
+                    eachProduct.count = Number(eachProduct.count) - Number(item.count);
+                    await eachProduct.save();
+                })
+
                 localStorage.removeItem(`order${req.session.user._id}`);
                 localStorage.removeItem(`shippingAddress${req.session.user._id}`);
                 localStorage.removeItem(`amount${req.session.user._id}`);
-
-                // console.log(JSON.stringify(payment));
-                if (req.session.language === 'eng'){
+                if (req.session.language === 'eng') {
                     req.flash('success_msg', 'Pay Completed.');
-                }else {
+                } else {
                     req.flash('success_msg', 'Վճարն ավարտված է:');
                 }
                 return res.redirect('/selectedProducts');
@@ -189,9 +195,9 @@ const paypalSuccess = (req, res) => {
         localStorage.removeItem(`shippingAddress${req.session.user._id}`);
         localStorage.removeItem(`amount${req.session.user._id}`);
         logger.error(`Payment Success Error: ${e}`)
-        if (req.session.language === 'eng'){
+        if (req.session.language === 'eng') {
             req.flash('error_msg', `Pay Error ${e}`)
-        }else {
+        } else {
             req.flash('error_msg', 'Վճարման սխալ:');
         }
         res.redirect('/shipping');

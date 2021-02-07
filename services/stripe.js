@@ -3,11 +3,12 @@ const {sendMessageToMail} = require('./mailService');
 const ShippingAddress = require('../models/shipingAddress');
 const {logger} = require('../utils/logger');
 const ejs = require('ejs')
+const Product = require('../models/product');
 
 const paymentStripe = (req, res) => {
     const {
         address,
-        postalCode,
+        postalCode,¬
         city,
         country,
         apartment,
@@ -129,6 +130,12 @@ const paymentStripe = (req, res) => {
                     sendMessageToMail(messageAdmin)
                 }
             });
+            order.forEach(async (item) => {
+                let eachProduct = await Product.findById(item.productId);
+                eachProduct.count = Number(eachProduct.count) - Number(item.count);
+                await eachProduct.save();
+            })
+
             localStorage.removeItem(`order${req.session.user._id}`);
             localStorage.removeItem(`shippingAddress${req.session.user._id}`);
             if (req.session.language === 'eng') {
