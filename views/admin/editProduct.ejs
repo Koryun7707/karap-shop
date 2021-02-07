@@ -12,10 +12,22 @@
                        placeholder="Product type.">
             </div>
             <div class="form-group">
+                <label for="exampleInputEmail1">Type in Armenian</label>
+                <input value="<%= product.typeArm %>" type="text" name="productTypeArm" class="form-control"
+                       id="exampleInputEmail1"
+                       placeholder="Product type in Armenian.">
+            </div>
+            <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
                 <input value="<%= product.name %>" type="text" name="productName" class="form-control"
                        id="exampleInputEmail1"
                        placeholder="Product name.">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name in Armenian</label>
+                <input value="<%= product.nameArm %>" type="text" name="productNameArm" class="form-control"
+                       id="exampleInputEmail1"
+                       placeholder="Product name in Armenian.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Product weight(*enter only in kg example 0.5.)</label>
@@ -44,6 +56,12 @@
                        placeholder="Product description.">
             </div>
             <div class="form-group">
+                <label for="exampleInputEmail1">Product description in Armenian.</label>
+                <input type="text" name="productDescriptionArm" value="<%= product.descriptionArm %>" class="form-control"
+                       id="exampleInputEmail1"
+                       placeholder="Product description in Armenian.">
+            </div>
+            <div class="form-group">
                 <label for="exampleInputEmail1">Count</label>
                 <input value="<%= product.count %>" type="text" name="productCount" class="form-control"
                        id="exampleInputEmail1"
@@ -67,12 +85,7 @@
                 <input type="file" name="productImagesUpdate" multiple="multiple" class="form-control"
                        id="uploadImagesBySize">
             </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Language</label>
-                <select name="language">
-                    <option name="eng" value=<%= product.language %> selected><%= product.language %></option>
-                </select>
-            </div>
+
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>
     </div>

@@ -46,29 +46,33 @@ const createProduct = async (req, res) => {
                 brandId: value.brandId,
                 brandName: brandName.name,
                 name: value.productName,
+                nameArm: value.productNameArm,
                 type: value.productType,
+                typeArm: value.productTypeArm,
                 price: value.productPrice,
                 sizes: value.productSize.split('/'),
                 sale: value.productSale,
                 description: value.productDescription,
+                descriptionArm: value.productDescriptionArm,
                 colors: value.productColor.split('/'),
                 count: value.productCount,
                 productWeight: value.productWeight,
-                language: value.language,
             });
         } else {
             newProduct = new Product({
                 brandId: value.brandId,
                 brandName: brandName.name,
                 name: value.productName,
+                nameArm: value.productNameArm,
                 type: value.productType,
+                typeArm: value.productTypeArm,
                 price: value.productPrice,
                 description: value.productDescription,
+                descriptionArm: value.productDescriptionArm,
                 sizes: value.productSize.split('/'),
                 colors: value.productColor.split('/'),
                 count: value.productCount,
                 productWeight: value.productWeight,
-                language: value.language,
             });
         }
         newProduct.images = moveFile(files, dir);
@@ -149,7 +153,9 @@ const updateProduct = async (req, res) => {
         }
         product.brandId = value.brandId;
         product.name = value.productName;
+        product.nameArm = value.productNameArm;
         product.type = value.productType;
+        product.typeArm = value.productTypeArm;
         product.price = value.productPrice;
         product.sizes = value.productSize.split('/');
         if (value.productSale != '' || Number(value.productSale) >= 1) {
@@ -158,8 +164,8 @@ const updateProduct = async (req, res) => {
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
         product.description = value.productDescription;
+        product.descriptionArm = value.productDescriptionArm;
         product.count = value.productCount;
-        product.language = value.language;
 
         product.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
@@ -215,7 +221,7 @@ const getProductsShopFilter = async (req, res) => {
             req.session.language = 'eng';
         }
         const page = Number(req.body.page) || 1;
-        const limit = 21;
+        const limit = 1;
         const options = {
             page: page,
             limit: limit,
@@ -225,25 +231,44 @@ const getProductsShopFilter = async (req, res) => {
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
-        const search = {
-            $and: [
-                {
-                    '$or': [
-                        {'name': {'$regex': `^${searchValue}`, "$options": "i"}},
-                    ]
-                }
-                , {language: req.session.language}
-            ]
-        };
+        let search;
+        if(req.session.language === 'eng'){
+             search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'name': {'$regex': `^${searchValue}`, "$options": "i"}},
+                        ]
+                    }
+
+                ]
+            };
+        }else{
+             search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'nameArm': {'$regex': `^${searchValue}`, "$options": "i"}},
+                        ]
+                    }
+
+                ]
+            };
+        }
+
         if (onSale) {
             search['$and'].push({sale: {$exists: true}});
         }
         let data;
         if (!brandNames.length && !types.length && searchValue === undefined) {
-            data = await Product.paginate({language: req.session.language}, options);
+            data = await Product.paginate({}, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            search['$and'].push({type: {"$in": types}});
+            if(req.session.language === 'eng'){
+                search['$and'].push({type: {"$in": types}});
+            }else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0) {
@@ -252,20 +277,32 @@ const getProductsShopFilter = async (req, res) => {
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            search['$and'].push({type: {"$in": types}});
+            if(req.session.language === 'eng'){
+                search['$and'].push({type: {"$in": types}});
+            }else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             data = await Product.paginate(search, options);
         } else if (brandNames.length > 0 && types.length > 0) {
             search['$and'].push({brandName: {"$in": brandNames}});
-            search['$and'].push({type: {"$in": types}});
+            if(req.session.language === 'eng'){
+                search['$and'].push({type: {"$in": types}});
+            }else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             data = await Product.paginate(search, options);
         } else if (brandNames.length > 0) {
             search['$and'].push({brandName: {"$in": brandNames}});
             data = await Product.paginate(search, options);
         } else if (types.length > 0) {
-            search['$and'].push({type: {"$in": types}});
+            if(req.session.language === 'eng'){
+                search['$and'].push({type: {"$in": types}});
+            }else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             data = await Product.paginate(search, options);
         } else {
             data = await Product.paginate(search, options);
@@ -323,7 +360,7 @@ const getProductById = async (req, res) => {
 const getDataSearch = async (req, res) => {
     logger.info(`Get Data Search  - - - `);
     const {search} = req.body;
-    const searchFilter = {
+    const searchFilterBrand = {
         $and: [
             {
                 '$or': [
@@ -333,9 +370,42 @@ const getDataSearch = async (req, res) => {
             , {language: req.session.language}
         ]
     };
+    let searchFilterProduct
+    if(req.session.language === 'eng'){
+        searchFilterProduct = {
+            $and: [
+                {
+                    '$or': [
+                        {'name': {'$regex': `^${search}`, "$options": "i"}},
+                    ]
+                }
+
+            ]
+        };
+    }
+    else{
+        searchFilterProduct = {
+            $and: [
+                {
+                    '$or': [
+                        {'nameArm': {'$regex': `^${search}`, "$options": "i"}},
+                    ]
+                }
+
+            ]
+        };
+    }
+   let arrayProduct ;
+    if(req.session.language === 'eng'){
+        arrayProduct = await Product.find(searchFilterProduct).select('name type').lean();
+
+    }else{
+        arrayProduct = await Product.find(searchFilterProduct).select('nameArm typeArm').lean();
+    }
+    console.log(arrayProduct)
     Promise.all([
-        Product.find(searchFilter).select('name type').lean(),
-        Brand.find(searchFilter).select('name')
+        arrayProduct,
+        Brand.find(searchFilterBrand).select('name')
     ]).then(([products, brands]) => {
         return res.status(200).json(success('Get Data Search!',
             {products: products, brands: brands}, res.statusCode));

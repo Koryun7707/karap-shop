@@ -91,6 +91,7 @@
             url: '/product-by-id',
             data: {shoppingCard: array},
             success: (response) => {
+                const language = document.getElementById('example').value === 'eng'?true:false;
                 if (response.results.length) {
                     response.results.forEach(function (item) {
                         if (!item.sale) {
@@ -103,14 +104,14 @@
                         newDiv.innerHTML = `
                     <div  class="shop-check d-flex flex-1 mb-2 mb-md-0">
                         <div class="form-group mr-2">
-                            <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
-                            <label for="${item.name}" class=""></label>
+                            <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${language?item.name:item.nameArm}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
+                            <label for="${language?item.name:item.nameArm}" class=""></label>
                         </div>
                         <div class="img-area mx-2 mx-md-5">
                             <img id='productImage${item._id}' src="${item.images[0]}" alt="" class="w-100">
                         </div>
                         <div>
-                            <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${item.name}</div>
+                            <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language?item.name:item.nameArm}</div>
                             <div class="product-color my-2 py-3" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color || ''}"></div>
                             <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
                         </div>
@@ -129,6 +130,8 @@
 
                         </div>
                     </div>
+                        <div style="display:none;"    id='name${item._id}' >${item.name}</div>
+                        <div style="display:none;"    id='nameArm${item._id}' >${item.nameArm}</div>
                      <div class="d-flex justify-content-end abs">
                         <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
@@ -245,6 +248,7 @@
                 $.each($('input:checked'), function (index, input) {
                     if (input.getAttribute('id') !== 'agreeTerms' && input.getAttribute('id') !== 'select-all') {
                         const id = input.getAttribute('_id');
+                        console.log(document.getElementById(`nameArm${id}`))
                         let price = document.getElementById(`saleProductPrice${id}`).innerHTML;
                         let count = document.getElementById(`qtyInput${id}`).getAttribute('value');
                         price = (Number(price.substring(0, price.length - 1)) / Number(count)).toString();
@@ -255,7 +259,8 @@
                             price: document.getElementById(`productPriceBasket${id}`).innerHTML,
                             priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
                             images: document.getElementById(`productImage${id}`).getAttribute('src'),
-                            name: document.getElementById(`productName${id}`).innerHTML,
+                            name: document.getElementById(`name${id}`).innerHTML,
+                            nameArm: document.getElementById(`nameArm${id}`).innerHTML,
                             registrationAddress: document.getElementById(`productName${id}`).getAttribute('registrationAddress'),
                             productWeight: document.getElementById(`productName${id}`).getAttribute('productWeight'),
                         }

@@ -117,7 +117,9 @@ module.exports =
             country_region: 'Country/Region',
             phone: 'Phone',
             delivery: 'Delivery',
-            total: 'Total'
+            total: 'Total',
+            //pay checkouts
+            title_checkout:'You can pay in out website, with two pay type.'
 
 
         },
@@ -226,6 +228,8 @@ module.exports =
             continue_to_shipping: 'Շարունակեք առաքմանը',
             phone: 'Հեռախոս',
             delivery: 'Առաքում',
-            total: 'Ընդհանուր'
+            total: 'Ընդհանուր',
+            //pay chechouts
+            title_checkout:'Կարող եք վճարել վճարովի կայք `երկու վճարովի տիպով:'
         }
     ]

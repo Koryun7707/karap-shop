@@ -53,10 +53,16 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
-            let products = await Product.find({language: req.session.language}).select('images name type').exec();
-
-            products = [...new Map(products.map(item =>
-                [item['type'], item])).values()];
+            let products
+            if(req.session.language === 'eng'){
+                 products = await Product.find({}).select('images name type').exec();
+                products = [...new Map(products.map(item =>
+                    [item['type'], item])).values()];
+            }else {
+                 products = await Product.find({}).select('images nameArm typeArm').exec();
+                products = [...new Map(products.map(item =>
+                    [item['typeArm'], item])).values()];
+            }
             const countOfBrands = await Brand.find({language: req.session.language}).exec();
             res.render('index', {
                 URL: '/',
@@ -127,14 +133,20 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesShopSlider').exec();
                 pageData[0].imagesShopSlider = arrayImages.imagesShopSlider;
             }
-            const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
+            let productsType;
+            if(req.session.language === 'eng'){
+                productsType = await Product.find({}).distinct('type').exec();
+            }else{
+                 productsType = await Product.find({}).distinct('typeArm').exec();
+            }
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
-            let maxPrice = await Product.find({language: req.session.language}).select('-_id price');
+            let maxPrice = await Product.find({}).select('-_id price');
             maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
                 return o.price;
             }))
             const type = req.query.type || null;
             const brandName = req.query.brandName || null;
+            console.log(productsType)
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -173,6 +185,9 @@ module.exports = {
     getProduct: async (req, res) => {
         logger.info('Start get Product - - -');
         try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
             res.render('product', {
@@ -180,6 +195,7 @@ module.exports = {
                 user: req.session.user,
                 product: product,
                 staticData: await getStaticData(req.session.language),
+                language:req.session.language
             });
         } catch (e) {
             req.flash("error_msg", e.message);
@@ -1183,7 +1199,6 @@ module.exports = {
         try {
             logger.info('Start Reset Password api - - -');
             const {token} = req.params;
-            const staticData = await getStaticData(req.session.language);
             jwt.verify(token, process.env.SECRET_KEY, function (err, decodedData) {
                 if (err) {
                     req.flash('error_msg', 'Incorrect token or it is expired');

@@ -9,9 +9,8 @@
         <th id="4" role="button" scope="col">Description</th>
         <th id="5" role="button" scope="col">Color</th>
         <th id="6" role="button" scope="col">Size</th>
-        <th id="7" role="button" scope="col">Language</th>
-        <th id="8" role="button" scope="col">Edit</th>
-        <th id="9" role="button" scope="col">Delete</th>
+        <th id="7" role="button" scope="col">Edit</th>
+        <th id="8" role="button" scope="col">Delete</th>
 
     </tr>
     </thead>
@@ -45,7 +44,6 @@
                     <td>${item.description}</td>
                     <td>${[...item.colors]}</td>
                     <td>${[...item.sizes]}</td>
-                     <td>${item.language}</td>
                     <td><a href ='/admin-editProduct?_id=${item._id}' type="button" class="btn btn-info">Edit</a></td>
                     <td><a onclick="deleteProduct(this)" value='${item._id}' type="button" class="btn btn-danger">Delete</a></td>`
                         tbody.append(tr);

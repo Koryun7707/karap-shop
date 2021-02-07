@@ -20,7 +20,15 @@ const productSchema = new Schema({
         type: String,
         required: true,
     },
+    typeArm: {
+        type: String,
+        required: true,
+    },
     name: {
+        type: String,
+        required: true,
+    },
+    nameArm:{
         type: String,
         required: true,
     },
@@ -40,6 +48,9 @@ const productSchema = new Schema({
     description: {
         type: String,
     },
+    descriptionArm: {
+        type: String,
+    },
     productWeight: {
         type: String,
         required: true,
@@ -52,10 +63,7 @@ const productSchema = new Schema({
         type: Array,
         required: true,
     },
-    language: {
-        type: String,
-        enum: ['eng', 'arm'],
-    },
+
 });
 
 productSchema.plugin(mongoosePaginate);

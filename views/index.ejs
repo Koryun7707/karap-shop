@@ -36,8 +36,13 @@
                                     <div class="img-area">
                                         <img class="card-img-top" src=<%= item.images[0] %> id='' alt="Card image cap">
                                     </div>
+                                    <% if(item.type){%>
                                     <a href="/shop?type=<%= item.type %>"
                                        class="btn btn-green-gradient"><%= item.type %></a>
+                                    <%}else{%>
+                                        <a href="/shop?type=<%= item.typeArm %>"
+                                           class="btn btn-green-gradient"><%= item.typeArm %></a>
+                                    <%}%>
                                 </div>
                             </div>
                         <% }) %>

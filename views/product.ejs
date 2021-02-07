@@ -25,7 +25,11 @@
                 <% } %>
                 <div class="col-12 col-md-5">
                     <div class="product-name">
+                        <% if(language === 'eng'){%>
                         <h2 class="mb-2"><%= product[0].name %></h2>
+                        <%}else{%>
+                                <h2 class="mb-2"><%= product[0].nameArm %></h2>
+                            <%}%>
                     </div>
                     <div class="d-flex">
                         <div class="product-price mr-4" id="productPrice" value="<%= product[0].price %>">
@@ -87,12 +91,17 @@
                         </div>
                     </div>
                     <!--                    Start change from this-->
-                    <% if(product[0].description != ''){ %>
+
+                    <% if(product[0].description != ''&&product[0].descriptionArm != ''){ %>
                         <div class="product-size">
                             <h5 class="mt-3">
                                 <h5><h5><%= staticData.product_description %></h5></h5>
                             </h5>
-                            <div><%= product[0].description %></div>
+                            <%if(language === 'eng'){%>
+                                <div><%= product[0].description %></div>
+                            <%}else{%>
+                                <div><%= product[0].descriptionArm %></div>
+                            <%}%>
                         </div>
                     <% } %>
                     <!--                  End here-->
@@ -223,7 +232,6 @@
                                 color: productColor,
                                 count: productCount,
                                 existProductCount: response.results.count,
-                                language: language
                             });
                             Cardlocal = JSON.stringify(Cardlocal);
                             localStorage.setItem('shoppingCard', Cardlocal);
@@ -257,7 +265,6 @@
                                 color: productColor,
                                 count: productCount,
                                 existProductCount: response.results.count,
-                                language: language
                             });
                             array = JSON.stringify(array);
                             localStorage.setItem('shoppingCard', array);

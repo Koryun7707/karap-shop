@@ -234,8 +234,8 @@
                 language: this.value,
             }
 
-            localStorage.removeItem('shoppingCard');
-            localStorage.removeItem('order');
+           // localStorage.removeItem('shoppingCard');
+           // localStorage.removeItem('order');
             $.ajax({
                 url: '/change-language',
                 method: 'post',
@@ -290,8 +290,14 @@
                     if (products.length) {
                         products.forEach(function (item) {
                             let a = document.createElement(`a`);
-                            a.href = `shop?type=${item.type}`
-                            a.innerHTML = `${item.name}  <br/>`;
+                            if(item.type){
+                                a.href = `shop?type=${item.type}`
+                                a.innerHTML = `${item.name}  <br/>`;
+                            }else{
+                                a.href = `shop?type=${item.typeArm}`
+                                a.innerHTML = `${item.nameArm}  <br/>`;
+                            }
+
                             div.append(a);
                         })
                     }
@@ -339,8 +345,13 @@
                     if (products.length) {
                         products.forEach(function (item) {
                             let a = document.createElement(`a`);
-                            a.href = `shop?type=${item.type}`
-                            a.innerHTML = `${item.name}  <br/>`;
+                            if(item.type){
+                                a.href = `shop?type=${item.type}`
+                                a.innerHTML = `${item.name}  <br/>`;
+                            }else{
+                                a.href = `shop?type=${item.typeArm}`
+                                a.innerHTML = `${item.nameArm}  <br/>`;
+                            }
                             div.append(a);
                         })
                     }

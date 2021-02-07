@@ -1,11 +1,11 @@
 const rimraf = require('rimraf');
 const fs = require('fs');
-const path = require('path');
 const {logger} = require('../utils/logger');
 const {validateBrand} = require('../validations/brand');
 const Brand = require('../models/brands');
 const {success, err} = require('../utils/responseApi');
 const {moveFile} = require('../utils/helper');
+
 
 const createBrand = async (req, res) => {
     logger.info('Start createBrand - - -');
@@ -77,6 +77,7 @@ const deleteBrand = async (req, res) => {
                 if (err) logger.error(err)
             })
         });
+
         await Brand.findByIdAndRemove({_id: id}).lean();
         return res.status(200).json({success: true, message: 'Delete Brand Completed'});
     } catch (e) {

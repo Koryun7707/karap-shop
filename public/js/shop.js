@@ -95,10 +95,15 @@ function searchByPrice() {
                                         
                                         </div>
                                        
-                                        <div class="title">${item.name}</div>
+                                        <div class="title" id="title${item._id}"></div>
                                     </a>
                                 </div>
                             `;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         } else {
@@ -217,12 +222,17 @@ $(document).ready(function () {
                                             <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
                                         </div>
                                            </div>
-                                        <div class="title">${item.name}</div>
+                                        <div class="title" id="title${item._id}"></div>
                                     </a>
                                                      
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         } else {
@@ -358,11 +368,16 @@ $(document).ready(function () {
 
                                     </div>
                                       
-                                        <div class="title">${item.name}</div>
+                                        <div id="title${item._id}" class="title"></div>
                                     </a> 
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         } else {
@@ -535,12 +550,17 @@ $(document).ready(function () {
                                         </div>
 </div>
                                        
-                                        <div class="title">${item.name}</div>
+                                        <div id="title${item._id}" class="title"></div>
                                     </a>
                                     
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         } else {
@@ -584,6 +604,7 @@ $(document).ready(function () {
                 }
             });
         }
+        console.log(values);
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
@@ -685,12 +706,17 @@ $(document).ready(function () {
                                         
 </div>
                                        
-                                        <div class="title">${item.name}</div>
+                                        <div id="title${item._id}" class="title"></div>
                                     </a>
                                     
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
                         } else {

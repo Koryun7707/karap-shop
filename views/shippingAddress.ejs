@@ -254,12 +254,13 @@
                 let div = document.createElement('div');
                 currentDiv.prepend(div);
                 div.setAttribute('class', 'd-flex');
+                const language = document.getElementById('example').value === 'eng'?true:false;
                 div.innerHTML = `
                         <div class="img-area">
                             <img src="${item.images}" alt="">
                             </div>
                         <div>
-                            <h5>${item.name}</h5>
+                            <h5>${language?item.name:item.nameArm}</h5>
                             <div class="d-flex align-items-center">
 
                            <span style="display:inline-block; background-color:${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color}" class="px-3 py-2 ml-1"></span><span class="mx-1">/</span><span>${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size}</span></div>
