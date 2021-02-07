@@ -2,6 +2,7 @@ const paypal = require('paypal-rest-sdk');
 const {logger} = require('../utils/logger');
 const {sendMessageToMail} = require('./mailService');
 const ShippingAddress = require('../models/shipingAddress');
+const ejs = require('ejs');
 
 
 paypal.configure({
@@ -23,8 +24,8 @@ const paymentPaypal = (req, res) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": `https://armatconcept.com/success`,
-            "cancel_url": `https://armatconcept.com/cancel`
+            "return_url": `${process.env.CLIENT_URL}/success`,
+            "cancel_url": `${process.env.CLIENT_URL}/cancel`
         },
         "transactions": [{
             "item_list": {
@@ -33,13 +34,13 @@ const paymentPaypal = (req, res) => {
                         name: order.name,
                         sku: order._id,
                         price: order.onePrice,
-                        currency: "USD",
+                        currency: "EUR",
                         quantity: order.count
                     }
                 }),
             },
             "amount": {
-                "currency": "USD",
+                "currency": "EUR",
                 "total": eval(subTotal + deliveryPrice),
                 "details": {
                     "subtotal": subTotal,
@@ -77,7 +78,7 @@ const paypalSuccess = (req, res) => {
             "payer_id": payerId,
             "transactions": [{
                 "amount": {
-                    "currency": "USD",
+                    "currency": "EUR",
                     "total": eval(amount.subTotal + amount.deliveryPrice),
                     "details": {
                         "subtotal": amount.subTotal,
@@ -105,42 +106,71 @@ const paypalSuccess = (req, res) => {
                     productIds: order,
                 });
                 shipping.save();
-                let orderUser = '';
-                const ids = [];
-                order.forEach(item => {
-                    ids.push(item.productId);
-                    orderUser += item.name + ' ' + 'Count:' + item.count + ' ' + 'Cost:' + item.priceSale + ' ' + 'Delivery:' + shippingAddress.deliveryPrice + '</br>';
-                })
-                // Product.find({'$in': ids} ).populate('brandId').exec( function(err, data){
-                //     if(err){
-                //         console.log(err);
-                //     };
-                //2
-                //     console.log(data);
-                // });
-                const messageUser = {
-                    from: process.env.MAIL_AUTH_EMAIL,
-                    to: req.session.user.email,
-                    subject: 'Thank you for your order',
-                    html: `<h4>Hello ${req.session.user.firstName} </h4>
-                               <div>
-                                    ${orderUser}                                  
-                                </div> `,
-                }
-                const messageAdmin = {
-                    from: process.env.MAIL_AUTH_EMAIL,
-                    to: process.env.MAIL_AUTH_EMAIL,
-                    subject: `From website buys product ${req.session.user.firstName} | ${req.session.user.firstName} | ${req.session.user._id}`,
-                    html: `
-                               <div>
-                                     ${orderUser}                              
-                                </div> 
-                                <div>
-                                     ${shippingAddress}                              
-                                </div>`,
-                }
-                sendMessageToMail(messageUser)
-                sendMessageToMail(messageAdmin)
+                ejs.renderFile("./orderEmailTemplate.ejs", { name: req.session.user.firstName ,
+                    date:shipping.date,
+                    orderId:shipping._id,
+                    order:order,
+                    subTotal:amount.subTotal,
+                    shipping:amount.deliveryPrice,
+                    total:eval(amount.subTotal + amount.deliveryPrice)
+                }, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        const attachments = [];
+                        order.forEach((item)=>{
+                            attachments.push({
+                                filename:item.images.split('/')[2],
+                                path:`./public/${item.images}`,
+                                cid:item.productId
+                            })
+                        })
+                        const messageUser = {
+                            from: process.env.MAIL_AUTH_EMAIL,
+                            to: req.session.user.email,
+                            subject: 'Thank you for your order',
+                            html: data,
+                            attachments: attachments
+                        }
+                        sendMessageToMail(messageUser)
+                    }
+                });
+                ejs.renderFile("./orderEmailTemplateAdmin.ejs", {
+                    name: req.session.user.firstName ,
+                    email:req.session.user.email,
+                    phone:shipping.phone,
+                    city:shipping.city,
+                    country:shipping.country,
+                    apartment:shipping.apartment,
+                    address:shipping.address,
+                    date:shipping.date,
+                    orderId:shipping._id,
+                    order:order,
+                    subTotal:amount.subTotal,
+                    shipping:amount.deliveryPrice,
+                    total:eval(amount.subTotal + amount.deliveryPrice)
+                }, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        const attachments = [];
+                        order.forEach((item)=>{
+                            attachments.push({
+                                filename:item.images.split('/')[2],
+                                path:`./public/${item.images}`,
+                                cid:item.productId
+                            })
+                        })
+                        const messageAdmin = {
+                            from: process.env.MAIL_AUTH_EMAIL,
+                            to: process.env.MAIL_AUTH_EMAIL,
+                            subject: 'Thank you for your order',
+                            html: data,
+                            attachments: attachments
+                        }
+                        sendMessageToMail(messageAdmin)
+                    }
+                });
 
                 localStorage.removeItem(`order${req.session.user._id}`);
                 localStorage.removeItem(`shippingAddress${req.session.user._id}`);

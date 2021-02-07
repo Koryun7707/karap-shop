@@ -1,7 +1,8 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const {sendMessageToMail} = require('./mailService');
 const ShippingAddress = require('../models/shipingAddress');
-
+const {logger} = require('../utils/logger');
+const ejs = require('ejs')
 
 const paymentStripe = (req, res) => {
     const {
@@ -18,10 +19,6 @@ const paymentStripe = (req, res) => {
     order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
     });
-
-    console.log(req.body.stripeToken);
-    console.log(req.body.stripeEmail);
-    console.log(req.body);
 
     let amount = (Number(subTotal) + Number(deliveryPrice)) * 100;
     console.log(amount);
@@ -62,43 +59,78 @@ const paymentStripe = (req, res) => {
                 productIds: order,
             });
             shipping.save();
-            let orderUser = '';
-            const ids = [];
-            order.forEach(item => {
-                ids.push(item.productId);
-                orderUser += item.name + ' ' + 'Count:' + item.count + ' ' + 'Cost:' + item.priceSale + ' ' + 'Delivery:' + shippingAddress.deliveryPrice + '</br>';
-            })
-            // Product.find({'$in': ids} ).populate('brandId').exec( function(err, data){
-            //     if(err){
-            //         console.log(err);
-            //     };
-            //
-            //     console.log(data);
-            // });
-            const messageUser = {
-                from: process.env.MAIL_AUTH_EMAIL,
-                to: req.session.user.email,
-                subject: 'Thank you for your order',
-                html: `<h4>Hello ${req.session.user.firstName} </h4>
-                               <div>
-                                    ${orderUser}                                  
-                                </div> `,
-            }
-            const messageAdmin = {
-                from: process.env.MAIL_AUTH_EMAIL,
-                to: process.env.MAIL_AUTH_EMAIL,
-                subject: `From website buys product ${req.session.user.firstName} | ${req.session.user.firstName} | ${req.session.user._id}`,
-                html: `
-                               <div>
-                                     ${orderUser}                              
-                                </div> 
-                                <div>
-                                     ${shippingAddress}                              
-                                </div>`,
-            }
-            sendMessageToMail(messageUser)
-            sendMessageToMail(messageAdmin)
+            ejs.renderFile("./orderEmailTemplate.ejs", { name: req.session.user.firstName ,
+                date:shipping.date,
+                orderId:shipping._id,
+                order:order,
+                subTotal:subTotal,
+                shipping:deliveryPrice,
+                total:amount/100
+            }, function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    const attachments = [];
+                    order.forEach((item)=>{
+                        attachments.push({
+                            filename:item.images.split('/')[2],
+                            path:`./public/${item.images}`,
+                            cid:item.productId
+                        })
+                    })
+                    const messageUser = {
+                        from: process.env.MAIL_AUTH_EMAIL,
+                        to: req.session.user.email,
+                        subject: 'Thank you for your order',
+                        html: data,
+                        attachments: attachments
+                    }
+                    sendMessageToMail(messageUser)
+                    // var mainOptions = {
+                    //     from: '"YOUR_NAME" YOUR_EMAIL_ADDRESS',
+                    //     to: email,
+                    //     subject: 'Account Activated',
+                    //     html: data
+                    // };
 
+                }
+            });
+            ejs.renderFile("./orderEmailTemplateAdmin.ejs", {
+                name: req.session.user.firstName ,
+                email:req.session.user.email,
+                phone:shipping.phone,
+                city:shipping.city,
+                country:shipping.country,
+                apartment:shipping.apartment,
+                address:shipping.address,
+                date:shipping.date,
+                orderId:shipping._id,
+                order:order,
+                subTotal:subTotal,
+                shipping:deliveryPrice,
+                total:amount/100
+            }, function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    const attachments = [];
+                    order.forEach((item)=>{
+                        attachments.push({
+                            filename:item.images.split('/')[2],
+                            path:`./public/${item.images}`,
+                            cid:item.productId
+                        })
+                    })
+                    const messageAdmin = {
+                        from: process.env.MAIL_AUTH_EMAIL,
+                        to: process.env.MAIL_AUTH_EMAIL,
+                        subject: 'Thank you for your order',
+                        html: data,
+                        attachments: attachments
+                    }
+                    sendMessageToMail(messageAdmin)
+                }
+            });
             localStorage.removeItem(`order${req.session.user._id}`);
             localStorage.removeItem(`shippingAddress${req.session.user._id}`);
             req.flash('success_msg', 'Pay Completed');

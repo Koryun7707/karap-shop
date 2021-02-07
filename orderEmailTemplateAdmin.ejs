@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/owl-carousel-min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<table class="col-600" style="background-color: #f1d7e2"  border="0" align="center" cellpadding="0" cellspacing="0">
+    <tbody >
+    <tr>
+        <td align="center" style="background-color: #f1d7e2; padding: 100px 30px 50px" >
+            <table  border="0" align="center" cellpadding="0" cellspacing="0" style="margin-left:20px; background-color: #f1d7e2; margin-right:20px; border-left: 1px solid #dbd9d9; border-right: 1px solid #dbd9d9;">
+                <tbody>
+                <tr>
+                    <td  align="center"  height="35">Dear team of    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" style="font-family: 'Raleway', sans-serif; font-size:22px; font-weight: bold; color:#2a3a4b;">Armat Concept
+                    </td>
+                </tr>
+                <tr>
+                    <td  align="center" style="font-family: 'Raleway', sans-serif; font-size:22px; font-weight: bold; color:#2a3a4b;"  height="10">FROM YOUR WEBSITE ORDER THIS USER -> <%=name%> BUY PRODUCTS
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"
+                        style="font-family: 'Lato', sans-serif; font-size:14px; color:#757575; line-height:24px; font-weight: 300;">
+                        <h1>name: <%= name %></h1><br>
+                        <h1>email: <%= email %></h1><br>
+                        <h1>phone: <%= phone %></h1><br>
+                        <h1>address: <%= address %></h1><br>
+                        <h1>country: <%= country %></h1><br>
+                        <h1>city: <%= city %></h1><br>
+                        <h1>apartment: <%= apartment %></h1><br>
+                    </td>
+                </tr>
+<!--                <tr>-->
+<!--                    <td align="center" style="font-family: 'Lato', sans-serif; font-size:14px; color:#757575; line-height:24px; font-weight: 300;">-->
+<!--                        Your order is being processed for shipping.-->
+<!--                    </td>-->
+<!--                </tr>-->
+                <tr>
+                    <td align="center" style="font-family: 'Lato', sans-serif; font-size:14px; color:#757575; line-height:24px; font-weight: 300;">
+                        Order number: <span><%=orderId%></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family: 'Lato', sans-serif; font-size:14px; color:#757575; line-height:24px; font-weight: 300;">
+                        Order Date : <span><%=new Date(date).toUTCString()%></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color: #f1d7e2; padding: 0 30px 100px"   align="center">
+            <table border="0" align="center" cellpadding="0" cellspacing="0" style="border-left: 1px solid #dbd9d9; background-color: #f1d7e2;  border-right: 1px solid #dbd9d9; width: 100% ">
+                <tbody>
+                <tr>
+                    <td height="10" style="padding-left: 30px; padding-top: 100px">ITEMS ORDERED</td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" style="width: 100%">
+                            <tbody>
+                            <tr>
+                                <td height="30"></td>
+                            </tr>
+                            <%order.forEach((item)=>{%>
+                            <tr align="center" style="line-height:0px; padding-left: 0 ;">
+                                <td style="padding-left: 30px">
+                                    <img style="display:block; line-height:0px; font-size:0px; border:0px;" src="cid:<%=item.productId%>" width="69" height="78" alt="icon">
+                                </td>
+                                <td>
+                                    <table  border="0" align="left" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                        <tr align="center" style="line-height:30px; padding-left: 0 ">
+                                            <td style="padding-left: 30px">QTY </td>
+                                            <td style="padding-left: 30px">Price</td>
+                                        </tr>
+                                        <tr align="center" style="line-height:30px; padding-left: 0 ">
+                                            <td style="padding-left: 30px"><%=item.count%> </td>
+                                            <td style="padding-left: 30px"><%=item.priceSale%></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <br>
+                            <br>
+                            <%})%>
+                            <tr>
+                            <tr align="center" style="line-height:30px; padding-left: 0 ">
+                                <td style="padding-left: 30px">Subtotal </td>
+                                <td style="padding-left: 30px"><%=subTotal%>€</td>
+                            </tr>
+                            <tr align="center" style="line-height:30px; padding-left: 0 ">
+                                <td style="padding-left: 30px">Shipping </td>
+                                <td style="padding-left: 30px"><%=shipping%>€</td>
+                            </tr>
+                            <tr align="center" style="line-height:30px; padding-left: 0 ">
+                                <td style="padding-left: 30px">Total</td>
+                                <td style="padding-left: 30px"><%=total%>€</td>
+                            </tr>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
