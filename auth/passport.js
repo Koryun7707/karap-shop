@@ -24,11 +24,19 @@ module.exports = function (passport) {
             });
             if (error) throw error;
             if (value.password !== value.confirmPassword) {
-                return done(null, false, {message: 'Password and confirm password fields doesn\'t match'});
+                if (req.session.language = 'eng') {
+                    return done(null, false, {message: 'Password and confirm password fields doesn\'t match'});
+                } else {
+                    return done(null, false, {message: 'Գաղտնաբառերը չեն համընկնում!'});
+                }
             }
             const findUser = await User.findOne({email: value.email});
             if (findUser) {
-                return done(null, false, {message: 'This email is already in use. Please use another one.'});
+                if (req.session.language = 'eng') {
+                    return done(null, false, {message: 'This email is already in use. Please use another one.'});
+                } else {
+                    return done(null, false, {message: 'Այս էլ-նամակն արդեն օգտագործվում է: Խնդրում եմ օգտագործել մեկ այլ մեկը!'});
+                }
             }
             const userAvatar = generateAvatar(req.body.firstName, req.body.lastName);
             const userObj = {
@@ -56,7 +64,7 @@ module.exports = function (passport) {
             }
             const isMatch = bcrypt.compareSync(password, user.password);
             if (!isMatch) {
-                return done(null, false, {message: 'Password incorrect'});
+                return done(null, false, {message: 'Password incorrect!'});
             }
             return done(null, user);
         } catch (e) {

@@ -36,10 +36,10 @@ const sendMessageContactUs = async (req, res) => {
 };
 
 const signUp = async (req, res, next) => {
-    passport.authenticate('signup', {}, async (error, user) => {
+    passport.authenticate('signup', {}, async (error, user, message) => {
         try {
             if (error || !user) {
-                req.flash('error_msg', error);
+                req.flash('error_msg', message.message);
                 return res.redirect('/signup');
             }
             req.login(user, {session: false}, async (error) => {

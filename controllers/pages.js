@@ -159,7 +159,7 @@ module.exports = {
                 type: type,
                 brandName: brandName,
                 maxPrice: maxPrice,
-                countSale:countSale,
+                countSale: countSale,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)
@@ -293,6 +293,9 @@ module.exports = {
     },
     //start admin pages ->
     getAdminHomePage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('admin/home', {
             URL: '/admin-home',
             user: req.session.user,
@@ -421,6 +424,9 @@ module.exports = {
         }
     },//done
     getSignUpPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         const staticData = await getStaticData(req.session.language);
         res.render('signup', {
             URL: '/signup',
@@ -429,6 +435,9 @@ module.exports = {
         });
     },
     getLogInPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         const staticData = await getStaticData(req.session.language);
         return res.render('login', {
             URL: '/login',
@@ -1269,9 +1278,9 @@ module.exports = {
 `
             }
             sendMessageToMail(data);
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 req.flash('success_msg', 'Link send to email post.');
-            }else {
+            } else {
                 req.flash('success_msg', 'Հղումը ուղարկել էլ. Փոստին:');
 
             }
@@ -1300,9 +1309,9 @@ module.exports = {
             const {token} = req.params;
             jwt.verify(token, process.env.SECRET_KEY, function (err, decodedData) {
                 if (err) {
-                    if(req.session.language === 'eng'){
+                    if (req.session.language === 'eng') {
                         req.flash('error_msg', 'Link time is expired!');
-                    }else {
+                    } else {
                         req.flash('error_msg', 'Հղման ժամանակը սպառվել է:');
                     }
                     return res.redirect('/forgotPassword');
@@ -1321,18 +1330,18 @@ module.exports = {
             logger.info('Start userResetPAssword - - -');
             const {password, confirmPassword, userId} = req.body;
             if (password != confirmPassword) {
-                if(req.session.language === 'eng'){
+                if (req.session.language === 'eng') {
                     req.flash("error_msg", 'Password does not match!');
-                }else {
+                } else {
                     req.flash('error_msg', 'Գաղտնաբառը չի համապատասխանում!');
                 }
                 return res.redirect('/reset-password');
             }
             let hash = bcrypt.hashSync(password, 10);
             const result = await User.updateOne({_id: userId}, {password: hash});
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 req.flash('success_msg', 'Password is changed you can login.');
-            }else {
+            } else {
                 req.flash('success_msg', 'Գաղտնաբառը փոխվել է, դուք կարող եք մուտք գործել:');
             }
             return res.redirect('/login');
@@ -1467,9 +1476,9 @@ module.exports = {
                         if (err) logger.error(err)
                     })
                 });
-                if(req.session.language === 'eng'){
+                if (req.session.language === 'eng') {
                     req.flash("error_msg", "Files is required!");
-                }else {
+                } else {
                     req.flash("error_msg", "Ֆայլերը պարտադիր են!");
                 }
                 return res.redirect("/admin-blog");
@@ -1498,9 +1507,9 @@ module.exports = {
                     req.flash("error_msg", err.message);
                     return res.redirect("/admin-blog");
                 }
-                if(req.session.language === 'eng'){
+                if (req.session.language === 'eng') {
                     req.flash("success_msg", "Blog Data added complete!");
-                }else {
+                } else {
                     req.flash('success_msg', 'Բլոգի տվյալներն ավելացված են:');
                 }
                 return res.redirect("/admin-blog");
@@ -1572,9 +1581,9 @@ module.exports = {
                         if (err) logger.error(err)
                     })
                 });
-                if(req.session.language === 'eng'){
+                if (req.session.language === 'eng') {
                     req.flash("error_msg", "Files is required!");
-                }else {
+                } else {
                     req.flash("error_msg", "Ֆայլերը պարտադիր են!");
                 }
                 return res.redirect(`/admin-editBlog?_id=${_id}`);
@@ -1606,9 +1615,9 @@ module.exports = {
                     req.flash("error_msg", err.message);
                     return res.redirect(`/admin-editBlog?_id=${_id}`);
                 }
-                if(req.session.language === 'eng'){
+                if (req.session.language === 'eng') {
                     req.flash("success_msg", 'Blog update completed!');
-                }else {
+                } else {
                     req.flash("success_msg", 'Բլոգի թարմացումն ավարտված է!');
                 }
                 return res.redirect(`/admin-editBlog?_id=${_id}`);

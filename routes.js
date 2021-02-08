@@ -16,7 +16,7 @@ const {
     getProductById,
     getDataSearch
 } = require('./controllers/product');
-const {createShippingAddress, getShippingAddresses,deleteOrder} = require('./controllers/shippingAddress');
+const {createShippingAddress, getShippingAddresses, deleteOrder} = require('./controllers/shippingAddress');
 const {createBrand, deleteBrand, updateBrand, getBrands, getAllBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
@@ -56,7 +56,7 @@ router.post('/login',
         passport.authenticate('login', {
             successRedirect: '/',
             failureRedirect: '/login',
-            failureFlash: true
+            failureFlash: true,
         })(req, res, next);
     });
 // router.post('/signup',
@@ -118,7 +118,7 @@ router.post('/checkouts', checkIsAuthenticated, pagesController.getCheckouts);
 //Create shipping address
 router.post('/shipping-address', checkIsAuthenticated, createShippingAddress);
 router.get('/shipping-address', checkIsAuthenticated, isAdmin, getShippingAddresses);
-router.delete('/order/:id',checkIsAuthenticated,isAdmin,deleteOrder)
+router.delete('/order/:id', checkIsAuthenticated, isAdmin, deleteOrder)
 
 //shop Filter
 router.post('/shop-filter', getProductsShopFilter);
@@ -146,7 +146,7 @@ router.get('/admin-all-products', checkIsAuthenticated, isAdmin, pagesController
 
 //blog
 router.get('/admin-blog', checkIsAuthenticated, isAdmin, pagesController.getAdminBlog);
-router.post('/admin-blog', checkIsAuthenticated, isAdmin,upload.array('uploadImagesBlog', 2), pagesController.createAdminBlog);
+router.post('/admin-blog', checkIsAuthenticated, isAdmin, upload.array('uploadImagesBlog', 2), pagesController.createAdminBlog);
 router.get('/admin-all-blogs', checkIsAuthenticated, isAdmin, pagesController.getAllBlogsData);
 router.delete('/blog/:id', checkIsAuthenticated, isAdmin, pagesController.deleteBlog);
 router.post('/blog-edit/:_id', checkIsAuthenticated, isAdmin, upload.array('uploadImagesBlogEdit', 2), pagesController.updateBlog);
