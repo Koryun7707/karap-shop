@@ -56,12 +56,12 @@ module.exports = {
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
             let products
-            if(req.session.language === 'eng'){
-                 products = await Product.find({}).select('images name type').exec();
+            if (req.session.language === 'eng') {
+                products = await Product.find({}).select('images name type').exec();
                 products = [...new Map(products.map(item =>
                     [item['type'], item])).values()];
-            }else {
-                 products = await Product.find({}).select('images nameArm typeArm').exec();
+            } else {
+                products = await Product.find({}).select('images nameArm typeArm').exec();
                 products = [...new Map(products.map(item =>
                     [item['typeArm'], item])).values()];
             }
@@ -115,7 +115,7 @@ module.exports = {
                 URL: '/blog',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
-                blog:blog
+                blog: blog
             });
         } catch (e) {
             logger.error(`Get Blog Page Data Error:${e}`);
@@ -136,10 +136,10 @@ module.exports = {
                 pageData[0].imagesShopSlider = arrayImages.imagesShopSlider;
             }
             let productsType;
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 productsType = await Product.find({}).distinct('type').exec();
-            }else{
-                 productsType = await Product.find({}).distinct('typeArm').exec();
+            } else {
+                productsType = await Product.find({}).distinct('typeArm').exec();
             }
             const brands = await Brand.find({language: req.session.language}).select('name').exec();
             let maxPrice = await Product.find({}).select('-_id price');
@@ -198,7 +198,7 @@ module.exports = {
                 user: req.session.user,
                 product: product,
                 staticData: await getStaticData(req.session.language),
-                language:req.session.language
+                language: req.session.language
             });
         } catch (e) {
             req.flash("error_msg", e.message);
@@ -315,7 +315,11 @@ module.exports = {
                 return res.redirect('/admin-home');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language = 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', 'Ֆայլերը պարտադիր են:');
+                }
                 return res.redirect('/admin-home');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -353,10 +357,13 @@ module.exports = {
                                 }
                             });
                         }
-                        req.flash('success_msg', "Home Page Data Add Completed!");
+                        if (req.session.language === 'eng') {
+                            req.flash('success_msg', "Home page data add completed!");
+                        } else {
+                            req.flash('success_msg', "Հիմնական էջի տվյալներն ավելացված են:!");
+                        }
                         return res.redirect('/admin-home');
                     }
-                    req.flash('success_msg', "Home Page Data Add Completed!");
                     return res.redirect('/admin-home');
                 });
             } else {
@@ -399,7 +406,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-home');
                     }
-                    req.flash('success_msg', "Home Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Home page data add completed!");
+                    } else {
+                        req.flash('success_msg', "Հիմնական էջի տվյալներն ավելացված են:!");
+                    }
                     return res.redirect('/admin-home');
                 });
             }
@@ -466,7 +477,11 @@ module.exports = {
                 return res.redirect('/admin-shop');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են!:");
+                }
                 return res.redirect('/admin-shop');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -506,7 +521,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-shop');
                     }
-                    req.flash('success_msg', "Shop Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Shop Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Խանութի էջի տվյալների ավելացումն ավարտված է:\n!");
+                    }
                     return res.redirect('/admin-shop');
                 });
             } else {
@@ -548,7 +567,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-shop');
                     }
-                    req.flash('success_msg', "Shop Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Shop Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Խանութի էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-shop');
                 });
             }
@@ -581,7 +604,11 @@ module.exports = {
                 return res.redirect('/admin-brand');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-brand');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -621,7 +648,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-brand');
                     }
-                    req.flash('success_msg', "Brand Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Brand Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Ապրանքանիշի էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-brand');
                 });
             } else {
@@ -663,13 +694,17 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-brand');
                     }
-                    req.flash('success_msg', "Brand Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Brand Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Ապրանքանիշի էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-brand');
                 });
             }
         } catch (e) {
             logger.error(`Brand Page Data Add Error: ${e}`)
-            req.flash('error_msg', "Brand Page Data Add Completed!");
+            req.flash('error_msg', e.message);
             return res.redirect('/admin-brand');
         }
     },//+
@@ -703,7 +738,11 @@ module.exports = {
                 return res.redirect('/admin-about');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-about');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -746,7 +785,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-about');
                     }
-                    req.flash('success_msg', "Data About Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "About Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Մեր մասին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-about');
                 });
             } else {
@@ -792,7 +835,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-about');
                     }
-                    req.flash('success_msg', "Data About Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "About Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Մեր մասին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-about');
                 });
             }
@@ -825,7 +872,11 @@ module.exports = {
                 return res.redirect('/admin-contact');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-contact');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -866,7 +917,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-contact');
                     }
-                    req.flash('success_msg', 'Contact Page Data Add Completed!');
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Contact Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Կապվեք մեզ հետ էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-contact');
                 });
             } else {
@@ -909,7 +964,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-contact');
                     }
-                    req.flash('success_msg', 'Contact Page Data Add Completed!');
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Contact Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Կապվեք մեզ հետ էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-contact');
                 });
             }
@@ -942,7 +1001,11 @@ module.exports = {
                 return res.redirect('/admin-join-our-team');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', 'Files is required.!');
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-join-our-team');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -992,7 +1055,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
-                    req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Միացեք մեր թիմին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-join-our-team');
                 });
             } else {
@@ -1042,7 +1109,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
-                    req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Միացեք մեր թիմին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-join-our-team');
                 });
             }
@@ -1177,7 +1248,11 @@ module.exports = {
             const {email} = req.body;
             const user = await User.findOne({email: email});
             if (!user) {
-                req.flash('error_msg', 'User with this email not exist.');
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', 'User with this email not exist.');
+                } else {
+                    req.flash('error_msg', "Այս էլ.փոստով օգտվողը գոյություն չունի:");
+                }
                 return res.redirect('/forgotPassword');
             }
             const {_id} = user
@@ -1194,7 +1269,12 @@ module.exports = {
 `
             }
             sendMessageToMail(data);
-            req.flash('success_msg', 'Link send to mail');
+            if(req.session.language === 'eng'){
+                req.flash('success_msg', 'Link send to email post.');
+            }else {
+                req.flash('success_msg', 'Հղումը ուղարկել էլ. Փոստին:');
+
+            }
             return res.redirect('/forgotPassword');
         } catch (e) {
             logger.error(`Send Forgot Password Error:${e}`);
@@ -1220,7 +1300,11 @@ module.exports = {
             const {token} = req.params;
             jwt.verify(token, process.env.SECRET_KEY, function (err, decodedData) {
                 if (err) {
-                    req.flash('error_msg', 'Incorrect token or it is expired');
+                    if(req.session.language === 'eng'){
+                        req.flash('error_msg', 'Link time is expired!');
+                    }else {
+                        req.flash('error_msg', 'Հղման ժամանակը սպառվել է:');
+                    }
                     return res.redirect('/forgotPassword');
                 }
                 localStorage.setItem('userId', JSON.stringify(decodedData._id));
@@ -1237,12 +1321,20 @@ module.exports = {
             logger.info('Start userResetPAssword - - -');
             const {password, confirmPassword, userId} = req.body;
             if (password != confirmPassword) {
-                req.flash("error_msg", 'Password Does Not Match!');
+                if(req.session.language === 'eng'){
+                    req.flash("error_msg", 'Password does not match!');
+                }else {
+                    req.flash('error_msg', 'Գաղտնաբառը չի համապատասխանում!');
+                }
                 return res.redirect('/reset-password');
             }
             let hash = bcrypt.hashSync(password, 10);
             const result = await User.updateOne({_id: userId}, {password: hash});
-            req.flash('success_msg', 'Password is updated you can login');
+            if(req.session.language === 'eng'){
+                req.flash('success_msg', 'Password is changed you can login.');
+            }else {
+                req.flash('success_msg', 'Գաղտնաբառը փոխվել է, դուք կարող եք մուտք գործել:');
+            }
             return res.redirect('/login');
         } catch (e) {
             logger.error(`Updated Password Error:${e}`);
@@ -1340,7 +1432,7 @@ module.exports = {
             console.log(e);
         }
     },
-    getAdminBlog:async(req,res)=>{
+    getAdminBlog: async (req, res) => {
         try {
             res.render('admin/adminBlog', {
                 URL: '/admin-blog',
@@ -1353,7 +1445,7 @@ module.exports = {
             return res.redirect("/");
         }
     },
-    createAdminBlog:async (req,res)=> {
+    createAdminBlog: async (req, res) => {
         logger.info('Start Create Blog - - -');
         try {
             const files = req.files;
@@ -1375,7 +1467,11 @@ module.exports = {
                         if (err) logger.error(err)
                     })
                 });
-                req.flash("error_msg", "Files is required.!");
+                if(req.session.language === 'eng'){
+                    req.flash("error_msg", "Files is required!");
+                }else {
+                    req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+                }
                 return res.redirect("/admin-blog");
             }
             let dir = `./public/uploads/blog`;
@@ -1402,7 +1498,11 @@ module.exports = {
                     req.flash("error_msg", err.message);
                     return res.redirect("/admin-blog");
                 }
-                req.flash("success_msg", "Blog Data add complete!");
+                if(req.session.language === 'eng'){
+                    req.flash("success_msg", "Blog Data added complete!");
+                }else {
+                    req.flash('success_msg', 'Բլոգի տվյալներն ավելացված են:');
+                }
                 return res.redirect("/admin-blog");
             });
         } catch (e) {
@@ -1410,12 +1510,12 @@ module.exports = {
             return res.redirect("/admin-blog");
         }
     },
-     deleteBlog:async (req, res) => {
+    deleteBlog: async (req, res) => {
         logger.info('Start Delete Blog - - -');
         const {id} = req.params;
         try {
             //code must be changed, and optimized
-            const blog = await Blog.findById({_id:id}).lean();
+            const blog = await Blog.findById({_id: id}).lean();
 
             blog.blogImages.map((item) => {
                 rimraf(`./public/${item}`, (err) => {
@@ -1431,14 +1531,14 @@ module.exports = {
             return res.redirect("/admin-blog");
         }
     },
-    getAllBlogsData:async(req,res)=>{
+    getAllBlogsData: async (req, res) => {
         logger.info('Start Get All Blog Data - - -');
         try {
             const blogs = await Blog.find({}).lean().exec();
             res.render('admin/ourBlogs', {
                 URL: '/admin-all-blogs',
                 user: req.session.user,
-                blogs:blogs,
+                blogs: blogs,
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
@@ -1447,7 +1547,7 @@ module.exports = {
             return res.redirect("/");
         }
     },
-    updateBlog:async(req,res)=>{
+    updateBlog: async (req, res) => {
         logger.info('Start Blog update - - -');
         try {
             const _id = req.params._id;
@@ -1472,7 +1572,11 @@ module.exports = {
                         if (err) logger.error(err)
                     })
                 });
-                req.flash("error_msg", "Files is required.!");
+                if(req.session.language === 'eng'){
+                    req.flash("error_msg", "Files is required!");
+                }else {
+                    req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+                }
                 return res.redirect(`/admin-editBlog?_id=${_id}`);
             }
             let dir = `./public/uploads/blog`;
@@ -1481,12 +1585,12 @@ module.exports = {
                     if (err) logger.error(err)
                 });
             }
-                blog.infoBlog = value.infoBlog
-                blog.textBlogTitle = value.textBlogTitle
-                blog.title1 = value.title1
-                blog.title2 = value.title2
-                blog.language = value.language
-                blog.blogImages.map((item) => {
+            blog.infoBlog = value.infoBlog
+            blog.textBlogTitle = value.textBlogTitle
+            blog.title1 = value.title1
+            blog.title2 = value.title2
+            blog.language = value.language
+            blog.blogImages.map((item) => {
                 rimraf(`./public/${item}`, (err) => {
                     if (err) logger.error(err)
                 })
@@ -1502,7 +1606,11 @@ module.exports = {
                     req.flash("error_msg", err.message);
                     return res.redirect(`/admin-editBlog?_id=${_id}`);
                 }
-                req.flash("success_msg", 'Blog Update Completed!');
+                if(req.session.language === 'eng'){
+                    req.flash("success_msg", 'Blog update completed!');
+                }else {
+                    req.flash("success_msg", 'Բլոգի թարմացումն ավարտված է!');
+                }
                 return res.redirect(`/admin-editBlog?_id=${_id}`);
             });
 

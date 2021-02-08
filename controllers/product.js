@@ -31,7 +31,11 @@ const createProduct = async (req, res) => {
                     if (err) logger.error(err);
                 })
             });
-            req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
+            if(req.session.language === 'eng'){
+                req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
+            }else {
+                req.flash("error_msg", "* ընտրել պատկերների քանակը պետք է լինի>= 2 կամ <= 5!");
+            }
             return res.redirect("/admin-create-product");
         }
         let dir = `./public/uploads/product`;
@@ -142,7 +146,11 @@ const updateProduct = async (req, res) => {
                     if (err) logger.error(err);
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            if(req.session.language === 'eng'){
+                req.flash("error_msg", "Files is required!");
+            }else {
+                req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+            }
             return res.redirect(`/admin-editProduct?_id=${_id}`);
         }
         let dir = `./public/uploads/product`;

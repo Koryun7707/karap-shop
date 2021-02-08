@@ -21,7 +21,11 @@ const sendMessageContactUs = async (req, res) => {
                                 </div> `,
         }
         await sendMessageToMail(content);
-        req.flash("success_msg", 'Send Mail Completed!');
+        if (req.session.language = 'eng') {
+            req.flash("success_msg", 'Account activation link sent to mail completed!');
+        } else {
+            req.flash('success_msg', 'Ակտիվացման հղումը ուղարկվել է Ձեր էլ. փոստին Խնդրում ենք՝ մուտք գործել ակտիվացնել համար:');
+        }
         return res.redirect("/contact");
 
     } catch (err) {
@@ -60,7 +64,11 @@ const signUp = async (req, res, next) => {
                                     </div> `,
                 }
                 sendMessageToMail(message);
-                req.flash('success_msg', 'Activation link sent to email. Please activate to log in.');
+                if (req.session.language = 'eng') {
+                    req.flash('success_msg', 'Activation link sent to email. Please activate to log in.');
+                } else {
+                    req.flash('success_msg', 'Ակտիվացման հղումը ուղարկվել է էլ. Խնդրում ենք ակտիվացնել ՝ մուտք գործելու համար:');
+                }
                 return res.redirect('/signup');
             });
         } catch (e) {
@@ -75,6 +83,24 @@ const activateAccount = async (req, res) => {
         const {token} = req.params;
         if (token) {
             const {user} = jwt.verify(token, process.env.SECRET_KEY);
+            if (!user) {
+                if (req.session.language = 'eng') {
+                    req.flash('error_msg', 'Activation link is not valid please register again!');
+                } else {
+                    req.flash('error_msg', 'Ակտիվացման հղումը վավեր չէ, խնդրում ենք կրկին գրանցվել:');
+                }
+                return res.redirect('/signup');
+            }
+            const userInDb = await User.findOne({email: user.email});
+            if (userInDb) {
+                if (req.session.language = 'eng') {
+                    req.flash('success_msg', 'Account already has been activated, you can login now.');
+                } else {
+                    req.flash('success_msg', 'Հաշիվն արդեն ակտիվացված է, կարող եք մուտք գործել հիմա:');
+                }
+                return res.redirect('/signup');
+            }
+
             let hash = bcrypt.hashSync(user.password, 10);
             let newUser = new User({
                 status: true,
@@ -99,11 +125,19 @@ const activateAccount = async (req, res) => {
             req.session.user = userObjWithoutPassword;
             return res.redirect('/');
         } else {
-            req.flash('error_msg', 'Account activation error!');
+            if (req.session.language = 'eng') {
+                req.flash('error_msg', 'Account activation error!');
+            } else {
+                req.flash('error_msg', 'Հաշվի ակտիվացման սխալ:');
+            }
             return res.redirect('/signup');
         }
     } catch (e) {
-        req.flash('error_msg', 'Account activation error,please try again!');
+        if (req.session.language = 'eng') {
+            req.flash('error_msg', 'Account activation error,please try again!');
+        } else {
+            req.flash('error_msg', 'Հաշվի ակտիվացման սխալ, կրկին փորձեք:');
+        }
         return res.redirect('/signup');
     }
 };

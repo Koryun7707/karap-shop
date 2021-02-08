@@ -30,7 +30,11 @@ const createBrand = async (req, res) => {
                     if (err) logger.error(err)
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            if (req.session.language === 'eng') {
+                req.flash("error_msg", "Files is required!");
+            } else {
+                req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+            }
             return res.redirect("/admin-create-brand");
         }
         let dir = `./public/uploads/brands`;
@@ -128,7 +132,11 @@ const updateBrand = async (req, res) => {
                     if (err) logger.error(err)
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            if (req.session.language === 'eng') {
+                req.flash("error_msg", "Files is required!");
+            } else {
+                req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+            }
             return res.redirect(`/admin-editBrand?_id=${_id}`);
         }
         let dir = `./public/uploads/brands`;
