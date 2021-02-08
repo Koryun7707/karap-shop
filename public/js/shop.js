@@ -16,11 +16,10 @@ function searchByPrice() {
         let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandIds = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
+                if (input.value.length > 20) {
+                    brandIds.push(input.value);
                 } else {
                     values.push(input.value);
                 }
@@ -33,7 +32,7 @@ function searchByPrice() {
             url: '/shop-filter',
             data: {
                 types: values,
-                brandNames: brandNames,
+                brandIds: brandIds,
                 searchValue: searchValue,
                 page: 1,
                 priceFrom: priceFrom,
@@ -158,7 +157,7 @@ $(document).ready(function () {
 
 
         let type = gup('type', location.href);
-        const brandNames = gup('brandName', location.href);
+        const brandId = gup('brandId', location.href);
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
         if (type) {
@@ -167,7 +166,7 @@ $(document).ready(function () {
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1, type: type, brandNames: brandNames, priceFrom: priceFrom, priceTo: priceTo},
+            data: {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo},
             success: (response) => {
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -319,11 +318,10 @@ $(document).ready(function () {
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandId = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
+                if (input.value.length > 20) {
+                    brandId.push(input.value);
                 } else {
                     values.push(input.value);
                 }
@@ -338,7 +336,7 @@ $(document).ready(function () {
                 priceFrom: priceFrom,
                 priceTo: priceTo,
                 types: values,
-                brandNames: brandNames,
+                brandId: brandId,
 
             },
             success: function (response) {
@@ -474,11 +472,10 @@ $(document).ready(function () {
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandId = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
+                if (input.value.length > 20) {
+                    brandId.push(input.value);
                 } else {
                     values.push(input.value);
                 }
@@ -489,7 +486,7 @@ $(document).ready(function () {
             url: '/shop-filter',
             data: {
                 types: values,
-                brandNames: brandNames,
+                brandId: brandId,
                 searchValue: searchValue,
                 page: pageNumber,
                 priceFrom: priceFrom,
@@ -590,12 +587,11 @@ $(document).ready(function () {
         searchValue = ''
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandId = [];
             var onSale;
             $.each($('input:checked'), function (index, input) {
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
+                if (input.value.length > 20) {
+                    brandId.push(input.value);
                 } else if (input.value === 'on') {
                     onSale = input.value;
                 } else {
@@ -613,7 +609,7 @@ $(document).ready(function () {
                 types: values,
                 priceFrom: priceFrom,
                 priceTo: priceTo,
-                brandNames: brandNames,
+                brandId: brandId,
                 searchValue: searchValue,
                 onSale: onSale,
                 page: pageNumber

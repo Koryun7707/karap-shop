@@ -4,7 +4,9 @@
     <tr>
         <th id="1" role="button" scope="col">Name</th>
         <th id="2" role="button" scope="col">Info</th>
+        <th id="2" role="button" scope="col">Info Arm</th>
         <th id="3" role="button" scope="col">Type</th>
+        <th id="3" role="button" scope="col">Type Arm</th>
         <th id="4" role="button" scope="col">Address</th>
     </tr>
     </thead>
@@ -32,7 +34,9 @@
                         tr.innerHTML = `
                     <td>${item.name}</td>
                     <td>${item.info}</td>
+                    <td>${item.infoArm}</td>
                     <td>${item.type}</td>
+                    <td>${item.typeArm}</td>
                     <td>${item.registrationAddress}</td>
                     <td><a href ='/admin-editBrand?_id=${item._id}' type="button" class="btn btn-info">Edit</a></td>
                     <td><a onclick="deleteBrand(this)" value='${item._id}' type="button" class="btn btn-danger">Delete</a></td>`

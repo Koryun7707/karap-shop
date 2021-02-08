@@ -84,7 +84,9 @@
                 response.results.brands.map((item) => {
                     let brandsRenderPlace = document.getElementById('brands-section-place');
                     let text;
-                    if (item.language === 'eng') {
+                    const language = document.getElementById('example').value === 'eng'?true:false
+                    console.log(language)
+                    if (language ) {
                         text = 'Shop now'
                     } else {
                         text = 'Գնել'
@@ -96,9 +98,9 @@
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
-                            ${item.info}
+                            ${language?item.info:item.infoArm}
                         </div>
-                        <a href="shop?brandName=${item.name}" class="btn btn-green-gradient px-5 py-3">
+                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5 py-3">
                                 ${text}
                         </a>
                     </div>
@@ -194,7 +196,7 @@
                         <div class="info-text">
                             ${item.info}
                         </div>
-                        <a href="shop?brandName=${item.name}" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
+                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-4">

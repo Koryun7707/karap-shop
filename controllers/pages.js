@@ -65,7 +65,7 @@ module.exports = {
                 products = [...new Map(products.map(item =>
                     [item['typeArm'], item])).values()];
             }
-            const countOfBrands = await Brand.find({language: req.session.language}).exec();
+            const countOfBrands = await Brand.find({}).exec();
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
@@ -141,14 +141,14 @@ module.exports = {
             } else {
                 productsType = await Product.find({}).distinct('typeArm').exec();
             }
-            const brands = await Brand.find({language: req.session.language}).select('name').exec();
+            const brands = await Brand.find({}).select('name').exec();
             let maxPrice = await Product.find({}).select('-_id price');
             maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
                 return o.price;
             }))
             const countSale = await Product.count({sale: {$exists: true}}).exec();
             const type = req.query.type || null;
-            const brandName = req.query.brandName || null;
+            const brandId = req.query.brandId || null;
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -157,7 +157,7 @@ module.exports = {
                 productsType: productsType,
                 brands: brands,
                 type: type,
-                brandName: brandName,
+                brandId: brandId,
                 maxPrice: maxPrice,
                 countSale: countSale,
             });
@@ -229,7 +229,7 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesBrandSlider').exec();
                 pageData[0].imagesBrandSlider = arrayImages.imagesBrandSlider;
             }
-            const brands = await Brand.find({language: req.session.language}).select('info name images');
+            const brands = await Brand.find({}).select('info name images');
             res.render('brand', {
                 URL: '/brand',
                 user: req.session.user,
@@ -1141,7 +1141,7 @@ module.exports = {
     },
     getAdminAddProductPage: async (req, res) => {
         try {
-            const brands = await Brand.find({language: req.session.language}).select('name _id');
+            const brands = await Brand.find({}).select('name _id');
 
             res.render('admin/addProduct', {
                 URL: 'admin-create-product',

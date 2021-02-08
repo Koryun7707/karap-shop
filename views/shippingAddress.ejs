@@ -254,6 +254,7 @@
                 div.setAttribute('class', 'd-flex');
                 const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size?true:false;
                 const language = document.getElementById('example').value === 'eng'?true:false;
+                const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color?true:false;
                 div.innerHTML = `
                         <div class="img-area">
                             <img src="${item.images}" alt="">
@@ -267,7 +268,7 @@
                         <div id='div3${item._id}' class="price ml-auto" style="text-decoration: line-through;">${item.price} </div>
                         <div id='div4${item._id}' class="price ml-auto">${item.priceSale} </div>
 `
-                if(size){
+                if(size && color){
                     document.getElementById('line12').innerHTML = '/';
                 }
                 if(Number(item.priceSale.substring(0,item.priceSale.length-1)) === (Number(item.price.substring(0,item.price.length-1)))){
@@ -278,11 +279,8 @@
             salePrice.innerHTML = `-${(productSalePrice - productTotalPrice).toFixed(1)}€`;
             productPrice.innerHTML = `${productTotalPrice}€`;
         }
-
-
         //clear shipping address when page is refresh
     }
-
 </script>
 <%- include ('footer') -%>
 

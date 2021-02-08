@@ -13,6 +13,11 @@
                 <input required type="text" class="form-control" name="brandType" id="exampleInputEmail1"
                        placeholder="Brand type.">
             </div>
+            <div class="form-group important">
+                <label for="exampleInputEmail22">Type Armenian</label>
+                <input required type="text" class="form-control" name="brandTypeArm"
+                       placeholder="Brand type in Armenian.">
+            </div>
 
             <div class="form-group important">
                 <label for="exampleInputEmail11">Brand registration address(*this case for count delevery, from where
@@ -27,6 +32,11 @@
                 <textarea name="brandInfo" id="" rows="6" class="form-control"
                           placeholder="Some info about brand."></textarea>
             </div>
+            <div class="form-group d-flex flex-column important">
+                <label>Info Armenian</label>
+                <textarea name="brandInfoArm" id="" rows="6" class="form-control"
+                          placeholder="Some info about brand in Armanian."></textarea>
+            </div>
             <div class="form-group important" id="upload_add_brand_image">
                 <label for="exampleInputEmail1 important">Upload brand logo, and brand home/brands/blog images(* images
                     must be
@@ -34,13 +44,13 @@
                 <input required type="file" name="brandImages" multiple="multiple" class="form-control"
                        id="uploadImagesBySize">
             </div>
-            <div class="form-group important">
-                <label for="exampleInputEmail1">Language</label>
-                <select name="language">
-                    <option name="eng" value="eng" selected>Eng</option>
-                    <option name="arm" value="arm">Հայ</option>
-                </select>
-            </div>
+<!--            <div class="form-group important">-->
+<!--                <label for="exampleInputEmail1">Language</label>-->
+<!--                <select name="language">-->
+<!--                    <option name="eng" value="eng" selected>Eng</option>-->
+<!--                    <option name="arm" value="arm">Հայ</option>-->
+<!--                </select>-->
+<!--            </div>-->
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>
     </div>

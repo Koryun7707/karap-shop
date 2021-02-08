@@ -46,9 +46,10 @@ const createBrand = async (req, res) => {
         const brand = new Brand({
             name: value.brandName,
             info: value.brandInfo,
+            infoArm: value.brandInfoArm,
             type: value.brandType,
+            typeArm: value.brandTypeArm,
             registrationAddress: value.registrationAddress,
-            language: value.language,
         });
         brand.images = moveFile(files, dir);
         brand.save((err, result) => {
@@ -147,9 +148,10 @@ const updateBrand = async (req, res) => {
         }
         brand.name = value.brandName;
         brand.info = value.brandInfo;
+        brand.infoArm = value.brandInfoArm;
         brand.type = value.brandType;
+        brand.typeArm = value.brandTypeArm;
         brand.registrationAddress = value.registrationAddress;
-        brand.language = value.language;
         brand.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
                 if (err) logger.error(err)
@@ -180,16 +182,13 @@ const updateBrand = async (req, res) => {
 
 const getBrands = async (req, res, next) => {
     try {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         const page = Number(req.query.page) || 1;
         const limit = 12;
         const options = {
             page: page,
             limit: limit,
         }
-        const results = await Brand.paginate({language: req.session.language}, options);
+        const results = await Brand.paginate({}, options);
         return res.status(200).json(success('success', {
             brands: results.docs,
             pageCount: results.pages,

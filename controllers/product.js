@@ -235,7 +235,7 @@ const getProductsShopFilter = async (req, res) => {
             limit: limit,
         }
         const types = req.body['types[]'] || req.body.type || [];
-        const brandNames = req.body['brandNames[]'] || req.body.brandNames || [];
+        const brandId = req.body['brandId[]'] || req.body.brandId || [];
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
@@ -268,20 +268,20 @@ const getProductsShopFilter = async (req, res) => {
             search['$and'].push({sale: {$exists: true}});
         }
         let data;
-        if (!brandNames.length && !types.length && searchValue === undefined) {
+        if (!brandId.length && !types.length && searchValue === undefined) {
             data = await Product.paginate({}, options);
-        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0 && types.length > 0) {
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandId.length > 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             if(req.session.language === 'eng'){
                 search['$and'].push({type: {"$in": types}});
             }else {
                 search['$and'].push({typeArm: {"$in": types}});
             }
-            search['$and'].push({brandName: {"$in": brandNames}});
+            search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0) {
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandId.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            search['$and'].push({brandName: {"$in": brandNames}});
+            search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
@@ -294,16 +294,16 @@ const getProductsShopFilter = async (req, res) => {
         } else if (Number(priceTo) && Number(priceFrom) >= 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             data = await Product.paginate(search, options);
-        } else if (brandNames.length > 0 && types.length > 0) {
-            search['$and'].push({brandName: {"$in": brandNames}});
+        } else if (brandId.length > 0 && types.length > 0) {
+            search['$and'].push({brandId: {"$in": brandId}});
             if(req.session.language === 'eng'){
                 search['$and'].push({type: {"$in": types}});
             }else {
                 search['$and'].push({typeArm: {"$in": types}});
             }
             data = await Product.paginate(search, options);
-        } else if (brandNames.length > 0) {
-            search['$and'].push({brandName: {"$in": brandNames}});
+        } else if (brandId.length > 0) {
+            search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
         } else if (types.length > 0) {
             if(req.session.language === 'eng'){
@@ -375,7 +375,7 @@ const getDataSearch = async (req, res) => {
                     {'name': {'$regex': `^${search}`, "$options": "i"}},
                 ]
             }
-            , {language: req.session.language}
+
         ]
     };
     let searchFilterProduct

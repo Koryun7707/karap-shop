@@ -30,7 +30,7 @@ module.exports =
             to_text: "TO",
             shop_brand: 'Brands',
             //brands
-            brand_button: 'Գնել հիմա',
+            brand_button: 'Buy now',
             //blog
             blog_button: 'Read more',
             //about

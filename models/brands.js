@@ -17,7 +17,15 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
+    infoArm: {
+        type: String,
+        required: true,
+    },
     type: {
+        type: String,
+        required: true,
+    },
+    typeArm: {
         type: String,
         required: true,
     },
@@ -29,10 +37,6 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
-    language: {
-        type: String,
-        enum: ['eng', 'arm'],
-    }
 });
 
 brandSchema.plugin(mongoosePaginate);
