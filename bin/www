@@ -19,7 +19,7 @@ const httpServer = http.createServer(app);
 //console.log("Listening to :", httpServer);
 //console.log("Listening to :", httpsServer);
 
-httpServer.listen(3000);
+httpServer.listen(80);
 //httpsServer.listen(3043);
 
-console.log("Listening to PORT 3000 and 3043");
+console.log("Listening to PORT 80 ");
