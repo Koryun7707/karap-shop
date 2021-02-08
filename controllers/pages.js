@@ -146,6 +146,7 @@ module.exports = {
             maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
                 return o.price;
             }))
+            const countSale = await Product.count({sale: {$exists: true}}).exec();
             const type = req.query.type || null;
             const brandName = req.query.brandName || null;
             res.render('shop', {
@@ -158,6 +159,7 @@ module.exports = {
                 type: type,
                 brandName: brandName,
                 maxPrice: maxPrice,
+                countSale:countSale,
             });
         } catch (e) {
             console.log(`Get Brands Error: ${e}`)
