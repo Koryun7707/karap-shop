@@ -34,27 +34,48 @@ const createShippingAddress = async (req, res) => {
 const getShippingAddresses = async (req, res) => {
     logger.info('Start get shipping addresses - - -');
     try {
-        const getShippingAddresses = await ShippingAddress.find({}).populate({
+        var perPage = 20
+        var page = req.query.page || 1
+        const staticData = await getStaticData(req.session.language);
+         ShippingAddress.find({})
+            .skip((perPage * page) - perPage)
+            .limit(perPage)
+            .populate({
             path: 'userId',
             select: 'firstName lastName -_id',
-        });
-        const staticData = await getStaticData(req.session.language);
-        if (!getShippingAddresses) {
-            return res.status(500).json(err('Shipping model is empty', res.statusCode));
-        }
-        return res.render('admin/shippingAddressUsers', {
-            URL: '/shipping-address',
-            user: req.session.user,
-            staticData: staticData,
-            shippingAddress: getShippingAddresses
-        });
+        }).exec(function(err, shippingAddress) {
+             ShippingAddress.count().exec(function (err, count) {
+                    if (err) return logger.error(`${err}`);
+                    res.render('admin/shippingAddressUsers', {
+                        shippingAddress: shippingAddress,
+                        current: page,
+                        pages: Math.ceil(count / perPage),
+                        URL: '/shipping-address',
+                        user: req.session.user,
+                        staticData: staticData,
+                    })
+                });
+            })
     } catch (e) {
         logger.error(`Get Shipping Address Error: ${e}`);
         req.flash('error_msg', e.message);
         return res.redirect('/');
     }
 }
+const deleteOrder = async(req,res)=>{
+    logger.info('Start deleteOrder - - -');
+    const {id} = req.params;
+    try {
+        await ShippingAddress.findByIdAndRemove({_id: id}).lean();
+        return res.status(200).json({success: true, message: 'Delete Order Completed'});
+    } catch (e) {
+        logger.error(`Order Delete Error: ${e}`);
+        req.flash("error", e.message);
+        return res.redirect("/shipping-address");
+    }
+}
 module.exports = {
     createShippingAddress: createShippingAddress,
     getShippingAddresses: getShippingAddresses,
+    deleteOrder:deleteOrder
 };

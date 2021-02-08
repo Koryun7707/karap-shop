@@ -16,7 +16,7 @@ const {
     getProductById,
     getDataSearch
 } = require('./controllers/product');
-const {createShippingAddress, getShippingAddresses} = require('./controllers/shippingAddress');
+const {createShippingAddress, getShippingAddresses,deleteOrder} = require('./controllers/shippingAddress');
 const {createBrand, deleteBrand, updateBrand, getBrands, getAllBrands} = require('./controllers/brand')
 const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
@@ -118,6 +118,7 @@ router.post('/checkouts', checkIsAuthenticated, pagesController.getCheckouts);
 //Create shipping address
 router.post('/shipping-address', checkIsAuthenticated, createShippingAddress);
 router.get('/shipping-address', checkIsAuthenticated, isAdmin, getShippingAddresses);
+router.delete('/order/:id',checkIsAuthenticated,isAdmin,deleteOrder)
 
 //shop Filter
 router.post('/shop-filter', getProductsShopFilter);
