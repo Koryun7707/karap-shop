@@ -25,7 +25,7 @@
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div><%= staticData.quantity %> <span id="countProduct">0</span></div>
-                        <div id="productStartPrice" style="text-decoration: line-through;">0</div>
+                        <div id="productStartPrice" >0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div><%= staticData.you_save %></div>
@@ -99,6 +99,8 @@
                 const language = document.getElementById('example').value === 'eng' ? true : false;
                 if (response.results.length) {
                     response.results.forEach(function (item) {
+                        const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size?true:false;
+                        const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color?true:false;
                         if (!item.sale) {
                             item.sale = 0;
                         }
@@ -117,8 +119,8 @@
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language ? item.name : item.nameArm}</div>
-                            <div class="product-color my-2 py-3" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color || ''}"></div>
-                            <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
+                            <div id='div2${item._id}' class="product-color my-2 py-3" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}"></div>
+                            <div id='div1${item._id}' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-1 justify-content-around">
@@ -141,6 +143,12 @@
                         <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
                `
+                        if(!size){
+                            document.getElementById(`div1${item._id}`).style.display = 'none';
+                        }
+                        if(!color){
+                            document.getElementById(`div2${item._id}`).style.display = 'none';
+                        }
                         if (item.sale) {
                             document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
                         }
@@ -193,6 +201,12 @@
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
                 productStartPrice.innerHTML = `${productPrice}€`
+                if(Number(productPrice) === Number(sum)){
+                    document.getElementById('productStartPrice').removeAttribute('style')
+                }else{
+                    // style="text-decoration: line-through;"
+                    document.getElementById('productStartPrice').style.textDecoration = 'line-through'
+                }
                 afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
                 document.getElementById('total').innerHTML = sum.toFixed(2) + '€';
             } else {
@@ -377,3 +391,4 @@
 
 </body>
 </html>
+

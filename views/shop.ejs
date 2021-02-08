@@ -87,12 +87,14 @@
                                                     <label for="<%= item.name %>"><%= item.name %></label>
                                                 <% }else{ %>
                                                     <input type="checkbox"
-                                                           id=<%= item.name %> value="<%= item.name + '11' %>">
-                                                    <label for="<%= item.name %>"><%= item.name %></label>
+                                                           id=<%= item.name.replace(/\s+/g, '') %> value="<%= item.name + '11' %>">
+                                                    <label for="<%= item.name.replace(/\s+/g, '') %>"><%= item.name %></label>
                                                 <% } %>
                                             </div>
                                         <% }) %>
                                     <% } %>
+                                        <input type="checkbox" id="gg">
+                                        <label for="gg">chechkobx dfg </label>
                                 </div>
                             </div>
                         </div>
@@ -203,3 +205,4 @@
 
 </body>
 </html>
+
