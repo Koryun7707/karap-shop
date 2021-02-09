@@ -7,18 +7,14 @@
                     <div class="col-12 col-md-7">
                         <div class="row justify-content-between">
                             <div class="col-2 col-md-3 col-lg-2">
-                                <div class="mb-2 small-images">
-                                    <img src="<%= product[0].images[1] %>" alt="" class="w-100">
-                                </div>
-                                <div class="mb-2 small-images">
-                                    <img src="<%= product[0].images[2] %>" alt="" class="w-100">
-                                </div>
-                                <div class="mb-2 small-images">
-                                    <img src="<%= product[0].images[3] %>" alt="" class="w-100">
-                                </div>
+ 			       <%for(let i = 1;i<product[0].images.length;i++){%>
+                                <div onmousemove="myMoveFunction(this)" onclick="changeImage(this)" class="mb-2 small-images">
+                                        <img src="<%= product[0].images[i] %>" alt="" class="w-100">
+                                    </div>
+                                <%}%>
                             </div>
-                            <div class="col-8 col-md-9 col-lg-10">
-                                <img src="<%= product[0].images[0] %>" alt="" class="w-100">
+                            <div  class="col-8 col-md-9 col-lg-10">
+                                <img id="generalImage" src="<%= product[0].images[1] %>" alt="" class="w-100">
                             </div>
                         </div>
                     </div>
@@ -43,7 +39,7 @@
                         </div>
                         <% if(product[0].sale){ %>
                             <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
-                                <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>
+                                <h5 id="saleValue"> <%= (product[0].price - product[0].price * product[0].sale / 100).toFixed(2) %>
                                     €</h5>
                             </div>
                         <% } %>
@@ -143,7 +139,15 @@
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
+
 <script>
+    function changeImage(element){
+        document.getElementById('generalImage').setAttribute('src',element.children[0].getAttribute('src'));
+    }
+    function myMoveFunction(element){
+        document.getElementById('generalImage')
+            .setAttribute('src',element.children[0].getAttribute('src'));
+    }
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
@@ -280,3 +284,4 @@
 
 </body>
 </html>
+

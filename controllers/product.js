@@ -229,7 +229,7 @@ const getProductsShopFilter = async (req, res) => {
             req.session.language = 'eng';
         }
         const page = Number(req.body.page) || 1;
-        const limit = 1;
+        const limit = 21;
         const options = {
             page: page,
             limit: limit,
