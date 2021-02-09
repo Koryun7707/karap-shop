@@ -77,6 +77,7 @@ function searchByPrice() {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -85,11 +86,11 @@ function searchByPrice() {
                                         </div>
                                         <div class="d-flex">
                                           <div class="mr-3"> 
-                                            <h2 id='styleDiv${item._id}' style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id='styleDiv${item._id}' style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                       
                                         <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>                                     
                                         
                                         </div>
@@ -205,6 +206,7 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -214,10 +216,10 @@ $(document).ready(function () {
                                        
                                         <div class="d-flex">
                                            <div class="mr-3">
-                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                         <div  id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
                                            </div>
                                         <div class="title" id="title${item._id}"></div>
@@ -347,6 +349,7 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -356,11 +359,11 @@ $(document).ready(function () {
 
                                     <div class="d-flex">
                                        <div class="mr-3">
-                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                          
                                         </div>
                                           <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
 
                                     </div>
@@ -531,6 +534,7 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -539,10 +543,10 @@ $(document).ready(function () {
                                         </div>
                                         <div class="d-flex">
                                           <div class="mr-3">
-                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
 </div>
                                        
@@ -684,6 +688,7 @@ $(document).ready(function () {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
                         newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                    <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
@@ -693,10 +698,10 @@ $(document).ready(function () {
                                       
                                         <div class="d-flex">
                                          <div class="mr-3">
-                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
                                        
                                           </div>
@@ -738,4 +743,5 @@ $(document).ready(function () {
 
 
 })
+
 

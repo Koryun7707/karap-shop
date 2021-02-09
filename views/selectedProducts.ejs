@@ -108,6 +108,8 @@
                         currentDiv.append(newDiv);
                         newDiv.setAttribute('class', 'selected-product-cart');
                         newDiv.id = item._id;
+                        const PRICE =Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price);
+                        const SALE = ((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count));
                         newDiv.innerHTML = `
                     <div  class="shop-check d-flex flex-1 mb-2 mb-md-0">
                         <div class="form-group mr-2">
@@ -132,8 +134,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
-                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)).toFixed(2)}€</div>
+                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${PRICE%1==0?PRICE:PRICE.toFixed(2)}€</div>
+                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${SALE%1==0?SALE:SALE.toFixed(2)}€</div>
 
                         </div>
                     </div>
@@ -200,7 +202,7 @@
             }
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${productPrice}€`
+                productStartPrice.innerHTML = `${Number(productPrice)%1===0?productPrice:productPrice.toFixed(2)}€`
                 if(Number(productPrice) === Number(sum)){
                     document.getElementById('productStartPrice').removeAttribute('style')
                 }else{
@@ -335,8 +337,8 @@
             document.getElementById(`qtyInput${id}`).setAttribute('value', `${basketProductCount}`);
             const price = Number(basketProductCount) * Number(document.getElementById(`productPriceBasket${id}`).getAttribute('value'));
             const saleCount = price - (price * Number(document.getElementById(`saleProductPrice${id}`).getAttribute('value')) / 100);
-            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount}€`;
-            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price}€`;
+            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount%1==0?saleCount:saleCount.toFixed(2)}€`;
+            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price%1==0?price:price.toFixed(2)}€`;
             let sum = 0;
             $.each($('input:checked'), function (index, input) {
                 if (input.id != 'select-all' && input.id != "agreeTerms") {
@@ -353,9 +355,9 @@
             });
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${productPrice}€`
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
-                document.getElementById('total').innerHTML = `${sum.toFixed(2)}€`;
+                productStartPrice.innerHTML = `${Number(productPrice)%1==0?productPrice:productPrice.toFixed(2)}€`
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice)%1==0?(productPrice - productSalePrice):(productPrice - productSalePrice).toFixed(2)}€`;
+                document.getElementById('total').innerHTML = `${sum%1==0?sum:sum.toFixed(2)}€`;
             } else {
                 countProduct.innerHTML = `0`;
                 productStartPrice.innerHTML = `0`
@@ -391,5 +393,6 @@
 
 </body>
 </html>
+
 
 

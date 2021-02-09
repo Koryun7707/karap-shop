@@ -4,42 +4,43 @@
         <div class="row">
             <% if(product.length){ %>
                 <% if(product[0].images.length){ %>
-                    <div class="col-12 col-md-7">
-                        <div class="row justify-content-between">
-                            <div class="col-2 col-md-3 col-lg-2">
- 			       <%for(let i = 1;i<product[0].images.length;i++){%>
-                                <div onmousemove="myMoveFunction(this)" onclick="changeImage(this)" class="mb-2 small-images">
-                                        <img src="<%= product[0].images[i] %>" alt="" class="w-100">
-                                    </div>
-                                <%}%>
-                            </div>
-                            <div  class="col-8 col-md-9 col-lg-10">
-                                <img id="generalImage" src="<%= product[0].images[1] %>" alt="" class="w-100">
-                            </div>
+                <div class="col-12 col-md-7">
+                    <div class="row justify-content-between">
+                        <div class="col-2 col-md-3 col-lg-2">
+                            <% for(let i = 1;i < product[0].images.length;i++){ %>
+                                <div onmousemove="myMoveFunction(this)" onclick="changeImage(this)"
+                                     class="mb-2 small-images">
+                                    <img src="<%= product[0].images[i] %>" alt="" class="w-100">
+                                </div>
+                            <% } %>
+                        </div>
+                        <div class="col-8 col-md-9 col-lg-10">
+                            <img id="generalImage" src="<%= product[0].images[1] %>" alt="" class="w-100">
                         </div>
                     </div>
+                </div>
                 <% } %>
                 <div class="col-12 col-md-5">
                     <div class="product-name">
-                        <% if(language === 'eng'){%>
-                        <h2 class="mb-2"><%= product[0].name %></h2>
-                        <%}else{%>
-                                <h2 class="mb-2"><%= product[0].nameArm %></h2>
-                            <%}%>
+                        <% if(language === 'eng'){ %>
+                            <h2 class="mb-2"><%= product[0].name %></h2>
+                        <% }else{ %>
+                            <h2 class="mb-2"><%= product[0].nameArm %></h2>
+                        <% } %>
                     </div>
                     <div class="d-flex">
                         <div class="product-price mr-4" id="productPrice" value="<%= product[0].price %>">
                             <% if(product[0].sale){ %>
-                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>
+                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= Number(product[0].price)%1==0?Number(product[0].price):Number(product[0].price).toFixed(2) %>
                                         €</b>
                                 </h2>
                             <% }else{ %>
-                                <h2><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                                <h2><b id="pricePlace"><%= Number(product[0].price)%1==0?Number(product[0].price):Number(product[0].price).toFixed(2) %>€</b></h2>
                             <% } %>
                         </div>
                         <% if(product[0].sale){ %>
                             <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
-                                <h5 id="saleValue"> <%= (product[0].price - product[0].price * product[0].sale / 100).toFixed(2) %>
+                                <h5 id="saleValue"> <%= Number(product[0].price - product[0].price * product[0].sale / 100)%1==0?Number(product[0].price - product[0].price * product[0].sale / 100):Number(product[0].price - product[0].price * product[0].sale / 100).toFixed(2) %>
                                     €</h5>
                             </div>
                         <% } %>
@@ -88,16 +89,16 @@
                     </div>
                     <!--                    Start change from this-->
 
-                    <% if(product[0].description != ''&&product[0].descriptionArm != ''){ %>
+                    <% if(product[0].description != '' && product[0].descriptionArm != ''){ %>
                         <div class="product-size">
                             <h5 class="mt-3">
                                 <h5><h5><%= staticData.product_description %></h5></h5>
                             </h5>
-                            <%if(language === 'eng'){%>
+                            <% if(language === 'eng'){ %>
                                 <div><%= product[0].description %></div>
-                            <%}else{%>
+                            <% }else{ %>
                                 <div><%= product[0].descriptionArm %></div>
-                            <%}%>
+                            <% } %>
                         </div>
                     <% } %>
                     <!--                  End here-->
@@ -141,13 +142,15 @@
 <script src="js/script.js"></script>
 
 <script>
-    function changeImage(element){
-        document.getElementById('generalImage').setAttribute('src',element.children[0].getAttribute('src'));
+    function changeImage(element) {
+        document.getElementById('generalImage').setAttribute('src', element.children[0].getAttribute('src'));
     }
-    function myMoveFunction(element){
+
+    function myMoveFunction(element) {
         document.getElementById('generalImage')
-            .setAttribute('src',element.children[0].getAttribute('src'));
+            .setAttribute('src', element.children[0].getAttribute('src'));
     }
+
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
@@ -284,4 +287,5 @@
 
 </body>
 </html>
+
 

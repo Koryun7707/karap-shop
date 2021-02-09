@@ -177,8 +177,8 @@
                     priceDelivery += Math.floor((productsDeliveryFromSpainWeight - 1) / 0.5) * 6 + 11.5;//this must be changed
                 }
             }
-            document.getElementById('delivery').innerHTML = `${priceDelivery}€`
-            document.getElementById('productPrice').innerHTML = `${totalPrice + priceDelivery}€`
+            document.getElementById('delivery').innerHTML = `${priceDelivery%1==0?priceDelivery:priceDelivery.toFixed(2)}€`
+            document.getElementById('productPrice').innerHTML = `${Number(totalPrice + priceDelivery)%1==0?(totalPrice + priceDelivery):(totalPrice + priceDelivery).toFixed(2)}€`
         } else {
             let totalDelivery = document.getElementById('delivery').innerHTML;
             totalDelivery = Number(totalDelivery.substring(0, totalDelivery.length - 1));
@@ -276,11 +276,12 @@
                 }
             })
 
-            salePrice.innerHTML = `-${(productSalePrice - productTotalPrice).toFixed(1)}€`;
-            productPrice.innerHTML = `${productTotalPrice}€`;
+            salePrice.innerHTML = `-${Number(productSalePrice - productTotalPrice)%1==0?(productSalePrice - productTotalPrice):(productSalePrice - productTotalPrice).toFixed(2)}€`;
+            productPrice.innerHTML = `${Number(productTotalPrice)%1==0?productTotalPrice:productTotalPrice.toFixed(2)}€`;
         }
         //clear shipping address when page is refresh
     }
 </script>
 <%- include ('footer') -%>
+
 
