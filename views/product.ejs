@@ -15,7 +15,11 @@
                             <% } %>
                         </div>
                         <div class="col-8 col-md-9 col-lg-10">
-                            <img id="generalImage" src="<%= product[0].images[1] %>" alt="" class="w-100">
+                            <div class="w-100">
+                                <div id="generalImage" class="image detail-view"
+                                     style="background-image: url(<%= product[0].images[1] %>);">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,6 +126,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script>
     $(function () {
         $("#slider-range").slider({
@@ -140,15 +145,72 @@
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
+<script>
+    (function () {
+        // Get all images with the `detail-view` class
+        var zoomBoxes = document.querySelectorAll('.detail-view');
+
+        // Extract the URL
+        zoomBoxes.forEach(function (image) {
+            var imageCss = window.getComputedStyle(image, false),
+                imageUrl = imageCss.backgroundImage
+                    .slice(4, -1).replace(/['"]/g, '');
+
+            // Get the original source image
+            var imageSrc = new Image();
+            imageSrc.onload = function () {
+                var imageWidth = imageSrc.naturalWidth,
+                    imageHeight = imageSrc.naturalHeight,
+                    ratio = imageHeight / imageWidth;
+
+                // Adjust the box to fit the image and to adapt responsively
+                var percentage = ratio * 100 + '%';
+                image.style.paddingBottom = percentage;
+
+                // Zoom and scan on mousemove
+                image.onmousemove = function (e) {
+                    // Get the width of the thumbnail
+                    var boxWidth = image.clientWidth,
+                        // Get the cursor position, minus element offset
+                        x = e.pageX - this.offsetLeft,
+                        y = e.pageY - this.offsetTop,
+                        // Convert coordinates to % of elem. width & height
+                        xPercent = x / (boxWidth / 100) + '%',
+                        yPercent = y / (boxWidth * ratio / 100) + '%';
+
+                    // Update styles w/actual size
+                    Object.assign(image.style, {
+                        backgroundPosition: xPercent + ' ' + yPercent,
+                        backgroundSize: imageWidth + 'px'
+                    });
+                };
+
+                // Reset when mouse leaves
+                image.onmouseleave = function (e) {
+                    Object.assign(image.style, {
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover'
+                    });
+                };
+            }
+            imageSrc.src = imageUrl;
+        });
+    })();
+</script>
+
 
 <script>
     function changeImage(element) {
-        document.getElementById('generalImage').setAttribute('src', element.children[0].getAttribute('src'));
+        const src = element.children[0].getAttribute('src');
+        document.getElementById('generalImage')
+            .setAttribute('style',`background-image:url("${src}")`) ;
+        // document.getElementById('generalImage').setAttribute('src', element.children[0].getAttribute('src'));
     }
 
     function myMoveFunction(element) {
+        const src = element.children[0].getAttribute('src');
         document.getElementById('generalImage')
-            .setAttribute('src', element.children[0].getAttribute('src'));
+            .setAttribute('style',`background-image:url("${src}")`) ;
     }
 
     function countPrice(element) {
@@ -287,5 +349,6 @@
 
 </body>
 </html>
+
 
 
