@@ -37,6 +37,10 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
+      date: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 brandSchema.plugin(mongoosePaginate);
