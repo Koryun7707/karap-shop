@@ -26,12 +26,12 @@
                                                         <input checked type="checkbox" id="<%= item %>"
                                                                value=<%= item %>>
                                                         <label for="<%= item %>"
-                                                               class="clothing-icon"><%= item %></label>
+                                                               class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% }else{ %>
                                                         <input type="checkbox" id="<%= item %>"
                                                                value=<%= item %>>
                                                         <label for="<%= item %>"
-                                                               class="clothing-icon"><%= item %></label>
+                                                               class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% } %>
                                                 </li>
                                             <% }) %>
@@ -83,11 +83,11 @@
                                             <div class="form-group">
                                                 <% if(brandId === item._id.toString()){ %>
                                                     <input checked type="checkbox"
-                                                           id=<%= item._id %> value="<%= item._id %>">
+                                                           id=<%= item._id %> value="<%= item._id %>brandID">
                                                     <label for="<%= item._id %>"><%= item.name %></label>
                                                 <% }else{ %>
                                                     <input type="checkbox"
-                                                           id="<%= item._id %>" value="<%= item._id %>">
+                                                           id="<%= item._id %>" value="<%= item._id %>brandID">
                                                     <label for="<%= item._id %>"><%= item.name %></label>
                                                 <% } %>
                                             </div>

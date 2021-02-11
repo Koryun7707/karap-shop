@@ -18,8 +18,8 @@ function searchByPrice() {
             var values = [];
             var brandIds = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandIds.push(input.value);
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
                 } else {
                     values.push(input.value);
                 }
@@ -322,8 +322,8 @@ $(document).ready(function () {
             var values = [];
             var brandId = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
                 } else {
                     values.push(input.value);
                 }
@@ -477,8 +477,8 @@ $(document).ready(function () {
             var values = [];
             var brandId = [];
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
                 } else {
                     values.push(input.value);
                 }
@@ -594,8 +594,8 @@ $(document).ready(function () {
             var brandId = [];
             var onSale;
             $.each($('input:checked'), function (index, input) {
-                if (input.value.length > 20) {
-                    brandId.push(input.value);
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
                 } else if (input.value === 'on') {
                     onSale = input.value;
                 } else {
@@ -743,5 +743,6 @@ $(document).ready(function () {
 
 
 })
+
 
 

@@ -31,15 +31,15 @@
                 <div id="carousel2" class="owl-carousel owl-carousel2">
                     <% if(products.length > 0){ %>
                         <% products.forEach(function(item){ %>
-                            <a class="item" href="/shop?type=<%= item.typeArm %>">
+                            <a class="item" href="/shop?type=<%= language==='eng'?item.type:item.typeArm %>">
                                 <div class="card">
                                     <div class="img-area">
-                                        <img class="card-img-top" src=<%= item.images[0] %>  alt="Card image cap">
+                                        <img alt="Card image cap" class="card-img-top" src=<%= item.images[0] %>  >
                                     </div>
                                     <% if(item.type){%>
-                                    <div class="btn btn-green-gradient"><%= item.type %></div>
+                                    <div class="btn btn-green-gradient"><%= item.type.split('-').join(' ') %></div>
                                     <%}else{%>
-                                        <div class="btn btn-green-gradient"><%= item.typeArm %></div>
+                                        <div class="btn btn-green-gradient"><%= item.typeArm.split('-').join(' ') %></div>
                                     <%}%>
                                 </div>
                             </a>

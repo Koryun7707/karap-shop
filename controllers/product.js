@@ -45,14 +45,17 @@ const createProduct = async (req, res) => {
             });
         }
         let newProduct;
+        const clearProbelsProductType = value.productType.replace(/\s/g, '-');
+        const clearProbelsProductTypeArm = value.productTypeArm.replace(/\s/g, '-');
+
         if (value.productSale != '' || Number(value.productSale) >= 1) {
             newProduct = new Product({
                 brandId: value.brandId,
                 brandName: brandName.name,
                 name: value.productName,
                 nameArm: value.productNameArm,
-                type: value.productType,
-                typeArm: value.productTypeArm,
+                type: clearProbelsProductType,
+                typeArm: clearProbelsProductTypeArm,
                 price: value.productPrice,
                 sizes: value.productSize.split('/'),
                 sale: value.productSale,
@@ -68,8 +71,8 @@ const createProduct = async (req, res) => {
                 brandName: brandName.name,
                 name: value.productName,
                 nameArm: value.productNameArm,
-                type: value.productType,
-                typeArm: value.productTypeArm,
+                type: clearProbelsProductType,
+                typeArm: clearProbelsProductTypeArm,
                 price: value.productPrice,
                 description: value.productDescription,
                 descriptionArm: value.productDescriptionArm,
@@ -159,11 +162,13 @@ const updateProduct = async (req, res) => {
                 if (err) logger.error(err);
             });
         }
+        const clearProbelsProductType = value.productType.replace(/\s/g, '-');
+        const clearProbelsProductTypeArm = value.productTypeArm.replace(/\s/g, '-');
         product.brandId = value.brandId;
         product.name = value.productName;
         product.nameArm = value.productNameArm;
-        product.type = value.productType;
-        product.typeArm = value.productTypeArm;
+        product.type = clearProbelsProductType;
+        product.typeArm = clearProbelsProductTypeArm;
         product.price = value.productPrice;
         product.sizes = value.productSize.split('/');
         if (value.productSale != '' || Number(value.productSale) >= 1) {
@@ -233,8 +238,6 @@ const getProductsShopFilter = async (req, res) => {
         const options = {
             page: page,
             limit: limit,
-            sort:{date: -1}
-
         }
         const types = req.body['types[]'] || req.body.type || [];
         const brandId = req.body['brandId[]'] || req.body.brandId || [];
@@ -434,3 +437,4 @@ module.exports = {
     getProductById: getProductById,
     getDataSearch: getDataSearch
 };
+

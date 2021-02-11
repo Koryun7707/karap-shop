@@ -72,7 +72,8 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
                 products: products,
-                pages: countOfBrands.length
+                pages: countOfBrands.length,
+                language:req.session.language
             });
         } catch (e) {
             logger.error(`Start Home Page Data Error:${e}`)
