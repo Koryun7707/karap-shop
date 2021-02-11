@@ -2,7 +2,7 @@
 
 <main style="padding-top: 100px" class="selected-product-section">
     <div class="container container-1730 my-5">
-        <h2 class="my-4"><b><%= staticData.selected_products %></b></h2>
+        <h2 class="my-4 fs-35"><b><%= staticData.selected_products %></b></h2>
         <div id="message_div"><%- include ('partials/messages') %></div>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
@@ -16,11 +16,11 @@
 
             </div>
             <div class="col-12 col-md-5 col-lg-4">
-                <div class="total-section pt-5">
+                <div class="total-section pt-3">
                     <div class="mb-3 d-flex justify-content-between">
-                        <h2 class="title"><b><%= staticData.subtotal %></b></h2>
+                        <h2 class="title fs-35"><b><%= staticData.subtotal %></b></h2>
                         <div class="product-price">
-                            <h2 id="total" style="color: #065a1f"><b>0 </b></h2>
+                            <h2 id="total" ><b>0 </b></h2>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
@@ -121,8 +121,12 @@
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language ? item.name : item.nameArm}</div>
-                            <div id='div2${item._id}' class="product-color my-2 py-3" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}"></div>
-                            <div id='div1${item._id}' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</div>
+                           <div class="d-flex mt-3">
+                                   <div id='div1${item._id}' class="product-size mr-3">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</div>
+                                  <div id='div2${item._id}' class="product-color py-2" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}"></div>
+
+</div>
+
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-1 justify-content-around">
@@ -393,6 +397,7 @@
 
 </body>
 </html>
+
 
 
 

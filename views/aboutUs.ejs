@@ -1,10 +1,10 @@
 <%- include ('header') -%>
 
-<main style="padding-top: 100px" class="about-sections">
+<main class="about-sections">
     <% if(pageData.length){ %>
         <section class="about-section-bg" style="background-image: url(<%= pageData[0].imagesAboutSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center"><%= pageData[0].textAboutSlider %></h1>
+                <h1 class="text-left"><%= pageData[0].textAboutSlider %></h1>
             </div>
         </section>
     <% } %>
@@ -28,7 +28,7 @@
     </section>
     <section class="section py-5">
         <div class="container">
-            <h2 class="text-center mb-5"><%= pageData[0].titleOurPhilosophy %></h2>
+            <h2 class="text-center mb-2"><%= pageData[0].titleOurPhilosophy %></h2>
             <div class=" row py-4">
                 <div class="offset-1 col-10 offset-lg-3 col-lg-6">
                     <p class="mb-4">
@@ -37,7 +37,7 @@
                         <% } %>
                     </p>
                     <a href="/contact"
-                       class="btn btn-green-gradient px-5 py-3 mt-5"><%= staticData.about_button %></a>
+                       class="btn btn-green-gradient mt-5"><%= staticData.about_button %></a>
                 </div>
 
             </div>
@@ -70,3 +70,4 @@
 
 </body>
 </html>
+

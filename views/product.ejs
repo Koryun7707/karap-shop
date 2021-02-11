@@ -68,11 +68,11 @@
                     <% } %>
                     <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
-                            <h5><h5><%= staticData.product_color %></h5></h5>
-                            <ul class="list-unstyled d-flex align-items-center">
+                            <h5><%= staticData.product_color %></h5>
+                            <ul class="list-unstyled d-flex align-items-center flex-wrap">
                                 <% if(product[0].colors){ %>
                                     <% product[0].colors.forEach(function(item){ %>
-                                        <div class="mr-2 d-flex align-items-center">
+                                        <div class="mr-3 d-flex align-items-center mb-2">
                                             <input type="radio" name="productColor" id=<%= item %>>
                                             <!--                                            <%= item %>-->
                                             <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
@@ -109,7 +109,7 @@
 
                     <div class="col-8 my-3 p-0">
                         <button value="<%= product[0]._id %>" id="addToCardButton"
-                                class="btn btn-green-gradient py-3"
+                                class="btn btn-green-gradient btn-black"
                                 onclick="addToCard(this)">
                             <%= staticData.add_to_cart %>
                         </button>
@@ -202,15 +202,19 @@
 <script>
     function changeImage(element) {
         const src = element.children[0].getAttribute('src');
-        document.getElementById('generalImage')
-            .setAttribute('style',`background-image:url("${src}")`) ;
+        var el = document.getElementById("generalImage");
+        el.style.backgroundImage = `url("${src}")`;
+       // document.getElementById('generalImage')
+          //  .setAttribute('style',`background-image:url("${src}")`) ;
         // document.getElementById('generalImage').setAttribute('src', element.children[0].getAttribute('src'));
     }
 
     function myMoveFunction(element) {
         const src = element.children[0].getAttribute('src');
-        document.getElementById('generalImage')
-            .setAttribute('style',`background-image:url("${src}")`) ;
+        var el = document.getElementById("generalImage");
+        el.style.backgroundImage = `url("${src}")`;
+       // document.getElementById('generalImage')
+         //   .setAttribute('style',`background-image:url("${src}")`) ;
     }
 
     function countPrice(element) {
@@ -232,9 +236,9 @@
             let payPrice = Number(productPrice) * count;
             let payPriceSale = Number(productPrice) - Number(productSalePrice) * Number(productPrice) / 100;
             payPriceSale *= count;
-            document.getElementById('pricePlace').innerHTML = `${payPrice}€`;
+            document.getElementById('pricePlace').innerHTML = `${payPrice%1==0?payPrice:payPrice.toFixed(2)}€`;
             if (document.getElementById('saleValue')) {
-                document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
+                document.getElementById('saleValue').innerHTML = `${payPriceSale%1==0?payPriceSale:payPriceSale.toFixed(2)}€`;
             }
         }
     }
@@ -349,6 +353,7 @@
 
 </body>
 </html>
+
 
 
 

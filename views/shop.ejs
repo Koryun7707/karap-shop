@@ -1,9 +1,9 @@
 <%- include ('header') -%>
-<main style="padding-top: 100px" class="shop-section">
+<main class="shop-section">
     <% if(pageData.length){ %>
         <section class="shop-section-bg" style="background-image: url(<%= pageData[0].imagesShopSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center"><%= pageData[0].textShopSlider %></h1>
+                <h1 class="text-left"><%= pageData[0].textShopSlider %></h1>
             </div>
         </section>
     <% } %>
@@ -59,7 +59,7 @@
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
                                        value="0"
                                        class="form-control range-slide-input"/>
-                                <span class="px-2"><%= staticData.to_text %></span>
+                                <span class="px-2 fs-12"><%= staticData.to_text %></span>
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
                                        value="<%= maxPrice %>"
                                        class="form-control range-slide-input"/>
@@ -204,4 +204,5 @@
 
 </body>
 </html>
+
 

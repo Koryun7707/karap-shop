@@ -233,6 +233,8 @@ const getProductsShopFilter = async (req, res) => {
         const options = {
             page: page,
             limit: limit,
+            sort:{date: -1}
+
         }
         const types = req.body['types[]'] || req.body.type || [];
         const brandId = req.body['brandId[]'] || req.body.brandId || [];

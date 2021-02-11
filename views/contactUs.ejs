@@ -1,11 +1,11 @@
 <%- include ('header') -%>
 
-<main style="padding-top: 100px" class="contact-section">
+<main class="contact-section">
     <% if(pageData.length){ %>
         <section class="contact-section-bg mb-5"
                  style="background-image: url(<%= pageData[0].imagesContactSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center">
+                <h1 class="text-left">
                     <%= pageData[0].textContactSlider %>
                 </h1>
             </div>
@@ -17,7 +17,7 @@
                 <div class="col-12 col-md-6 py-3 py-md-5 bright">
                     <%- include ('partials/messages') %>
                     <form action="/sendMessageContactUs" method="POST" id="contactForm" class="py-5 mx-auto"
-                          style="max-width: 280px">
+                          style="max-width: 340px">
                         <div class="form-group">
                             <label for="exampleInputEmail1">
                                 <%= staticData.contact_email %>
@@ -104,3 +104,4 @@
 <script src="js/script.js"></script>
 </body>
 </html>
+

@@ -1,10 +1,10 @@
 <%- include ('header') -%>
 
-<main style="padding-top: 100px">
+<main>
     <% if(pageData.length){ %>
         <section class="brand-section-bg" style="background-image: url(<%= pageData[0].imagesBrandSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center">
+                <h1 class="text-left">
                     <%= pageData[0].textBrandSlider %>
                 </h1>
             </div>
@@ -94,13 +94,13 @@
 
                     let div = document.createElement('div');
                     div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
-                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-4">
+                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
                             ${language?item.info:item.infoArm}
                         </div>
-                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5 py-3">
+                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5 ">
                                 ${text}
                         </a>
                     </div>
@@ -190,13 +190,13 @@
                     let brandsRenderPlace = document.getElementById('brands-section-place');
                     let div = document.createElement('div');
                     div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
-                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-4">
+                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
                             ${item.info}
                         </div>
-                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5 py-3">Shop Now</a>
+                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5">Shop Now</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-4">
@@ -249,3 +249,4 @@
 
 </body>
 </html>
+

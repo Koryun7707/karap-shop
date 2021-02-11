@@ -1,10 +1,10 @@
 <%- include ('header') -%>
 
-<main style="padding-top: 100px" class="contact-section">
+<main class="contact-section">
     <% if(pageData.length){ %>
         <section class="join-section-bg" style="background-image: url(<%= pageData[0].imagesJoinOurTeamSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center"><%= pageData[0].textJoinOurTeamSlider %></h1>
+                <h1 class="text-left"><%= pageData[0].textJoinOurTeamSlider %></h1>
             </div>
         </section>
 
@@ -44,7 +44,7 @@
             <div class="container">
                 <div class="row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5">
                     <div class="col-12 col-md-7 ">
-                        <h2 class="mb-5 "><%= pageData[0].joinOurTeamPartnersTitle %></h2>
+                        <h2 class="mb-3"><%= pageData[0].joinOurTeamPartnersTitle %></h2>
                         <div class="pr-5">
                             <div class="info-text mb-5 mb-md-0">
                                 <%= pageData[0].joinOurTeamPartners %>
@@ -69,3 +69,4 @@
 
 </body>
 </html>
+

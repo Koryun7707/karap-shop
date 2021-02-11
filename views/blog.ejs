@@ -4,14 +4,14 @@
         <div class="container pt-5">
             <% if(blog.length > 0){ %>
                 <% blog.forEach(function(item, index){ %>
-                    <div class="row blog-card mb-5">
+                    <div class="row blog-card mb-5 justify-content-center">
                         <div class="col-6 col-md-5">
                             <div class="rose-bg d-flex justify-content-center align-items-center p-5 w-100 h-100">
-                                <img src=<%= item.blogImages[0] %> alt="logo">
+                                <img src=<%= item.blogImages[0] %> alt="logo" class="w-100">
                             </div>
                         </div>
-                        <div class="col-6 col-md-7 blog-img">
-                            <img src=<%= item.blogImages[1] %> alt="" class="w-70 h-100 blog-img-anim">
+                        <div class="col-6 col-md-5 blog-img">
+                            <img src=<%= item.blogImages[1] %> alt="" class="w-100 h-100 blog-img-anim">
                         </div>
                         <div class="col-12">
                             <h2><%= item.textBlogTitle %></h2>
@@ -20,7 +20,7 @@
                                 <li class="fashion-icon2"><%= item.title2 %></li>
                                 <li style="display: none" id="<%= index %>"><%= item.infoBlog %></li>
                             </ul>
-                            <a class="btn btn-green-gradient px-5 py-2" onclick="isOpen(this)"
+                            <a class="btn btn-green-gradient" onclick="isOpen(this)"
                                id="but<%= index %>">
                                 <%= staticData.blog_button %>
                             </a>
@@ -111,3 +111,4 @@
 
 </body>
 </html>
+

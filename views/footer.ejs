@@ -1,12 +1,10 @@
 <footer class="footer-bg p-3 py-lg-5">
-    <div class="container container-1730 pt-lg-5">
+    <div class="container container-1730">
         <div class="row flex-wrap align-items-center">
-            <div class="col-4 offset-lg-2 col-lg-2">
-            </div>
             <% if(staticData){ %>
-                <div class="col-8 col-lg-5">
+                <div class="offset-2 col-8 offset-lg-3 col-lg-6">
                     <div class="row">
-                        <div class="col-12 col-md-6 offset-lg-2 col-lg-4">
+                        <div class="col-12 col-md-6">
                             <h4 class="mb-3">
                                 <%= staticData.pages %>
                             </h4>
@@ -43,7 +41,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-12 col-md-6 col-lg-4">
+                        <div class="col-12 col-md-6">
                             <h4 class="mb-3">
                                 <%= staticData.follow_us %>
                             </h4>
@@ -67,7 +65,7 @@
                                 </ul>
                             </div>
                             <div>
-                                <ul class="list-unstyled d-flex flex-wrap">
+                                <ul class="list-unstyled d-flex flex-wrap" style="max-width: 200px">
                                     <li class="mr-2 mb-1">
                                         <a href="#">
                                             <img src="images/mastercard%20(50-36).jpg" alt="">
@@ -85,20 +83,20 @@
                                     </li>
                                       <li class="mr-2 mb-1">
                                         <a href="#">
-                                            <img width="50px" height="50px" src="images/american-express.png" alt="">
+                                            <img width="40px" height="30px" src="images/american-express.png" alt="">
                                         </a>
                                     </li>
                                     <li class="mr-2 mb-1">
                                         <a href="#">
-                                            <img width="50px" height="50px" src="images/google-pay.png" alt="">
+                                            <img width="40px" height="30px" src="images/google-pay.png" alt="">
                                         </a>
                                     </li> <li class="mr-2 mb-1">
                                         <a href="#">
-                                            <img width="50px" height="50px" src="images/Microsoft_Pay-Logo.wine.png" alt="">
+                                            <img width="40px" height="30px" src="images/Microsoft_Pay-Logo.wine.png" alt="">
                                         </a>
                                     </li> <li class="mr-2 mb-1">
                                         <a href="#">
-                                            <img width="50px" height="50px" src="images/apple-pay.png" alt="">
+                                            <img width="40px" height="30px" src="images/apple-pay.png" alt="">
                                         </a>
                                     </li>
                                 </ul>
@@ -109,7 +107,7 @@
             <% } %>
         </div>
         <div class="text-center position-relative mt-2 mt-md-5">
-            <p class="mb-0">copyrighter 2021</p>
+            <p class="mb-0">Copyright 2021 by Armat Concept</p>
             <div class="abs">
                 <a class="scrollup" style="cursor: pointer">
                     <img src="images/buttonUp.png" alt="button" title="button">
@@ -137,3 +135,4 @@
         $('#loginModal').modal('hide');
     });
 </script>
+

@@ -1,17 +1,4 @@
-@font-face {
-    font-family: "MYRIADPRO-REGULAR";
-    src: url("../fonts/MYRIADPRO-REGULAR.OTF");
-}
 
-@font-face {
-    font-family: "MYRIADPRO-BOLD";
-    src: url("../fonts/MYRIADPRO-BOLD.OTF");
-}
-
-@font-face {
-    font-family: "MYRIADPRO-SEMIBOLD";
-    src: url("../fonts/MYRIADPRO-SEMIBOLD.OTF");
-}
 @font-face {
     font-family: "Gagalin-Regular";
     src: url("../fonts/Gagalin-Regular.otf");
@@ -25,8 +12,8 @@
     font-style: italic;
     transition: all 0.4s;
     font-family: "Gagalin-Regular", sans-serif;
-    font-size: 35px;
-    line-height: 35px;
+    font-size: 25px;
+    line-height: 25px;
     text-shadow: 1px 6px transparent;
     transform: scale(1);
 
@@ -40,7 +27,7 @@
 
 
 body {
-    font-family: 'MYRIADPRO-REGULAR', sans-serif;
+    font-family: "Georgian";
     background-color: #f3f3f3;
 }
 
@@ -58,6 +45,7 @@ body {
     min-height: 100px;
     display: flex;
     align-items: center;
+    z-index: 99;
 }
 header .nav-item.dropdown select{
     border: 0;
@@ -171,8 +159,8 @@ header .nav-item.dropdown select{
 
 .navbar-light .navbar-nav .nav-link {
     color: #c4b3ab;
-    font-size: 1.25rem;
-    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-family: "Georgian";
 }
 
 .navbar-light .navbar-nav .nav-link:focus,
@@ -189,13 +177,12 @@ header .fa-cart-arrow-down:before {
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .show > .nav-link {
     color: #fff;
-    font-family: 'MYRIADPRO-BOLD', sans-serif;
 }
 
 .section1 .abs {
     position: absolute;
     z-index: 11;
-    top: 40%;
+    top: 25%;
     left: 5%;
     max-width: 50%;
 }
@@ -203,15 +190,19 @@ header .fa-cart-arrow-down:before {
 .section1 .abs h1 {
     color: #e3e3e3;
     font-size: 5rem;
-    letter-spacing: -2px;
+    letter-spacing: 0px;
     line-height: 5rem;
-    font-family: "MYRIADPRO-SEMIBOLD", sans-serif;
-    white-space: nowrap;
+    font-family: "Georgian";
+    max-width: 70%;
+    width: 100%;
+    text-align: center;
+    word-spacing: 5px;
 }
 
 section h2 {
-    font-family: 'MYRIADPRO-BOLD', sans-serif;
-    font-size: 60px;
+    font-family: "Georgian";
+    word-spacing: 3px;
+    font-size: 35px;
     color: #000000;
     letter-spacing: 0;
     font-variant: all-petite-caps;
@@ -256,21 +247,25 @@ section h2 {
     border: 1px solid transparent;
     transition: all 0.5s;
     margin: 0 auto;
+    font-size: 18px;
 }
+
 
 .btn.btn-green-gradient:hover {
     color: #000000 !important;
     background: #c4aa9d;
     border: 1px solid #000000;
     text-decoration: none;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
+    font-family: "Georgian";
 }
 
 .home-card-pagination {
     padding: 0 3rem;
     margin-bottom: 3rem;
-    display: block;
+    margin-top: 3rem;
     transition: all 0.5s;
+    max-height: 375px;
+    display: inline-block;
 }
 
 .home-card-pagination:hover {
@@ -290,12 +285,12 @@ section h2 {
     font-size: 36px;
     line-height: 50px;
     color: #000000;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
     text-transform: uppercase;
 }
 
 .home-card-pagination img {
     width: 100%;
+    height: 375px;
 }
 
 .page-link {
@@ -316,6 +311,8 @@ section h2 {
 
 footer ul li a {
     color: #000000;
+    font-size: 0.9rem;
+    font-family: "Georgian";
 }
 footer ul li a:hover {
     color: #c4aa9d;
@@ -327,9 +324,9 @@ footer ul li a:hover {
 
 footer h4 {
     color: #000000;
-    font-size: 22px;
+    font-size: 1rem;
     line-height: 30px;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
+    font-family: "Georgian";
 }
 
 footer .abs {
@@ -357,9 +354,8 @@ footer .abs {
 
 .blog-card h2 {
     color: #000000;
-    font-size: 50px;
-    line-height: 54px;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
+    font-size: 35px;
+    line-height: 40px;
 }
 
 .blog-card .subtitle {
@@ -372,21 +368,24 @@ footer .abs {
 
 .blog-card ul li {
     color: #000000;
-    font-size: 30px;
-    line-height: 36px;
-    margin-bottom: 20px;
+    font-size: 20px;
+    line-height: 26px;
+    margin-bottom: 16px;
     position: relative;
 }
 
 .blog-card .btn-green-gradient {
-    font-size: 30px;
+    font-size: 22px;
+    height: 48px;
     color: #ffffff;
-    max-width: 320px;
+    max-width: 259px;
     display: block;
     text-align: center;
     text-decoration: none;
     margin-bottom: 40px;
     width: 100%;
+    text-transform: uppercase;
+    word-spacing: 3px;
 }
 
 .blog-img {
@@ -410,6 +409,12 @@ footer .abs {
     content: url("../images/fashion-icon2.png");
     margin-right: 15px;
 }
+.blog-card .fashion-icon1,
+.blog-card .fashion-icon2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    line-height: 28px;
+}
 
 
 #section1 #carousel1.owl-carousel .owl-item img {
@@ -421,6 +426,12 @@ footer .abs {
 #carousel2 .card {
 	background-color: #000000;
 }
+#carousel2 a.item {
+	width: 100%;
+    height: 100%;
+    display: inline-block;
+    text-decoration: none;
+}
 /*----brand-----*/
 .brand-section-bg {
     background-size: 100%;
@@ -428,15 +439,16 @@ footer .abs {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 13% 0;
+    padding: 20% 0;
 }
 
 h1 {
     color: #e3e3e3;
-    font-size: 5rem;
+    font-size: 4rem;
     letter-spacing: -2px;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
+    font-family: "Georgian";
     text-transform: uppercase;
+    word-spacing: 5px;
 }
 
 #carousel-brand.owl-carousel .owl-item img {
@@ -483,7 +495,7 @@ h1 {
     top: -20px;
     left: 0;
     right: 0;
-    background-color: #c4b3ab;
+    background-color: #ffffff;
     height: 170px;
     width: 170px;
     border-radius: 50%;
@@ -503,24 +515,25 @@ h1 {
 }
 
 .brand-section .title {
-    font-size: 60px;
-    line-height: 64px;
-    margin-bottom: 80px;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
+    font-size: 35px;
+    line-height: 40px;
+    margin-bottom: 38px;
 }
 
 .brand-section .info-text {
-    font-size: 22px;
+    font-size: 20px;
     line-height: 26px;
     margin-bottom: 40px;
     padding-right: 30px;
+    word-break: break-all;
 }
 
 .brand-section .btn-green-gradient {
     width: 260px;
     display: flex;
     justify-content: center;
-    font-size: 26px;
+    font-size: 22px;
+    height: 48px;
     text-transform: uppercase;
 }
 
@@ -543,8 +556,8 @@ h1 {
 }
 
 .brand-img {
-    width: 100%;
-    max-width: 540px;
+    width: 96%;
+    max-width: 500px;
 }
 
 .rose-border {
@@ -560,7 +573,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 13% 0;
+    padding: 20% 0;
 }
 
 .about-sections h2 {
@@ -606,15 +619,27 @@ h1 {
 }
 
 .about-sections p {
-    font-family: "MYRIADPRO-BOLD", sans-serif;
+    word-break: break-all;
 }
 
 .about-sections .btn-green-gradient {
+    font-size: 22px;
+    height: 48px;
     color: #ffffff;
+    max-width: 259px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 40px;
+    width: 100%;
     text-transform: uppercase;
-    display: flex;
-    justify-content: center;
-    width: 260px;
+    word-spacing: 3px;
+}
+#carousel-about.owl-carousel .owl-item img {
+    display: block;
+    width: 40%;
+    height: 500px;
+    margin: 0 auto;
 }
 
 /*-----shop-----*/
@@ -632,7 +657,7 @@ h1 {
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 13% 0;
+    padding: 20% 0;
 }
 
 .shop-card {
@@ -643,6 +668,9 @@ h1 {
 }
 .shop-card h2 {
     color: #000;
+    font-size: 25px;
+    line-height: 35px;
+    margin-bottom: 0;
 }
 
 .shop-card > a:hover {
@@ -666,7 +694,7 @@ h1 {
 }
 
 .shop-card .title {
-    font-size: 26px;
+    font-size: 17px;
     line-height: 20px;
     color: #c4aa9d;
     margin: 0 0 12px;
@@ -678,10 +706,9 @@ h1 {
 }
 
 .sidebar-title {
-    font-size: 22px;
+    font-size: 19px;
     line-height: 36px;
     border-bottom: 2px solid #000000;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
     margin-bottom: 20px;
     text-transform: uppercase;
 }
@@ -775,7 +802,7 @@ h1 {
     -webkit-appearance: none;
     background-color: #c4aa9d;
     border: 2px solid #c4aa9d;
-    padding: 13px;
+    padding: 12px;
     display: inline-block;
     position: relative;
     vertical-align: middle;
@@ -794,23 +821,31 @@ h1 {
     content: '';
     display: block;
     position: absolute;
-    top: 8px;
-    left: 12px;
-    width: 8px;
-    height: 17px;
+    top: 6px;
+    left: 10px;
+    width: 7px;
+    height: 16px;
     border: solid #c4aa9d;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
+}
+.fs-12 {
+    font-size: 12px;
+}
+.fs-35 {
+    font-size: 35px;
+}
+#afterSale,#productStartPrice {
+    font-size: 1.2rem;
 }
 
 
 /*----contact Us------*/
 .contact-section .title {
-    font-size: 23px;
+    font-size: 20px;
     background-color: #c4aa9d;
     color: #ffffff;
-    font-family: "MYRIADPRO-BOLD", sans-serif;
-    height: 56px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -820,15 +855,22 @@ h1 {
 }
 
 .contact-section .text {
-    margin: 48px auto 0;
+    margin: 26px auto 0;
     max-width: 400px;
     font-size: 22px;
     line-height: 28px;
+}
+.contact-section .text p{
+    max-width: 400px;
+    font-size: 18px;
+    line-height: 26px;
+    word-break: break-all;
 }
 
 .contact-section .info-text {
     font-size: 22px;
     line-height: 34px;
+    word-break: break-all;
 }
 
 .contact-form .btn-green-gradient {
@@ -838,7 +880,7 @@ h1 {
 
 .contact-form label {
     color: #ffffff;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 20px;
 }
 
@@ -856,16 +898,17 @@ h1 {
     background-color: #c4aa9d;
     color: #ffffff;
     border-radius: 0;
+    outline: none;
 }
 
 .form-info li span {
-    font-size: 28px;
+    font-size: 20px;
     color: #ffffff;
     line-height: 26px;
 }
 
 .form-info li a {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 20px;
     color: #ffffff;
 }
@@ -879,13 +922,12 @@ h1 {
 /* JOIN */
 .join-section-bg,
 .contact-section-bg {
-    background-image: url("../images/cover-pic.jpg");
     background-size: 100%;
     max-height: 735px;
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 14% 0;
+    padding: 20% 0;
 }
 
 
@@ -964,8 +1006,8 @@ button:focus {
 }
 
 .product-section h2 {
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 23px;
+    line-height: 26px;
     font-weight: bold;
 }
 
@@ -1084,7 +1126,7 @@ button:focus {
     justify-content: space-between;
     background-color: #fff;
     padding: 10px 60px 10px 16px;
-    min-height: 135px;
+    min-height: 125px;
     margin-bottom: 8px;
     border-radius: 5px;
     border: 1px solid #c4aa9d;
@@ -1206,6 +1248,10 @@ button:focus {
 .text-content-page  h2{
     background-color: #c4aa9d;
     margin-top: 30px;
+    font-size: 1.8rem;
+}
+.text-content-page  h3{
+    font-size: 1.6rem;
 }
 .br-0{
     border-radius: 0;
@@ -1276,3 +1322,4 @@ button:focus {
     padding-bottom: 10em;
     width: 100em;
 }
+

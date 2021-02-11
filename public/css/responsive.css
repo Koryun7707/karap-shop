@@ -16,6 +16,10 @@
     .navbar-light .navbar-nav .nav-link {
         font-size: 1rem;
     }
+    .home-card-pagination img {
+        width: 100%;
+        height: 300px;
+    }
 }
 @media screen and (max-width: 1300px) {
     .icon-search-container.active {
@@ -32,8 +36,9 @@
     .icon-search-container .search-input {
         left: 30px;
     }
-    .navbar-light .navbar-nav .nav-link {
-        font-size: 1rem;
+    .home-card-pagination img {
+        width: 100%;
+        height: 250px;
     }
 }
 @media screen and (max-width: 1199px) {
@@ -43,11 +48,16 @@
     .shop-section-bg {
         max-height: 500px;
         height: 100%;
-        padding: 50px;
+        padding: 22% 0;
     }
-    .sidebar-title {
-        font-size: 25px;
+    .section1 .abs h1 {
+        font-size: 4rem;
+        line-height: 4rem;
     }
+    .fs-35 {
+        font-size: 22px;
+    }
+
 
 }
 @media screen and (min-width: 992px) and (max-width: 1082px){
@@ -59,10 +69,16 @@
         padding-left: 0;
     }
 }
-@media screen and (max-width: 991px) {
-    main {
-        padding-top: 100px;
+@media screen and (min-width: 768px) and (max-width: 1199px){
+    .home-card-pagination img {
+        width: 100%;
+        height: 200px;
     }
+}
+@media screen and (max-width: 991px) {
+    /*main {*/
+    /*    padding-top: 100px;*/
+    /*}*/
     .section1 .abs h1 {
         font-size: 4rem;
         line-height: 3rem;
@@ -80,8 +96,8 @@
     }
     h1 {
         color: #e3e3e3;
-        font-size: 60px;
-        letter-spacing: -5px;
+        font-size: 2rem;
+        letter-spacing: 0;
     }
     .brand-section .btn-green-gradient {
         margin-bottom: 70px;
@@ -108,15 +124,21 @@
     .form-info li a {
         font-size: 16px;
     }
+    #carousel-about.owl-carousel .owl-item img {
+        display: block;
+        width: 80%;
+        height: 400px;
+        margin: 0 auto;
+    }
 }
 @media screen and (max-width: 767px){
     .footer-bg {
         background-repeat: repeat!important;
     }
     .section1 .abs h1 {
-        font-size: 2.5rem;
-        letter-spacing: -2px;
-        line-height: 2rem;
+        font-size: 1.5rem;
+        letter-spacing: 0;
+        line-height: 1.5rem;
     }
     .home-card-pagination-title {
         font-size: 22px;
@@ -142,9 +164,22 @@
         font-size: 14px;
     }
     .logoStyles {
-        font-size: 30px;
-        line-height: 30px;
+        font-size: 25px;
+        line-height: 25px;
         margin-left: -10px;
+    }
+    .home-card-pagination img {
+        width: 100%;
+        height: auto;
+    }
+    .brand-img {
+        width: 70%;
+        max-width: 500px;
+    }
+    .rose-border:before {
+        content: '';
+        width: 200px;
+        height: 112%;
     }
 
 }
@@ -180,3 +215,4 @@
         margin-left: -10px;
     }
 }
+
