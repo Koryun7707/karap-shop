@@ -145,6 +145,9 @@ $(document).ready(function () {
 
     //location href
     function gup(name, url) {
+        if(name === 'type'&&url.includes('&')){
+            return url.split('=')[1]
+        }
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
         var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -743,6 +746,7 @@ $(document).ready(function () {
 
 
 })
+
 
 
 

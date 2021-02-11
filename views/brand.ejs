@@ -15,12 +15,14 @@
             <div class="owl-slider py-5">
                 <div id="carousel-brand" class="owl-carousel main-item-bg">
                     <% brands.forEach(function(item){ %>
-                        <div class="item">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <img class="card-img-top" src="<%= item.images[0] %>" alt="Card image cap" width="135"
-                                     height="62">
+                        <%if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {%>
+                            <div class="item">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <img class="card-img-top" src="<%= item.images[0] %>" alt="Card image cap" width="135"
+                                         height="62">
+                                </div>
                             </div>
-                        </div>
+                        <%}%>
                     <% }) %>
                 </div>
             </div>
@@ -82,19 +84,20 @@
                     }
                 }
                 response.results.brands.map((item) => {
-                    let brandsRenderPlace = document.getElementById('brands-section-place');
-                    let text;
-                    const language = document.getElementById('example').value === 'eng'?true:false
-                    console.log(language)
-                    if (language ) {
-                        text = 'Shop now'
-                    } else {
-                        text = 'Գնել'
-                    }
+                    if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {
+                        let brandsRenderPlace = document.getElementById('brands-section-place');
+                        let text;
+                        const language = document.getElementById('example').value === 'eng'?true:false
+                        console.log(language)
+                        if (language ) {
+                            text = 'Shop now'
+                        } else {
+                            text = 'Գնել'
+                        }
 
-                    let div = document.createElement('div');
-                    div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
-                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
+                        let div = document.createElement('div');
+                        div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
+                        div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
@@ -110,8 +113,11 @@
                         <img src=${item.images[2]} alt="" class="brand-img">
                     </div>
                 </div>`;
-                    brandsRenderPlace.appendChild(div);
+                        brandsRenderPlace.appendChild(div);
+                    }
+
                 });
+
             },
             error: function (data) {
                 console.log('User creation failed :' + data);
@@ -187,10 +193,12 @@
             success: function (response) {
                 $("#brands-section-place").empty();
                 response.results.brands.map((item) => {
-                    let brandsRenderPlace = document.getElementById('brands-section-place');
-                    let div = document.createElement('div');
-                    div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
-                    div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
+                    if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {
+
+                        let brandsRenderPlace = document.getElementById('brands-section-place');
+                        let div = document.createElement('div');
+                        div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
+                        div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
@@ -204,7 +212,8 @@
                         <img src=${item.images[2]} alt="" class="brand-img">
                     </div>
                 </div>`;
-                    brandsRenderPlace.appendChild(div);
+                        brandsRenderPlace.appendChild(div);
+                    }
                 });
             },
             error: function (data) {
@@ -249,4 +258,5 @@
 
 </body>
 </html>
+
 

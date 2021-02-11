@@ -148,7 +148,16 @@ module.exports = {
                 return o.price;
             }))
             const countSale = await Product.count({sale: {$exists: true}}).exec();
-            const type = req.query.type || null;
+           // const type = req.query.type || null;
+            let type = ''
+            for (const key in req.query) {
+                type+= req.query[key];
+                if(key!='type'){
+                    type+=key;
+                }
+                type+='&'
+            }
+            type= type.substring(0,type.length-1)
             const brandId = req.query.brandId || null;
             res.render('shop', {
                 URL: '/shop',
@@ -1632,3 +1641,4 @@ module.exports = {
         }
     },
 };
+
