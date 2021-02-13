@@ -129,8 +129,15 @@
 <script>
 
     function handleSelectChange() {
-        let totalPrice = document.getElementById('productPrice').innerHTML;
-        totalPrice = Number(totalPrice.substring(0, totalPrice.length - 1));
+        const order = JSON.parse(localStorage.getItem('order'));
+        let productTotalPrice = 0
+        if (order && order.length) {
+            order.forEach((item) => {
+                let priceAfterSale = Number(item.priceSale.substring(0, item.priceSale.length - 1));
+                productTotalPrice += priceAfterSale;
+            })
+        }
+        let totalPrice = productTotalPrice;
         let country = document.getElementById("selectCountry").value;
         if (country !== 'Country/Region') {
             let priceDelivery = 0;
@@ -180,9 +187,7 @@
             document.getElementById('delivery').innerHTML = `${priceDelivery%1==0?priceDelivery:priceDelivery.toFixed(2)}€`
             document.getElementById('productPrice').innerHTML = `${Number(totalPrice + priceDelivery)%1==0?(totalPrice + priceDelivery):(totalPrice + priceDelivery).toFixed(2)}€`
         } else {
-            let totalDelivery = document.getElementById('delivery').innerHTML;
-            totalDelivery = Number(totalDelivery.substring(0, totalDelivery.length - 1));
-            document.getElementById('productPrice').innerHTML = `${totalPrice - totalDelivery}€`
+            document.getElementById('productPrice').innerHTML = `${totalPrice%1==0?totalPrice:totalPrice.toFixed(2)}€`
             document.getElementById('delivery').innerHTML = `${0}€`
         }
     }
@@ -327,6 +332,7 @@
     }
 </script>
 <%- include ('footer') -%>
+
 
 
 
