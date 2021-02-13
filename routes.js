@@ -155,6 +155,8 @@ router.post('/blog-edit/:_id', checkIsAuthenticated, isAdmin, upload.array('uplo
 router.get('/admin-editProduct', checkIsAuthenticated, isAdmin, pagesController.editProduct);
 router.get('/admin-editBrand', checkIsAuthenticated, isAdmin, pagesController.editBrand);
 router.get('/admin-editBlog', checkIsAuthenticated, isAdmin, pagesController.editBlog);
+router.get('/admin-sendMailShipping', checkIsAuthenticated, isAdmin, pagesController.getSendMailShipping);
+router.post('/admin-sendMailShipping', checkIsAuthenticated, isAdmin, pagesController.postSendMailShipping);
 
 //payment
 router.post('/pay', checkIsAuthenticated, paymentPaypal);
@@ -166,3 +168,4 @@ router.get('/cancel', checkIsAuthenticated, paypalCancel);
 router.post('/purchase', checkIsAuthenticated, paymentStripe);
 
 module.exports = router;
+

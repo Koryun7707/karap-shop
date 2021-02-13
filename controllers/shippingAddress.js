@@ -42,7 +42,7 @@ const getShippingAddresses = async (req, res) => {
             .limit(perPage)
             .populate({
             path: 'userId',
-            select: 'firstName lastName -_id',
+            select: 'firstName lastName email -_id',
         }).exec(function(err, shippingAddress) {
              ShippingAddress.count().exec(function (err, count) {
                     if (err) return logger.error(`${err}`);

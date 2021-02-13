@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 const {err} = require('../utils/responseApi');
+const ejs = require('ejs');
 const {
     validateHomeData,
     validateShopData,
@@ -1641,6 +1642,55 @@ module.exports = {
             return res.redirect(`/admin-editBlog?_id=${_id}`);
         }
     },
+    getSendMailShipping:async (req, res) => {
+        logger.info('Start sendMailShipping - - -');
+        try {
+            const {email,name} = req.query;
+            res.render('admin/sendShippingAddress', {
+                URL: '/admin-sendMailShipping',
+                user: req.session.user,
+                email:email,
+                firstName:name,
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            logger.error(`sendMailShipping: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    postSendMailShipping:async (req, res) => {
+        logger.info('Start sendMailShipping - - -');
+        try {
+            const {email,orderId,firstName} = req.body;
+            ejs.renderFile("./sendOrderId.ejs", {
+                name: firstName,
+                orderId: orderId,
+            }, function (err, data) {
+                if (err) {
+                    logger.error(`sendMailShipping: ${err}`);
+                    req.flash("error_msg", err.message);
+                    return res.redirect("/admin-sendMailShipping");
+
+                } else {
+                    const messageUser = {
+                        from: process.env.MAIL_AUTH_EMAIL,
+                        to: email,
+                        subject: 'Thank you for your order',
+                        html: data,
+                    }
+                    sendMessageToMail(messageUser)
+                }
+            });
+            req.flash('success_msg',`Order Id Send To Mail:${email}`)
+            return res.redirect(`/admin-sendMailShipping?email=${email}`);
+        } catch (e) {
+            logger.error(`sendMailShipping: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/admin-sendMailShipping");
+        }
+    },
 };
+
 
 

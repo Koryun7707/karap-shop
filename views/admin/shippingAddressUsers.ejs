@@ -48,6 +48,7 @@
             <% }) %>
         </td>
         <td><a onclick="deleteOrder(this)" value=<%=item._id%> type="button" class="btn btn-danger">Delete</a></td>`
+        <td><a href="/admin-sendMailShipping?email=<%=item.userId.email%>&name=<%=item.userId.firstName%>" value=<%=item._id%> type="button" class="btn btn-warning">Send</a></td>`
     </tr>
     <% }) %>
     <% } %>
@@ -112,3 +113,4 @@
     }
 </script>
 <%- include ('adminFooter') -%>
+

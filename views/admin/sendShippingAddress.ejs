@@ -1,0 +1,21 @@
+<%- include ('adminHeader') -%>
+<div class="row">
+    <div class="col-8 offset-2">
+        <form method="post" action="/admin-sendMailShipping" class="py-5">
+                        <div class="row page-titles">Send Order id.</div>
+                        <h5 class="mb-2">Email Address</h5>
+                        <div class="form-group">
+                            <input id="sendEmail" name="email"  placeholder="<%=email%>" value="<%=email%>"   type="email" class="form-control">
+                        </div>
+            <input type="hidden" name="firstName" value="<%=firstName%>">
+                        <div class="form-group d-flex flex-column">
+                            <label for="orderId">Order id</label>
+                            <input required name="orderId"  class="form-control" type="text" id="orderId">
+                        </div>
+            <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
+        </form>
+    </div>
+</div>
+
+<%- include ('adminFooter') -%>
+
