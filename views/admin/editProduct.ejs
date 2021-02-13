@@ -4,6 +4,18 @@
         <form method="post" enctype="multipart/form-data"
               action="product-edit/<%= product._id %>" class="py-5">
             <div class="row page-titles">Edit product.</div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Choose brand.</label>
+                <select name="brandId">
+                    <% brands.forEach(function(item){ %>
+                    <%if(item._id.toString() === product.brandId.toString()){%>
+                        <option selected value="<%= item._id %>"><%= item.name %></option>
+                    <%}else{%>
+                        <option  value="<%= item._id %>"><%= item.name %></option>
+                    <%}%>
+                    <% }) %>
+                </select>
+            </div>
             <input type="hidden" value="<%= product._id %>">
             <div class="form-group">
                 <label for="exampleInputEmail1">Pak3(*if you want create pak3 write yes)</label>
@@ -101,4 +113,5 @@
     </div>
 </div>
 <%- include ('adminFooter') -%>
+
 

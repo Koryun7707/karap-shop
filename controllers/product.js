@@ -132,8 +132,6 @@ const updateProduct = async (req, res) => {
         const files = req.files;
         const _id = req.params._id;
         const product = await Product.findById(_id).exec();
-        req.body.brandId = product.brandId.toString();
-
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
             if (files.length > 0) {
@@ -442,5 +440,6 @@ module.exports = {
     getProductById: getProductById,
     getDataSearch: getDataSearch
 };
+
 
 

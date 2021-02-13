@@ -1183,10 +1183,12 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id: _id}).lean().exec();
+            const brands = await Brand.find({}).select('name _id')
             res.render('admin/editProduct', {
                 URL: '/admin-editProduct',
                 user: req.session.user,
                 product: product[0],
+                brands:brands,
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
@@ -1691,6 +1693,7 @@ module.exports = {
         }
     },
 };
+
 
 
 
