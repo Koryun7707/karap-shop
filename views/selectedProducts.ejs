@@ -110,6 +110,16 @@
                         newDiv.id = item._id;
                         const PRICE =Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price);
                         const SALE = ((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count));
+                        const COLOR = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color
+                        let colorPak3
+                        let colorPak6
+                        if(Array.isArray(COLOR)){
+                            if(COLOR.length === 3){
+                                colorPak3 = COLOR
+                            }else{
+                                colorPak6 = COLOR
+                            }
+                        }
                         newDiv.innerHTML = `
                     <div  class="shop-check d-flex flex-1 mb-2 mb-md-0">
                         <div class="form-group mr-2">
@@ -121,9 +131,9 @@
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language ? item.name : item.nameArm}</div>
-                           <div class="d-flex mt-3">
+                           <div class="d-flex mt-3" id='colorDiv${item._id}'>
                                    <div id='div1${item._id}' class="product-size mr-3">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</div>
-                                  <div id='div2${item._id}' class="product-color py-2" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color}"></div>
+
 
 </div>
 
@@ -149,11 +159,42 @@
                         <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
                `
+                        if(colorPak3){
+                            for(let i=0;i<3;i++){
+                                let div = document.createElement('div');
+                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.style.backgroundColor = `${colorPak3[i]}`
+                                document.getElementById(`colorDiv${item._id}`).append(div);
+                            }
+
+                        }else
+                        if(colorPak6){
+                            for(let i=0;i<6;i++){
+                                let div = document.createElement('div');
+                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.style.backgroundColor = `${colorPak6[i]}`
+                                document.getElementById(`colorDiv${item._id}`).append(div);
+                            }
+
+                        }else
+                        {
+
+                                let div = document.createElement('div');
+                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.style.backgroundColor = COLOR;
+                                document.getElementById(`colorDiv${item._id}`).append(div);
+
+
+                        }
                         if(!size){
                             document.getElementById(`div1${item._id}`).style.display = 'none';
                         }
-                        if(!color){
-                            document.getElementById(`div2${item._id}`).style.display = 'none';
+                        // console.log('dssfd',)
+                        if(!color||!COLOR.length){
+                            let str = `div2${item._id}`
+                           document.querySelectorAll(`.div2${item._id}`).forEach(item=>{
+                               item.style.display = 'none'
+                           })
                         }
                         if (item.sale) {
                             document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
@@ -276,6 +317,8 @@
                         let price = document.getElementById(`saleProductPrice${id}`).innerHTML;
                         let count = document.getElementById(`qtyInput${id}`).getAttribute('value');
                         price = (Number(price.substring(0, price.length - 1)) / Number(count)).toString();
+                        const COLOR = shoppingCard[shoppingCard.findIndex(x => x.productId == id)].color
+                        const SIZE = shoppingCard[shoppingCard.findIndex(x => x.productId == id)].size
                         let obj = {
                             productId: id,
                             onePrice: price,
@@ -287,10 +330,13 @@
                             nameArm: document.getElementById(`nameArm${id}`).innerHTML,
                             registrationAddress: document.getElementById(`productName${id}`).getAttribute('registrationAddress'),
                             productWeight: document.getElementById(`productName${id}`).getAttribute('productWeight'),
+                            size:SIZE,
+                            color:COLOR
                         }
                         values.push(obj);
                     }
                 });
+
                 localStorage.setItem('order', JSON.stringify(values));
                 document.getElementById('shippingPage').setAttribute('href', '/shipping');
             }
@@ -397,6 +443,7 @@
 
 </body>
 </html>
+
 
 
 

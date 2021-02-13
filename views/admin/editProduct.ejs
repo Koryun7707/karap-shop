@@ -6,6 +6,16 @@
             <div class="row page-titles">Edit product.</div>
             <input type="hidden" value="<%= product._id %>">
             <div class="form-group">
+                <label for="exampleInputEmail1">Pak3(*if you want create pak3 write yes)</label>
+                <input value="<%= product.pak3 %>" type="text" name="productPak3" class="form-control" id="exampleInputEmail1"
+                       placeholder="Product pak3.">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Pak6(*if you want create pak6 write yes)</label>
+                <input value="<%= product.pak6 %>" type="text" name="productPak6" class="form-control"
+                       placeholder="Product pak6.">
+            </div>
+            <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
                 <input value="<%= product.type %>" type="text" name="productType" class="form-control"
                        id="exampleInputEmail1"
@@ -91,3 +101,4 @@
     </div>
 </div>
 <%- include ('adminFooter') -%>
+

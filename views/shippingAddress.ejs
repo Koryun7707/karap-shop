@@ -255,20 +255,64 @@
                 const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size?true:false;
                 const language = document.getElementById('example').value === 'eng'?true:false;
                 const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color?true:false;
+                const COLOR = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color
+                let colorPak3
+                let colorPak6
+                if(Array.isArray(COLOR)){
+                    if(COLOR.length === 3){
+                        colorPak3 = COLOR
+                    }else{
+                        colorPak6 = COLOR
+                    }
+                }
                 div.innerHTML = `
                         <div class="img-area">
                             <img src="${item.images}" alt="">
                             </div>
                         <div>
                             <h5>${language?item.name:item.nameArm}</h5>
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center" id='colorDiv${item._id}'>
 
-                           <span style="display:inline-block; background-color:${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].color}" class="px-3 py-2 ml-1"></span><span id='line12' class="mx-1"></span><span>${size?shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size:''}</span></div>
+
+
+                        <span>${size?shoppingCard[shoppingCard.findIndex(x => x.productId == `${item.productId}`)].size:''}</span>
+                         <span id='line12' class="mx-1"></span>
+                      </div>
                         </div>
                         <div id='div3${item._id}' class="price ml-auto" style="text-decoration: line-through;">${item.price} </div>
                         <div id='div4${item._id}' class="price ml-auto">${item.priceSale} </div>
 `
-                if(size && color){
+                if(colorPak3){
+                    for(let i=0;i<3;i++){
+                        let div = document.createElement('span');
+                        div.setAttribute('class',`px-3 py-2 ml-1 div2${item._id}`);
+                        div.style.display = 'inline-block'
+                        div.style.backgroundColor = `${colorPak3[i]}`
+                        document.getElementById(`colorDiv${item._id}`).append(div);
+                    }
+
+                }else
+                if(colorPak6){
+                    for(let i=0;i<6;i++){
+                        let div = document.createElement('span');
+                        div.setAttribute('class',`px-3 py-2 ml-1 div2${item._id}`);
+                        div.style.display = 'inline-block'
+                        div.style.backgroundColor = `${colorPak6[i]}`
+                        document.getElementById(`colorDiv${item._id}`).append(div);
+                    }
+
+                }else
+                {
+
+                    let div = document.createElement('span');
+                    div.setAttribute('class',`px-3 py-2 ml-1 div2${item._id}`);
+                    div.style.display = 'inline-block'
+                    div.style.backgroundColor = COLOR
+                    document.getElementById(`colorDiv${item._id}`).append(div);
+
+
+                }
+                if(size && color && COLOR.length){
                     document.getElementById('line12').innerHTML = '/';
                 }
                 if(Number(item.priceSale.substring(0,item.priceSale.length-1)) === (Number(item.price.substring(0,item.price.length-1)))){
@@ -283,5 +327,6 @@
     }
 </script>
 <%- include ('footer') -%>
+
 
 

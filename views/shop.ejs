@@ -49,8 +49,8 @@
                         <div class="px-4 mb-5">
                             <div class="form-group">
                                 <input type="checkbox" id="sale">
-                                <label  for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
-                                    (<%=countSale%>)</label>
+                                <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
+                                    (<%= countSale %>)</label>
                             </div>
                         </div>
                         <div class="sidebar-title"><%= staticData.shop_price %></div>
@@ -80,17 +80,19 @@
                                 <div class="force-overflow">
                                     <% if(brands.length){ %>
                                         <% brands.forEach(function(item){ %>
-                                            <div class="form-group">
-                                                <% if(brandId === item._id.toString()){ %>
-                                                    <input checked type="checkbox"
-                                                           id=<%= item._id %> value="<%= item._id %>brandID">
-                                                    <label for="<%= item._id %>"><%= item.name %></label>
-                                                <% }else{ %>
-                                                    <input type="checkbox"
-                                                           id="<%= item._id %>" value="<%= item._id %>brandID">
-                                                    <label for="<%= item._id %>"><%= item.name %></label>
-                                                <% } %>
-                                            </div>
+                                            <% if(item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') { %>
+                                                <div class="form-group">
+                                                    <% if(brandId === item._id.toString()){ %>
+                                                        <input checked type="checkbox"
+                                                               id=<%= item._id %> value="<%= item._id %>brandID">
+                                                        <label for="<%= item._id %>"><%= item.name %></label>
+                                                    <% }else{ %>
+                                                        <input type="checkbox"
+                                                               id="<%= item._id %>" value="<%= item._id %>brandID">
+                                                        <label for="<%= item._id %>"><%= item.name %></label>
+                                                    <% } %>
+                                                </div>
+                                            <% } %>
                                         <% }) %>
                                     <% } %>
 
@@ -204,5 +206,7 @@
 
 </body>
 </html>
+
+
 
 

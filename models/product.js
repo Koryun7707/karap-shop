@@ -28,7 +28,7 @@ const productSchema = new Schema({
         type: String,
         required: true,
     },
-    nameArm:{
+    nameArm: {
         type: String,
         required: true,
     },
@@ -63,7 +63,13 @@ const productSchema = new Schema({
         type: Array,
         required: true,
     },
-      date: {
+    productPak3: {
+        type: String,
+    },
+    productPak6: {
+        type: String,
+    },
+    date: {
         type: Date,
         default: Date.now
     }
@@ -73,3 +79,4 @@ const productSchema = new Schema({
 productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);
+

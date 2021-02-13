@@ -89,10 +89,26 @@
                                         <tr align="center" style="line-height:30px; padding-left: 0 ">
                                             <td style="padding-left: 30px">QTY </td>
                                             <td style="padding-left: 30px">Price</td>
+                                            <%if(item.size){%>
+                                                <td style="padding-left: 30px">Size</td>
+                                            <%}%>
+                                            <%if(item.color){%>
+                                                <td style="padding-left: 30px">Color</td>
+                                            <%}%>
                                         </tr>
                                         <tr align="center" style="line-height:30px; padding-left: 0 ">
                                             <td style="padding-left: 30px"><%=item.count%> </td>
                                             <td style="padding-left: 30px"><%=item.priceSale%></td>
+                                            <%if(item.size){%>
+                                            <td style="padding-left: 30px"><%=item.size%></td>
+                                            <%}%>
+                                            <%if(item.color){%>
+                                            <%if(Array.isArray(item.color)){%>
+                                            <td style="padding-left: 30px"><%=item.color.join('')%></td>
+                                            <%}else{%>
+                                            <td style="padding-left: 30px"><%=item.color%></td>
+                                            <%}%>
+                                            <%}%>
                                         </tr>
 
                                         </tbody>
@@ -131,3 +147,4 @@
 
 </body>
 </html>
+

@@ -15,6 +15,8 @@ const validateProduct = (data) => {
         productDescription: Joi.string().allow('', null),
         productDescriptionArm: Joi.string().allow('', null),
         productColor: Joi.string().allow('', null),
+        productPak3: Joi.string().allow('', null),
+        productPak6: Joi.string().allow('', null),
         productCount: Joi.string().required(),
         productWeight: Joi.string().required(),
     });
@@ -25,3 +27,4 @@ const validateProduct = (data) => {
 module.exports = {
     validateProduct: validateProduct,
 };
+

@@ -33,6 +33,17 @@
             <li> Name: <%= item.name %></li>
             <li> Weight: <%= item.productWeight %></li>
             <li> Registration Address: <%= item.registrationAddress %></li>
+                <%if(item.size){%>
+        <li><%=item.size%></li>
+        <%}%>
+        <%if(item.color){%>
+        <%if(Array.isArray(item.color)){%>
+            <li style="padding-left: 30px"><%=item.color.join()%></li>
+        <%}else{%>
+        <li ><%=item.color%></li>
+        <%}%>
+        <%}%>
+
             <li><img width="50px" height="50px" src="<%= item.images %>" alt=""></li>
             <% }) %>
         </td>

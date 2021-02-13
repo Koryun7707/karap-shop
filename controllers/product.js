@@ -31,9 +31,9 @@ const createProduct = async (req, res) => {
                     if (err) logger.error(err);
                 })
             });
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
-            }else {
+            } else {
                 req.flash("error_msg", "* ընտրել պատկերների քանակը պետք է լինի>= 2 կամ <= 5!");
             }
             return res.redirect("/admin-create-product");
@@ -62,6 +62,8 @@ const createProduct = async (req, res) => {
                 description: value.productDescription,
                 descriptionArm: value.productDescriptionArm,
                 colors: value.productColor.split('/'),
+                productPak3: value.productPak3,
+                productPak6: value.productPak6,
                 count: value.productCount,
                 productWeight: value.productWeight,
             });
@@ -78,6 +80,8 @@ const createProduct = async (req, res) => {
                 descriptionArm: value.productDescriptionArm,
                 sizes: value.productSize.split('/'),
                 colors: value.productColor.split('/'),
+                productPak3: value.productPak3,
+                productPak6: value.productPak6,
                 count: value.productCount,
                 productWeight: value.productWeight,
             });
@@ -149,9 +153,9 @@ const updateProduct = async (req, res) => {
                     if (err) logger.error(err);
                 })
             });
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 req.flash("error_msg", "Files is required!");
-            }else {
+            } else {
                 req.flash("error_msg", "Ֆայլերը պարտադիր են!");
             }
             return res.redirect(`/admin-editProduct?_id=${_id}`);
@@ -176,6 +180,8 @@ const updateProduct = async (req, res) => {
         }
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
+        productPak3 = value.productPak3;
+        productPak6 = value.productPak6;
         product.description = value.productDescription;
         product.descriptionArm = value.productDescriptionArm;
         product.count = value.productCount;
@@ -245,8 +251,8 @@ const getProductsShopFilter = async (req, res) => {
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
         let search;
-        if(req.session.language === 'eng'){
-             search = {
+        if (req.session.language === 'eng') {
+            search = {
                 $and: [
                     {
                         '$or': [
@@ -256,8 +262,8 @@ const getProductsShopFilter = async (req, res) => {
 
                 ]
             };
-        }else{
-             search = {
+        } else {
+            search = {
                 $and: [
                     {
                         '$or': [
@@ -277,9 +283,9 @@ const getProductsShopFilter = async (req, res) => {
             data = await Product.paginate({}, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandId.length > 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 search['$and'].push({type: {"$in": types}});
-            }else {
+            } else {
                 search['$and'].push({typeArm: {"$in": types}});
             }
             search['$and'].push({brandId: {"$in": brandId}});
@@ -290,9 +296,9 @@ const getProductsShopFilter = async (req, res) => {
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 search['$and'].push({type: {"$in": types}});
-            }else {
+            } else {
                 search['$and'].push({typeArm: {"$in": types}});
             }
             data = await Product.paginate(search, options);
@@ -301,9 +307,9 @@ const getProductsShopFilter = async (req, res) => {
             data = await Product.paginate(search, options);
         } else if (brandId.length > 0 && types.length > 0) {
             search['$and'].push({brandId: {"$in": brandId}});
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 search['$and'].push({type: {"$in": types}});
-            }else {
+            } else {
                 search['$and'].push({typeArm: {"$in": types}});
             }
             data = await Product.paginate(search, options);
@@ -311,9 +317,9 @@ const getProductsShopFilter = async (req, res) => {
             search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
         } else if (types.length > 0) {
-            if(req.session.language === 'eng'){
+            if (req.session.language === 'eng') {
                 search['$and'].push({type: {"$in": types}});
-            }else {
+            } else {
                 search['$and'].push({typeArm: {"$in": types}});
             }
             data = await Product.paginate(search, options);
@@ -384,7 +390,7 @@ const getDataSearch = async (req, res) => {
         ]
     };
     let searchFilterProduct
-    if(req.session.language === 'eng'){
+    if (req.session.language === 'eng') {
         searchFilterProduct = {
             $and: [
                 {
@@ -395,8 +401,7 @@ const getDataSearch = async (req, res) => {
 
             ]
         };
-    }
-    else{
+    } else {
         searchFilterProduct = {
             $and: [
                 {
@@ -408,11 +413,11 @@ const getDataSearch = async (req, res) => {
             ]
         };
     }
-   let arrayProduct ;
-    if(req.session.language === 'eng'){
+    let arrayProduct;
+    if (req.session.language === 'eng') {
         arrayProduct = await Product.find(searchFilterProduct).select('name type').lean();
 
-    }else{
+    } else {
         arrayProduct = await Product.find(searchFilterProduct).select('nameArm typeArm').lean();
     }
     Promise.all([
@@ -437,4 +442,5 @@ module.exports = {
     getProductById: getProductById,
     getDataSearch: getDataSearch
 };
+
 

@@ -1423,7 +1423,8 @@ module.exports = {
     getCheckouts: async (req, res) => {
         try {
             logger.info('Start get checkout page.');
-
+            console.log(req.body.order)
+            console.log(req.body.shippingAddress)
             localStorage.setItem(`order${req.session.user._id}`, req.body.order);
             localStorage.setItem(`shippingAddress${req.session.user._id}`, req.body.shippingAddress);
             const staticData = await getStaticData(req.session.language);
@@ -1641,4 +1642,5 @@ module.exports = {
         }
     },
 };
+
 
