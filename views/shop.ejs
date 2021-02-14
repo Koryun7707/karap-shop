@@ -24,12 +24,12 @@
                                                 <li class="form-group">
                                                     <% if(item === type){ %>
                                                         <input checked type="checkbox" id="<%= item %>"
-                                                               value=<%= item %>>
+                                                               value=<%= item %> autocomplete="off" >
                                                         <label for="<%= item %>"
                                                                class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% }else{ %>
                                                         <input type="checkbox" id="<%= item %>"
-                                                               value=<%= item %>>
+                                                               value=<%= item %> autocomplete="off">
                                                         <label for="<%= item %>"
                                                                class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% } %>
@@ -43,12 +43,12 @@
                         <div class="sidebar-title"><%= staticData.shop_search %></div>
                         <div class="shop-search mb-5">
                             <input value="" type="search" class="form-control "
-                                   placeholder="<%= staticData.shop_search %>">
+                                   placeholder="<%= staticData.shop_search %>" autocomplete="off" >
                         </div>
                         <div class="sidebar-title"><%= staticData.shop_sale %></div>
                         <div class="px-4 mb-5">
                             <div class="form-group">
-                                <input type="checkbox" id="sale">
+                                <input type="checkbox" id="sale" autocomplete="off" >
                                 <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
                                     (<%= countSale %>)</label>
                             </div>
@@ -58,18 +58,18 @@
                             <div class="d-flex align-items-center mb-5">
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
                                        value="0"
-                                       class="form-control range-slide-input"/>
+                                       class="form-control range-slide-input" autocomplete="off" />
                                 <span class="px-2 fs-12"><%= staticData.to_text %></span>
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
                                        value="<%= maxPrice %>"
-                                       class="form-control range-slide-input"/>
+                                       class="form-control range-slide-input" autocomplete="off" />
                                 <button class="btn-rose border-0 px-3 py-1 ml-2"
                                         onclick="searchByPrice()"><%= staticData.find %></button>
                             </div>
                             <div style="display: none;" id="price-div-message"></div>
                             <div class="price-range-slider" id="price-range-slider" value="<%= maxPrice %>">
                                 <p class="range-value">
-                                    <input type="text" id="amount"/>
+                                    <input type="text" id="amount" autocomplete="off" />
                                 </p>
                                 <div id="slider-range" class="range-bar"></div>
                             </div>
@@ -84,11 +84,11 @@
                                                 <div class="form-group">
                                                     <% if(brandId === item._id.toString()){ %>
                                                         <input checked type="checkbox"
-                                                               id=<%= item._id %> value="<%= item._id %>brandID">
+                                                               id=<%= item._id %> value="<%= item._id %>brandID" autocomplete="off" >
                                                         <label for="<%= item._id %>"><%= item.name %></label>
                                                     <% }else{ %>
                                                         <input type="checkbox"
-                                                               id="<%= item._id %>" value="<%= item._id %>brandID">
+                                                               id="<%= item._id %>" value="<%= item._id %>brandID" autocomplete="off" >
                                                         <label for="<%= item._id %>"><%= item.name %></label>
                                                     <% } %>
                                                 </div>
@@ -206,6 +206,7 @@
 
 </body>
 </html>
+
 
 
 
