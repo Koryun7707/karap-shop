@@ -23,6 +23,7 @@ const jwt = require('jsonwebtoken');
 const {sendMessageToMail} = require('../services/mailService');
 const bcrypt = require('bcrypt');
 const Blog = require('../models/blog');
+const ShippingAddress = require('../models/shipingAddress');
 const LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./userStorage');
 
@@ -1647,12 +1648,13 @@ module.exports = {
     getSendMailShipping:async (req, res) => {
         logger.info('Start sendMailShipping - - -');
         try {
-            const {email,name} = req.query;
+            const {email,name,_id} = req.query;
             res.render('admin/sendShippingAddress', {
                 URL: '/admin-sendMailShipping',
                 user: req.session.user,
                 email:email,
                 firstName:name,
+                shippingId:_id,
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
@@ -1664,7 +1666,8 @@ module.exports = {
     postSendMailShipping:async (req, res) => {
         logger.info('Start sendMailShipping - - -');
         try {
-            const {email,orderId,firstName} = req.body;
+            const {email,orderId,firstName,shippingId} = req.body;
+            await ShippingAddress.updateOne({_id:shippingId},{status:true},{upsert: true})
             ejs.renderFile("./sendOrderId.ejs", {
                 name: firstName,
                 orderId: orderId,
@@ -1693,6 +1696,7 @@ module.exports = {
         }
     },
 };
+
 
 
 
