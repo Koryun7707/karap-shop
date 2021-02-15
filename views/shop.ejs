@@ -24,12 +24,12 @@
                                                 <li class="form-group">
                                                     <% if(item === type){ %>
                                                         <input checked type="checkbox" id="<%= item %>"
-                                                               value=<%= item %> autocomplete="off" >
+                                                               value=<%= item %>  >
                                                         <label for="<%= item %>"
                                                                class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% }else{ %>
                                                         <input type="checkbox" id="<%= item %>"
-                                                               value=<%= item %> autocomplete="off">
+                                                               value=<%= item %> >
                                                         <label for="<%= item %>"
                                                                class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% } %>
@@ -84,11 +84,11 @@
                                                 <div class="form-group">
                                                     <% if(brandId === item._id.toString()){ %>
                                                         <input checked type="checkbox"
-                                                               id=<%= item._id %> value="<%= item._id %>brandID" autocomplete="off" >
+                                                               id=<%= item._id %> value="<%= item._id %>brandID"  >
                                                         <label for="<%= item._id %>"><%= item.name %></label>
                                                     <% }else{ %>
                                                         <input type="checkbox"
-                                                               id="<%= item._id %>" value="<%= item._id %>brandID" autocomplete="off" >
+                                                               id="<%= item._id %>" value="<%= item._id %>brandID"  >
                                                         <label for="<%= item._id %>"><%= item.name %></label>
                                                     <% } %>
                                                 </div>
@@ -206,6 +206,7 @@
 
 </body>
 </html>
+
 
 
 

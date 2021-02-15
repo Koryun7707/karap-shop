@@ -167,10 +167,20 @@ $(document).ready(function () {
         if (type) {
             type = decodeURI(type);
         }
+        let bringData
+        if(performance.navigation.type == 2){
+            const localType = JSON.parse(localStorage.getItem('types'))
+            const localBrandId = JSON.parse(localStorage.getItem('brandId'))
+            bringData = {page: 1, types: localType, brandId: localBrandId, priceFrom: priceFrom, priceTo: priceTo}
+        }else{
+            localStorage.removeItem('types')
+            localStorage.removeItem('brandId')
+            bringData = {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo}
+        }
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo},
+            data: bringData,
             success: (response) => {
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -609,6 +619,8 @@ $(document).ready(function () {
                 }
             });
         }
+        localStorage.setItem('types',JSON.stringify(values))
+        localStorage.setItem('brandId',JSON.stringify(brandId))
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
@@ -748,7 +760,9 @@ $(document).ready(function () {
     });
 
 
+
 })
+
 
 
 
