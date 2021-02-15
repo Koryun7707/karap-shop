@@ -394,6 +394,9 @@ $(document).ready(function () {
                             <h1>No Found Data</h1>`
 
                 }
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 1000);
             },
             error: function (data) {
                 console.log('User creation failed :' + data);
