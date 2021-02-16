@@ -6,6 +6,9 @@
 .w-70 {
     width: 70%!important;
 }
+.h-75 {
+    height: 75%;
+}
 .logoStyles {
     color: #c4b3ab;
     /*margin: 14px 7px 15px 7px;*/
@@ -331,7 +334,7 @@ footer h4 {
 
 footer .abs {
     position: absolute;
-    right: 15px;
+    right: -15px;
     bottom: 0;
 }
 
@@ -525,7 +528,7 @@ h1 {
     line-height: 26px;
     margin-bottom: 40px;
     padding-right: 30px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .brand-section .btn-green-gradient {
@@ -569,11 +572,11 @@ h1 {
 .about-section-bg {
     background-image: url("../images/aboutUs-cover.jpg");
     background-size: 100%;
-    max-height: 735px;
+    max-height: 400px;
     display: flex;
     align-items: center;
     background-repeat: no-repeat;
-    padding: 20% 0;
+    padding: 11% 0;
 }
 
 .about-sections h2 {
@@ -619,7 +622,7 @@ h1 {
 }
 
 .about-sections p {
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .about-sections .btn-green-gradient {
@@ -637,8 +640,8 @@ h1 {
 }
 #carousel-about.owl-carousel .owl-item img {
     display: block;
-    width: 40%;
-    height: 500px;
+    width: 30%;
+    height: 390px;
     margin: 0 auto;
 }
 
@@ -864,13 +867,13 @@ h1 {
     max-width: 400px;
     font-size: 18px;
     line-height: 26px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .contact-section .info-text {
     font-size: 22px;
     line-height: 34px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .contact-form .btn-green-gradient {
@@ -1322,4 +1325,5 @@ button:focus {
     padding-bottom: 10em;
     width: 100em;
 }
+
 

@@ -16,27 +16,30 @@ function searchByPrice() {
         let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandIds = [];
+            var brandId = [];
+            var onSale
             $.each($('input:checked'), function (index, input) {
                 if (input.value.includes('brandID')) {
                     brandId.push(input.value.substring(0,input.value.length-7));
-                } else {
+                }else if (input.value === 'on') {
+                        onSale = input.value;
+                }
+                else {
                     values.push(input.value);
                 }
             });
         }
-
-
         $.ajax({
             type: 'post',
             url: '/shop-filter',
             data: {
                 types: values,
-                brandIds: brandIds,
+                brandIds: brandId,
                 searchValue: searchValue,
                 page: 1,
                 priceFrom: priceFrom,
-                priceTo: priceTo
+                priceTo: priceTo,
+                onSale:onSale
             },
             success: (response) => {
                 if (response.results.pageCount > 0) {
@@ -171,10 +174,12 @@ $(document).ready(function () {
         if(performance.navigation.type == 2){
             const localType = JSON.parse(localStorage.getItem('types'))
             const localBrandId = JSON.parse(localStorage.getItem('brandId'))
-            bringData = {page: 1, types: localType, brandId: localBrandId, priceFrom: priceFrom, priceTo: priceTo}
+            const localOnSale = JSON.parse(localStorage.getItem('onSale'))
+            bringData = {page: 1, types: localType, brandId: localBrandId, priceFrom: priceFrom, priceTo: priceTo,onSale:localOnSale}
         }else{
             localStorage.removeItem('types')
             localStorage.removeItem('brandId')
+            localStorage.removeItem('onSale')
             bringData = {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo}
         }
         $.ajax({
@@ -334,10 +339,14 @@ $(document).ready(function () {
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             var brandId = [];
+            var onSale
             $.each($('input:checked'), function (index, input) {
                 if (input.value.includes('brandID')) {
                     brandId.push(input.value.substring(0,input.value.length-7));
-                } else {
+                }else if (input.value === 'on') {
+                    onSale = input.value;
+                }
+                else {
                     values.push(input.value);
                 }
             });
@@ -352,6 +361,8 @@ $(document).ready(function () {
                 priceTo: priceTo,
                 types: values,
                 brandId: brandId,
+                onSale:onSale
+
 
             },
             success: function (response) {
@@ -492,10 +503,14 @@ $(document).ready(function () {
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             var brandId = [];
+            var onSale
             $.each($('input:checked'), function (index, input) {
                 if (input.value.includes('brandID')) {
                     brandId.push(input.value.substring(0,input.value.length-7));
-                } else {
+                }else if (input.value === 'on') {
+                    onSale = input.value;
+                }
+                else {
                     values.push(input.value);
                 }
             });
@@ -509,7 +524,8 @@ $(document).ready(function () {
                 searchValue: searchValue,
                 page: pageNumber,
                 priceFrom: priceFrom,
-                priceTo: priceTo
+                priceTo: priceTo,
+                onSale:onSale
             },
             success: (response) => {
                 $("#pagination-place").empty();
@@ -608,7 +624,7 @@ $(document).ready(function () {
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
             var brandId = [];
-            var onSale;
+            var onSale = '';
             $.each($('input:checked'), function (index, input) {
                 if (input.value.includes('brandID')) {
                     brandId.push(input.value.substring(0,input.value.length-7));
@@ -619,8 +635,10 @@ $(document).ready(function () {
                 }
             });
         }
+
         localStorage.setItem('types',JSON.stringify(values))
         localStorage.setItem('brandId',JSON.stringify(brandId))
+        localStorage.setItem('onSale',JSON.stringify(onSale))
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;

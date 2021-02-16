@@ -69,23 +69,11 @@
                     <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
                             <h5><%= staticData.product_color %></h5>
-                            <ul class="list-unstyled d-flex align-items-center flex-wrap">
+                            <ul class="list-unstyled">
                                 <% if(product[0].colors){ %>
                                    <%if(product[0].productPak3){%>
                                   <%for(let i=0;i<3;i++){%>
-                                    <div>Product <%=i+1%></div>
-                                    <% product[0].colors.forEach(function(item){ %>
-                                        <div class="mr-3 d-flex align-items-center mb-2">
-                                            <input type="radio" name="productColor<%=i%>" id=<%= item %>>
-                                            <!--                                            <%= item %>-->
-                                            <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
-                                            </input>
-                                        </div>
-                                    <% }) %>
-                                <%}%>
-
-                                <% } else if(product[0].productPak6){%>
-                                    <%for(let i=0;i<6;i++){%>
+                                <div class="d-flex align-items-center flex-wrap">
                                     <div>Product <%=i+1%></div>
                                     <% product[0].colors.forEach(function(item){ %>
                                     <div class="mr-3 d-flex align-items-center mb-2">
@@ -94,16 +82,35 @@
                                         <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
                                         </input>
                                     </div>
+                                </div>
+
+                                    <% }) %>
+                                <%}%>
+
+                                <% } else if(product[0].productPak6){%>
+                                    <%for(let i=0;i<6;i++){%>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div>Product <%=i+1%></div>
+                                    <% product[0].colors.forEach(function(item){ %>
+                                    <div class="mr-3 d-flex align-items-center mb-2">
+                                        <input type="radio" name="productColor<%=i%>" id=<%= item %>>
+                                        <!--                                            <%= item %>-->
+                                        <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
+                                        </input>
+                                    </div>
+                                </div>
                                 <% }) %>
                                 <%}%>
                                 <%}else{%>
                                 <% product[0].colors.forEach(function(item){ %>
+                                <div class="d-flex align-items-center flex-wrap">
                                     <div class="mr-3 d-flex align-items-center mb-2">
                                         <input type="radio" name="productColor" id=<%= item %>>
                                         <!--                                            <%= item %>-->
                                         <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
                                         </input>
                                     </div>
+                                </div>
                                 <% }) %>
                                 <%}%>
                                 <%}%>
@@ -657,6 +664,7 @@
 
 </body>
 </html>
+
 
 
 

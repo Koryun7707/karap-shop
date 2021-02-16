@@ -3,15 +3,20 @@
     <% if(pageData.length){ %>
         <section class="shop-section-bg" style="background-image: url(<%= pageData[0].imagesShopSlider[0] %>)">
             <div class="container">
-                <h1 class="text-left"><%= pageData[0].textShopSlider %></h1>
+                <h1 class="text-center"><%= pageData[0].textShopSlider %></h1>
             </div>
         </section>
     <% } %>
-    <div class="container-fluid pt-5 mt-5">
-        <div class="row py-5">
+    <div class="container-fluid pt-md-5 mt-md-5">
+        <div class="row py-md-5">
             <div class="col-md-5 col-lg-4 col-xl-3 col-12">
                 <div class="sidebar px-3">
                     <form action="#">
+                        <div class="sidebar-title"><%= staticData.shop_search %></div>
+                        <div class="shop-search mb-5">
+                            <input value="" type="search" class="form-control "
+                                   placeholder="<%= staticData.shop_search %>" autocomplete="off" >
+                        </div>
                         <div class="sidebar-title"><%= staticData.shop_product_page %></div>
                         <div class="scrollbar shop-page-scroll">
                             <div class="force-overflow" id="productType" value=<%= type %>>
@@ -40,15 +45,10 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="sidebar-title"><%= staticData.shop_search %></div>
-                        <div class="shop-search mb-5">
-                            <input value="" type="search" class="form-control "
-                                   placeholder="<%= staticData.shop_search %>" autocomplete="off" >
-                        </div>
                         <div class="sidebar-title"><%= staticData.shop_sale %></div>
                         <div class="px-4 mb-5">
                             <div class="form-group">
-                                <input type="checkbox" id="sale" autocomplete="off" >
+                                <input type="checkbox" id="sale" >
                                 <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
                                     (<%= countSale %>)</label>
                             </div>
@@ -105,7 +105,7 @@
             <div class="col-md-7 col-lg-8 col-xl-9 col-12">
                 <div class="row d-flex justify-content-between" id="shopFilter">
                 </div>
-                <div class="mb-5 d-flex justify-content-end px-md-5">
+                <div class="mb-5 d-flex justify-content-end px-md-5 mt-4">
                     <div class="pagination" id="pagination-place">
                     </div>
                 </div>
@@ -206,6 +206,7 @@
 
 </body>
 </html>
+
 
 
 
