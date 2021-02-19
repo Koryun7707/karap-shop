@@ -72,7 +72,6 @@
                                 <% } %>
                             </a>
                         </li>
-
                         <li class="<%= URL === '/shop' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                             <a class="nav-link" href="/shop">
                                 <%= staticData.shop %>
@@ -107,7 +106,7 @@
                             </li>
                         <% } %>
                     </ul>
-                    <div class="d-flex ml-auto">
+                    <div class="d-flex ml-auto p-md-0 pb-4">
                         <ul class="navbar-nav align-items-lg-center pl-2 pl-lg-0 flex-wrap">
                             <li class=" mr-3 d-none d-md-none d-xl-block d-lg-block ">
                                 <% if(!URL.includes('/shop')){ %>
@@ -119,9 +118,7 @@
                                                    data-ic-class="search-input"
                                                    placeholder="Search"/>
                                             <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
-
                                             <div id='search-div' data-ic-class="search-div">
-
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +140,6 @@
                                     <% } %>
                                 </a>
                             </li>
-
                             <% }else { %>
                                 <li class="nav-item mr-2 mr-xl-4"
                                     firstName=<%= user.firstName %>
@@ -167,7 +163,6 @@
                                             class="fa fa-cart-arrow-down"></i></a>
                             </li>
                             <li class="nav-item dropdown">
-
                                 <select class="example" name="example" id="example">
                                     <% if(staticData.language === 'eng' ){ %>
                                         <option name="eng" value="eng" selected>Eng</option>
@@ -178,7 +173,6 @@
                                     <% } %>
                                 </select>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -205,12 +199,10 @@
     } else {
         localStorage.removeItem('user');
     }
-
     function userLogOut(element) {
         localStorage.clear('user');
         element.setAttribute('href', '/logout');
     }
-
     function goToSelectedPage(element) {
         let basket;
         if (element.id === 'shoppingCard') {
@@ -223,7 +215,6 @@
             basket.setAttribute('href', '/selectedProducts');
         }
     };
-
     function gup(name, url) {
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -232,14 +223,11 @@
         var results = regex.exec(url);
         return results == null ? null : results[1];
     }
-
     $(function () {
-
         document.getElementById('example').addEventListener('change', function () {
             const obj = {
                 language: this.value,
             }
-
             // localStorage.removeItem('shoppingCard');
             // localStorage.removeItem('order');
             $.ajax({
@@ -255,8 +243,6 @@
                 }
             });
         });
-
-
         let searchValue;
         var typingTimer;                //timer identifier
         var doneTypingInterval = 500;  //time in ms, 5 second for example
@@ -270,7 +256,6 @@
         $inputMobile.on('keydown', function () {
             clearTimeout(typingTimer);
         });
-
         function doneTypingMobile() {
             let obj = {
                 search: $inputMobile.val()
@@ -302,18 +287,15 @@
                                 a.href = `shop?type=${item.typeArm}`
                                 a.innerHTML = `${item.nameArm}  <br/>`;
                             }
-
                             div.append(a);
                         })
                     }
-
                 },
                 error: function (data) {
                     console.log(data);
                 }
             });
         }
-
         //on keyup, start the countdown
         $input.on('keyup', function () {
             document.getElementById('search-div').removeAttribute('style');
@@ -324,7 +306,6 @@
         $input.on('keydown', function () {
             clearTimeout(typingTimer);
         });
-
         function doneTyping() {
             let obj = {
                 search: $input.val()
@@ -359,15 +340,12 @@
                             div.append(a);
                         })
                     }
-
                 },
                 error: function (data) {
                     console.log(data);
                 }
             });
         }
-
     });
-
 </script>
 

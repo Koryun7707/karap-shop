@@ -171,15 +171,18 @@ $(document).ready(function () {
             type = decodeURI(type);
         }
         let bringData
+        let pageNumber = JSON.parse(localStorage.getItem('pageNumber'))
         if(performance.navigation.type == 2){
             const localType = JSON.parse(localStorage.getItem('types'))
             const localBrandId = JSON.parse(localStorage.getItem('brandId'))
             const localOnSale = JSON.parse(localStorage.getItem('onSale'))
-            bringData = {page: 1, types: localType, brandId: localBrandId, priceFrom: priceFrom, priceTo: priceTo,onSale:localOnSale}
+            bringData = {page: pageNumber, types: localType, brandId: localBrandId, priceFrom: priceFrom, priceTo: priceTo,onSale:localOnSale}
         }else{
             localStorage.removeItem('types')
             localStorage.removeItem('brandId')
             localStorage.removeItem('onSale')
+            localStorage.removeItem('pageNumber')
+            pageNumber = 0 ;
             bringData = {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo}
         }
         $.ajax({
@@ -199,9 +202,15 @@ $(document).ready(function () {
                             a.setAttribute('class', `page-item`);
                             a.innerHTML = `&laquo;`
                         } else if (i === 0) {
-                            a.setAttribute('id', '1');
-                            a.setAttribute('value', '1');
-                            a.setAttribute('class', `active`);
+                            if(!pageNumber){
+                                a.setAttribute('id', '1');
+                                a.setAttribute('value', '1');
+                                a.setAttribute('class', `active`);
+                            }else{
+                                a.setAttribute('id', '1');
+                                a.setAttribute('value', '1');
+                            }
+
                             a.innerHTML = '1'
                         } else if (i > 0 && i !== response.results.pageCount) {
                             a.setAttribute('id', `${i + 1}`);
@@ -213,6 +222,9 @@ $(document).ready(function () {
                             a.setAttribute('value', `+1`);
                             a.setAttribute('class', `page-item`);
                             a.innerHTML = `&raquo;`
+                        }
+                        if(pageNumber&&pageNumber===i+1){
+                            a.setAttribute('class','active');
                         }
                         paginatinPlace.append(a);
                     }
@@ -333,6 +345,7 @@ $(document).ready(function () {
         if (pageNumber === undefined) {
             pageNumber = Number(elementValue);
         }
+
         //get price product
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
@@ -351,6 +364,7 @@ $(document).ready(function () {
                 }
             });
         }
+        localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
 
         $.ajax({
             type: 'post',
@@ -515,6 +529,7 @@ $(document).ready(function () {
                 }
             });
         }
+        localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
         $.ajax({
             type: 'post',
             url: '/shop-filter',
@@ -635,6 +650,8 @@ $(document).ready(function () {
                 }
             });
         }
+        localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
+
 
         localStorage.setItem('types',JSON.stringify(values))
         localStorage.setItem('brandId',JSON.stringify(brandId))
@@ -780,6 +797,7 @@ $(document).ready(function () {
 
 
 })
+
 
 
 

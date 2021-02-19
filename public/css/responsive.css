@@ -1,4 +1,3 @@
-
 @media screen and (min-width: 1200px){
     .container-fluid {
         max-width: 1920px;
@@ -45,7 +44,8 @@
     .join-section-bg,
     .about-section-bg,
     .brand-section-bg,
-    .shop-section-bg {
+    .shop-section-bg,
+    .contact-section-bg {
         max-height: 500px;
         height: 100%;
         padding: 22% 0;
@@ -223,5 +223,4 @@
         margin-left: -10px;
     }
 }
-
 

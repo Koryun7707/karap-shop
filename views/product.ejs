@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <% } %>
-                <div class="col-12 col-md-5">
+                <div class="col-12 col-md-5 p-0">
                     <div class="product-name">
                         <% if(language === 'eng'){ %>
                             <h2 class="mb-2"><%= product[0].name %></h2>
@@ -74,7 +74,7 @@
                                    <%if(product[0].productPak3){%>
                                   <%for(let i=0;i<3;i++){%>
                                 <div class="d-flex align-items-center flex-wrap">
-                                    <div>Product <%=i+1%></div>
+                                    <div class="mr-2">Product <%=i+1%></div>
                                     <% product[0].colors.forEach(function(item){ %>
                                     <div class="mr-3 d-flex align-items-center mb-2">
                                         <input type="radio" name="productColor<%=i%>" id=<%= item %>>
@@ -82,15 +82,13 @@
                                         <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
                                         </input>
                                     </div>
-                                </div>
-
                                     <% }) %>
+                                </div>
                                 <%}%>
-
                                 <% } else if(product[0].productPak6){%>
                                     <%for(let i=0;i<6;i++){%>
                                 <div class="d-flex align-items-center flex-wrap">
-                                    <div>Product <%=i+1%></div>
+                                    <div class="mr-2">Product <%=i+1%></div>
                                     <% product[0].colors.forEach(function(item){ %>
                                     <div class="mr-3 d-flex align-items-center mb-2">
                                         <input type="radio" name="productColor<%=i%>" id=<%= item %>>
@@ -98,8 +96,8 @@
                                         <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
                                         </input>
                                     </div>
+                                    <% }) %>
                                 </div>
-                                <% }) %>
                                 <%}%>
                                 <%}else{%>
                                 <% product[0].colors.forEach(function(item){ %>
@@ -126,7 +124,6 @@
                         </div>
                     </div>
                     <!--                    Start change from this-->
-
                     <% if(product[0].description != '' && product[0].descriptionArm != ''){ %>
                         <div class="product-size">
                             <h5 class="mt-3">
@@ -140,7 +137,6 @@
                         </div>
                     <% } %>
                     <!--                  End here-->
-
                     <div class="col-8 my-3 p-0">
                         <%if(product[0].productPak3){%>
                         <button value="<%= product[0]._id %>" id="addToCardButton"
@@ -197,24 +193,20 @@
     (function () {
         // Get all images with the `detail-view` class
         var zoomBoxes = document.querySelectorAll('.detail-view');
-
         // Extract the URL
         zoomBoxes.forEach(function (image) {
             var imageCss = window.getComputedStyle(image, false),
                 imageUrl = imageCss.backgroundImage
                     .slice(4, -1).replace(/['"]/g, '');
-
             // Get the original source image
             var imageSrc = new Image();
             imageSrc.onload = function () {
                 var imageWidth = imageSrc.naturalWidth,
                     imageHeight = imageSrc.naturalHeight,
                     ratio = imageHeight / imageWidth;
-
                 // Adjust the box to fit the image and to adapt responsively
                 var percentage = ratio * 100 + '%';
                 image.style.paddingBottom = percentage;
-
                 // Zoom and scan on mousemove
                 image.onmousemove = function (e) {
                     // Get the width of the thumbnail
@@ -225,14 +217,12 @@
                         // Convert coordinates to % of elem. width & height
                         xPercent = x / (boxWidth / 100) + '%',
                         yPercent = y / (boxWidth * ratio / 100) + '%';
-
                     // Update styles w/actual size
                     Object.assign(image.style, {
                         backgroundPosition: xPercent + ' ' + yPercent,
                         backgroundSize: imageWidth + 'px'
                     });
                 };
-
                 // Reset when mouse leaves
                 image.onmouseleave = function (e) {
                     Object.assign(image.style, {
@@ -264,8 +254,6 @@
             if (document.querySelector(`input[name="productColor${i}"]:checked`))
                 productColor.push(document.querySelector(`input[name="productColor${i}"]:checked`).id)
         }
-
-
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your product size.');
@@ -278,21 +266,18 @@
             } else {
                 alert('Խնդրում ենք ընտրել ձեր arajin ապրանքատեսակի գույնը:');
             }
-
         } else if (!document.querySelector('input[name="productColor1"]:checked') && document.querySelector('input[name="productColor1"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your second product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր errkrord ապրանքատեսակի գույնը:');
             }
-
         } else if (!document.querySelector('input[name="productColor2"]:checked') && document.querySelector('input[name="productColor2"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your third product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր errord ապրանքատեսակի գույնը:');
             }
-
         } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Sorry but product is already added.');
@@ -352,7 +337,6 @@
                                     document.getElementById('addToCardButton').classList.add('btn-green-gradient');
                                 }, 500)
                             }
-
                             let array = [];
                             array.push({
                                 productId: id.value,
@@ -385,8 +369,6 @@
             if (document.querySelector(`input[name="productColor${i}"]:checked`))
                 productColor.push(document.querySelector(`input[name="productColor${i}"]:checked`).id)
         }
-
-
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your product size.');
@@ -399,42 +381,36 @@
             } else {
                 alert('Խնդրում ենք ընտրել ձեր arajin ապրանքատեսակի գույնը:');
             }
-
         } else if (!document.querySelector('input[name="productColor1"]:checked') && document.querySelector('input[name="productColor1"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your second product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր errkrord ապրանքատեսակի գույնը:');
             }
-
         } else if (!document.querySelector('input[name="productColor2"]:checked') && document.querySelector('input[name="productColor2"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your third product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր errord ապրանքատեսակի գույնը:');
             }
-
         }else if (!document.querySelector('input[name="productColor3"]:checked') && document.querySelector('input[name="productColor3"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your 4 product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր 4 ապրանքատեսակի գույնը:');
             }
-
         } else if (!document.querySelector('input[name="productColor4"]:checked') && document.querySelector('input[name="productColor4"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your 5 product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր 5 ապրանքատեսակի գույնը:');
             }
-
         } else if (!document.querySelector('input[name="productColor5"]:checked') && document.querySelector('input[name="productColor5"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your 6 product color.');
             } else {
                 alert('Խնդրում ենք ընտրել ձեր 6 ապրանքատեսակի գույնը:');
             }
-
         }  else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Sorry but product is already added.');
@@ -494,7 +470,6 @@
                                     document.getElementById('addToCardButton').classList.add('btn-green-gradient');
                                 }, 500)
                             }
-
                             let array = [];
                             array.push({
                                 productId: id.value,
@@ -519,7 +494,6 @@
           //  .setAttribute('style',`background-image:url("${src}")`) ;
         // document.getElementById('generalImage').setAttribute('src', element.children[0].getAttribute('src'));
     }
-
     function myMoveFunction(element) {
         const src = element.children[0].getAttribute('src');
         var el = document.getElementById("generalImage");
@@ -527,7 +501,6 @@
        // document.getElementById('generalImage')
          //   .setAttribute('style',`background-image:url("${src}")`) ;
     }
-
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
@@ -537,7 +510,6 @@
         } else {
             productSalePrice = document.getElementById('productSalePrice').getAttribute('value');
         }
-
         if (element.id === 'fa-plus') {
             count++;
         } else {
@@ -553,7 +525,6 @@
             }
         }
     }
-
     function addToCard(id) {
         //start check product exist or not
         const product = {
@@ -568,7 +539,6 @@
             productSize = document.querySelector('input[name="productSize"]:checked').id;
         if (document.querySelector('input[name="productColor"]:checked'))
             productColor = document.querySelector('input[name="productColor"]:checked').id;
-
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Please select your product size.');
@@ -581,7 +551,6 @@
             } else {
                 alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի գույնը:');
             }
-
         } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
             if (document.getElementById('example').value === 'eng') {
                 alert('Sorry but product is already added.');
@@ -641,7 +610,6 @@
                                     document.getElementById('addToCardButton').classList.add('btn-green-gradient');
                                 }, 500)
                             }
-
                             let array = [];
                             array.push({
                                 productId: id.value,
@@ -657,16 +625,8 @@
                 }
             })
         }
-
     }
-
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
