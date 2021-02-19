@@ -171,12 +171,27 @@ $(document).ready(function () {
             type = decodeURI(type);
         }
         let bringData
-        let pageNumber = JSON.parse(localStorage.getItem('pageNumber'))
+        let pageNumber = localStorage.getItem('pageNumber')
+        if(pageNumber!='undefined'){
+            pageNumber = JSON.parse(pageNumber)
+        }
         if(performance.navigation.type == 2){
-            const localType = JSON.parse(localStorage.getItem('types'))
-            const localBrandId = JSON.parse(localStorage.getItem('brandId'))
-            const localOnSale = JSON.parse(localStorage.getItem('onSale'))
-            bringData = {page: pageNumber, types: localType, brandId: localBrandId, priceFrom: priceFrom, priceTo: priceTo,onSale:localOnSale}
+            bringData = {page: pageNumber,  priceFrom: priceFrom, priceTo: priceTo}
+            let localType = localStorage.getItem('types')
+            if(localType!='undefined'){
+                localType = JSON.parse(localType)
+                bringData.types = localType
+            }
+            let localBrandId = localStorage.getItem('brandId')
+            if(localBrandId!='undefined'){
+                localBrandId = JSON.parse(localBrandId)
+                bringData.brandId = localBrandId
+            }
+            let localOnSale = localStorage.getItem('onSale')
+            if(localOnSale!='undefined'){
+                localOnSale = JSON.parse(localOnSale)
+                bringData.onSale = localOnSale
+            }
         }else{
             localStorage.removeItem('types')
             localStorage.removeItem('brandId')
@@ -202,7 +217,7 @@ $(document).ready(function () {
                             a.setAttribute('class', `page-item`);
                             a.innerHTML = `&laquo;`
                         } else if (i === 0) {
-                            if(!pageNumber){
+                             if(!pageNumber||pageNumber=='undefined'){
                                 a.setAttribute('id', '1');
                                 a.setAttribute('value', '1');
                                 a.setAttribute('class', `active`);
@@ -293,7 +308,7 @@ $(document).ready(function () {
         let pageNumber;
         if (elementValue === '-1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
-                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
                     if (i === 1) {
                         pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
@@ -309,7 +324,7 @@ $(document).ready(function () {
             }
         } else if (elementValue === '+1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
-                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
                     if (i === Number(pagesCount)) {
                         pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
@@ -324,7 +339,7 @@ $(document).ready(function () {
                 }
             }
         } else {
-            if (elementAttributes.includes('active')) {
+            if (elementAttributes?.includes('active')) {
                 for (let i = 1; i <= Number(pagesCount); i++) {
                     if (i === Number(elementValue)) {
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
@@ -650,9 +665,8 @@ $(document).ready(function () {
                 }
             });
         }
+
         localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
-
-
         localStorage.setItem('types',JSON.stringify(values))
         localStorage.setItem('brandId',JSON.stringify(brandId))
         localStorage.setItem('onSale',JSON.stringify(onSale))
@@ -797,6 +811,7 @@ $(document).ready(function () {
 
 
 })
+
 
 
 
