@@ -32,6 +32,10 @@ const shippingAddressSchema = new Schema({
         type: String,
         required: true
     },
+    deliveryPrice:{
+        type: String,
+        required:true
+    },
     productIds: {
         type: Array,
         required: true,
@@ -56,3 +60,4 @@ shippingAddressSchema.set('toObject', {virtuals: true});
 shippingAddressSchema.set('toJSON', {virtuals: true});
 
 module.exports = mongoose.model('ShippingAddress', shippingAddressSchema);
+

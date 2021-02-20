@@ -15,10 +15,18 @@
                             <% } %>
                         </div>
                         <div class="col-8 col-md-9 col-lg-10">
-                            <div class="w-100">
-                                <div id="generalImage" class="image detail-view"
-                                     style="background-image: url(<%= product[0].images[1] %>);">
-                                </div>
+                            <div class="w-100 zoom-area">
+
+                                <!-- Created by Rohan Hapani -->
+<!--                                <div class="zoom-area">-->
+
+                                    <!-- It's container of the magnify glass -->
+                                    <div class="large"></div>
+
+                                    <!-- It's for the small image -->
+                                    <img id="generalImage" class="small" src="<%= product[0].images[1] %>" width="500" height="500" />
+
+<!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -170,7 +178,52 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        var sub_width = 0;
+        var sub_height = 0;
+        $(".large").css("background","url('" + $(".small").attr("src") + "') no-repeat");
 
+        $(".zoom-area").mousemove(function(e){
+            if(!sub_width && !sub_height)
+            {
+                var image_object = new Image();
+                image_object.src = $(".small").attr("src");
+                sub_width = image_object.width;
+                sub_height = image_object.height;
+            }
+            else
+            {
+                var magnify_position = $(this).offset();
+
+                var mx = e.pageX - magnify_position.left;
+                var my = e.pageY - magnify_position.top;
+
+                if(mx < $(this).width() && my < $(this).height() && mx > 0 && my > 0)
+                {
+                    $(".large").fadeIn(100);
+                }
+                else
+                {
+                    $(".large").fadeOut(100);
+                }
+                if($(".large").is(":visible"))
+                {
+                    var rx = Math.round(mx/$(".small").width()*sub_width - $(".large").width()/2)*-1;
+                    var ry = Math.round(my/$(".small").height()*sub_height - $(".large").height()/2)*-1;
+
+                    var bgp = rx + "px " + ry + "px";
+
+                    var px = mx - $(".large").width()/2;
+                    var py = my - $(".large").height()/2;
+
+                    $(".large").css({left: px, top: py, backgroundPosition: bgp});
+                }
+            }
+        })
+    })
+</script>
 <script>
     $(function () {
         $("#slider-range").slider({
@@ -488,18 +541,16 @@
     }
     function changeImage(element) {
         const src = element.children[0].getAttribute('src');
+        $(".large").css("background","url('" + src + "') no-repeat");
         var el = document.getElementById("generalImage");
-        el.style.backgroundImage = `url("${src}")`;
-       // document.getElementById('generalImage')
-          //  .setAttribute('style',`background-image:url("${src}")`) ;
-        // document.getElementById('generalImage').setAttribute('src', element.children[0].getAttribute('src'));
+        el.src = `${src}`;
+
     }
     function myMoveFunction(element) {
         const src = element.children[0].getAttribute('src');
+        $(".large").css("background","url('" + src + "') no-repeat");
         var el = document.getElementById("generalImage");
-        el.style.backgroundImage = `url("${src}")`;
-       // document.getElementById('generalImage')
-         //   .setAttribute('style',`background-image:url("${src}")`) ;
+        el.src = `${src}`;
     }
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
@@ -630,3 +681,4 @@
 
 </body>
 </html>
+

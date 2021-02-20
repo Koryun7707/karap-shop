@@ -1666,11 +1666,32 @@ module.exports = {
     postSendMailShipping:async (req, res) => {
         logger.info('Start sendMailShipping - - -');
         try {
-            const {email,orderId,firstName,shippingId} = req.body;
+            const {email,orderId,firstName,shippingId,date,shippingMethod} = req.body;
+            const shipping = await ShippingAddress.findById({_id:shippingId}).populate('userId');
             await ShippingAddress.updateOne({_id:shippingId},{status:true},{upsert: true})
-            ejs.renderFile("./sendOrderId.ejs", {
+            let subTotal = 0;
+            shipping.productIds.forEach((item) => {
+                subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
+            });
+            let amount = (Number(subTotal.toFixed(2)) + Number(shipping.deliveryPrice).toFixed(2));
+            ejs.renderFile("./orderEmailTemplateUser.ejs", {
                 name: firstName,
+                lastName:shipping.userId.lastName,
+                email: shipping.userId.email,
+                shippingDate:shipping.date,
+                phone: shipping.phone,
+                city: shipping.city,
+                country: shipping.country,
+                apartment: shipping.apartment,
+                address: shipping.address,
+                date: date,
                 orderId: orderId,
+                order: shipping.productIds,
+                subTotal: subTotal.toFixed(2),
+                shipping: shipping.deliveryPrice,
+                total: amount / 100,
+                shippingMethod:shippingMethod,
+                shippingId:shipping._id
             }, function (err, data) {
                 if (err) {
                     logger.error(`sendMailShipping: ${err}`);
@@ -1678,11 +1699,25 @@ module.exports = {
                     return res.redirect("/admin-sendMailShipping");
 
                 } else {
+                    const attachments = [];
+                    shipping.productIds.forEach((item) => {
+                        attachments.push({
+                            filename: item.images.split('/')[2],
+                            path: `./public/${item.images}`,
+                            cid: item.productId
+                        })
+                    })
+                    attachments.push({
+                        filename: '2Armatconcept.png',
+                        path: `./public/images/2Armatconcept.png`,
+                        cid: '2Armatconcept'
+                    })
                     const messageUser = {
                         from: process.env.MAIL_AUTH_EMAIL,
                         to: email,
                         subject: 'Thank you for your order',
                         html: data,
+                        attachments: attachments
                     }
                     sendMessageToMail(messageUser)
                 }
@@ -1696,6 +1731,7 @@ module.exports = {
         }
     },
 };
+
 
 
 

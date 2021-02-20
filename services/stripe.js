@@ -20,8 +20,7 @@ const paymentStripe = (req, res) => {
     order.forEach((item) => {
         subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
     });
-
-    let amount = (Number(subTotal) + Number(deliveryPrice)) * 100;
+    let amount = (Number(subTotal.toFixed(2)) + Number(deliveryPrice.toFixed(2))) * 100;
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
@@ -55,6 +54,7 @@ const paymentStripe = (req, res) => {
                 country: shippingAddress.country,
                 phone: shippingAddress.phone,
                 productIds: order,
+                deliveryPrice:deliveryPrice
             });
             shipping.save();
             ejs.renderFile("./orderEmailTemplate.ejs", {
@@ -62,8 +62,8 @@ const paymentStripe = (req, res) => {
                 date: shipping.date,
                 orderId: shipping._id,
                 order: order,
-                subTotal: subTotal,
-                shipping: deliveryPrice,
+                subTotal: subTotal.toFixed(2),
+                shipping: deliveryPrice.toFixed(2),
                 total: amount / 100
             }, function (err, data) {
                 if (err) {
@@ -85,17 +85,12 @@ const paymentStripe = (req, res) => {
                         attachments: attachments
                     }
                     sendMessageToMail(messageUser)
-                    // var mainOptions = {
-                    //     from: '"YOUR_NAME" YOUR_EMAIL_ADDRESS',
-                    //     to: email,
-                    //     subject: 'Account Activated',
-                    //     html: data
-                    // };
 
                 }
             });
             ejs.renderFile("./orderEmailTemplateAdmin.ejs", {
                 name: req.session.user.firstName,
+                lastName:req.session.user.lastName,
                 email: req.session.user.email,
                 phone: shipping.phone,
                 city: shipping.city,
@@ -105,8 +100,8 @@ const paymentStripe = (req, res) => {
                 date: shipping.date,
                 orderId: shipping._id,
                 order: order,
-                subTotal: subTotal,
-                shipping: deliveryPrice,
+                subTotal: subTotal.toFixed(2),
+                shipping: deliveryPrice.toFixed(2),
                 total: amount / 100
             }, function (err, data) {
                 if (err) {
@@ -119,6 +114,11 @@ const paymentStripe = (req, res) => {
                             path: `./public/${item.images}`,
                             cid: item.productId
                         })
+                    })
+                    attachments.push({
+                        filename: '2Armatconcept.png',
+                        path: `./public/images/2Armatconcept.png`,
+                        cid: '2Armatconcept'
                     })
                     const messageAdmin = {
                         from: process.env.MAIL_AUTH_EMAIL,
@@ -163,4 +163,5 @@ const paymentStripe = (req, res) => {
 module.exports = {
     paymentStripe: paymentStripe
 }
+
 

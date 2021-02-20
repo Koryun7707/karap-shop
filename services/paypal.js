@@ -104,6 +104,7 @@ const paypalSuccess = (req, res) => {
                     country: shippingAddress.country,
                     phone: shippingAddress.phone,
                     productIds: order,
+                    deliveryPrice:amount.deliveryPrice
                 });
                 shipping.save();
                 ejs.renderFile("./orderEmailTemplate.ejs", {
@@ -111,8 +112,8 @@ const paypalSuccess = (req, res) => {
                     date: shipping.date,
                     orderId: shipping._id,
                     order: order,
-                    subTotal: amount.subTotal,
-                    shipping: amount.deliveryPrice,
+                    subTotal: amount.subTotal.toFixed(2),
+                    shipping: amount.deliveryPrice.toFixed(2),
                     total: eval(amount.subTotal + amount.deliveryPrice)
                 }, function (err, data) {
                     if (err) {
@@ -138,6 +139,7 @@ const paypalSuccess = (req, res) => {
                 });
                 ejs.renderFile("./orderEmailTemplateAdmin.ejs", {
                     name: req.session.user.firstName,
+                    lastName:req.session.user.lastName,
                     email: req.session.user.email,
                     phone: shipping.phone,
                     city: shipping.city,
@@ -147,8 +149,8 @@ const paypalSuccess = (req, res) => {
                     date: shipping.date,
                     orderId: shipping._id,
                     order: order,
-                    subTotal: amount.subTotal,
-                    shipping: amount.deliveryPrice,
+                    subTotal: amount.subTotal.toFixed(2),
+                    shipping: amount.deliveryPrice.toFixed(2),
                     total: eval(amount.subTotal + amount.deliveryPrice)
                 }, function (err, data) {
                     if (err) {
@@ -161,6 +163,11 @@ const paypalSuccess = (req, res) => {
                                 path: `./public/${item.images}`,
                                 cid: item.productId
                             })
+                        })
+                        attachments.push({
+                            filename: '2Armatconcept.png',
+                            path: `./public/images/2Armatconcept.png`,
+                            cid: '2Armatconcept'
                         })
                         const messageAdmin = {
                             from: process.env.MAIL_AUTH_EMAIL,
@@ -216,3 +223,4 @@ module.exports = {
     paypalSuccess: paypalSuccess,
     paypalCancel: paypalCancel
 };
+

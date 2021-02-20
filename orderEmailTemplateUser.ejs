@@ -23,8 +23,8 @@
                     <td  style="font-family: 'Benne', serif">
                         <div style="overflow: hidden">
                             <img src="cid:2Armatconcept" alt=""  style="float: left; width: 80px; margin-right: 16px">
-                            <span style="text-align: center; float: right; width: calc(100% - 100px); font-size:16px; line-height: 14px;"> Hi this user: <%= name %> have order. <br>
-                            </span>
+                            <span style="text-align: center; float: right; width: calc(100% - 100px); font-size:16px; line-height: 14px;"> Hi <%= name %> <br>
+                            Thank you for your purchase and supporting Armenian Branches. Your order has just shipped and is on its way.</span>
                         </div>
                     </td>
                 </tr>
@@ -32,8 +32,8 @@
                     <td  align="center" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#2a3a4b;padding: 40px 0 20px">
                         ORDER CONFIRMATION
                         <div STYLE="text-align: left; font-size:14px; line-height: 20px; letter-spacing: 1px;margin-top: 30px">
-                            <div>ORDER NUMBER <%=orderId.toString().substring(0,15)%></div>
-                            <div>Order Date <%=new Date(date).toUTCString()%></div>
+                            <div>ORDER NUMBER <%=shippingId.toString().substring(0,15)%></div>
+                            <div>PLACED ON <%=new Date(shippingDate).toUTCString()%></div>
                         </div>
                     </td>
                 </tr>
@@ -42,15 +42,30 @@
                         <table style="width: 100%">
                             <tbody>
                             <tr>
+                                <td align="center" style="padding: 0 30px 0 0">
+                                    <div style="margin-bottom: 16px">
+                                        <div>Delivery Date</div>
+                                        <div><b><%=date%></b></div>
+                                    </div>
+                                    <div style="margin-bottom: 16px">
+                                        <div>Shipping method</div>
+                                        <div><b><%=shippingMethod%></b></div>
+                                    </div>
+                                    <div style="margin-bottom: 16px">
+                                        <div><b>Track My packge</b></div>
+                                    </div>
+                                    <div>
+                                        <div><b><%=orderId%></b></div>
+                                    </div>
+                                </td>
                                 <td align="center" style="font-size: 18px; line-height: 16px; padding: 0 0 0 30px">
                                     <div style="margin-bottom: 20px">
-                                        <div>Shipping Address</div>
+                                        <div>Shopping Address</div>
                                         <div><b><%=name%> <%=lastName%></b></div>
                                         <div><b>Country: <%= country %></b></div>
                                         <div><b>City: <%= city %></b></div>
                                         <div><b>Address: <%= address %></b></div>
                                         <div><b>Apartmetn: <%= apartment %></b></div>
-                                        <div><b>Email: <%= email %></b></div>
                                         <div><b>Tel. <%= phone %></b></div>
                                     </div>
                                 </td>
@@ -66,6 +81,7 @@
     <tr>
         <td style="padding: 0 40px; font-size: 16px; line-height: 20px">
             <div style="font-family: 'Oswald', sans-serif; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 1px">Shipping Summary</div>
+            <p  style="font-family: 'Benne', serif;">If all Items from your order are not listed below, you will receive  <br>a separate shipping confirmation for those items.</p>
         </td>
     </tr>
     <tr>
@@ -82,17 +98,17 @@
                     </td>
                 </tr>
                 <%order.forEach((item)=>{%>
-                    <tr>
-                        <td style="font-size: 18px; vertical-align: top">
-                            <div style="display: flex; align-items: center">
-                                <div style="padding: 0 20px; width: 150px; display: inline-block; text-align: center">
-                                    <img style="" src="cid:<%=item.productId%>" width="69" height="78" alt="icon">
-                                </div>
-                                <div style="font-size: 22px; padding:  0 20px;width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.count%> </div>
-                                <div style="font-size: 22px; padding:  0 20px; width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.priceSale%></div>
+                <tr>
+                    <td style="font-size: 18px; vertical-align: top">
+                        <div style="display: flex; align-items: center">
+                            <div style="padding: 0 20px; width: 150px; display: inline-block; text-align: center">
+                                <img style="" src="cid:<%=item.productId%>" width="69" height="78" alt="icon">
                             </div>
-                        </td>
-                    </tr>
+                            <div style="font-size: 22px; padding:  0 20px;width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.count%> </div>
+                            <div style="font-size: 22px; padding:  0 20px; width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.priceSale%></div>
+                        </div>
+                    </td>
+                </tr>
                 <%})%>
                 <tr>
                     <td style="font-family: 'Benne', serif; padding-top: 30px">
