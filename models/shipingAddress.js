@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
+var minuteFromNow = function(){
+    var timeObject = new Date();
+    timeObject.setTime(timeObject.getTime() + 1000 * 60*60);
+    return timeObject;
+};
 
 const shippingAddressSchema = new Schema({
     _id: {
@@ -46,7 +51,7 @@ const shippingAddressSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now
+        default: minuteFromNow
     }
 });
 
@@ -56,8 +61,10 @@ shippingAddressSchema.methods.toJSON = function () {
     return obj;
 };
 
+
 shippingAddressSchema.set('toObject', {virtuals: true});
 shippingAddressSchema.set('toJSON', {virtuals: true});
 
 module.exports = mongoose.model('ShippingAddress', shippingAddressSchema);
+
 
