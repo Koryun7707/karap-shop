@@ -116,7 +116,7 @@ function searchByPrice() {
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             },
@@ -193,7 +193,11 @@ $(document).ready(function () {
                 bringData.onSale = localOnSale
             }
         }else{
-            localStorage.removeItem('types')
+            if(!type){
+                localStorage.removeItem('types')
+            }else {
+                   localStorage.setItem('types',JSON.stringify(new Array(type)))
+            }
             localStorage.removeItem('brandId')
             localStorage.removeItem('onSale')
             localStorage.removeItem('pageNumber')
@@ -288,7 +292,7 @@ $(document).ready(function () {
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             },
@@ -441,7 +445,7 @@ $(document).ready(function () {
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
 
                 }
                 $("html, body").animate({
@@ -632,7 +636,7 @@ $(document).ready(function () {
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             },
@@ -794,7 +798,7 @@ $(document).ready(function () {
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             }
@@ -811,6 +815,7 @@ $(document).ready(function () {
 
 
 })
+
 
 
 

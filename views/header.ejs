@@ -271,10 +271,13 @@
                     $('#search-div-mobile').append(div);
                     if (brands.length) {
                         brands.forEach(function (item) {
-                            let a = document.createElement(`a`);
-                            a.href = `shop?brandId=${item._id}`
-                            a.innerHTML = `${item.name} <br/>`;
-                            div.append(a);
+                            if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm'){
+                                let a = document.createElement(`a`);
+                                a.href = `shop?brandId=${item._id}`
+                                a.innerHTML = `${item.name} <br/>`;
+                                div.append(a);
+                            }
+
                         })
                     }
                     if (products.length) {
@@ -321,10 +324,12 @@
                     $('#search-div').append(div);
                     if (brands.length) {
                         brands.forEach(function (item) {
-                            let a = document.createElement(`a`);
-                            a.href = `shop?brandId=${item._id}`
-                            a.innerHTML = `${item.name} <br/>`;
-                            div.append(a);
+                            if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm'){
+                                let a = document.createElement(`a`);
+                                a.href = `shop?brandId=${item._id}`
+                                a.innerHTML = `${item.name} <br/>`;
+                                div.append(a);
+                            }
                         })
                     }
                     if (products.length) {
@@ -348,4 +353,5 @@
         }
     });
 </script>
+
 

@@ -256,7 +256,7 @@ const getProductsShopFilter = async (req, res) => {
                 $and: [
                     {
                         '$or': [
-                            {'name': {'$regex': `^${searchValue}`, "$options": "i"}},
+                            {'name': {'$regex': searchValue, "$options": "i"}},
                         ]
                     }
 
@@ -267,7 +267,7 @@ const getProductsShopFilter = async (req, res) => {
                 $and: [
                     {
                         '$or': [
-                            {'nameArm': {'$regex': `^${searchValue}`, "$options": "i"}},
+                            {'nameArm': {'$regex': searchValue, "$options": "i"}},
                         ]
                     }
 
@@ -383,7 +383,7 @@ const getDataSearch = async (req, res) => {
         $and: [
             {
                 '$or': [
-                    {'name': {'$regex': `^${search}`, "$options": "i"}},
+                    {'name': {'$regex': search, "$options": "i"}},
                 ]
             }
 
@@ -395,7 +395,7 @@ const getDataSearch = async (req, res) => {
             $and: [
                 {
                     '$or': [
-                        {'name': {'$regex': `^${search}`, "$options": "i"}},
+                        {'name': {'$regex': search, "$options": "i"}},
                     ]
                 }
 
@@ -406,7 +406,7 @@ const getDataSearch = async (req, res) => {
             $and: [
                 {
                     '$or': [
-                        {'nameArm': {'$regex': `^${search}`, "$options": "i"}},
+                        {'nameArm': {'$regex': search, "$options": "i"}},
                     ]
                 }
 
@@ -442,6 +442,7 @@ module.exports = {
     getProductById: getProductById,
     getDataSearch: getDataSearch
 };
+
 
 
 
