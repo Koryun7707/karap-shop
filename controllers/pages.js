@@ -1671,7 +1671,7 @@ module.exports = {
             shipping.productIds.forEach((item) => {
                 subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
             });
-            let amount = (Number(subTotal.toFixed(2)) + Number(shipping.deliveryPrice).toFixed(2));
+            let amount = (Number(subTotal) + Number(shipping.deliveryPrice));
             ejs.renderFile("./orderEmailTemplateUser.ejs", {
                 name: firstName,
                 lastName:shipping.userId.lastName,
@@ -1687,7 +1687,7 @@ module.exports = {
                 order: shipping.productIds,
                 subTotal: subTotal.toFixed(2),
                 shipping: shipping.deliveryPrice,
-                total: amount / 100,
+                total: amount.toFixed(2),
                 shippingMethod:shippingMethod,
                 shippingId:shipping._id
             }, function (err, data) {
@@ -1729,6 +1729,7 @@ module.exports = {
         }
     },
 };
+
 
 
 
