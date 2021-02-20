@@ -284,10 +284,10 @@
                         products.forEach(function (item) {
                             let a = document.createElement(`a`);
                             if (item.type) {
-                                a.href = `shop?type=${item.type}`
+                                a.href = `product?_id=${item._id}`
                                 a.innerHTML = `${item.name}  <br/>`;
                             } else {
-                                a.href = `shop?type=${item.typeArm}`
+                                a.href = `product?_id=${item._id}`
                                 a.innerHTML = `${item.nameArm}  <br/>`;
                             }
                             div.append(a);
@@ -336,10 +336,10 @@
                         products.forEach(function (item) {
                             let a = document.createElement(`a`);
                             if (item.type) {
-                                a.href = `shop?type=${item.type}`
+                                a.href = `product?_id=${item._id}`
                                 a.innerHTML = `${item.name}  <br/>`;
                             } else {
-                                a.href = `shop?type=${item.typeArm}`
+                                a.href = `product?_id=${item._id}`
                                 a.innerHTML = `${item.nameArm}  <br/>`;
                             }
                             div.append(a);
@@ -353,5 +353,6 @@
         }
     });
 </script>
+
 
 
