@@ -329,7 +329,6 @@ footer h4 {
     font-size: 1rem;
     line-height: 30px;
     font-family: "Georgian";
-    text-transform: uppercase;
 }
 
 footer .abs {
@@ -393,7 +392,6 @@ footer .abs {
 
 .blog-img {
     overflow: hidden;
-    height: 520px;
 }
 
 .blog-img-anim {
@@ -655,13 +653,10 @@ h1 {
     margin: 0;
 }
 .shop-section-bg {
-    background-image: url("../images/shop-cover-pic.jpg");
-    background-size: 100%;
-    height: 540px;
-    display: flex;
-    align-items: center;
-    background-repeat: no-repeat;
-    padding: 12% 0;
+ background-size: cover;
+ height: 540px;
+ display: flex;
+ align-items: center;
 }
 
 .shop-card {
@@ -879,15 +874,8 @@ h1 {
 
 .contact-form .btn-green-gradient {
     /*background: linear-gradient(90deg, #52796c, #56a15d);*/
-    background: #c4aa9d;
+    background: rgba(1,1,1, 0.5);
 }
-.contact-form .btn-rose{
-    background: #000;
-}
-.contact-form .btn-rose:hover{
-    color: #c4aa9d;
-}
-
 
 .contact-form label {
     color: #ffffff;

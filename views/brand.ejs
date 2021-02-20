@@ -4,13 +4,13 @@
     <% if(pageData.length){ %>
         <section class="brand-section-bg" style="background-image: url(<%= pageData[0].imagesBrandSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center">
+                <h1 class="text-left">
                     <%= pageData[0].textBrandSlider %>
                 </h1>
             </div>
         </section>
     <% } %>
-    <section class="pt-5" id="section2Div" value=<%= brands.length %>>
+    <section id="section2Div" value=<%= brands.length %>>
         <div class="p-5 container-1730 container">
             <div class="owl-slider py-5">
                 <div id="carousel-brand" class="owl-carousel main-item-bg">
@@ -28,7 +28,7 @@
             </div>
         </div>
     </section>
-    <section class="py-lg-5 brand-section">
+    <section class="brand-section">
         <div class="container-fluid" id="brands-section-place">
         </div>
         <div class="mb-5 d-flex justify-content-end px-md-5">
@@ -95,7 +95,7 @@
                             text = 'Գնել'
                         }
                         let div = document.createElement('div');
-                        div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap pb-5 pt-lg-5 px-md-5 my-lg-5');
+                        div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap pb-5 pt-lg-5 px-md-5 ');
                         div.innerHTML = `<div class="col-12 col-md-6 col-xl-5">
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>

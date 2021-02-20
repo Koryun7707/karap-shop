@@ -148,7 +148,7 @@ module.exports =
             //shop
             shop_product_page: 'Ապրանքատեսակի Ֆիլտրեր',
             shop_search: 'Որոնում',
-            shop_sale: 'Զեղչված',
+            shop_sale: 'Զեղչ',
             find: 'Փնտրել',
             to_text: "դեպի",
             shop_price: 'Գինը',
