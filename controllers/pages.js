@@ -29,7 +29,7 @@ localStorage = new LocalStorage('./userStorage');
 
 module.exports = {
     changeLanguage: async (req, res) => {
-        console.log('Start changeLanguage');
+        logger.info('Start changeLanguage');
         req.session.language = req.body.language;
         res.end();
     },
@@ -174,7 +174,7 @@ module.exports = {
                 countSale: countSale,
             });
         } catch (e) {
-            console.log(`Get Brands Error: ${e}`)
+            logger.info(`Get Brands Error: ${e}`)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -1193,7 +1193,7 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
-            console.log(e)
+            logger.info(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -1242,7 +1242,7 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
-            console.log(e)
+            logger.info(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -1427,8 +1427,6 @@ module.exports = {
     getCheckouts: async (req, res) => {
         try {
             logger.info('Start get checkout page.');
-            console.log(req.body.order)
-            console.log(req.body.shippingAddress)
             localStorage.setItem(`order${req.session.user._id}`, req.body.order);
             localStorage.setItem(`shippingAddress${req.session.user._id}`, req.body.shippingAddress);
             const staticData = await getStaticData(req.session.language);
@@ -1731,6 +1729,7 @@ module.exports = {
         }
     },
 };
+
 
 
 

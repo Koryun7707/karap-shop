@@ -4,12 +4,13 @@ const {sendMessageToMail} = require('./mailService');
 const ShippingAddress = require('../models/shipingAddress');
 const Product = require('../models/product');
 const ejs = require('ejs');
+require('dotenv').config();
 
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AXhKNfoEALsLzAgqE9xrmLyDRWmaKq8qp9DfWV1o3Zj7PfxKvyLCy8qyQcIGDNkKqbXMZDVmmyHH-0IY',
-    'client_secret': 'EH0QllZbxmHclQfyELMxQjeIaA_ccgCEm9gkbRUrA_ewa5abiyqul68uNK8-nW76ar8L11UULfbLz9m1'
+    'client_id': process.env.PAYPAL_CLIENT_ID,
+    'client_secret': process.env.PAYPAL_CLIENT_SECRET
 });
 const paymentPaypal = (req, res) => {
     logger.info('Start paymant with paypal - - -');
@@ -223,4 +224,5 @@ module.exports = {
     paypalSuccess: paypalSuccess,
     paypalCancel: paypalCancel
 };
+
 
