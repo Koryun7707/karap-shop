@@ -13,7 +13,7 @@ module.exports =
             //footer
             pages: 'PAGES',
             follow_us: 'FOLLOW US',
-            delevery_returns: 'Delevery & returns',
+            delevery_returns: 'Delivery & returns',
             privacy_policy: 'Privacy policy',
             terms_conditions: 'Terms & conditions ',
             about: 'About Us',
@@ -81,7 +81,7 @@ module.exports =
             //forgotPassword
             forgot_header: 'Forgot password?',
             forgot_text: 'Enter your email address and we’ll\n' +
-                'send you a link to reset your password',
+                'send you a link to reset your password.',
             forgot_email: 'Email Address',
             forgot_left_button: 'Cancel',
             forgot_right_button: 'send',
@@ -103,7 +103,7 @@ module.exports =
             order_shipping: 'Shipping',
             order_shipping_text: 'Shipping calculated at checkout',
             checkout_button: "Proceed to checkout",
-            i_agree_to_the_website: 'I Agree To The Website',
+            i_agree_to_the_website: 'I have read and agree to the Website',
 
             //shipping address page
             contact_information: 'Contact Information',
@@ -119,7 +119,8 @@ module.exports =
             delivery: 'Delivery',
             total: 'Total',
             //pay checkouts
-            title_checkout:'You can pay in out website, with two pay type.'
+            title_checkout:'You can pay in out website, with two pay type.',
+            delevery_returns_product_page:'Delivery & returns'
 
 
         },
@@ -134,13 +135,14 @@ module.exports =
             signup: 'Գրանցում',
             //footer
             pages: 'Էջեր',
-            follow_us: 'Հետեւեք մեզ',
+            follow_us: 'Հետևեք մեզ',
             delevery_returns: 'Առաքում և վերադարձ',
+            delevery_returns_product_page: 'Առաքում և վերադարձի հետ',
             privacy_policy: 'Գաղտնիության քաղաքականություն',
-            terms_conditions: 'Օգտվելու կանոններ',
+            terms_conditions: 'Ընդհանուր պայմաններ',
             about: 'Մեր մասին',
-            contact: 'Կապվեք մեզ հետ',
-            join_our_team: 'Միացեք մեր թիմին',
+            contact: 'Կապ մեզ հետ',
+            join_our_team: 'Միացեք մեզ',
             //home
             home_header: 'ԴՈՒՔ ԿԱՐՈՂ ԵՔ ԳՏՆԵԼ ԴՐԱՆՔ ՄԵՐ ԿԱՅՔՈՒՄ',
             //shop
@@ -156,7 +158,7 @@ module.exports =
             //blog
             blog_button: 'Կարդալ ավելին',
             //about
-            about_button: 'Կապվեք մեզ հետ',
+            about_button: 'Կապ մեզ հետ',
             //contact form
 
             contact_email: 'Էլեկտրոնային հասցե',
@@ -191,7 +193,7 @@ module.exports =
             language: 'arm',
             //Forgot
             forgot_header: 'Մոռացել եք գաղտնաբառը?',
-            forgot_text: 'Մուտքագրեք ձեր էլ. Փոստի հասցեն, և մենք ձեզ հղում կուղարկենք ՝ ձեր գաղտնաբառը վերականգնելու համար:',
+            forgot_text: 'Մուտքագրեք Ձեր էլ. հասցեն,և Ձեզ կուղարկենք հղում ՝ գաղտնաբառը վերականգնելու համար:',
             forgot_email: 'Էլեկտրոնային հասցե',
             forgot_left_button: 'Չեղարկել',
             forgot_right_button: 'Ուղարկել',
@@ -211,10 +213,10 @@ module.exports =
             subtotal: 'Ենթագումար',
             quantity: 'Քանակը',
             you_save: 'Զեղչ',
-            order_shipping: 'Առաքում',
-            order_shipping_text: 'Առաքումը հաշվարկվում է հաջորդ քայլին',
+            order_shipping: 'Առաքում ',
+            order_shipping_text: ' հաշվարկվում է հաջորդ քայլին',
             checkout_button: "Ձևակերպել պատվերը",
-            i_agree_to_the_website: 'Ես համաձայն եմ կայքի հետ',
+            i_agree_to_the_website: 'Ես կարդացել եմ և համաձայն եմ կայքի',
 
             //shipping address page
             contact_information: 'Կոնտակտային տվյալներ',
@@ -233,3 +235,4 @@ module.exports =
             title_checkout:'Կարող եք վճարել վճարովի կայք `երկու վճարովի տիպով:'
         }
     ]
+
