@@ -19,7 +19,7 @@ const sendMessageToMail = message => {
         if (err) {
             console.log(err);
         }
-        //console.log("Message sent to email :", info);
+        console.log("Message sent to email :", info);
     });
 };
 

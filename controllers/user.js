@@ -4,7 +4,6 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-const ejs = require('ejs')
 
 const sendMessageContactUs = async (req, res) => {
     try {
@@ -23,9 +22,9 @@ const sendMessageContactUs = async (req, res) => {
         }
         await sendMessageToMail(content);
         if (req.session.language = 'eng') {
-            req.flash("success_msg", 'Account activation link sent to mail completed!');
+            req.flash("success_msg", 'Your message is sended!');
         } else {
-            req.flash('success_msg', 'Ակտիվացման հղումը ուղարկվել է Ձեր էլ. փոստին Խնդրում ենք՝ մուտք գործել ակտիվացնել համար:');
+            req.flash('success_msg', 'Ձեր հաղորդագրությունն ուղարկված է:');
         }
         return res.redirect("/contact");
 
@@ -43,40 +42,75 @@ const signUp = async (req, res, next) => {
                 req.flash('error_msg', message.message);
                 return res.redirect('/signup');
             }
-            req.login(user, {session: false}, async (error) => {
-                if (error) {
-                    return next(error);
-                }
                 const token = jwt.sign({
                     user: user
                 }, process.env.SECRET_KEY, {
                     expiresIn: '5m',
                 },);
-                ejs.renderFile("./accountActivateTemplate.ejs", {
-                    name: user.firstName,
-                    token:token
-                }, function (err, data) {
-                    if (err) {
-                        req.flash("error_msg", err.message);
-                        return res.redirect("/signup");
+                const content = {
+                    from: process.env.MAIL_AUTH_EMAIL,
+                    to: user.email,
+                    subject: 'Account activation on Armat Concept',
+                    html: `<!DOCTYPE html>
+                    <html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Benne&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<table style="max-width: 700px; width: 100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td align="center" >
+            <table  border="0" align="center" cellpadding="0" cellspacing="0" style="margin-right:20px; ">
+                <tbody>
+                <tr>
+                    <td  align="center" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#2a3a4b;padding: 40px 0 20px">
+                        <div style="text-align: left; font-size:14px; line-height: 20px; letter-spacing: 1px;margin-top: 20px; padding-left: 20px">
+                            <div><b>Hi ${user.firstName}</b></div>
+                            <div><b>Thank you for registration  with  Armat  Concept</b></div>
+                            <div><b>In order to activate your account please click the button below</b></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
 
-                    } else {
-                        const messageUser = {
-                            from: process.env.MAIL_AUTH_EMAIL,
-                            to: user.email,
-                            subject: 'Account activation on Armat Concept',
-                            html: data,
-                        }
-                        sendMessageToMail(messageUser)
-                    }
-                });
+                            <a href="https://armatconcept.com/activate-account/${token}">
+                                <button class="btn btn-success">
+                                    Activate account
+                                </button>
+                            </a>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+ `,
+                }
+                await sendMessageToMail(content);
                 if (req.session.language = 'eng') {
                     req.flash('success_msg', 'Activation link sent to email. Please activate to log in.');
                 } else {
                     req.flash('success_msg', 'Ակտիվացման հղումը ուղարկվել է էլ. Խնդրում ենք ակտիվացնել ՝ մուտք գործելու համար:');
                 }
                 return res.redirect('/signup');
-            });
         } catch (e) {
             req.flash('error_msg', e.message);
             return res.redirect('/signup');
@@ -118,18 +152,14 @@ const activateAccount = async (req, res) => {
                 avatar: user.avatar
             });
             await newUser.save();
-            const userObjWithoutPassword = {
-                _id: newUser._id,
-                status: newUser.status,
-                firstName: newUser.firstName,
-                lastName: newUser.lastName,
-                email: newUser.email,
-                roleType: newUser.roleType,
-                avatar: newUser.avatar,
-                id: newUser._id,
-            }
-            req.session.user = userObjWithoutPassword;
-            return res.redirect('/');
+            req.login(newUser, function (err) {
+                if (err){
+                    res.redirect('/signup');
+                } else {
+                    //handle error
+                    return res.redirect('/')
+                }
+            })
         } else {
             if (req.session.language = 'eng') {
                 req.flash('error_msg', 'Account activation error!');
@@ -153,3 +183,4 @@ module.exports = {
     signUp: signUp,
     activateAccount: activateAccount
 }
+
