@@ -350,13 +350,23 @@
                         shoppingCard++;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
                         if (Cardlocal && Cardlocal.length) {
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
-                            // document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            // document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 1000)
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                             document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
                             Cardlocal.push({
@@ -483,13 +493,24 @@
                         shoppingCard++;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
                         if (Cardlocal && Cardlocal.length) {
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
-                            // document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            // document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 1000)
+
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            if (lang === 'eng'){
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                             document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
                             Cardlocal.push({
@@ -510,8 +531,6 @@
                             } else {
                                 document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
                             }
-                            // document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            // document.getElementById('addToCardButton').classList.add('btn-dark');
                             if (lang === 'eng') {
                                 setTimeout(() => {
                                     document.getElementById('addToCardButton').innerHTML = 'Add To Card';
@@ -621,13 +640,24 @@
                         shoppingCard++;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
                         if (Cardlocal && Cardlocal.length) {
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
-                            // document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            // document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 1000)
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                             document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
                             Cardlocal.push({
@@ -681,4 +711,5 @@
 
 </body>
 </html>
+
 

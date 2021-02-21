@@ -219,7 +219,7 @@ const getProducts = async (req, res) => {
         if (filterByType) {
             data = await Product.find({type: filterByType});
         } else {
-            data = await Product.find({}).sort({brandName: 1});
+            data = await Product.find({}).sort({name:1});
         }
         return res.status(200).json(success('Products Data!', {
             data
