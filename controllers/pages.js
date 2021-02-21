@@ -1280,18 +1280,24 @@ module.exports = {
             }
             const {_id} = user
             const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '5m'});
-            const data = {
-                from: process.env.MAIL_AUTH_EMAIL,
-                to: email,
-                subject: `Forgot Password link`,
-                html: `
-                     <h2>Please click on given link to reset your password</h2>
-                     <button>
-                            <a href="https://armatconcept.com/resetPassword/${token}"> Reset Password</a>
-                     </button>
-`
-            }
-            sendMessageToMail(data);
+            ejs.renderFile("./resetPasswordTemplate.ejs", {
+                name: user.firstName,
+                token:token
+            }, function (err, data) {
+                if (err) {
+                    req.flash("error_msg", err.message);
+                    return res.redirect("/forgotPassword");
+
+                } else {
+                    const messageUser = {
+                        from: process.env.MAIL_AUTH_EMAIL,
+                        to: email,
+                        subject: 'Reset password Armat Concept account',
+                        html: data,
+                    }
+                    sendMessageToMail(messageUser)
+                }
+            });
             if (req.session.language === 'eng') {
                 req.flash('success_msg', 'Link send to email post.');
             } else {
@@ -1729,6 +1735,7 @@ module.exports = {
         }
     },
 };
+
 
 
 

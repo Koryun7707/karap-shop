@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const ejs = require('ejs')
 
 const sendMessageContactUs = async (req, res) => {
     try {
@@ -51,19 +52,24 @@ const signUp = async (req, res, next) => {
                 }, process.env.SECRET_KEY, {
                     expiresIn: '5m',
                 },);
-                const message = {
-                    from: process.env.MAIL_AUTH_EMAIL,
-                    to: user.email,
-                    subject: 'Welcome shop site',
-                    html: `<h4>Hello ${user.email} welcome to Armat Concept shop!
-                                    please follow via "link" link to verify your account.</h4>
-                                   <div>
-                                   <button>
-                                       <a href="https://armatconcept.com/activate-account/${token}"> Activate account</a>
-                                      </button>
-                                    </div> `,
-                }
-                sendMessageToMail(message);
+                ejs.renderFile("./accountActivateTemplate.ejs", {
+                    name: user.firstName,
+                    token:token
+                }, function (err, data) {
+                    if (err) {
+                        req.flash("error_msg", err.message);
+                        return res.redirect("/signup");
+
+                    } else {
+                        const messageUser = {
+                            from: process.env.MAIL_AUTH_EMAIL,
+                            to: user.email,
+                            subject: 'Account activation on Armat Concept',
+                            html: data,
+                        }
+                        sendMessageToMail(messageUser)
+                    }
+                });
                 if (req.session.language = 'eng') {
                     req.flash('success_msg', 'Activation link sent to email. Please activate to log in.');
                 } else {
