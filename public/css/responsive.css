@@ -57,7 +57,9 @@
     .fs-35 {
         font-size: 22px;
     }
-
+    #generalImage {
+     zoom:0.8;
+    }
 
 }
 @media screen and (min-width: 992px) and (max-width: 1082px){
@@ -130,6 +132,9 @@
         height: 400px;
         margin: 0 auto;
     }
+    #generalImage {
+     zoom:0.5;
+    }
 }
 @media screen and (max-width: 767px){
     .footer-bg {
@@ -193,6 +198,9 @@
     .blog-img {
     height: 370px;
 	}
+	#generalImage {
+     zoom:0.4;
+    }
 }
 @media screen and (max-width: 470px){
     .logoStyles {
