@@ -181,6 +181,19 @@ $(document).ready(function () {
             if(localType!='undefined'){
                 localType = JSON.parse(localType)
                 bringData.types = localType
+                let typesDiv = document.getElementById('typesDiv');
+                typesDiv.innerHTML = ''
+                if(localType?.length){
+                    localType.forEach((item)=>{
+                        let div = document.createElement('div');
+                        div.setAttribute('class','shop_small_card');
+                        div.innerHTML = `
+                 <span class="mr-2">${item}</span>
+                 <i value="${item}" onclick="deleteType(this)" class="fa fa-times"></i>
+                `
+                        typesDiv.append(div);
+                    })
+                }
             }
             let localBrandId = localStorage.getItem('brandId')
             if(localBrandId!='undefined'){
@@ -196,6 +209,15 @@ $(document).ready(function () {
             if(!type){
                 localStorage.removeItem('types')
             }else {
+                let typesDiv = document.getElementById('typesDiv');
+                typesDiv.innerHTML = ''
+                let div = document.createElement('div');
+                div.setAttribute('class','shop_small_card');
+                div.innerHTML = `
+                 <span class="mr-2">${type}</span>
+                 <i value="${type}" onclick="deleteType(this)" class="fa fa-times"></i>
+                `
+                typesDiv.append(div);
                    localStorage.setItem('types',JSON.stringify(new Array(type)))
             }
             localStorage.removeItem('brandId')
@@ -669,7 +691,19 @@ $(document).ready(function () {
                 }
             });
         }
-
+        let typesDiv = document.getElementById('typesDiv');
+        typesDiv.innerHTML = ''
+        if(values?.length){
+            values.forEach((item)=>{
+                let div = document.createElement('div');
+                div.setAttribute('class','shop_small_card');
+                div.innerHTML = `
+                 <span class="mr-2">${item}</span>
+                 <i value="${item}" onclick="deleteType(this)" class="fa fa-times"></i>
+                `
+                typesDiv.append(div);
+            })
+        }
         localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
         localStorage.setItem('types',JSON.stringify(values))
         localStorage.setItem('brandId',JSON.stringify(brandId))
@@ -813,8 +847,23 @@ $(document).ready(function () {
     });
 
 
-
 })
+function deleteType(element){
+    let value = element.getAttribute('value');
+    $.each($('input:checked'), function (index, input) {
+        if (input.value.includes('brandID')) {
+
+        } else if (input.value === 'on') {
+
+        } else {
+            if(input.value === value){
+                input.checked = false
+                $(`input[type=checkbox]` ).trigger( "change" );
+            }
+        }
+    });
+}
+
 
 
 

@@ -1361,5 +1361,19 @@ button:focus {
 {
     display: block;
 }
-
+.shop_small_card {
+    min-width: 100px;
+    height: 36px;
+    background-color: #c4aa9d;
+    text-align: center;
+    margin-right: 16px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 0 8px;
+}
+.shop_small_card  .fa{
+    cursor: pointer;
+}
 
