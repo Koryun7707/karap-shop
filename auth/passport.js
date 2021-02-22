@@ -24,7 +24,7 @@ module.exports = function (passport) {
             });
             if (error) throw error;
             if (value.password !== value.confirmPassword) {
-                if (req.session.language = 'eng') {
+                if (req.session.language == 'eng') {
                     return done(null, false, {message: 'Password and confirm password fields doesn\'t match'});
                 } else {
                     return done(null, false, {message: 'Գաղտնաբառերը չեն համընկնում!'});
@@ -32,7 +32,7 @@ module.exports = function (passport) {
             }
             const findUser = await User.findOne({email: value.email});
             if (findUser) {
-                if (req.session.language = 'eng') {
+                if (req.session.language == 'eng') {
                     return done(null, false, {message: 'This email is already in use. Please use another one.'});
                 } else {
                     return done(null, false, {message: 'Այս էլ-նամակն արդեն օգտագործվում է: Խնդրում եմ օգտագործել մեկ այլ մեկը!'});
@@ -82,3 +82,4 @@ module.exports = function (passport) {
         });
     });
 };
+
