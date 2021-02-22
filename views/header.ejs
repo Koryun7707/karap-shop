@@ -4,12 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="nofollow">
+    <meta name="googlebot" content="noindex">
+    <meta name="keywords" content="shop online armenian shop armat armatconcept" />
+    <meta property="og:url" content="https://armatconcept.com/">
+    <meta name="description" content="hop online armenian shop armat armatconcept" />
+    <link rel="icon" href="https://ui-avatars.com/api/?name=Armat+Concept&background=c4aa9d&color=fff&bold=true"
+          type="image/x-icon">
     <title>
         Armat Concept
     </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/range.css">
     <link rel="stylesheet" href="css/jq-ui.css">
     <link rel="stylesheet" href="css/owl-carousel-min.css">
@@ -32,11 +37,17 @@
             </a>
             <div class="d-block d-xl-none d-lg-none ml-auto">
                 <ul class="navbar-nav d-flex flex-row  align-items-center ">
-                    <li class="d-flex mr-4">
-                        <div class="icon-search-container" data-ic-class="search-trigger">
+                    <li class="d-flex mr-1 mr-xs-3">
+                        <div class="icon-search-container " data-ic-class="search-trigger">
                             <span class="fa fa-search"></span>
-                            <input type="text" class="search-input" data-ic-class="search-input" placeholder="Search"/>
+                            <input type="text" id='search-input-mobile'
+                                   class="search-input-mobile"
+                                   data-ic-class="search-input-mobile"
+                                   placeholder="Search"/>
                             <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
+                            <div id='search-div-mobile' data-ic-class="search-div-mobile">
+
+                            </div>
                         </div>
                     </li>
                     <li class="nav-item mr-2 mr-xl-4 d-block d-xl-none d-lg-none position-relative">
@@ -61,7 +72,6 @@
                                 <% } %>
                             </a>
                         </li>
-
                         <li class="<%= URL === '/shop' ? 'navbar-item mx-2 active' : 'navbar-item mx-2' %>">
                             <a class="nav-link" href="/shop">
                                 <%= staticData.shop %>
@@ -96,35 +106,40 @@
                             </li>
                         <% } %>
                     </ul>
-                    <div class="d-flex ml-auto">
+                    <div class="d-flex ml-auto p-md-0 pb-4">
                         <ul class="navbar-nav align-items-lg-center pl-2 pl-lg-0 flex-wrap">
-                            <li class=" mr-4 d-none d-md-none d-xl-block d-lg-block ">
-                                <div class="d-flex">
-                                    <div class="icon-search-container" data-ic-class="search-trigger">
-                                        <span class="fa fa-search"></span>
-                                        <input id="search-input" type="text" class="search-input"
-                                               data-ic-class="search-input"
-                                               placeholder="Search"/>
-                                        <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
-
-                                        <div id='search-div' data-ic-class="search-div">
-
+                            <li class=" mr-3 d-none d-md-none d-xl-block d-lg-block ">
+                                <% if(!URL.includes('/shop')){ %>
+                                    <div class="d-flex">
+                                        <div class="icon-search-container " data-ic-class="search-trigger">
+                                            <span class="fa fa-search"></span>
+                                            <input id="search-input" type="text"
+                                                   class="search-input"
+                                                   data-ic-class="search-input"
+                                                   placeholder="Search"/>
+                                            <span class="fa fa-times-circle" data-ic-class="search-clear"></span>
+                                            <div id='search-div' data-ic-class="search-div">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
+                                <% } %>
                                 <% if(!user){ %>
-                            <li class="nav-item mr-2 mr-xl-4">
-                                <a href='/login' class="nav-link" type="button">
+                            <li class="<%= URL === '/login' ? 'nav-item mr-2 mr-xl-4 active' : 'nav-item mr-2 mr-xl-4' %>">
+                                <a class="nav-link" href="/login">
                                     <%= staticData.login %>
+                                    <% if(URL === '/login'){ %>
+                                        <span class="sr-only">(current)</span>
+                                    <% } %>
                                 </a>
                             </li>
-                            <li class="nav-item mr-2 mr-xl-4">
-                                <a href="/signup" class="nav-link" type="button">
+                            <li class="<%= URL === '/signup' ? 'nav-item mr-2 mr-xl-4 active' : 'nav-item mr-2 mr-xl-4' %>">
+                                <a class="nav-link" href="/signup">
                                     <%= staticData.signup %>
+                                    <% if(URL === '/signup'){ %>
+                                        <span class="sr-only">(current)</span>
+                                    <% } %>
                                 </a>
                             </li>
-
                             <% }else { %>
                                 <li class="nav-item mr-2 mr-xl-4"
                                     firstName=<%= user.firstName %>
@@ -148,21 +163,16 @@
                                             class="fa fa-cart-arrow-down"></i></a>
                             </li>
                             <li class="nav-item dropdown">
-
                                 <select class="example" name="example" id="example">
                                     <% if(staticData.language === 'eng' ){ %>
                                         <option name="eng" value="eng" selected>Eng</option>
-                                        <option name="ru" value="ru">Ru</option>
-                                    <% }else if(staticData.language === 'ru'){ %>
+                                        <option name="arm" value="arm">Հայ</option>
+                                    <% }else if(staticData.language === 'arm'){ %>
                                         <option name="eng" value="eng">Eng</option>
-                                        <option name="ru" value="ru" selected>Ru</option>
-                                    <% }else if(staticData.language === 'spain'){ %>
-                                        <option name="eng" value="eng">Eng</option>
-                                        <option name="ru" value="ru" selected>Ru</option>
+                                        <option name="arm" value="arm" selected>Հայ</option>
                                     <% } %>
                                 </select>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -189,25 +199,22 @@
     } else {
         localStorage.removeItem('user');
     }
-
     function userLogOut(element) {
         localStorage.clear('user');
         element.setAttribute('href', '/logout');
     }
-
     function goToSelectedPage(element) {
-        let basket ;
-            if(element.id === 'shoppingCard'){
-                basket = document.getElementById('shoppingCard');
-            }else {
-                basket = document.getElementById('shoppingCardS');
-            }
+        let basket;
+        if (element.id === 'shoppingCard') {
+            basket = document.getElementById('shoppingCard');
+        } else {
+            basket = document.getElementById('shoppingCardS');
+        }
         const local = JSON.parse(localStorage.getItem('shoppingCard'));
         if (local && local.length) {
             basket.setAttribute('href', '/selectedProducts');
         }
     };
-
     function gup(name, url) {
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -216,45 +223,92 @@
         var results = regex.exec(url);
         return results == null ? null : results[1];
     }
-
-
     $(function () {
-
         document.getElementById('example').addEventListener('change', function () {
-            console.log('You selected: ', this.value);
             const obj = {
                 language: this.value,
             }
-            localStorage.removeItem('shoppingCard');
-            localStorage.removeItem('order');
+            // localStorage.removeItem('shoppingCard');
+            // localStorage.removeItem('order');
             $.ajax({
-                    url: '/change-language',
-                    method: 'post',
-                    data: obj,
-                    success: function () {
-                        window.location.reload(1);
-                        location.replace(`${process.env.CLIENT_URL}`)
-                    },
-                    error: function (data) {
-                        console.log('User creation failed :' + data);
-                    }
-                });
+                url: '/change-language',
+                method: 'post',
+                data: obj,
+                success: function () {
+                    window.location.reload(1);
+                    // location.replace(`https://armatconcept.com`)
+                },
+                error: function (data) {
+                    console.log('User creation failed :' + data);
+                }
+            });
         });
         let searchValue;
         var typingTimer;                //timer identifier
-        var doneTypingInterval = 1000;  //time in ms, 5 second for example
+        var doneTypingInterval = 500;  //time in ms, 5 second for example
         var $input = $('#search-input');
+        var $inputMobile = $('#search-input-mobile');//*
+        $inputMobile.on('keyup', function () {
+            document.getElementById('search-div-mobile').removeAttribute('style');
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTypingMobile, doneTypingInterval);
+        });
+        $inputMobile.on('keydown', function () {
+            clearTimeout(typingTimer);
+        });
+        function doneTypingMobile() {
+            let obj = {
+                search: $inputMobile.val()
+            }
+            $.ajax({
+                url: '/search',
+                method: 'post',
+                data: obj,
+                success: function (response) {
+                    $('#search-div-mobile').html("");
+                    const {brands, products} = response.results;
+                    let div = document.createElement(`div`);
+                    $('#search-div-mobile').append(div);
+                    if (brands.length) {
+                        brands.forEach(function (item) {
+                            if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm'){
+                                let a = document.createElement(`a`);
+                                a.href = `shop?brandId=${item._id}`
+                                a.innerHTML = `${item.name} <br/>`;
+                                div.append(a);
+                            }
+
+                        })
+                    }
+                    if (products.length) {
+                        products.forEach(function (item) {
+                            let a = document.createElement(`a`);
+                            if (item.type) {
+                                a.href = `product?_id=${item._id}`
+                                a.innerHTML = `${item.name}  <br/>`;
+                            } else {
+                                a.href = `product?_id=${item._id}`
+                                a.innerHTML = `${item.nameArm}  <br/>`;
+                            }
+                            div.append(a);
+                        })
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
         //on keyup, start the countdown
         $input.on('keyup', function () {
+            document.getElementById('search-div').removeAttribute('style');
             clearTimeout(typingTimer);
             typingTimer = setTimeout(doneTyping, doneTypingInterval);
         });
-
         //on keydown, clear the countdown
         $input.on('keydown', function () {
             clearTimeout(typingTimer);
         });
-
         function doneTyping() {
             let obj = {
                 search: $input.val()
@@ -270,21 +324,27 @@
                     $('#search-div').append(div);
                     if (brands.length) {
                         brands.forEach(function (item) {
-                            let a = document.createElement(`a`);
-                            a.href = `shop?brandName=${item.name}`
-                            a.innerHTML = `${item.name} <br/>`;
-                            div.append(a);
+                            if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm'){
+                                let a = document.createElement(`a`);
+                                a.href = `shop?brandId=${item._id}`
+                                a.innerHTML = `${item.name} <br/>`;
+                                div.append(a);
+                            }
                         })
                     }
                     if (products.length) {
                         products.forEach(function (item) {
                             let a = document.createElement(`a`);
-                            a.href = `shop?type=${item.type}`
-                            a.innerHTML = `${item.name}  <br/>`;
+                            if (item.type) {
+                                a.href = `product?_id=${item._id}`
+                                a.innerHTML = `${item.name}  <br/>`;
+                            } else {
+                                a.href = `product?_id=${item._id}`
+                                a.innerHTML = `${item.nameArm}  <br/>`;
+                            }
                             div.append(a);
                         })
                     }
-
                 },
                 error: function (data) {
                     console.log(data);
@@ -292,6 +352,7 @@
             });
         }
     });
-
 </script>
+
+
 

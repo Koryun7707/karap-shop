@@ -4,55 +4,71 @@
         <div class="row">
             <% if(product.length){ %>
                 <% if(product[0].images.length){ %>
-                    <div class="col-12 col-md-7">
-                        <div class="row justify-content-between">
-                            <div class="col-2 col-md-3 col-lg-2">
-                                <div class="mb-2 small-images">
-                                    <img src="<%= product[0].images[1] %>" alt="" class="w-100">
+                <div class="col-12 col-md-7">
+                    <div class="row justify-content-between">
+                        <div class="col-2 col-md-3 col-lg-2">
+                            <% for(let i = 1;i < product[0].images.length;i++){ %>
+                                <div onmousemove="myMoveFunction(this)" onclick="changeImage(this)"
+                                     class="mb-2 small-images">
+                                    <img src="<%= product[0].images[i] %>" alt="" class="w-100">
                                 </div>
-                                <div class="mb-2 small-images">
-                                    <img src="<%= product[0].images[2] %>" alt="" class="w-100">
-                                </div>
-                                <div class="mb-2 small-images">
-                                    <img src="<%= product[0].images[3] %>" alt="" class="w-100">
-                                </div>
-                            </div>
-                            <div class="col-8 col-md-9 col-lg-10">
-                                <img src="<%= product[0].images[0] %>" alt="" class="w-100">
+                            <% } %>
+                        </div>
+                        <div class="col-8 col-md-9 col-lg-10">
+                            <div class="w-100 zoom-area">
+
+                                <!-- Created by Rohan Hapani -->
+<!--                                <div class="zoom-area">-->
+
+                                    <!-- It's container of the magnify glass -->
+                                    <div class="large"></div>
+
+                                    <!-- It's for the small image -->
+                                    <img id="generalImage" class="small" src="<%= product[0].images[1] %>" width="500" height="500" />
+
+<!--                                </div>-->
                             </div>
                         </div>
                     </div>
+                </div>
                 <% } %>
-                <div class="col-12 col-md-5">
+                <div class="col-12 col-md-5 p-0">
                     <div class="product-name">
-                        <h2 class="mb-2"><%= product[0].name %></h2>
+                        <% if(language === 'eng'){ %>
+                            <h2 class="mb-2"><%= product[0].name %></h2>
+                        <% }else{ %>
+                            <h2 class="mb-2"><%= product[0].nameArm %></h2>
+                        <% } %>
                     </div>
                     <div class="d-flex">
                         <div class="product-price mr-4" id="productPrice" value="<%= product[0].price %>">
                             <% if(product[0].sale){ %>
-                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= product[0].price %>€</b>
+                                <h2 style="text-decoration: line-through"><b id="pricePlace"><%= Number(product[0].price)%1==0?Number(product[0].price):Number(product[0].price).toFixed(2) %>
+                                        €</b>
                                 </h2>
                             <% }else{ %>
-                                <h2><b id="pricePlace"><%= product[0].price %>€</b></h2>
+                                <h2><b id="pricePlace"><%= Number(product[0].price)%1==0?Number(product[0].price):Number(product[0].price).toFixed(2) %>€</b></h2>
                             <% } %>
                         </div>
                         <% if(product[0].sale){ %>
                             <div class="product-price" id="productSalePrice" value="<%= product[0].sale %>">
-                                <h5 id="saleValue"> <%= product[0].price - product[0].price * product[0].sale / 100 %>€</h5>
+                                <h5 id="saleValue"> <%= Number(product[0].price - product[0].price * product[0].sale / 100)%1==0?Number(product[0].price - product[0].price * product[0].sale / 100):Number(product[0].price - product[0].price * product[0].sale / 100).toFixed(2) %>
+                                    €</h5>
                             </div>
                         <% } %>
                     </div>
                     <% if(product[0].sizes[0] != ''){ %>
                         <div class="product-size">
-                            <h5>Size</h5>
-                            <ul class="list-unstyled d-flex align-items-center" id="productSizesDiv" value=<%= product[0].sizes %>>
+                            <h5><h5><%= staticData.product_size %></h5></h5>
+                            <ul class="list-unstyled d-flex align-items-center" id="productSizesDiv"
+                                value=<%= product[0].sizes %>>
                                 <% if(product[0].sizes){ %>
                                     <% product[0].sizes.forEach(function(item){ %>
-                                    <div class="mr-2">
-                                        <input type="radio" name="productSize" id=<%= item %>>
-                                            <%= item %>
-                                        </input>
-                                    </div>
+                                        <div class="mr-2">
+                                            <input type="radio" name="productSize" id=<%= item %>>
+                                                <%= item %>
+                                            </input>
+                                        </div>
                                     <% }) %>
                                 <% } %>
                             </ul>
@@ -60,35 +76,95 @@
                     <% } %>
                     <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
-                            <h5>Color</h5>
-                            <ul class="list-unstyled d-flex align-items-center">
+                            <h5><%= staticData.product_color %></h5>
+                            <ul class="list-unstyled">
                                 <% if(product[0].colors){ %>
+                                   <%if(product[0].productPak3){%>
+                                  <%for(let i=0;i<3;i++){%>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="mr-2">Product <%=i+1%></div>
                                     <% product[0].colors.forEach(function(item){ %>
-                                    <div class="mr-2 d-flex align-items-center">
-                                        <input type="radio" name="productColor"  id=<%= item %>>
-<!--                                            <%= item %>-->
-                                            <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"> </div>
+                                    <div class="mr-3 d-flex align-items-center mb-2">
+                                        <input type="radio" name="productColor<%=i%>" id=<%= item %>>
+                                        <!--                                            <%= item %>-->
+                                        <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
                                         </input>
                                     </div>
                                     <% }) %>
-                                <% } %>
+                                </div>
+                                <%}%>
+                                <% } else if(product[0].productPak6){%>
+                                    <%for(let i=0;i<6;i++){%>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="mr-2">Product <%=i+1%></div>
+                                    <% product[0].colors.forEach(function(item){ %>
+                                    <div class="mr-3 d-flex align-items-center mb-2">
+                                        <input type="radio" name="productColor<%=i%>" id=<%= item %>>
+                                        <!--                                            <%= item %>-->
+                                        <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
+                                        </input>
+                                    </div>
+                                    <% }) %>
+                                </div>
+                                <%}%>
+                                <%}else{%>
+                                <% product[0].colors.forEach(function(item){ %>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="mr-3 d-flex align-items-center mb-2">
+                                        <input type="radio" name="productColor" id=<%= item %>>
+                                        <!--                                            <%= item %>-->
+                                        <div style="background-color:<%= item %>" class="px-3 py-2 ml-1"></div>
+                                        </input>
+                                    </div>
+                                </div>
+                                <% }) %>
+                                <%}%>
+                                <%}%>
                             </ul>
                         </div>
                     <% } %>
                     <div class="product-count">
-                        <h5>Count of product</h5>
+                        <h5><%= staticData.product_qty %></h5>
                         <div class="qtySelector text-center">
                             <i class="fa fa-minus decreaseQty" id="'fa-minus" onclick="countPrice(this)"></i>
                             <input type="text" disabled id="qtyValueProduct" class="qtyValue" value="1"/>
                             <i class="fa fa-plus increaseQty" id="fa-plus" onclick="countPrice(this)"></i>
                         </div>
                     </div>
+                    <!--                    Start change from this-->
+                    <% if(product[0].description != '' && product[0].descriptionArm != ''){ %>
+                        <div class="product-size">
+                            <h5 class="mt-3">
+                                <h5><h5><%= staticData.product_description %></h5></h5>
+                            </h5>
+                            <% if(language === 'eng'){ %>
+                                <div><%= product[0].description %></div>
+                            <% }else{ %>
+                                <div><%= product[0].descriptionArm %></div>
+                            <% } %>
+                        </div>
+                    <% } %>
+                    <!--                  End here-->
                     <div class="col-8 my-3 p-0">
+                        <%if(product[0].productPak3){%>
                         <button value="<%= product[0]._id %>" id="addToCardButton"
-                                class="btn btn-green-gradient py-3"
-                                onclick="addToCard(this)">
-                            ADD TO CART
+                                class="btn btn-green-gradient btn-black"
+                                onclick="addToCardPak3(this)">
+                            <%= staticData.add_to_cart %>
                         </button>
+                        <%}else if(product[0].productPak6){%>
+                                <button value="<%= product[0]._id %>" id="addToCardButton"
+                                        class="btn btn-green-gradient btn-black"
+                                        onclick="addToCardPak6(this)">
+                                    <%= staticData.add_to_cart %>
+                                </button>
+                        <%}else{%>
+                                <button value="<%= product[0]._id %>" id="addToCardButton"
+                                        class="btn btn-green-gradient btn-black"
+                                        onclick="addToCard(this)">
+                                    <%= staticData.add_to_cart %>
+                                </button>
+                        <%}%>
                     </div>
                 </div>
             <% } %>
@@ -102,6 +178,52 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        var sub_width = 0;
+        var sub_height = 0;
+        $(".large").css("background","url('" + $(".small").attr("src") + "') no-repeat");
+
+        $(".zoom-area").mousemove(function(e){
+            if(!sub_width && !sub_height)
+            {
+                var image_object = new Image();
+                image_object.src = $(".small").attr("src");
+                sub_width = image_object.width;
+                sub_height = image_object.height;
+            }
+            else
+            {
+                var magnify_position = $(this).offset();
+
+                var mx = e.pageX - magnify_position.left;
+                var my = e.pageY - magnify_position.top;
+
+                if(mx < $(this).width() && my < $(this).height() && mx > 0 && my > 0)
+                {
+                    $(".large").fadeIn(100);
+                }
+                else
+                {
+                    $(".large").fadeOut(100);
+                }
+                if($(".large").is(":visible"))
+                {
+                    var rx = Math.round(mx/$(".small").width()*sub_width - $(".large").width()/2)*-1;
+                    var ry = Math.round(my/$(".small").height()*sub_height - $(".large").height()/2)*-1;
+
+                    var bgp = rx + "px " + ry + "px";
+
+                    var px = mx - $(".large").width()/2;
+                    var py = my - $(".large").height()/2;
+
+                    $(".large").css({left: px, top: py, backgroundPosition: bgp});
+                }
+            }
+        })
+    })
+</script>
 <script>
     $(function () {
         $("#slider-range").slider({
@@ -121,16 +243,343 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
 <script>
+    (function () {
+        // Get all images with the `detail-view` class
+        var zoomBoxes = document.querySelectorAll('.detail-view');
+        // Extract the URL
+        zoomBoxes.forEach(function (image) {
+            var imageCss = window.getComputedStyle(image, false),
+                imageUrl = imageCss.backgroundImage
+                    .slice(4, -1).replace(/['"]/g, '');
+            // Get the original source image
+            var imageSrc = new Image();
+            imageSrc.onload = function () {
+                var imageWidth = imageSrc.naturalWidth,
+                    imageHeight = imageSrc.naturalHeight,
+                    ratio = imageHeight / imageWidth;
+                // Adjust the box to fit the image and to adapt responsively
+                var percentage = ratio * 100 + '%';
+                image.style.paddingBottom = percentage;
+                // Zoom and scan on mousemove
+                image.onmousemove = function (e) {
+                    // Get the width of the thumbnail
+                    var boxWidth = image.clientWidth,
+                        // Get the cursor position, minus element offset
+                        x = e.pageX - this.offsetLeft,
+                        y = e.pageY - this.offsetTop,
+                        // Convert coordinates to % of elem. width & height
+                        xPercent = x / (boxWidth / 100) + '%',
+                        yPercent = y / (boxWidth * ratio / 100) + '%';
+                    // Update styles w/actual size
+                    Object.assign(image.style, {
+                        backgroundPosition: xPercent + ' ' + yPercent,
+                        backgroundSize: imageWidth + 'px'
+                    });
+                };
+                // Reset when mouse leaves
+                image.onmouseleave = function (e) {
+                    Object.assign(image.style, {
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover'
+                    });
+                };
+            }
+            imageSrc.src = imageUrl;
+        });
+    })();
+</script>
+
+
+<script>
+    function addToCardPak3(id){
+        //start check product exist or not
+        const product = {
+            productCount: document.getElementById('qtyValueProduct').value,
+            productId: id.value,
+        }
+        const language = document.getElementById('example').value;
+        let productSize;
+        let productColor =[];
+        let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
+        if (document.querySelector('input[name="productSize"]:checked'))
+            productSize = document.querySelector('input[name="productSize"]:checked').id;
+        for(let i = 0;i<3;i++){
+            if (document.querySelector(`input[name="productColor${i}"]:checked`))
+                productColor.push(document.querySelector(`input[name="productColor${i}"]:checked`).id)
+        }
+        if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your product size.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի չափը:')
+            }
+        } else if (!document.querySelector('input[name="productColor0"]:checked') && document.querySelector('input[name="productColor0"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your first product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր arajin ապրանքատեսակի գույնը:');
+            }
+        } else if (!document.querySelector('input[name="productColor1"]:checked') && document.querySelector('input[name="productColor1"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your second product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր errkrord ապրանքատեսակի գույնը:');
+            }
+        } else if (!document.querySelector('input[name="productColor2"]:checked') && document.querySelector('input[name="productColor2"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your third product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր errord ապրանքատեսակի գույնը:');
+            }
+        } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Sorry but product is already added.');
+            } else {
+                alert('Կներեք, բայց ապրանքն արդեն ավելացված է:');
+            }
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '/product-by-id',
+                data: product,
+                success: (response) => {
+                    if (response.message && response.error) {
+                        alert(`${response.message}`);
+                    } else {
+                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML) || Number(document.getElementById('shoppingCardNumberS').innerHTML);
+                        shoppingCard++;
+                        const productCount = Number(document.getElementById('qtyValueProduct').value);
+                        if (Cardlocal && Cardlocal.length) {
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
+                            Cardlocal.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                                existProductCount: response.results.count,
+                            });
+                            Cardlocal = JSON.stringify(Cardlocal);
+                            localStorage.setItem('shoppingCard', Cardlocal);
+                        } else {
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            // document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                            // document.getElementById('addToCardButton').classList.add('btn-dark');
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
+                            let array = [];
+                            array.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                                existProductCount: response.results.count,
+                            });
+                            array = JSON.stringify(array);
+                            localStorage.setItem('shoppingCard', array);
+                        }
+                    }
+                }
+            })
+        }
+    }
+    function addToCardPak6(id){
+        //start check product exist or not
+        const product = {
+            productCount: document.getElementById('qtyValueProduct').value,
+            productId: id.value,
+        }
+        const language = document.getElementById('example').value;
+        let productSize;
+        let productColor =[];
+        let Cardlocal = JSON.parse(localStorage.getItem('shoppingCard'));
+        if (document.querySelector('input[name="productSize"]:checked'))
+            productSize = document.querySelector('input[name="productSize"]:checked').id;
+        for(let i = 0;i<6;i++){
+            if (document.querySelector(`input[name="productColor${i}"]:checked`))
+                productColor.push(document.querySelector(`input[name="productColor${i}"]:checked`).id)
+        }
+        if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your product size.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի չափը:')
+            }
+        } else if (!document.querySelector('input[name="productColor0"]:checked') && document.querySelector('input[name="productColor0"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your first product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր arajin ապրանքատեսակի գույնը:');
+            }
+        } else if (!document.querySelector('input[name="productColor1"]:checked') && document.querySelector('input[name="productColor1"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your second product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր errkrord ապրանքատեսակի գույնը:');
+            }
+        } else if (!document.querySelector('input[name="productColor2"]:checked') && document.querySelector('input[name="productColor2"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your third product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր errord ապրանքատեսակի գույնը:');
+            }
+        }else if (!document.querySelector('input[name="productColor3"]:checked') && document.querySelector('input[name="productColor3"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your 4 product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր 4 ապրանքատեսակի գույնը:');
+            }
+        } else if (!document.querySelector('input[name="productColor4"]:checked') && document.querySelector('input[name="productColor4"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your 5 product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր 5 ապրանքատեսակի գույնը:');
+            }
+        } else if (!document.querySelector('input[name="productColor5"]:checked') && document.querySelector('input[name="productColor5"]')) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your 6 product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր 6 ապրանքատեսակի գույնը:');
+            }
+        }  else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
+            if (document.getElementById('example').value === 'eng') {
+                alert('Sorry but product is already added.');
+            } else {
+                alert('Կներեք, բայց ապրանքն արդեն ավելացված է:');
+            }
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '/product-by-id',
+                data: product,
+                success: (response) => {
+                    if (response.message && response.error) {
+                        alert(`${response.message}`);
+                    } else {
+                        let shoppingCard = Number(document.getElementById('shoppingCardNumber').innerHTML) || Number(document.getElementById('shoppingCardNumberS').innerHTML);
+                        shoppingCard++;
+                        const productCount = Number(document.getElementById('qtyValueProduct').value);
+                        if (Cardlocal && Cardlocal.length) {
+
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            if (lang === 'eng'){
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
+                            Cardlocal.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                                existProductCount: response.results.count,
+                            });
+                            Cardlocal = JSON.stringify(Cardlocal);
+                            localStorage.setItem('shoppingCard', Cardlocal);
+                        } else {
+                            document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
+                            document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
+                            let array = [];
+                            array.push({
+                                productId: id.value,
+                                size: productSize,
+                                color: productColor,
+                                count: productCount,
+                                existProductCount: response.results.count,
+                            });
+                            array = JSON.stringify(array);
+                            localStorage.setItem('shoppingCard', array);
+                        }
+                    }
+                }
+            })
+        }
+    }
+    function changeImage(element) {
+        const src = element.children[0].getAttribute('src');
+        $(".large").css("background","url('" + src + "') no-repeat");
+        var el = document.getElementById("generalImage");
+        el.src = `${src}`;
+
+    }
+    function myMoveFunction(element) {
+        const src = element.children[0].getAttribute('src');
+        $(".large").css("background","url('" + src + "') no-repeat");
+        var el = document.getElementById("generalImage");
+        el.src = `${src}`;
+    }
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
         let productPrice = document.getElementById('productPrice').getAttribute('value');
         let productSalePrice;
-        if(!document.getElementById('productSalePrice')){
-             productSalePrice = 0
-        }else{
+        if (!document.getElementById('productSalePrice')) {
+            productSalePrice = 0
+        } else {
             productSalePrice = document.getElementById('productSalePrice').getAttribute('value');
         }
-
         if (element.id === 'fa-plus') {
             count++;
         } else {
@@ -140,13 +589,12 @@
             let payPrice = Number(productPrice) * count;
             let payPriceSale = Number(productPrice) - Number(productSalePrice) * Number(productPrice) / 100;
             payPriceSale *= count;
-            document.getElementById('pricePlace').innerHTML = `${payPrice}€`;
-            if(document.getElementById('saleValue')){
-                document.getElementById('saleValue').innerHTML = `${payPriceSale.toFixed(1)}€`;
+            document.getElementById('pricePlace').innerHTML = `${payPrice%1==0?payPrice:payPrice.toFixed(2)}€`;
+            if (document.getElementById('saleValue')) {
+                document.getElementById('saleValue').innerHTML = `${payPriceSale%1==0?payPriceSale:payPriceSale.toFixed(2)}€`;
             }
         }
     }
-
     function addToCard(id) {
         //start check product exist or not
         const product = {
@@ -161,13 +609,24 @@
             productSize = document.querySelector('input[name="productSize"]:checked').id;
         if (document.querySelector('input[name="productColor"]:checked'))
             productColor = document.querySelector('input[name="productColor"]:checked').id;
-
         if (!document.querySelector('input[name="productSize"]:checked') && document.querySelector('input[name="productSize"]')) {
-            alert('Choose product size.');
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your product size.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի չափը:')
+            }
         } else if (!document.querySelector('input[name="productColor"]:checked') && document.querySelector('input[name="productColor"]')) {
-            alert('Select product color.');
+            if (document.getElementById('example').value === 'eng') {
+                alert('Please select your product color.');
+            } else {
+                alert('Խնդրում ենք ընտրել ձեր ապրանքատեսակի գույնը:');
+            }
         } else if (Cardlocal && Cardlocal.find(x => id.value === x.productId)) {
-            alert('Sorry but product is already added');
+            if (document.getElementById('example').value === 'eng') {
+                alert('Sorry but product is already added.');
+            } else {
+                alert('Կներեք, բայց ապրանքն արդեն ավելացված է:');
+            }
         } else {
             $.ajax({
                 type: 'post',
@@ -181,13 +640,24 @@
                         shoppingCard++;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
                         if (Cardlocal && Cardlocal.length) {
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
-                            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 1000)
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                             document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
                             Cardlocal.push({
@@ -196,20 +666,31 @@
                                 color: productColor,
                                 count: productCount,
                                 existProductCount: response.results.count,
-                                language: language
                             });
                             Cardlocal = JSON.stringify(Cardlocal);
                             localStorage.setItem('shoppingCard', Cardlocal);
                         } else {
                             document.getElementById('shoppingCardNumber').innerHTML = `${shoppingCard}`;
                             document.getElementById('shoppingCardNumberS').innerHTML = `${shoppingCard}`;
-                            document.getElementById('addToCardButton').innerHTML = 'Added';
-                            document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
-                            document.getElementById('addToCardButton').classList.add('btn-dark');
-                            setTimeout(() => {
-                                document.getElementById('addToCardButton').innerHTML = 'Add To Card';
-                                document.getElementById('addToCardButton').classList.add('btn-green-gradient');
-                            }, 500)
+                            let lang = document.getElementById('example').value;
+                            if (lang === 'eng') {
+                                document.getElementById('addToCardButton').innerHTML = 'Added';
+                            } else {
+                                document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
+                            }
+                            // document.getElementById('addToCardButton').classList.remove('btn-green-gradient');
+                            // document.getElementById('addToCardButton').classList.add('btn-dark');
+                            if (lang === 'eng') {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Add To Card';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            } else {
+                                setTimeout(() => {
+                                    document.getElementById('addToCardButton').innerHTML = 'Ավելացնել զամբյուղում';
+                                    document.getElementById('addToCardButton').classList.add('btn-green-gradient');
+                                }, 500)
+                            }
                             let array = [];
                             array.push({
                                 productId: id.value,
@@ -217,7 +698,6 @@
                                 color: productColor,
                                 count: productCount,
                                 existProductCount: response.results.count,
-                                language: language
                             });
                             array = JSON.stringify(array);
                             localStorage.setItem('shoppingCard', array);
@@ -226,10 +706,10 @@
                 }
             })
         }
-
     }
-
 </script>
 
 </body>
 </html>
+
+

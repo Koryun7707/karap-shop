@@ -22,4 +22,4 @@ const httpServer = http.createServer(app);
 httpServer.listen(3000);
 //httpsServer.listen(3043);
 
-console.log("Listening to PORT 3000 and 3043");
+console.log("Listening to PORT 3000 ");

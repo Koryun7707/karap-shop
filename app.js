@@ -8,7 +8,7 @@ const apiRoutes = require('./routes');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport')
-const compression =   require('compression');
+const compression = require('compression');
 
 
 const app = express();
@@ -60,13 +60,23 @@ app.use(function (req, res, next) {
     next();
 });
 
+process.on('uncaughtException', function (err) {
+    logger.error(`Oops Unhandled Exception !!!!! = ${err.stack}`);
+});
+
 app.use('/', apiRoutes);
 
 app.get('*', (req, res) => {
     logger.error(`APP INVALID ROUTE ${req.originalUrl}`)
-    res.json({ status: 404, description: 'Invalid api address!' })
+    res.json({status: 404, description: 'Invalid api address!'})
 });
-module.exports = app;
+
+
 // app.listen(PORT, () => {
 //     console.log(`Server is running on PORT: ${PORT}`);
 // });
+module.exports = app;
+
+
+
+

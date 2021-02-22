@@ -1,29 +1,50 @@
 <%- include ('header') -%>
+<div id="loader" class="center"></div>
 <main style="padding-top: 100px;">
     <div class="checkout-page">
-        <h2 class="py-3 bg-rose">You can pay in out website, with two pay type.</h2>
+        <h2 class="py-3 bg-rose"><%=staticData.title_checkout%></h2>
         <div class="mt-5">
-            <form action="/purchase" method="POST" class="mb-4">
+            <form id="btn1" action="/purchase" method="POST" class="mb-4">
                 <script
                         src="https://checkout.stripe.com/checkout.js"
                         class="stripe-button btn-green-gradient"
                         data-key="<%= key %>"
                         data-name="Armat Concept pay"
-                        data-description="<%=names%>"
+                        data-description="<%= names %>"
                         data-amount="<%= sum * 100 %>"
-                        data-currency="usd"
+                        data-currency="eur"
                 >
 
                 </script>
             </form>
-            <form action="/pay" method="post">
-                <button class="btn-green-gradient" type="submit" >Pay with Paypal</button>
+            <form id="btn2" action="/pay" method="post">
+                <button id="paypalButton"   class="btn-green-gradient" type="submit" >Pay with Paypal</button>
             </form>
         </div>
-
     </div>
+
     <script src="js/bootstrap/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+        $(document).on("DOMNodeRemoved",".stripe_checkout_app", close);
+
+        function close(){
+            document.getElementById("paypalButton").disabled = false;
+        }
+        var btn1 = document.querySelector('#btn1 button');
+        var btn2 = document.querySelector('#btn2 button');
+        btn1.addEventListener('click', function(){
+            // do stuff for btn1 click
+            document.getElementById("paypalButton").disabled = true;
+        });
+        btn2.addEventListener('click', function(){
+            // do stuff for btn1 click
+            document.getElementsByClassName("stripe-button-el")[0].disabled=true;
+
+        });
+    </script>
+
 </main>
 
 <%- include ('footer') -%>
+

@@ -17,11 +17,15 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
+    infoArm: {
+        type: String,
+        required: true,
+    },
     type: {
         type: String,
         required: true,
     },
-    hTag: {
+    typeArm: {
         type: String,
         required: true,
     },
@@ -33,12 +37,21 @@ const brandSchema = new Schema({
         type: String,
         required: true,
     },
-    language: {
-        type: String,
-        enum: ['eng', 'ru', 'spain'],
+      date: {
+        type: Date,
+        default: Date.now
     }
 });
 
 brandSchema.plugin(mongoosePaginate);
+
+brandSchema.virtual('products', {
+    ref: 'Product',
+    localField: '_id',
+    foreignField: 'brandId',
+});
+
+brandSchema.set('toObject', {virtuals: true});
+brandSchema.set('toJSON', {virtuals: true});
 
 module.exports = mongoose.model('Brand', brandSchema);

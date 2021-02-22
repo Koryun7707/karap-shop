@@ -1,11 +1,12 @@
 const rimraf = require('rimraf');
 const fs = require('fs');
-const path = require('path');
 const {logger} = require('../utils/logger');
 const {validateBrand} = require('../validations/brand');
 const Brand = require('../models/brands');
+const Product = require('../models/product');
 const {success, err} = require('../utils/responseApi');
 const {moveFile} = require('../utils/helper');
+
 
 const createBrand = async (req, res) => {
     logger.info('Start createBrand - - -');
@@ -23,13 +24,17 @@ const createBrand = async (req, res) => {
             req.flash("error_msg", error.message);
             return res.redirect("/admin-create-brand");
         }
-        if (files.length !== 4 && value.language === 'eng') {
+        if (files.length !== 3 && value.language === 'eng') {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err)
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            if (req.session.language === 'eng') {
+                req.flash("error_msg", "Files is required!");
+            } else {
+                req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+            }
             return res.redirect("/admin-create-brand");
         }
         let dir = `./public/uploads/brands`;
@@ -41,10 +46,10 @@ const createBrand = async (req, res) => {
         const brand = new Brand({
             name: value.brandName,
             info: value.brandInfo,
+            infoArm: value.brandInfoArm,
             type: value.brandType,
-            hTag: value.brandHashTag,
+            typeArm: value.brandTypeArm,
             registrationAddress: value.registrationAddress,
-            language: value.language,
         });
         brand.images = moveFile(files, dir);
         brand.save((err, result) => {
@@ -71,12 +76,29 @@ const deleteBrand = async (req, res) => {
     const {id} = req.params;
     try {
         //code must be changed, and optimized
-        const brand = await Brand.findById(id).lean();
+        const brand = await Brand.findById(id).populate('products').lean();
+
+        if (brand.products.length > 0) {
+            brand.products.forEach((item) => {
+                if (item.images.length) {
+                    item.images.map((item) => {
+                        rimraf(`./public/${item}`, (err) => {
+                            if (err) logger.error(err);
+                        })
+                    })
+                }
+            });
+            brand.products.map(async (item) => {
+                await Product.findByIdAndRemove({_id: item._id}).lean();
+            })
+        }
+
         brand.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
                 if (err) logger.error(err)
             })
         });
+
         await Brand.findByIdAndRemove({_id: id}).lean();
         return res.status(200).json({success: true, message: 'Delete Brand Completed'});
     } catch (e) {
@@ -105,13 +127,17 @@ const updateBrand = async (req, res) => {
             req.flash("error_msg", error.message);
             return res.redirect(`/admin-editBrand?_id=${_id}`);
         }
-        if (files.length !== 4) {
+        if (files.length !== 3) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err)
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            if (req.session.language === 'eng') {
+                req.flash("error_msg", "Files is required!");
+            } else {
+                req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+            }
             return res.redirect(`/admin-editBrand?_id=${_id}`);
         }
         let dir = `./public/uploads/brands`;
@@ -122,10 +148,10 @@ const updateBrand = async (req, res) => {
         }
         brand.name = value.brandName;
         brand.info = value.brandInfo;
+        brand.infoArm = value.brandInfoArm;
         brand.type = value.brandType;
-        brand.hTag = value.brandHashTag;
+        brand.typeArm = value.brandTypeArm;
         brand.registrationAddress = value.registrationAddress;
-        brand.language = value.language;
         brand.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
                 if (err) logger.error(err)
@@ -156,16 +182,13 @@ const updateBrand = async (req, res) => {
 
 const getBrands = async (req, res, next) => {
     try {
-        if (req.session.language === undefined) {
-            req.session.language = 'eng';
-        }
         const page = Number(req.query.page) || 1;
-        const limit = 4;
+        const limit = 8;
         const options = {
             page: page,
             limit: limit,
         }
-        const results = await Brand.paginate({language: req.session.language}, options);
+        const results = await Brand.paginate({}, options);
         return res.status(200).json(success('success', {
             brands: results.docs,
             pageCount: results.pages,

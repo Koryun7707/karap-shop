@@ -3,13 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
 const {err} = require('../utils/responseApi');
+const ejs = require('ejs');
 const {
     validateHomeData,
     validateShopData,
     validateBrandData,
     validateAboutData,
     validateContactData,
-    validateJoinOurTeamData
+    validateJoinOurTeamData,
+    validateBlogData
 } = require('../validations/pagesData');
 const {moveFile, getStaticData} = require('../utils/helper');
 const PageData = require('../models/pagesData');
@@ -20,12 +22,14 @@ const {logger} = require('../utils/logger')
 const jwt = require('jsonwebtoken');
 const {sendMessageToMail} = require('../services/mailService');
 const bcrypt = require('bcrypt');
+const Blog = require('../models/blog');
+const ShippingAddress = require('../models/shipingAddress');
 const LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./userStorage');
 
 module.exports = {
     changeLanguage: async (req, res) => {
-        console.log('Start changeLanguage');
+        logger.info('Start changeLanguage');
         req.session.language = req.body.language;
         res.end();
     },
@@ -35,24 +39,43 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            req.session.user = req.user;
+            if (req.user) {
+                const userObjWithoutPassword = {
+                    _id: req.user._id,
+                    status: req.user.status,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    roleType: req.user.roleType,
+                    avatar: req.user.avatar,
+                    id: req.user._id,
+                }
+                req.session.user = userObjWithoutPassword;
+            }
             let pageData = await PageData.find({language: req.session.language}).select('homeSliderImages homeSliderText homeProductTypeTitle').exec();
             if (req.session.language !== 'eng' && pageData.length) {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
-            let products = await Product.find({language: req.session.language}).select('images name type').exec();
-
-            products = [...new Map(products.map(item =>
-                [item['type'], item])).values()];
-            const countOfBrands = await Brand.find({language: req.session.language}).exec();
+            let products
+            if (req.session.language === 'eng') {
+                products = await Product.find({}).select('images name type').exec();
+                products = [...new Map(products.map(item =>
+                    [item['type'], item])).values()];
+            } else {
+                products = await Product.find({}).select('images nameArm typeArm').exec();
+                products = [...new Map(products.map(item =>
+                    [item['typeArm'], item])).values()];
+            }
+            const countOfBrands = await Brand.find({}).exec();
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
                 products: products,
-                pages: countOfBrands.length
+                pages: countOfBrands.length,
+                language:req.session.language
             });
         } catch (e) {
             logger.error(`Start Home Page Data Error:${e}`)
@@ -90,12 +113,12 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            const brands = await Brand.find({language: req.session.language}).exec();
+            const blog = await Blog.find({language: req.session.language}).exec();
             res.render('blog', {
                 URL: '/blog',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
-                brands: brands,
+                blog: blog
             });
         } catch (e) {
             logger.error(`Get Blog Page Data Error:${e}`);
@@ -115,14 +138,29 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesShopSlider').exec();
                 pageData[0].imagesShopSlider = arrayImages.imagesShopSlider;
             }
-            const productsType = await Product.find({language: req.session.language}).distinct('type').exec();
-            const brands = await Brand.find({language: req.session.language}).select('name').exec();
-            let maxPrice = await Product.find({language: req.session.language}).select('-_id price');
+            let productsType;
+            if (req.session.language === 'eng') {
+                productsType = await Product.find({}).distinct('type').exec();
+            } else {
+                productsType = await Product.find({}).distinct('typeArm').exec();
+            }
+            const brands = await Brand.find({}).select('name').exec();
+            let maxPrice = await Product.find({}).select('-_id price');
             maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
                 return o.price;
             }))
-            const type = req.query.type || null;
-            const brandName = req.query.brandName || null;
+            const countSale = await Product.count({sale: {$exists: true}}).exec();
+           // const type = req.query.type || null;
+            let type = ''
+            for (const key in req.query) {
+                type+= req.query[key];
+                if(key!='type'){
+                    type+=key;
+                }
+                type+='&'
+            }
+            type= type.substring(0,type.length-1)
+            const brandId = req.query.brandId || null;
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -131,11 +169,12 @@ module.exports = {
                 productsType: productsType,
                 brands: brands,
                 type: type,
-                brandName: brandName,
+                brandId: brandId,
                 maxPrice: maxPrice,
+                countSale: countSale,
             });
         } catch (e) {
-            console.log(`Get Brands Error: ${e}`)
+            logger.info(`Get Brands Error: ${e}`)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -161,6 +200,9 @@ module.exports = {
     getProduct: async (req, res) => {
         logger.info('Start get Product - - -');
         try {
+            if (req.session.language === undefined) {
+                req.session.language = 'eng';
+            }
             const {_id} = req.query;
             const product = await Product.find({_id}).lean().exec();
             res.render('product', {
@@ -168,6 +210,7 @@ module.exports = {
                 user: req.session.user,
                 product: product,
                 staticData: await getStaticData(req.session.language),
+                language: req.session.language
             });
         } catch (e) {
             req.flash("error_msg", e.message);
@@ -180,13 +223,25 @@ module.exports = {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
             }
-            req.session.user = req.user;
+            if (req.user) {
+                const userObjWithoutPassword = {
+                    _id: req.user._id,
+                    status: req.user.status,
+                    firstName: req.user.firstName,
+                    lastName: req.user.lastName,
+                    email: req.user.email,
+                    roleType: req.user.roleType,
+                    avatar: req.user.avatar,
+                    id: req.user._id,
+                }
+                req.session.user = userObjWithoutPassword;
+            }
             let pageData = await PageData.find({language: req.session.language}).select('imagesBrandSlider textBrandSlider').exec();
             if (req.session.language !== 'eng' && pageData.length) {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('imagesBrandSlider').exec();
                 pageData[0].imagesBrandSlider = arrayImages.imagesBrandSlider;
             }
-            const brands = await Brand.find({language: req.session.language}).select('info name images');
+            const brands = await Brand.find({}).select('info name images');
             res.render('brand', {
                 URL: '/brand',
                 user: req.session.user,
@@ -250,6 +305,9 @@ module.exports = {
     },
     //start admin pages ->
     getAdminHomePage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         res.render('admin/home', {
             URL: '/admin-home',
             user: req.session.user,
@@ -272,14 +330,18 @@ module.exports = {
                 return res.redirect('/admin-home');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language = 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', 'Ֆայլերը պարտադիր են:');
+                }
                 return res.redirect('/admin-home');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
             let dir = `./public/uploads/home`;
             if (!fs.existsSync(dir)) {
                 fs.mkdir(dir, (err) => {
-                    if (err) console.log(888888, err);
+                    if (err) console.log(err);
                 });
             }
             if (!myPageData) {
@@ -310,10 +372,13 @@ module.exports = {
                                 }
                             });
                         }
-                        req.flash('success_msg', "Home Page Data Add Completed!");
+                        if (req.session.language === 'eng') {
+                            req.flash('success_msg', "Home page data add completed!");
+                        } else {
+                            req.flash('success_msg', "Հիմնական էջի տվյալներն ավելացված են:!");
+                        }
                         return res.redirect('/admin-home');
                     }
-                    req.flash('success_msg', "Home Page Data Add Completed!");
                     return res.redirect('/admin-home');
                 });
             } else {
@@ -356,7 +421,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-home');
                     }
-                    req.flash('success_msg', "Home Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Home page data add completed!");
+                    } else {
+                        req.flash('success_msg', "Հիմնական էջի տվյալներն ավելացված են:!");
+                    }
                     return res.redirect('/admin-home');
                 });
             }
@@ -367,13 +436,20 @@ module.exports = {
         }
     },//done
     getSignUpPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         const staticData = await getStaticData(req.session.language);
         res.render('signup', {
+            URL: '/signup',
             user: req.session.user,
             staticData: staticData
         });
     },
     getLogInPage: async (req, res) => {
+        if (req.session.language === undefined) {
+            req.session.language = 'eng';
+        }
         const staticData = await getStaticData(req.session.language);
         return res.render('login', {
             URL: '/login',
@@ -422,7 +498,11 @@ module.exports = {
                 return res.redirect('/admin-shop');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են!:");
+                }
                 return res.redirect('/admin-shop');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -462,7 +542,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-shop');
                     }
-                    req.flash('success_msg', "Shop Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Shop Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Խանութի էջի տվյալների ավելացումն ավարտված է:\n!");
+                    }
                     return res.redirect('/admin-shop');
                 });
             } else {
@@ -504,7 +588,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-shop');
                     }
-                    req.flash('success_msg', "Shop Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Shop Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Խանութի էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-shop');
                 });
             }
@@ -537,7 +625,11 @@ module.exports = {
                 return res.redirect('/admin-brand');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-brand');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -577,7 +669,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-brand');
                     }
-                    req.flash('success_msg', "Brand Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Brand Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Ապրանքանիշի էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-brand');
                 });
             } else {
@@ -619,13 +715,17 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-brand');
                     }
-                    req.flash('success_msg', "Brand Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Brand Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Ապրանքանիշի էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-brand');
                 });
             }
         } catch (e) {
             logger.error(`Brand Page Data Add Error: ${e}`)
-            req.flash('error_msg', "Brand Page Data Add Completed!");
+            req.flash('error_msg', e.message);
             return res.redirect('/admin-brand');
         }
     },//+
@@ -659,7 +759,11 @@ module.exports = {
                 return res.redirect('/admin-about');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-about');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -671,7 +775,7 @@ module.exports = {
             }
             if (!myPageData) {
                 const newData = new PageData({
-                    textAboutGeneralImage: value.textAboutSlider,
+                    textAboutSlider: value.textAboutSlider,
                     titleOurPhilosophy: value.titleOurPhilosophy,
                     ourPhilosophy: value.ourPhilosophy,
                     titleAboutSlider: value.titleOfSlider,
@@ -702,7 +806,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-about');
                     }
-                    req.flash('success_msg', "Data About Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "About Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Մեր մասին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-about');
                 });
             } else {
@@ -723,8 +831,9 @@ module.exports = {
                     })
                 }
                 myPageData.textAboutSlider = value.textAboutSlider;
+                myPageData.titleOurPhilosophy = value.titleOurPhilosophy;
                 myPageData.ourPhilosophy = value.ourPhilosophy;
-                myPageData.textOnAboutSlider = value.titleOfSlider;
+                myPageData.titleAboutSlider = value.titleAboutSlider;
                 myPageData.language = value.language;
 
                 if (value.language === 'eng') {
@@ -747,7 +856,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-about');
                     }
-                    req.flash('success_msg', "Data About Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "About Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Մեր մասին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-about');
                 });
             }
@@ -780,7 +893,11 @@ module.exports = {
                 return res.redirect('/admin-contact');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', "Files is required.!");
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-contact');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -821,7 +938,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-contact');
                     }
-                    req.flash('success_msg', 'Contact Page Data Add Completed!');
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Contact Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Կապվեք մեզ հետ էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-contact');
                 });
             } else {
@@ -864,7 +985,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-contact');
                     }
-                    req.flash('success_msg', 'Contact Page Data Add Completed!');
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "Contact Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Կապվեք մեզ հետ էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-contact');
                 });
             }
@@ -897,7 +1022,11 @@ module.exports = {
                 return res.redirect('/admin-join-our-team');
             }
             if (!files.length && value.language === 'eng') {
-                req.flash('error_msg', 'Files is required.!');
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', "Files is required.!");
+                } else {
+                    req.flash('error_msg', "Ֆայլեր պահանջվում են:");
+                }
                 return res.redirect('/admin-join-our-team');
             }
             const myPageData = await PageData.findOne({language: value.language}).exec();
@@ -947,7 +1076,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
-                    req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Միացեք մեր թիմին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-join-our-team');
                 });
             } else {
@@ -997,7 +1130,11 @@ module.exports = {
                         req.flash('error_msg', err.message);
                         return res.redirect('/admin-join-our-team');
                     }
-                    req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    if (req.session.language === 'eng') {
+                        req.flash('success_msg', "JoinOurTeam Page Data Add Completed!");
+                    } else {
+                        req.flash('success_msg', "Միացեք մեր թիմին էջի տվյալների ավելացումն ավարտված է:");
+                    }
                     return res.redirect('/admin-join-our-team');
                 });
             }
@@ -1016,7 +1153,8 @@ module.exports = {
     },
     getAdminAddProductPage: async (req, res) => {
         try {
-            const brands = await Brand.find({language: req.session.language}).select('name _id');
+            const brands = await Brand.find({}).select('name _id');
+
             res.render('admin/addProduct', {
                 URL: 'admin-create-product',
                 user: req.session.user,
@@ -1046,14 +1184,16 @@ module.exports = {
         try {
             const {_id} = req.query;
             const product = await Product.find({_id: _id}).lean().exec();
+            const brands = await Brand.find({}).select('name _id')
             res.render('admin/editProduct', {
                 URL: '/admin-editProduct',
                 user: req.session.user,
                 product: product[0],
+                brands:brands,
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
-            console.log(e)
+            logger.info(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -1074,6 +1214,22 @@ module.exports = {
             return res.redirect("/");
         }
     },
+    editBlog: async (req, res) => {
+        logger.info('Start edit blog - - -');
+        try {
+            const {_id} = req.query;
+            const blog = await Blog.find({_id: _id}).lean().exec();
+            res.render('admin/editBlog', {
+                URL: '/admin-editBlog',
+                user: req.session.user,
+                blog: blog[0],
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
     getShipping: async (req, res) => {
         logger.info('Start Shipping address get - - -');
         try {
@@ -1086,7 +1242,7 @@ module.exports = {
                 staticData: await getStaticData(req.session.language),
             })
         } catch (e) {
-            console.log(e)
+            logger.info(e)
             req.flash("error_msg", e.message);
             return res.redirect("/");
         }
@@ -1114,26 +1270,40 @@ module.exports = {
         try {
             const {email} = req.body;
             const user = await User.findOne({email: email});
-            console.log(user)
             if (!user) {
-                req.flash('error_msg', 'User with this email already exists');
+                if (req.session.language === 'eng') {
+                    req.flash('error_msg', 'User with this email not exist.');
+                } else {
+                    req.flash('error_msg', "Այս էլ.փոստով օգտվողը գոյություն չունի:");
+                }
                 return res.redirect('/forgotPassword');
             }
             const {_id} = user
-            const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '1m'});
-            const data = {
-                from: process.env.MAIL_AUTH_EMAIL,
-                to: email,
-                subject: `Forgot Password link`,
-                html: `
-                     <h2>Please click on given link to reset your password</h2>
-                     <button>
-                            <a href="${process.env.CLIENT_URL}/resetPassword/${token}"> Reset Password</a>
-                     </button>
-`
+            const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '5m'});
+            ejs.renderFile("./resetPasswordTemplate.ejs", {
+                name: user.firstName,
+                token:token
+            }, function (err, data) {
+                if (err) {
+                    req.flash("error_msg", err.message);
+                    return res.redirect("/forgotPassword");
+
+                } else {
+                    const messageUser = {
+                        from: process.env.MAIL_AUTH_EMAIL,
+                        to: email,
+                        subject: 'Reset password Armat Concept account',
+                        html: data,
+                    }
+                    sendMessageToMail(messageUser)
+                }
+            });
+            if (req.session.language === 'eng') {
+                req.flash('success_msg', 'Link send to email post.');
+            } else {
+                req.flash('success_msg', 'Հղումը ուղարկել էլ. Փոստին:');
+
             }
-            sendMessageToMail(data);
-            req.flash('success_msg', 'Link send to mail');
             return res.redirect('/forgotPassword');
         } catch (e) {
             logger.error(`Send Forgot Password Error:${e}`);
@@ -1157,14 +1327,15 @@ module.exports = {
         try {
             logger.info('Start Reset Password api - - -');
             const {token} = req.params;
-            const staticData = await getStaticData(req.session.language);
-            console.log(token);
             jwt.verify(token, process.env.SECRET_KEY, function (err, decodedData) {
                 if (err) {
-                    req.flash('error_msg', 'Incorrect token or it is expired');
+                    if (req.session.language === 'eng') {
+                        req.flash('error_msg', 'Link time is expired!');
+                    } else {
+                        req.flash('error_msg', 'Հղման ժամանակը սպառվել է:');
+                    }
                     return res.redirect('/forgotPassword');
                 }
-                console.log(decodedData);
                 localStorage.setItem('userId', JSON.stringify(decodedData._id));
                 return res.redirect('/reset-password');
             })
@@ -1179,12 +1350,20 @@ module.exports = {
             logger.info('Start userResetPAssword - - -');
             const {password, confirmPassword, userId} = req.body;
             if (password != confirmPassword) {
-                req.flash("error_msg", 'Password Does Not Match!');
+                if (req.session.language === 'eng') {
+                    req.flash("error_msg", 'Password does not match!');
+                } else {
+                    req.flash('error_msg', 'Գաղտնաբառը չի համապատասխանում!');
+                }
                 return res.redirect('/reset-password');
             }
             let hash = bcrypt.hashSync(password, 10);
             const result = await User.updateOne({_id: userId}, {password: hash});
-            req.flash('success_msg', 'Password is updated you can login');
+            if (req.session.language === 'eng') {
+                req.flash('success_msg', 'Password is changed you can login.');
+            } else {
+                req.flash('success_msg', 'Գաղտնաբառը փոխվել է, դուք կարող եք մուտք գործել:');
+            }
             return res.redirect('/login');
         } catch (e) {
             logger.error(`Updated Password Error:${e}`);
@@ -1197,7 +1376,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'delevry'
-            if (req.session.language === 'ru') {
+            if (req.session.language === 'arm') {
                 langPage = 'delevryARM'
             }
             return res.render(langPage, {
@@ -1217,7 +1396,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'privacyPolicy';
-            if (req.session.language === 'ru') {
+            if (req.session.language === 'arm') {
                 langPage = 'privacyPolicyARM';
             }
             return res.render(langPage, {
@@ -1236,7 +1415,7 @@ module.exports = {
         try {
             const staticData = await getStaticData(req.session.language);
             let langPage = 'termAndConditions';
-            if (req.session.language === 'ru') {
+            if (req.session.language === 'arm') {
                 langPage = 'termAndConditionsARM';
             }
             return res.render(langPage, {
@@ -1254,7 +1433,6 @@ module.exports = {
     getCheckouts: async (req, res) => {
         try {
             logger.info('Start get checkout page.');
-
             localStorage.setItem(`order${req.session.user._id}`, req.body.order);
             localStorage.setItem(`shippingAddress${req.session.user._id}`, req.body.shippingAddress);
             const staticData = await getStaticData(req.session.language);
@@ -1265,9 +1443,8 @@ module.exports = {
             sum += Number(JSON.parse(req.body.shippingAddress).deliveryPrice);
             let names = '';
             const order = JSON.parse(req.body.order)
-            order.forEach((item)=>{
-                console.log(item)
-                names+=item.name+' ';
+            order.forEach((item) => {
+                names += item.name + ' ';
             })
 
 
@@ -1276,11 +1453,294 @@ module.exports = {
                 user: req.session.user,
                 key: process.env.STRIPE_PUBLIC_KEY,
                 sum: sum,
-                names:names,
+                names: names,
                 staticData: staticData,
             });
         } catch (e) {
             console.log(e);
         }
-    }
+    },
+    getAdminBlog: async (req, res) => {
+        try {
+            res.render('admin/adminBlog', {
+                URL: '/admin-blog',
+                user: req.session.user,
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            console.log(e)
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    createAdminBlog: async (req, res) => {
+        logger.info('Start Create Blog - - -');
+        try {
+            const files = req.files;
+            const {error, value} = validateBlogData(req.body);
+            if (error) {
+                if (files.length > 0) {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) logger.error(err)
+                        })
+                    });
+                }
+                req.flash("error_msg", error.message);
+                return res.redirect("/admin-blog");
+            }
+            if (files.length !== 2 && value.language === 'eng') {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) logger.error(err)
+                    })
+                });
+                if (req.session.language === 'eng') {
+                    req.flash("error_msg", "Files is required!");
+                } else {
+                    req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+                }
+                return res.redirect("/admin-blog");
+            }
+            let dir = `./public/uploads/blog`;
+            if (!fs.existsSync(dir)) {
+                fs.mkdir(dir, (err) => {
+                    if (err) logger.error(err);
+                });
+            }
+            const blog = new Blog({
+                infoBlog: value.infoBlog,
+                textBlogTitle: value.textBlogTitle,
+                title1: value.title1,
+                title2: value.title2,
+                language: value.language,
+            });
+            blog.blogImages = moveFile(files, dir);
+            blog.save((err, result) => {
+                if (err) {
+                    files.map((file) => {
+                        rimraf(`${dir}/${file.filename}`, (err) => {
+                            if (err) logger.error(err);
+                        })
+                    });
+                    req.flash("error_msg", err.message);
+                    return res.redirect("/admin-blog");
+                }
+                if (req.session.language === 'eng') {
+                    req.flash("success_msg", "Blog Data added complete!");
+                } else {
+                    req.flash('success_msg', 'Բլոգի տվյալներն ավելացված են:');
+                }
+                return res.redirect("/admin-blog");
+            });
+        } catch (e) {
+            req.flash("error", e.message);
+            return res.redirect("/admin-blog");
+        }
+    },
+    deleteBlog: async (req, res) => {
+        logger.info('Start Delete Blog - - -');
+        const {id} = req.params;
+        try {
+            //code must be changed, and optimized
+            const blog = await Blog.findById({_id: id}).lean();
+
+            blog.blogImages.map((item) => {
+                rimraf(`./public/${item}`, (err) => {
+                    if (err) logger.error(err)
+                })
+            });
+
+            await Blog.findByIdAndRemove({_id: id}).lean();
+            return res.status(200).json({success: true, message: 'Delete Blog Completed'});
+        } catch (e) {
+            logger.error(`Blog Delete Error: ${e}`);
+            req.flash("error", e.message);
+            return res.redirect("/admin-blog");
+        }
+    },
+    getAllBlogsData: async (req, res) => {
+        logger.info('Start Get All Blog Data - - -');
+        try {
+            const blogs = await Blog.find({}).lean().exec();
+            res.render('admin/ourBlogs', {
+                URL: '/admin-all-blogs',
+                user: req.session.user,
+                blogs: blogs,
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            logger.error(`Blog Get All Error: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    updateBlog: async (req, res) => {
+        logger.info('Start Blog update - - -');
+        try {
+            const _id = req.params._id;
+            const files = req.files;
+            const blog = await Blog.findById(_id).exec();
+            const {error, value} = validateBlogData(req.body);
+            if (error && error.details) {
+                logger.error(`Validate Error: ${error}`);
+                if (files.length > 0) {
+                    files.map((file) => {
+                        rimraf(`./public/uploads/${file.filename}`, (err) => {
+                            if (err) logger.error(err)
+                        })
+                    });
+                }
+                req.flash("error_msg", error.message);
+                return res.redirect(`/admin-editBlog?_id=${_id}`);
+            }
+            if (files.length !== 2) {
+                files.map((file) => {
+                    rimraf(`./public/uploads/${file.filename}`, (err) => {
+                        if (err) logger.error(err)
+                    })
+                });
+                if (req.session.language === 'eng') {
+                    req.flash("error_msg", "Files is required!");
+                } else {
+                    req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+                }
+                return res.redirect(`/admin-editBlog?_id=${_id}`);
+            }
+            let dir = `./public/uploads/blog`;
+            if (!fs.existsSync(dir)) {
+                fs.mkdir(dir, (err) => {
+                    if (err) logger.error(err)
+                });
+            }
+            blog.infoBlog = value.infoBlog
+            blog.textBlogTitle = value.textBlogTitle
+            blog.title1 = value.title1
+            blog.title2 = value.title2
+            blog.language = value.language
+            blog.blogImages.map((item) => {
+                rimraf(`./public/${item}`, (err) => {
+                    if (err) logger.error(err)
+                })
+            });
+            blog.blogImages = moveFile(files, dir);
+            blog.save((err, result) => {
+                if (err) {
+                    files.map((file) => {
+                        rimraf(`${dir}/${file.filename}`, (err) => {
+                            if (err) logger.error(err);
+                        })
+                    });
+                    req.flash("error_msg", err.message);
+                    return res.redirect(`/admin-editBlog?_id=${_id}`);
+                }
+                if (req.session.language === 'eng') {
+                    req.flash("success_msg", 'Blog update completed!');
+                } else {
+                    req.flash("success_msg", 'Բլոգի թարմացումն ավարտված է!');
+                }
+                return res.redirect(`/admin-editBlog?_id=${_id}`);
+            });
+
+        } catch (e) {
+            const _id = req.params._id;
+            logger.error(`Blog Update Error: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect(`/admin-editBlog?_id=${_id}`);
+        }
+    },
+    getSendMailShipping:async (req, res) => {
+        logger.info('Start sendMailShipping - - -');
+        try {
+            const {email,name,_id} = req.query;
+            res.render('admin/sendShippingAddress', {
+                URL: '/admin-sendMailShipping',
+                user: req.session.user,
+                email:email,
+                firstName:name,
+                shippingId:_id,
+                staticData: await getStaticData(req.session.language),
+            })
+        } catch (e) {
+            logger.error(`sendMailShipping: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/");
+        }
+    },
+    postSendMailShipping:async (req, res) => {
+        logger.info('Start sendMailShipping - - -');
+        try {
+            const {email,orderId,firstName,shippingId,date,shippingMethod} = req.body;
+            const shipping = await ShippingAddress.findById({_id:shippingId}).populate('userId');
+            await ShippingAddress.updateOne({_id:shippingId},{status:true},{upsert: true})
+            let subTotal = 0;
+            shipping.productIds.forEach((item) => {
+                subTotal += Number(item.priceSale.substring(0, item.priceSale.length - 1));
+            });
+            let amount = (Number(subTotal) + Number(shipping.deliveryPrice));
+            ejs.renderFile("./orderEmailTemplateUser.ejs", {
+                name: firstName,
+                lastName:shipping.userId.lastName,
+                email: shipping.userId.email,
+                shippingDate:shipping.date,
+                phone: shipping.phone,
+                city: shipping.city,
+                country: shipping.country,
+                apartment: shipping.apartment,
+                address: shipping.address,
+                date: date,
+                orderId: orderId,
+                order: shipping.productIds,
+                subTotal: subTotal.toFixed(2),
+                shipping: shipping.deliveryPrice,
+                total: amount.toFixed(2),
+                shippingMethod:shippingMethod,
+                shippingId:shipping._id
+            }, function (err, data) {
+                if (err) {
+                    logger.error(`sendMailShipping: ${err}`);
+                    req.flash("error_msg", err.message);
+                    return res.redirect("/admin-sendMailShipping");
+
+                } else {
+                    const attachments = [];
+                    shipping.productIds.forEach((item) => {
+                        attachments.push({
+                            filename: item.images.split('/')[2],
+                            path: `./public/${item.images}`,
+                            cid: item.productId
+                        })
+                    })
+                    attachments.push({
+                        filename: '2Armatconcept.png',
+                        path: `./public/images/2Armatconcept.png`,
+                        cid: '2Armatconcept'
+                    })
+                    const messageUser = {
+                        from: process.env.MAIL_AUTH_EMAIL,
+                        to: email,
+                        subject: 'Thank you for your order',
+                        html: data,
+                        attachments: attachments
+                    }
+                    sendMessageToMail(messageUser)
+                }
+            });
+            req.flash('success_msg',`Order Id Send To Mail:${email}`)
+            return res.redirect(`/admin-sendMailShipping?email=${email}`);
+        } catch (e) {
+            logger.error(`sendMailShipping: ${e}`);
+            req.flash("error_msg", e.message);
+            return res.redirect("/admin-sendMailShipping");
+        }
+    },
 };
+
+
+
+
+
+
+
+
+

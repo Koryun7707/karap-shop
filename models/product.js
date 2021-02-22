@@ -13,14 +13,22 @@ const productSchema = new Schema({
         ref: 'Brand',
         // type: mongoose.Schema.Types.ObjectId,
     },
-    brandName:{
-        type:String,
+    brandName: {
+        type: String,
     },
     type: {
         type: String,
         required: true,
     },
+    typeArm: {
+        type: String,
+        required: true,
+    },
     name: {
+        type: String,
+        required: true,
+    },
+    nameArm: {
         type: String,
         required: true,
     },
@@ -37,7 +45,13 @@ const productSchema = new Schema({
     sale: {
         type: String,
     },
-    productWeight:{
+    description: {
+        type: String,
+    },
+    descriptionArm: {
+        type: String,
+    },
+    productWeight: {
         type: String,
         required: true,
     },
@@ -49,12 +63,20 @@ const productSchema = new Schema({
         type: Array,
         required: true,
     },
-    language: {
+    productPak3: {
         type: String,
-        enum: ['eng', 'ru', 'spain'],
     },
+    productPak6: {
+        type: String,
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
+
 });
 
 productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);
+

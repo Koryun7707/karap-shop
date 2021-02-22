@@ -10,13 +10,17 @@ const pageDataSchema = new Schema({
     },
     language: {//home page data in model
         type: String,
-        enum: ['eng', 'ru', 'spain'],
+        enum: ['eng', 'arm'],
         required: true,
     },
     homeSliderText: {
         type: String,
     },
     homeSliderImages: {
+        type: Array,
+        required: true,
+    },
+    blogImages: {
         type: Array,
         required: true,
     },
@@ -37,7 +41,7 @@ const pageDataSchema = new Schema({
         type: Array,
         required: true,
     },
-    textAboutGeneralImage: {//About page
+    textAboutSlider: {//About page
         type: String,
     },//about
     imagesAboutSlider: {
@@ -50,13 +54,13 @@ const pageDataSchema = new Schema({
     ourPhilosophy: {
         type: String,
     },
-    titleAboutSlider:{
+    titleAboutSlider: {
         type: String,
     },
     textContactSlider: {//Contact us page
         type: String,
     },
-    titleOfSliderContactUs:{
+    titleOfSliderContactUs: {
         type: String,
     },
     imagesContactSlider: {
@@ -97,7 +101,20 @@ const pageDataSchema = new Schema({
     },
     joinOurTeamPartnersTitle: {
         type: String,
+    },
+    infoBlog:{
+        type:String,
+    },
+    textBlogTitle:{
+        type:String,
+    },
+    title1:{
+        type:String,
+    },
+    title2:{
+        type:String,
     }
+
 });
 
 

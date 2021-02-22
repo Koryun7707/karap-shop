@@ -12,7 +12,6 @@ const createProduct = async (req, res) => {
     try {
         const files = req.files;
         const {error, value} = validateProduct(req.body);
-        console.log(req.body);
         if (error) {
             if (files.length > 0) {
                 files.map((file) => {
@@ -26,14 +25,17 @@ const createProduct = async (req, res) => {
             return res.redirect("/admin-create-product");
         }
         const brandName = await Brand.findById(value.brandId).select('name').lean().exec()
-        console.log(brandName);
         if (files.length < 2) {
             files.map((file) => {
                 rimraf(`./public/uploads/${file.filename}`, (err) => {
                     if (err) logger.error(err);
                 })
             });
-            req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
+            if (req.session.language === 'eng') {
+                req.flash("error_msg", "*choose images count must be >= 2 or <=5.");
+            } else {
+                req.flash("error_msg", "* ընտրել պատկերների քանակը պետք է լինի>= 2 կամ <= 5!");
+            }
             return res.redirect("/admin-create-product");
         }
         let dir = `./public/uploads/product`;
@@ -43,32 +45,45 @@ const createProduct = async (req, res) => {
             });
         }
         let newProduct;
+        const clearProbelsProductType = value.productType.replace(/\s/g, '-');
+        const clearProbelsProductTypeArm = value.productTypeArm.replace(/\s/g, '-');
+
         if (value.productSale != '' || Number(value.productSale) >= 1) {
             newProduct = new Product({
                 brandId: value.brandId,
                 brandName: brandName.name,
                 name: value.productName,
-                type: value.productType,
+                nameArm: value.productNameArm,
+                type: clearProbelsProductType,
+                typeArm: clearProbelsProductTypeArm,
                 price: value.productPrice,
                 sizes: value.productSize.split('/'),
                 sale: value.productSale,
+                description: value.productDescription,
+                descriptionArm: value.productDescriptionArm,
                 colors: value.productColor.split('/'),
+                productPak3: value.productPak3,
+                productPak6: value.productPak6,
                 count: value.productCount,
                 productWeight: value.productWeight,
-                language: value.language,
             });
         } else {
             newProduct = new Product({
                 brandId: value.brandId,
                 brandName: brandName.name,
                 name: value.productName,
-                type: value.productType,
+                nameArm: value.productNameArm,
+                type: clearProbelsProductType,
+                typeArm: clearProbelsProductTypeArm,
                 price: value.productPrice,
+                description: value.productDescription,
+                descriptionArm: value.productDescriptionArm,
                 sizes: value.productSize.split('/'),
                 colors: value.productColor.split('/'),
+                productPak3: value.productPak3,
+                productPak6: value.productPak6,
                 count: value.productCount,
                 productWeight: value.productWeight,
-                language: value.language,
             });
         }
         newProduct.images = moveFile(files, dir);
@@ -117,8 +132,6 @@ const updateProduct = async (req, res) => {
         const files = req.files;
         const _id = req.params._id;
         const product = await Product.findById(_id).exec();
-        req.body.brandId = product.brandId.toString();
-
         const {error, value} = validateProduct(req.body);
         if (error && error.details) {
             if (files.length > 0) {
@@ -138,7 +151,11 @@ const updateProduct = async (req, res) => {
                     if (err) logger.error(err);
                 })
             });
-            req.flash("error_msg", "Files is required.!");
+            if (req.session.language === 'eng') {
+                req.flash("error_msg", "Files is required!");
+            } else {
+                req.flash("error_msg", "Ֆայլերը պարտադիր են!");
+            }
             return res.redirect(`/admin-editProduct?_id=${_id}`);
         }
         let dir = `./public/uploads/product`;
@@ -147,9 +164,13 @@ const updateProduct = async (req, res) => {
                 if (err) logger.error(err);
             });
         }
+        const clearProbelsProductType = value.productType.replace(/\s/g, '-');
+        const clearProbelsProductTypeArm = value.productTypeArm.replace(/\s/g, '-');
         product.brandId = value.brandId;
         product.name = value.productName;
-        product.type = value.productType;
+        product.nameArm = value.productNameArm;
+        product.type = clearProbelsProductType;
+        product.typeArm = clearProbelsProductTypeArm;
         product.price = value.productPrice;
         product.sizes = value.productSize.split('/');
         if (value.productSale != '' || Number(value.productSale) >= 1) {
@@ -157,8 +178,11 @@ const updateProduct = async (req, res) => {
         }
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
+        productPak3 = value.productPak3;
+        productPak6 = value.productPak6;
+        product.description = value.productDescription;
+        product.descriptionArm = value.productDescriptionArm;
         product.count = value.productCount;
-        product.language = value.language;
 
         product.images.map((item) => {
             rimraf(`./public/${item}`, (err) => {
@@ -195,9 +219,8 @@ const getProducts = async (req, res) => {
         if (filterByType) {
             data = await Product.find({type: filterByType});
         } else {
-            data = await Product.find({}).sort({brandName: 1});
+            data = await Product.find({}).sort({name:1});
         }
-        console.log(data);
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
@@ -219,58 +242,90 @@ const getProductsShopFilter = async (req, res) => {
         const options = {
             page: page,
             limit: limit,
+            sort:{date:-1}
+
         }
         const types = req.body['types[]'] || req.body.type || [];
-        const brandNames = req.body['brandNames[]'] || req.body.brandNames || [];
+        const brandId = req.body['brandId[]'] || req.body.brandId || [];
         const searchValue = req.body.searchValue || '';
         const onSale = req.body.onSale ? true : false;
         const {priceFrom, priceTo} = req.body
-        const search = {
-            $and: [
-                {
-                    '$or': [
-                        {'name': {'$regex': `^${searchValue}`, "$options": "i"}},
-                    ]
-                }
-                , {language: req.session.language}
-            ]
-        };
+        let search;
+        if (req.session.language === 'eng') {
+            search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'name': {'$regex': searchValue, "$options": "i"}},
+                        ]
+                    }
+
+                ]
+            };
+        } else {
+            search = {
+                $and: [
+                    {
+                        '$or': [
+                            {'nameArm': {'$regex': searchValue, "$options": "i"}},
+                        ]
+                    }
+
+                ]
+            };
+        }
+
         if (onSale) {
             search['$and'].push({sale: {$exists: true}});
         }
         let data;
-        if (!brandNames.length && !types.length && searchValue === undefined) {
-            data = await Product.paginate({language: req.session.language}, options);
-        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0 && types.length > 0) {
+        if (!brandId.length && !types.length && searchValue === undefined) {
+            data = await Product.paginate({}, options);
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandId.length > 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            search['$and'].push({type: {"$in": types}});
-            search['$and'].push({brandName: {"$in": brandNames}});
+            if (req.session.language === 'eng') {
+                search['$and'].push({type: {"$in": types}});
+            } else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
+            search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
-        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandNames.length > 0) {
+        } else if (Number(priceTo) && Number(priceFrom) >= 0 && brandId.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            search['$and'].push({brandName: {"$in": brandNames}});
+            search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0 && types.length > 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
-            search['$and'].push({type: {"$in": types}});
+            if (req.session.language === 'eng') {
+                search['$and'].push({type: {"$in": types}});
+            } else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             data = await Product.paginate(search, options);
         } else if (Number(priceTo) && Number(priceFrom) >= 0) {
             search['$and'].push({price: {$gt: Number(priceFrom), $lte: Number(priceTo)}});
             data = await Product.paginate(search, options);
-        } else if (brandNames.length > 0 && types.length > 0) {
-            search['$and'].push({brandName: {"$in": brandNames}});
-            search['$and'].push({type: {"$in": types}});
+        } else if (brandId.length > 0 && types.length > 0) {
+            search['$and'].push({brandId: {"$in": brandId}});
+            if (req.session.language === 'eng') {
+                search['$and'].push({type: {"$in": types}});
+            } else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             data = await Product.paginate(search, options);
-        } else if (brandNames.length > 0) {
-            search['$and'].push({brandName: {"$in": brandNames}});
+        } else if (brandId.length > 0) {
+            search['$and'].push({brandId: {"$in": brandId}});
             data = await Product.paginate(search, options);
         } else if (types.length > 0) {
-            search['$and'].push({type: {"$in": types}});
+            if (req.session.language === 'eng') {
+                search['$and'].push({type: {"$in": types}});
+            } else {
+                search['$and'].push({typeArm: {"$in": types}});
+            }
             data = await Product.paginate(search, options);
         } else {
             data = await Product.paginate(search, options);
         }
-        console.log(data);
         return res.status(200).json(success('Products Data Shop!', {
             data: data.docs,
             pageCount: data.pages,
@@ -287,19 +342,24 @@ const getProductById = async (req, res) => {
     logger.info('Get Product By Id - - -');
     try {
         if (req.body.productCount && req.body.productId) {
-            console.log(544)
             const product = await Product.findById(req.body.productId).populate('brandId').exec();
             if (Number(product.count) >= Number(req.body.productCount)) {
-                console.log(88888888888)
-                console.log(product)
                 return res.status(200).json(success('Product exists',
                     product, res.statusCode));
             } else {
                 let mes;
                 if (Number(product.count) === 0) {
-                    mes = 'Product not exists';
+                    if (req.session.language === 'eng') {
+                        mes = 'Out of stock.';
+                    } else {
+                        mes = 'Առկա չէ պահեստում:';
+                    }
                 } else {
-                    mes = `Sorry now we have only ${product.count} product.`;
+                    if (req.session.language === 'eng') {
+                        mes = `You cannot add that amount to the cart — we have ${product.count}  in stock and you already have ${product.count}  in your cart.`;
+                    } else {
+                        mes = `Դուք չեք կարող ավելացնել այս ապրանքատեսակից ձեր զամբյուղում․ Մեր պահեստում մնացել է ${product.count} հատ:`;
+                    }
                 }
                 return res.send({message: mes, error: true});
                 // return res.status(500).json(err(mes, res.statusCode));
@@ -319,19 +379,50 @@ const getProductById = async (req, res) => {
 const getDataSearch = async (req, res) => {
     logger.info(`Get Data Search  - - - `);
     const {search} = req.body;
-    const searchFilter = {
+    const searchFilterBrand = {
         $and: [
             {
                 '$or': [
-                    {'name': {'$regex': `^${search}`, "$options": "i"}},
+                    {'name': {'$regex': search, "$options": "i"}},
                 ]
             }
-            , {language: req.session.language}
+
         ]
     };
+    let searchFilterProduct
+    if (req.session.language === 'eng') {
+        searchFilterProduct = {
+            $and: [
+                {
+                    '$or': [
+                        {'name': {'$regex': search, "$options": "i"}},
+                    ]
+                }
+
+            ]
+        };
+    } else {
+        searchFilterProduct = {
+            $and: [
+                {
+                    '$or': [
+                        {'nameArm': {'$regex': search, "$options": "i"}},
+                    ]
+                }
+
+            ]
+        };
+    }
+    let arrayProduct;
+    if (req.session.language === 'eng') {
+        arrayProduct = await Product.find(searchFilterProduct).select('name type').lean();
+
+    } else {
+        arrayProduct = await Product.find(searchFilterProduct).select('nameArm typeArm').lean();
+    }
     Promise.all([
-        Product.find(searchFilter).select('name type').lean(),
-        Brand.find(searchFilter).select('name')
+        arrayProduct,
+        Brand.find(searchFilterBrand).select('name')
     ]).then(([products, brands]) => {
         return res.status(200).json(success('Get Data Search!',
             {products: products, brands: brands}, res.statusCode));
@@ -351,3 +442,7 @@ module.exports = {
     getProductById: getProductById,
     getDataSearch: getDataSearch
 };
+
+
+
+

@@ -8,13 +8,18 @@
                 <label for="exampleInputEmail1">Name</label>
                 <input value="<%= brand.name %>" type="text" name="brandName" class="form-control"
                        id="exampleInputEmail1"
-                       placeholder="Product name.">
+                       placeholder="Brand name.">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
                 <input value="<%= brand.type %>" type="text" name="brandType" class="form-control"
                        id="exampleInputEmail1"
-                       placeholder="Product type.">
+                       placeholder="Brand type.">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Type in Armenian</label>
+                <input value="<%= brand.typeArm %>" type="text" name="brandTypeArm" class="form-control"
+                       placeholder="Brand type in Armenian.">
             </div>
             <div class="form-group important">
                 <label for="exampleInputEmail11">Brand registration address(*this case for count delevery, from where
@@ -25,31 +30,25 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">hTag</label>
-                <input value="<%= brand.hTag %>" type="text" name="brandHashTag" class="form-control"
-                       id="exampleInputEmail1"
-                       placeholder="Product color.">
-            </div>
-            <div class="form-group">
                 <label for="exampleInputEmail1">Info</label>
                 <input value="<%= brand.info %>" type="text" name="brandInfo" class="form-control"
                        id="exampleInputEmail1"
-                       placeholder="Product info."/>
+                       placeholder="Brand info."/>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Info in Armenian</label>
+                <input value="<%= brand.infoArm %>" type="text" name="brandInfoArm" class="form-control"
+                       placeholder="Brand info in Armnian."/>
             </div>
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Upload product images(*First must be choosen product type image, choosen
-                    images count must be 4).</label>
+                    images count must be 3).</label>
                 <input type="file" name="brandImagesUpdate" multiple="multiple" class="form-control"
                        id="uploadImagesBySize">
             </div>
 
-            <div class="form-group important">
-                <label for="exampleInputEmail1">Language</label>
-                <select name="language">
-                    <option name="eng" value=<%= brand.language %> selected><%= brand.language %></option>
-                </select>
-            </div>
+
             <button type="submit" class="btn btn-rose px-4 px-3 d-flex ml-auto">Save</button>
         </form>
     </div>

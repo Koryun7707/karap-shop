@@ -2,12 +2,12 @@
 
 <main style="padding-top: 100px" class="selected-product-section">
     <div class="container container-1730 my-5">
-        <h2 class="my-4"><b>Selected Products</b></h2>
-        <%- include ('partials/messages')%>
+        <h2 class="my-4 fs-35"><b><%= staticData.selected_products %></b></h2>
+        <div id="message_div"><%- include ('partials/messages') %></div>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
                 <input onclick="selectAll(this)" type="checkbox" id="select-all">
-                <label for="select-all" class="">Select All</label>
+                <label for="select-all" class=""><%= staticData.select_all %></label>
             </div>
         </div>
         <div class="row">
@@ -16,29 +16,34 @@
 
             </div>
             <div class="col-12 col-md-5 col-lg-4">
-                <div class="total-section pt-5">
+                <div class="total-section pt-3">
                     <div class="mb-3 d-flex justify-content-between">
-                        <h2 class="title"><b>TOTAL</b></h2>
+                        <h2 class="title fs-35"><b><%= staticData.subtotal %></b></h2>
                         <div class="product-price">
-                            <h2 id="total" style="color: #065a1f"><b>0 </b></h2>
+                            <h2 id="total" ><b>0 </b></h2>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>Products <span id="countProduct">0</span> Count</div>
-                        <div id="productStartPrice">0</div>
+                        <div><%= staticData.quantity %> <span id="countProduct">0</span></div>
+                        <div id="productStartPrice" >0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>Sale</div>
+                        <div><%= staticData.you_save %></div>
                         <div id="afterSale">0</div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div><%= staticData.order_shipping %></div>
+                        <div><%= staticData.order_shipping_text %></div>
                     </div>
                     <div class="my-4">
                         <a onclick="sendData()" id="shippingPage" class="btn btn-green-gradient mb-3"
-                           style="font-size: 18px; color: #fff; text-transform: capitalize">Continue shipping</a>
+                           style="font-size: 18px; color: #fff; text-transform: capitalize"><%= staticData.checkout_button %></a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
                                 <input type="checkbox" id="agreeTerms">
-                                <label for="agreeTerms" class="">I agree with <a href="#">Terms &
-                                        conditions </a></label>
+                                <label for="agreeTerms" class=""><%= staticData.i_agree_to_the_website %> <a
+                                            href="/termAndConditions"><%= staticData.terms_conditions %> </a> & <a
+                                            href="/privacyPolicy"><%= staticData.delevery_returns_product_page %></a></label>
                             </div>
                         </div>
                     </div>
@@ -74,6 +79,11 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
 <script>
+    if (document.getElementById('message_div').innerHTML.length > 4) {
+        localStorage.removeItem('shoppingCard');
+        localStorage.removeItem('shippingAddress');
+    }
+
     const shoppingCard = JSON.parse(localStorage.getItem('shoppingCard'));
     if (shoppingCard) {
         let currentDiv = document.getElementById('shoppingCardDiv');
@@ -86,28 +96,47 @@
             url: '/product-by-id',
             data: {shoppingCard: array},
             success: (response) => {
+                const language = document.getElementById('example').value === 'eng' ? true : false;
                 if (response.results.length) {
                     response.results.forEach(function (item) {
-                        if(!item.sale){
+                        const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size?true:false;
+                        const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color?true:false;
+                        if (!item.sale) {
                             item.sale = 0;
                         }
                         let newDiv = document.createElement('div');
                         currentDiv.append(newDiv);
                         newDiv.setAttribute('class', 'selected-product-cart');
                         newDiv.id = item._id;
+                        const PRICE =Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price);
+                        const SALE = ((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count));
+                        const COLOR = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color
+                        let colorPak3
+                        let colorPak6
+                        if(Array.isArray(COLOR)){
+                            if(COLOR.length === 3){
+                                colorPak3 = COLOR
+                            }else{
+                                colorPak6 = COLOR
+                            }
+                        }
                         newDiv.innerHTML = `
                     <div  class="shop-check d-flex flex-1 mb-2 mb-md-0">
                         <div class="form-group mr-2">
-                            <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${item.name}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
-                            <label for="${item.name}" class=""></label>
+                            <input onclick="checkFluency(this)" _id='${item._id}' type="checkbox" id="${language ? item.name : item.nameArm}" value="${(Number(item.price) - (Number(item.price) * Number(item.sale)) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)}">
+                            <label for="${language ? item.name : item.nameArm}" class=""></label>
                         </div>
                         <div class="img-area mx-2 mx-md-5">
-                            <img id='productImage${item._id}' src="${item.images[0]}" alt="" class="w-100">
+                            <img id='productImage${item._id}' src="${item.images[1]}" alt="" class="w-100">
                         </div>
                         <div>
-                            <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${item.name}</div>
-                            <div class="product-color my-2 py-3" style="background-color: ${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color || ''}"></div>
-                            <div id='div1' class="product-size">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size || ''}</div>
+                            <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language ? item.name : item.nameArm}</div>
+                           <div class="d-flex mt-3" id='colorDiv${item._id}'>
+                                   <div id='div1${item._id}' class="product-size mr-3">${shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size}</div>
+
+
+</div>
+
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-1 justify-content-around">
@@ -119,15 +148,54 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price)}€</div>
-                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count)).toFixed(1)}€</div>
+                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${PRICE%1==0?PRICE:PRICE.toFixed(2)}€</div>
+                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${SALE%1==0?SALE:SALE.toFixed(2)}€</div>
 
                         </div>
                     </div>
+                        <div style="display:none;"    id='name${item._id}' >${item.name}</div>
+                        <div style="display:none;"    id='nameArm${item._id}' >${item.nameArm}</div>
                      <div class="d-flex justify-content-end abs">
                         <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
                `
+                        if(colorPak3){
+                            for(let i=0;i<3;i++){
+                                let div = document.createElement('div');
+                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.style.backgroundColor = `${colorPak3[i]}`
+                                document.getElementById(`colorDiv${item._id}`).append(div);
+                            }
+
+                        }else
+                        if(colorPak6){
+                            for(let i=0;i<6;i++){
+                                let div = document.createElement('div');
+                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.style.backgroundColor = `${colorPak6[i]}`
+                                document.getElementById(`colorDiv${item._id}`).append(div);
+                            }
+
+                        }else
+                        {
+
+                                let div = document.createElement('div');
+                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.style.backgroundColor = COLOR;
+                                document.getElementById(`colorDiv${item._id}`).append(div);
+
+
+                        }
+                        if(!size){
+                            document.getElementById(`div1${item._id}`).style.display = 'none';
+                        }
+                        // console.log('dssfd',)
+                        if(!color||!COLOR.length){
+                            let str = `div2${item._id}`
+                           document.querySelectorAll(`.div2${item._id}`).forEach(item=>{
+                               item.style.display = 'none'
+                           })
+                        }
                         if (item.sale) {
                             document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
                         }
@@ -138,7 +206,7 @@
                 }
             },
             error: (e) => {
-                console.log(e)
+                 console.log(e)
             }
         })
     }
@@ -178,13 +246,16 @@
                 document.getElementById('select-all').checked = true;
             }
             if (sum) {
-                console.log(productCount,'Count')
-                console.log(productPrice,'price')
-                console.log(productSalePrice,'sale')
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${productPrice}€`
+                productStartPrice.innerHTML = `${Number(productPrice)%1===0?productPrice:productPrice.toFixed(2)}€`
+                if(Number(productPrice) === Number(sum)){
+                    document.getElementById('productStartPrice').removeAttribute('style')
+                }else{
+                    // style="text-decoration: line-through;"
+                    document.getElementById('productStartPrice').style.textDecoration = 'line-through'
+                }
                 afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
-                document.getElementById('total').innerHTML = sum + '€';
+                document.getElementById('total').innerHTML = sum.toFixed(2) + '€';
             } else {
                 countProduct.innerHTML = '0';
                 productStartPrice.innerHTML = '0';
@@ -213,15 +284,29 @@
     function sendData() {
         const agreeTerms = document.getElementById('agreeTerms').checked;
         const count = Number(document.getElementById('countProduct').innerHTML);
+        let lang = document.getElementById('example').value;
+
         if (!agreeTerms || !count) {
             document.getElementById('shippingPage').removeAttribute('href');
             if (!count) {
-                alert('Please Select Product!');
+                if (lang === 'eng') {
+                    alert('Please select product!.');
+                } else {
+                    alert('Խնդրում ենք ընտրել ապրանքը:');
+                }
             } else if (!agreeTerms) {
-                alert('Please read Term and Conditions');
+                if (lang === 'eng') {
+                    alert('Are you agree to the website Terms & Conditions & Privacy Policy?');
+                } else {
+                    alert('Համաձայն եմ Կայքի Ընդհանուր Պայմանների և դրույթների ու Գաղտնիության  Քաղաքականության հետ:');
+                }
             }
         } else if (!localStorage.getItem('user')) {
-            alert('Please login for continue to shipping.');
+            if (lang === 'eng') {
+                alert('Please login for continue to shipping.');
+            } else {
+                alert('Խնդրում ենք մուտք գործել ՝ առաքումը շարունակելու համար:');
+            }
         } else {
 
             var values = [];
@@ -232,6 +317,8 @@
                         let price = document.getElementById(`saleProductPrice${id}`).innerHTML;
                         let count = document.getElementById(`qtyInput${id}`).getAttribute('value');
                         price = (Number(price.substring(0, price.length - 1)) / Number(count)).toString();
+                        const COLOR = shoppingCard[shoppingCard.findIndex(x => x.productId == id)].color
+                        const SIZE = shoppingCard[shoppingCard.findIndex(x => x.productId == id)].size
                         let obj = {
                             productId: id,
                             onePrice: price,
@@ -239,13 +326,17 @@
                             price: document.getElementById(`productPriceBasket${id}`).innerHTML,
                             priceSale: document.getElementById(`saleProductPrice${id}`).innerHTML,
                             images: document.getElementById(`productImage${id}`).getAttribute('src'),
-                            name: document.getElementById(`productName${id}`).innerHTML,
+                            name: document.getElementById(`name${id}`).innerHTML,
+                            nameArm: document.getElementById(`nameArm${id}`).innerHTML,
                             registrationAddress: document.getElementById(`productName${id}`).getAttribute('registrationAddress'),
                             productWeight: document.getElementById(`productName${id}`).getAttribute('productWeight'),
+                            size:SIZE,
+                            color:COLOR
                         }
                         values.push(obj);
                     }
                 });
+
                 localStorage.setItem('order', JSON.stringify(values));
                 document.getElementById('shippingPage').setAttribute('href', '/shipping');
             }
@@ -280,7 +371,11 @@
             if (id === item.productId) {
                 if (basketProductCount > item.existProductCount) {
                     item.count = item.existProductCount;
-                    alert(`Sorry we have only ${item.existProductCount}`);
+                    if (document.getElementById('example').value === 'eng') {
+                        alert(`Out of Stock.`);
+                    } else {
+                        alert(`Առկա չէ պահեստում:`);
+                    }
                     notExist = false;
                 } else {
                     item.count = basketProductCount;
@@ -292,8 +387,8 @@
             document.getElementById(`qtyInput${id}`).setAttribute('value', `${basketProductCount}`);
             const price = Number(basketProductCount) * Number(document.getElementById(`productPriceBasket${id}`).getAttribute('value'));
             const saleCount = price - (price * Number(document.getElementById(`saleProductPrice${id}`).getAttribute('value')) / 100);
-            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount}€`;
-            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price}€`;
+            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount%1==0?saleCount:saleCount.toFixed(2)}€`;
+            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price%1==0?price:price.toFixed(2)}€`;
             let sum = 0;
             $.each($('input:checked'), function (index, input) {
                 if (input.id != 'select-all' && input.id != "agreeTerms") {
@@ -310,9 +405,9 @@
             });
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${productPrice}€`
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice)}€`;
-                document.getElementById('total').innerHTML = `${sum}€`;
+                productStartPrice.innerHTML = `${Number(productPrice)%1==0?productPrice:productPrice.toFixed(2)}€`
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice)%1==0?(productPrice - productSalePrice):(productPrice - productSalePrice).toFixed(2)}€`;
+                document.getElementById('total').innerHTML = `${sum%1==0?sum:sum.toFixed(2)}€`;
             } else {
                 countProduct.innerHTML = `0`;
                 productStartPrice.innerHTML = `0`
@@ -348,3 +443,8 @@
 
 </body>
 </html>
+
+
+
+
+

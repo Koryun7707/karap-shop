@@ -7,9 +7,9 @@ const validateBrand = (data) => {
         brandName: Joi.string().required(),
         registrationAddress: Joi.string().required(),
         brandInfo: Joi.string().required(),
+        brandInfoArm: Joi.string().required(),
         brandType: Joi.string().allow('', null),
-        brandHashTag: Joi.string().allow('', null),
-        language: Joi.string().required(),
+        brandTypeArm: Joi.string().allow('', null),
     });
     return schema.validate(data);
 };

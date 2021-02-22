@@ -12,34 +12,34 @@ function searchByPrice() {
         }, 1000);
 
     } else {
-        console.log(priceFrom, priceTo);
         //write our code here
         let searchValue = document.querySelector('input[type=search]').value || '';
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandId = [];
+            var onSale
             $.each($('input:checked'), function (index, input) {
-                console.log(input.value);
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
-                } else {
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
+                }else if (input.value === 'on') {
+                        onSale = input.value;
+                }
+                else {
                     values.push(input.value);
                 }
             });
         }
-
-
         $.ajax({
             type: 'post',
             url: '/shop-filter',
             data: {
                 types: values,
-                brandNames: brandNames,
+                brandIds: brandId,
                 searchValue: searchValue,
                 page: 1,
                 priceFrom: priceFrom,
-                priceTo: priceTo
+                priceTo: priceTo,
+                onSale:onSale
             },
             success: (response) => {
                 if (response.results.pageCount > 0) {
@@ -79,39 +79,44 @@ function searchByPrice() {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
                                         <div class="img-area">
-                                            <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
+                                            <img class="card-img-top" src="${item.images[1]}" alt="Card image cap">
                                         </div>
-                                        <div class="d-flex ">
+                                        <div class="d-flex">
                                           <div class="mr-3"> 
-                                            <h2 id='styleDiv' style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id='styleDiv${item._id}' style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                       
                                         <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>                                     
                                         
                                         </div>
                                        
-                                        <div class="title">${item.name}</div>
+                                        <div class="title" id="title${item._id}"></div>
                                     </a>
                                 </div>
                             `;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
-                        }else{
-                            document.getElementById('styleDiv').removeAttribute('style');
-
+                        } else {
+                            document.getElementById(`styleDiv${item._id}`).style.textDecoration = 'none';
                         }
                     })
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             },
@@ -143,6 +148,9 @@ $(document).ready(function () {
 
     //location href
     function gup(name, url) {
+        if(name === 'type'&&url.includes('&')){
+            return url.split('=')[1]
+        }
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
         var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -156,18 +164,72 @@ $(document).ready(function () {
 
 
         let type = gup('type', location.href);
-        const brandNames = gup('brandName', location.href);
+        const brandId = gup('brandId', location.href);
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
         if (type) {
             type = decodeURI(type);
         }
-
-        console.log(brandNames)
+        let bringData
+        let pageNumber = localStorage.getItem('pageNumber')
+        if(pageNumber!='undefined'){
+            pageNumber = JSON.parse(pageNumber)
+        }
+        if(performance.navigation.type == 2){
+            bringData = {page: pageNumber,  priceFrom: priceFrom, priceTo: priceTo}
+            let localType = localStorage.getItem('types')
+            if(localType!='undefined'){
+                localType = JSON.parse(localType)
+                bringData.types = localType
+                let typesDiv = document.getElementById('typesDiv');
+                typesDiv.innerHTML = ''
+                if(localType?.length){
+                    localType.forEach((item)=>{
+                        let div = document.createElement('div');
+                        div.setAttribute('class','shop_small_card');
+                        div.innerHTML = `
+                 <span class="mr-2">${item}</span>
+                 <i value="${item}" onclick="deleteType(this)" class="fa fa-times"></i>
+                `
+                        typesDiv.append(div);
+                    })
+                }
+            }
+            let localBrandId = localStorage.getItem('brandId')
+            if(localBrandId!='undefined'){
+                localBrandId = JSON.parse(localBrandId)
+                bringData.brandId = localBrandId
+            }
+            let localOnSale = localStorage.getItem('onSale')
+            if(localOnSale!='undefined'){
+                localOnSale = JSON.parse(localOnSale)
+                bringData.onSale = localOnSale
+            }
+        }else{
+            if(!type){
+                localStorage.removeItem('types')
+            }else {
+                let typesDiv = document.getElementById('typesDiv');
+                typesDiv.innerHTML = ''
+                let div = document.createElement('div');
+                div.setAttribute('class','shop_small_card');
+                div.innerHTML = `
+                 <span class="mr-2">${type}</span>
+                 <i value="${type}" onclick="deleteType(this)" class="fa fa-times"></i>
+                `
+                typesDiv.append(div);
+                   localStorage.setItem('types',JSON.stringify(new Array(type)))
+            }
+            localStorage.removeItem('brandId')
+            localStorage.removeItem('onSale')
+            localStorage.removeItem('pageNumber')
+            pageNumber = 0 ;
+            bringData = {page: 1, type: type, brandId: brandId, priceFrom: priceFrom, priceTo: priceTo}
+        }
         $.ajax({
             type: 'post',
             url: '/shop-filter',
-            data: {page: 1, type: type, brandNames: brandNames, priceFrom: priceFrom, priceTo: priceTo},
+            data: bringData,
             success: (response) => {
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
@@ -181,9 +243,15 @@ $(document).ready(function () {
                             a.setAttribute('class', `page-item`);
                             a.innerHTML = `&laquo;`
                         } else if (i === 0) {
-                            a.setAttribute('id', '1');
-                            a.setAttribute('value', '1');
-                            a.setAttribute('class', `active`);
+                             if(!pageNumber||pageNumber=='undefined'){
+                                a.setAttribute('id', '1');
+                                a.setAttribute('value', '1');
+                                a.setAttribute('class', `active`);
+                            }else{
+                                a.setAttribute('id', '1');
+                                a.setAttribute('value', '1');
+                            }
+
                             a.innerHTML = '1'
                         } else if (i > 0 && i !== response.results.pageCount) {
                             a.setAttribute('id', `${i + 1}`);
@@ -196,6 +264,9 @@ $(document).ready(function () {
                             a.setAttribute('class', `page-item`);
                             a.innerHTML = `&raquo;`
                         }
+                        if(pageNumber&&pageNumber===i+1){
+                            a.setAttribute('class','active');
+                        }
                         paginatinPlace.append(a);
                     }
                 }
@@ -205,43 +276,45 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                 <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
                                         <div class="img-area">
-                                            <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
+                                            <img class="card-img-top" src="${item.images[1]}" alt="Card image cap">
                                         </div>
                                        
                                         <div class="d-flex">
                                            <div class="mr-3">
-                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
-                         
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                         <div  id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
-                                        
-</div>
-                                      
-                                        <div class="title">${item.name}</div>
+                                           </div>
+                                        <div class="title" id="title${item._id}"></div>
                                     </a>
                                                      
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
-                        }else{
-                            document.getElementById('styleDiv').removeAttribute('style');
-
+                        } else {
+                            document.getElementById(`styleDiv${item._id}`).style.textDecoration = 'none';
                         }
 
                     })
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             },
@@ -261,7 +334,7 @@ $(document).ready(function () {
         let pageNumber;
         if (elementValue === '-1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
-                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
                     if (i === 1) {
                         pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
@@ -277,7 +350,7 @@ $(document).ready(function () {
             }
         } else if (elementValue === '+1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
-                if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
+                if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
                     if (i === Number(pagesCount)) {
                         pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
@@ -292,7 +365,7 @@ $(document).ready(function () {
                 }
             }
         } else {
-            if (elementAttributes.includes('active')) {
+            if (elementAttributes?.includes('active')) {
                 for (let i = 1; i <= Number(pagesCount); i++) {
                     if (i === Number(elementValue)) {
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
@@ -313,22 +386,26 @@ $(document).ready(function () {
         if (pageNumber === undefined) {
             pageNumber = Number(elementValue);
         }
+
         //get price product
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandId = [];
+            var onSale
             $.each($('input:checked'), function (index, input) {
-                console.log(84848484848484848484);
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
-                } else {
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
+                }else if (input.value === 'on') {
+                    onSale = input.value;
+                }
+                else {
                     values.push(input.value);
                 }
             });
         }
+        localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
 
         $.ajax({
             type: 'post',
@@ -338,7 +415,9 @@ $(document).ready(function () {
                 priceFrom: priceFrom,
                 priceTo: priceTo,
                 types: values,
-                brandNames: brandNames,
+                brandId: brandId,
+                onSale:onSale
+
 
             },
             success: function (response) {
@@ -348,43 +427,52 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
                                         <div class="img-area">
-                                            <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
+                                            <img class="card-img-top" src="${item.images[1]}" alt="Card image cap">
                                         </div>
 
                                     <div class="d-flex">
                                        <div class="mr-3">
-                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                          
                                         </div>
                                           <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
 
                                     </div>
                                       
-                                        <div class="title">${item.name}</div>
+                                        <div id="title${item._id}" class="title"></div>
                                     </a> 
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
-                        }else{
-                            document.getElementById('styleDiv').removeAttribute('style');
+                        } else {
+                            document.getElementById(`styleDiv${item._id}`).style.textDecoration = 'none';
                         }
                         filterDiv.append(newDiv);
                     })
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
 
                 }
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 1000);
             },
             error: function (data) {
                 console.log('User creation failed :' + data);
@@ -469,27 +557,31 @@ $(document).ready(function () {
         const priceTo = document.getElementById('priceTo').value;
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
+            var brandId = [];
+            var onSale
             $.each($('input:checked'), function (index, input) {
-                console.log(input.value);
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
-                } else {
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
+                }else if (input.value === 'on') {
+                    onSale = input.value;
+                }
+                else {
                     values.push(input.value);
                 }
             });
         }
+        localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
         $.ajax({
             type: 'post',
             url: '/shop-filter',
             data: {
                 types: values,
-                brandNames: brandNames,
+                brandId: brandId,
                 searchValue: searchValue,
                 page: pageNumber,
                 priceFrom: priceFrom,
-                priceTo: priceTo
+                priceTo: priceTo,
+                onSale:onSale
             },
             success: (response) => {
                 $("#pagination-place").empty();
@@ -529,38 +621,44 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                   <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
                                         <div class="img-area">
-                                            <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
+                                            <img class="card-img-top" src="${item.images[1]}" alt="Card image cap">
                                         </div>
                                         <div class="d-flex">
                                           <div class="mr-3">
-                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
 </div>
                                        
-                                        <div class="title">${item.name}</div>
+                                        <div id="title${item._id}" class="title"></div>
                                     </a>
                                     
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
-                        }else{
-                            document.getElementById('styleDiv').removeAttribute('style');
+                        } else {
+                            document.getElementById(`styleDiv${item._id}`).style.textDecoration = 'none';
                         }
                     })
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             },
@@ -581,13 +679,11 @@ $(document).ready(function () {
         searchValue = ''
         if ($('input[type=checkbox]').is(':checked')) {
             var values = [];
-            var brandNames = [];
-            var onSale;
+            var brandId = [];
+            var onSale = '';
             $.each($('input:checked'), function (index, input) {
-                console.log(input.value);
-                if (input.value.includes('11')) {
-                    let val = input.value.substring(0, input.value.length - 2);
-                    brandNames.push(val);
+                if (input.value.includes('brandID')) {
+                    brandId.push(input.value.substring(0,input.value.length-7));
                 } else if (input.value === 'on') {
                     onSale = input.value;
                 } else {
@@ -595,6 +691,23 @@ $(document).ready(function () {
                 }
             });
         }
+        let typesDiv = document.getElementById('typesDiv');
+        typesDiv.innerHTML = ''
+        if(values?.length){
+            values.forEach((item)=>{
+                let div = document.createElement('div');
+                div.setAttribute('class','shop_small_card');
+                div.innerHTML = `
+                 <span class="mr-2">${item}</span>
+                 <i value="${item}" onclick="deleteType(this)" class="fa fa-times"></i>
+                `
+                typesDiv.append(div);
+            })
+        }
+        localStorage.setItem('pageNumber',JSON.stringify(pageNumber))
+        localStorage.setItem('types',JSON.stringify(values))
+        localStorage.setItem('brandId',JSON.stringify(brandId))
+        localStorage.setItem('onSale',JSON.stringify(onSale))
         searchValue = document.querySelector('input[type=search]').value;
         const priceFrom = document.getElementById('priceFrom').value;
         const priceTo = document.getElementById('priceTo').value;
@@ -605,7 +718,7 @@ $(document).ready(function () {
                 types: values,
                 priceFrom: priceFrom,
                 priceTo: priceTo,
-                brandNames: brandNames,
+                brandId: brandId,
                 searchValue: searchValue,
                 onSale: onSale,
                 page: pageNumber
@@ -679,41 +792,47 @@ $(document).ready(function () {
                     response.results.data.forEach(function (item) {
                         let newDiv = document.createElement('div');
                         filterDiv.append(newDiv);
-                        newDiv.setAttribute('class', 'col-md-6 col-lg-4 d-flex justify-content-center');
+                        newDiv.setAttribute('class', 'col-6 col-lg-4 d-flex justify-content-center');
+                        const sale = Number(item.price) - (Number(item.price) * Number(item.sale) / 100);
                         newDiv.innerHTML = `
                                    <div class="card shop-card">
                                     <a href="/product?_id=${item._id}">
-                                        <div class="img-area">
-                                            <img class="card-img-top" src="${item.images[0]}" alt="Card image cap">
+                                        <div class="img-area" >
+                                            <img class="card-img-top" src="${item.images[1]}" alt="Card image cap">
                                         </div>
+                                      
                                         <div class="d-flex">
                                          <div class="mr-3">
-                                            <h2 id="styleDiv" style="text-decoration: line-through">${item.price}€</h2>
+                                            <h2 id="styleDiv${item._id}" style="text-decoration: line-through">${Number(item.price)%1===0?item.price:item.price.toFixed(2)}€</h2>
                                         </div>
                                          <div id="${item._id}" style="display: none">
-                                            <h2 >${Number(item.price) - Math.round(Number(item.price) * Number(item.sale) / 100)}€</h2>
+                                            <h2 >${sale%1===0?sale:sale.toFixed(2)}€</h2>
                                         </div>
-                                        
-</div>
                                        
-                                        <div class="title">${item.name}</div>
+                                          </div>
+                                       
+                                        <div id="title${item._id}" class="title"></div>
                                     </a>
                                     
                                 </div>
                             `
                         ;
+                        if (document.getElementById('example').value === 'eng') {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.name}`;
+                        } else {
+                            document.getElementById(`title${item._id}`).innerHTML = `${item.nameArm}`;
+                        }
                         if (item.sale) {
                             document.getElementById(`${item._id}`).style.display = 'block';
-                        }else{
-                            document.getElementById('styleDiv').removeAttribute('style');
-
+                        } else {
+                            document.getElementById(`styleDiv${item._id}`).style.textDecoration = 'none';
                         }
 
                     })
                 } else {
                     let newDiv = document.createElement('div');
                     newDiv.innerHTML = `
-                            <h1>No Found Data</h1>`
+                            <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
             }
@@ -725,8 +844,31 @@ $(document).ready(function () {
     };
     $(`input[type=checkbox]`).on('change', handeleOnchangeValue)
     $("amount").on("change", function () {
-        console.log(this.value)
     });
 
 
 })
+function deleteType(element){
+    let value = element.getAttribute('value');
+    $.each($('input:checked'), function (index, input) {
+        if (input.value.includes('brandID')) {
+
+        } else if (input.value === 'on') {
+
+        } else {
+            if(input.value === value){
+                input.checked = false
+                $(`input[type=checkbox]` ).trigger( "change" );
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
+
+

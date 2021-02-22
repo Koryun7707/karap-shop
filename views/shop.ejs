@@ -1,17 +1,25 @@
 <%- include ('header') -%>
-<main style="padding-top: 100px" class="shop-section">
+<main class="shop-section">
     <% if(pageData.length){ %>
         <section class="shop-section-bg" style="background-image: url(<%= pageData[0].imagesShopSlider[0] %>)">
             <div class="container">
-                <h1 class="text-center"><%= pageData[0].textShopSlider %></h1>
+                <h1 class="text-left"><%= pageData[0].textShopSlider %></h1>
             </div>
         </section>
     <% } %>
-    <div class="container-fluid pt-5 mt-5">
-        <div class="row py-5">
-            <div class="col-md-3 col-12">
-                <div class="sidebar px-5">
+    <div class="container-fluid">
+          <div class="w-100 d-flex flex-wrap pl-3" id="typesDiv">
+
+        </div>
+        <div class="row pb-md-5">
+            <div class="col-md-5 col-lg-4 col-xl-3 col-12">
+                <div class="sidebar px-3">
                     <form action="#">
+                        <div class="sidebar-title"><%= staticData.shop_search %></div>
+                        <div class="shop-search mb-5">
+                            <input value="" type="search" class="form-control "
+                                   placeholder="<%= staticData.shop_search %>" autocomplete="off" >
+                        </div>
                         <div class="sidebar-title"><%= staticData.shop_product_page %></div>
                         <div class="scrollbar shop-page-scroll">
                             <div class="force-overflow" id="productType" value=<%= type %>>
@@ -24,14 +32,14 @@
                                                 <li class="form-group">
                                                     <% if(item === type){ %>
                                                         <input checked type="checkbox" id="<%= item %>"
-                                                               value=<%= item %>>
+                                                               value=<%= item %>  >
                                                         <label for="<%= item %>"
-                                                               class="clothing-icon"><%= item %></label>
+                                                               class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% }else{ %>
                                                         <input type="checkbox" id="<%= item %>"
-                                                               value=<%= item %>>
+                                                               value=<%= item %> >
                                                         <label for="<%= item %>"
-                                                               class="clothing-icon"><%= item %></label>
+                                                               class="clothing-icon"><%= item.split('-').join(' ') %></label>
                                                     <% } %>
                                                 </li>
                                             <% }) %>
@@ -40,17 +48,12 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="sidebar-title"><%= staticData.shop_search %></div>
-                        <div class="shop-search mb-5">
-                            <input value="" type="search" class="form-control "
-                                   placeholder="<%= staticData.shop_search %>">
-                        </div>
                         <div class="sidebar-title"><%= staticData.shop_sale %></div>
                         <div class="px-4 mb-5">
                             <div class="form-group">
-                                <input type="checkbox" id="sale">
+                                <input type="checkbox" id="sale" >
                                 <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
-                                    (58)</label>
+                                    (<%= countSale %>)</label>
                             </div>
                         </div>
                         <div class="sidebar-title"><%= staticData.shop_price %></div>
@@ -58,17 +61,18 @@
                             <div class="d-flex align-items-center mb-5">
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
                                        value="0"
-                                       class="form-control range-slide-input"/>
-                                <span class="px-2">TO</span>
+                                       class="form-control range-slide-input" autocomplete="off" />
+                                <span class="px-2 fs-12"><%= staticData.to_text %></span>
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
                                        value="<%= maxPrice %>"
-                                       class="form-control range-slide-input"/>
-                                <button class="btn-rose border-0 px-3 py-1 ml-2" onclick="searchByPrice()">GO</button>
+                                       class="form-control range-slide-input" autocomplete="off" />
+                                <button class="btn-rose border-0 px-3 py-1 ml-2"
+                                        onclick="searchByPrice()"><%= staticData.find %></button>
                             </div>
                             <div style="display: none;" id="price-div-message"></div>
                             <div class="price-range-slider" id="price-range-slider" value="<%= maxPrice %>">
                                 <p class="range-value">
-                                    <input type="text" id="amount"/>
+                                    <input disabled type="text" id="amount" autocomplete="off" />
                                 </p>
                                 <div id="slider-range" class="range-bar"></div>
                             </div>
@@ -79,29 +83,32 @@
                                 <div class="force-overflow">
                                     <% if(brands.length){ %>
                                         <% brands.forEach(function(item){ %>
-                                            <div class="form-group">
-                                                <% if(brandName === item.name.toString()){ %>
-                                                    <input checked type="checkbox"
-                                                           id=<%= item.name %> value="<%= item.name + '11' %>">
-                                                    <label for="<%= item.name %>"><%= item.name %></label>
-                                                <% }else{ %>
-                                                    <input type="checkbox"
-                                                           id=<%= item.name %> value="<%= item.name + '11' %>">
-                                                    <label for="<%= item.name %>"><%= item.name %></label>
-                                                <% } %>
-                                            </div>
+                                            <% if(item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') { %>
+                                                <div class="form-group">
+                                                    <% if(brandId === item._id.toString()){ %>
+                                                        <input checked type="checkbox"
+                                                               id=<%= item._id %> value="<%= item._id %>brandID"  >
+                                                        <label for="<%= item._id %>"><%= item.name %></label>
+                                                    <% }else{ %>
+                                                        <input type="checkbox"
+                                                               id="<%= item._id %>" value="<%= item._id %>brandID"  >
+                                                        <label for="<%= item._id %>"><%= item.name %></label>
+                                                    <% } %>
+                                                </div>
+                                            <% } %>
                                         <% }) %>
                                     <% } %>
+
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col-md-9 col-12">
+            <div class="col-md-7 col-lg-8 col-xl-9 col-12">
                 <div class="row d-flex justify-content-between" id="shopFilter">
                 </div>
-                <div class="mb-5 d-flex justify-content-end px-md-5">
+                <div class="mb-5 d-flex justify-content-end px-md-5 mt-4">
                     <div class="pagination" id="pagination-place">
                     </div>
                 </div>
@@ -131,16 +138,16 @@
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
-    $('#priceFrom').on('input', function() {
-        document.getElementById('priceFrom').setAttribute('max',`${$("#priceTo").val()}`) ;
-            $("#slider-range").slider('values', 0, $(this).val());
+    $('#priceFrom').on('input', function () {
+        document.getElementById('priceFrom').setAttribute('max', `${$("#priceTo").val()}`);
+        $("#slider-range").slider('values', 0, $(this).val());
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
 
-    $('#priceTo').on('input', function() {
-        document.getElementById('priceTo').setAttribute('min',`${$("#priceFrom").val()}`)
-            $("#slider-range").slider('values', 1, $(this).val());
+    $('#priceTo').on('input', function () {
+        document.getElementById('priceTo').setAttribute('min', `${$("#priceFrom").val()}`)
+        $("#slider-range").slider('values', 1, $(this).val());
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
@@ -202,3 +209,10 @@
 
 </body>
 </html>
+
+
+
+
+
+
+

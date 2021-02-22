@@ -53,6 +53,17 @@ const validateContactData = (data) => {
     });
     return schema.validate(data);
 };
+const validateBlogData = (data) => {
+    logger.info('Start Validate Blog page data - - -')
+    const schema = Joi.object().keys({
+        textBlogTitle: Joi.string().allow(''),
+        title1: Joi.string().allow(''),
+        title2: Joi.string().allow(''),
+        infoBlog: Joi.string().allow(''),
+        language: Joi.string().required(),
+    });
+    return schema.validate(data);
+};
 
 const validateJoinOurTeamData = (data) => {
     logger.info('Start Validate join our team page data - - -')
@@ -79,5 +90,6 @@ module.exports = {
     validateBrandData: validateBrandData,
     validateAboutData: validateAboutData,
     validateContactData: validateContactData,
-    validateJoinOurTeamData: validateJoinOurTeamData
+    validateJoinOurTeamData: validateJoinOurTeamData,
+    validateBlogData:validateBlogData
 };

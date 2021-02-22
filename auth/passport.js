@@ -5,6 +5,7 @@ const {generateAvatar} = require('../utils/helper');
 const roleTypes = require('../configs/constants').ROLE_TYPES;
 const {sendMessageToMail} = require('../services/mailService')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 module.exports = function (passport) {
@@ -21,42 +22,31 @@ module.exports = function (passport) {
                 password: password,
                 confirmPassword: req.body.confirmPassword,
             });
-
             if (error) throw error;
             if (value.password !== value.confirmPassword) {
-                return done(null, false, {message: 'Password and confirm password fields doesn\'t match'});
+                if (req.session.language == 'eng') {
+                    return done(null, false, {message: 'Password and confirm password fields doesn\'t match'});
+                } else {
+                    return done(null, false, {message: 'Գաղտնաբառերը չեն համընկնում!'});
+                }
             }
             const findUser = await User.findOne({email: value.email});
             if (findUser) {
-                return done(null, false, {message: 'This email is already in use. Please use another one.'});
+                if (req.session.language == 'eng') {
+                    return done(null, false, {message: 'This email is already in use. Please use another one.'});
+                } else {
+                    return done(null, false, {message: 'Այս էլ-նամակն արդեն օգտագործվում է: Խնդրում եմ օգտագործել մեկ այլ մեկը!'});
+                }
             }
             const userAvatar = generateAvatar(req.body.firstName, req.body.lastName);
-            let hash = bcrypt.hashSync(value.password, 10);
-            const user = new User({
+            const userObj = {
                 firstName: value.firstName,
                 lastName: value.lastName,
                 email: value.email,
-                password: hash,
-                roleType: roleTypes.USER,
-                status: true,
+                password: value.password,
                 avatar: userAvatar
-            });
-
-            await user.save();
-            const message = {
-                from: process.env.MAIL_AUTH_EMAIL,
-                to: value.email,
-                subject: 'Welcome Shop Site',
-                html: `<h4>Hello ${value.email} welcome to Karap shop! 
-                                please follow via "link" link to verify your account.</h4>
-                               <div>
-                               <button >
-                              <a href="${process.env.CLIENT_URL}">visit to eb site</a> 
-                               </button>
-                                </div> `,
-            }
-            sendMessageToMail(message);
-            return done(null, user);
+            };
+            return done(null, userObj);
         } catch (e) {
             console.log(e);
             return done(e);
@@ -72,11 +62,9 @@ module.exports = function (passport) {
             if (!user) {
                 return done(null, false, {message: 'That email is not registered'});
             }
-            let hash = bcrypt.hashSync('12345678', 10);
-            console.log(hash)
-            const isMatch = bcrypt.compareSync(password,user.password);
+            const isMatch = bcrypt.compareSync(password, user.password);
             if (!isMatch) {
-                return done(null, false, {message: 'Password incorrect'});
+                return done(null, false, {message: 'Password incorrect!'});
             }
             return done(null, user);
         } catch (e) {
@@ -94,3 +82,4 @@ module.exports = function (passport) {
         });
     });
 };
+

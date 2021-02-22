@@ -26,3 +26,4 @@ const sendMessageToMail = message => {
 module.exports = {
     sendMessageToMail: sendMessageToMail,
 };
+

@@ -49,22 +49,16 @@ const userSchema = new Schema({
     },
 });
 
-//have a bcrypt error must be resolve
-// userSchema.pre('save', async function (next) {
-//     this.password = await bcrypt.hash(this.password, saltRounds);
-//     next();
-// });
-
 userSchema.methods.comparePassword = function (password) {
     return password === this.password;
-    // return bcrypt.compare(password, this.password);
 };
 
 userSchema.methods.toJSON = function () {
     let obj = this.toObject();
     delete obj.password;
-    return obj;
-};
+    return obj
+}
+
 
 userSchema.set('toObject', {virtuals: true});
 userSchema.set('toJSON', {virtuals: true});
