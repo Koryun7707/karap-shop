@@ -18,7 +18,7 @@ const {
 } = require('./controllers/product');
 const {createShippingAddress, getShippingAddresses, deleteOrder} = require('./controllers/shippingAddress');
 const {createBrand, deleteBrand, updateBrand, getBrands, getAllBrands} = require('./controllers/brand')
-const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
+const {checkIsAuthenticated, forwardAuthenticated,checkUserIsExist} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
 
 //Multer upload image
@@ -80,7 +80,8 @@ router.get('/forgotPassword', pagesController.forgotPassword);
 router.post('/forgotPassword', pagesController.sendEmailForgotPassword);
 router.get('/resetPassword/:token', pagesController.resetPassword);
 router.post('/resetPassword', pagesController.userResetPassword);
-router.get('/reset-password', pagesController.getresetPassword);
+router.get('/reset-password',forwardAuthenticated,checkUserIsExist, pagesController.getresetPassword);
+
 
 //send message contact us
 router.post('/sendMessageContactUs', sendMessageContactUs);

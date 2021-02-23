@@ -6,7 +6,7 @@
         <div id="message_div"><%- include ('partials/messages') %></div>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
-                <input onclick="selectAll(this)" type="checkbox" id="select-all">
+                <input  autocomplete="off" onclick="selectAll(this)" type="checkbox" id="select-all">
                 <label for="select-all" class=""><%= staticData.select_all %></label>
             </div>
         </div>
@@ -40,7 +40,7 @@
                            style="font-size: 18px; color: #fff; text-transform: capitalize"><%= staticData.checkout_button %></a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
-                                <input type="checkbox" id="agreeTerms">
+                                <input autocomplete="off" type="checkbox" id="agreeTerms">
                                 <label for="agreeTerms" class=""><%= staticData.i_agree_to_the_website %> <a
                                             href="/termAndConditions"><%= staticData.terms_conditions %> </a> & <a
                                             href="/privacyPolicy"><%= staticData.delevery_returns_product_page %></a></label>
