@@ -138,9 +138,9 @@
                                 <h5><h5><%= staticData.product_description %></h5></h5>
                             </h5>
                             <% if(language === 'eng'){ %>
-                                <div><%= product[0].description %></div>
+                                <div><%- product[0].description %></div>
                             <% }else{ %>
-                                <div><%= product[0].descriptionArm %></div>
+                                <div><%- product[0].descriptionArm %></div>
                             <% } %>
                         </div>
                     <% } %>

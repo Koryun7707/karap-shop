@@ -235,8 +235,10 @@
                 method: 'post',
                 data: obj,
                 success: function () {
+                      if(window.location.pathname ==='/shop'){
+                         location.replace(`https://armatconcept.com/shop`)
+                    }else
                     window.location.reload(1);
-                    // location.replace(`https://armatconcept.com`)
                 },
                 error: function (data) {
                     console.log('User creation failed :' + data);
