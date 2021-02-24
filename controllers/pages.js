@@ -57,24 +57,11 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
-            let products
-            if (req.session.language === 'eng') {
-                products = await Product.find({}).select('images name type').exec();
-                products = [...new Map(products.map(item =>
-                    [item['type'], item])).values()];
-            } else {
-                products = await Product.find({}).select('images nameArm typeArm').exec();
-                products = [...new Map(products.map(item =>
-                    [item['typeArm'], item])).values()];
-            }
-            const countOfBrands = await Brand.find({}).exec();
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
-                products: products,
-                pages: countOfBrands.length,
                 language:req.session.language
             });
         } catch (e) {
@@ -1787,6 +1774,7 @@ module.exports = {
         }
     },
 };
+
 
 
 

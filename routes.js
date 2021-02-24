@@ -14,7 +14,8 @@ const {
     getProducts,
     getProductsShopFilter,
     getProductById,
-    getDataSearch
+    getDataSearch,
+    getProductsUniqType
 } = require('./controllers/product');
 const {createShippingAddress, getShippingAddresses, deleteOrder} = require('./controllers/shippingAddress');
 const {createBrand, deleteBrand, updateBrand, getBrands, getAllBrands} = require('./controllers/brand')
@@ -67,6 +68,7 @@ router.post('/login',
 //             failureFlash: true
 //         })(req, res, next);
 //     });
+router.get('/products-type',getProductsUniqType)
 
 router.post('/signup', signUp);
 router.get('/activate-account/:token', activateAccount);
@@ -169,4 +171,5 @@ router.get('/cancel', checkIsAuthenticated, paypalCancel);
 router.post('/purchase', checkIsAuthenticated, paymentStripe);
 
 module.exports = router;
+
 

@@ -20,7 +20,7 @@
             </div>
         </div>
     </section>
-    <section id="section2" class="section2 py-5" value=<%= products.length %>>
+    <section id="section2" class="section2 py-5" >
         <div class="container container-1730 pb-5 px-5">
             <h2 class="text-center mb-3 mb-md-5">
                 <% if(pageData.length){ %>
@@ -29,22 +29,6 @@
             </h2>
             <div class="owl-slider">
                 <div id="carousel2" class="owl-carousel owl-carousel2">
-                    <% if(products.length > 0){ %>
-                        <% products.forEach(function(item){ %>
-                            <a class="item" href="/shop?type=<%= language==='eng'?item.type:item.typeArm %>">
-                                <div class="card">
-                                    <div class="img-area">
-                                        <img alt="Card image cap" class="card-img-top" src=<%= item.images[0] %>  >
-                                    </div>
-                                    <% if(item.type){%>
-                                    <div class="btn btn-green-gradient"><%= item.type.split('-').join(' ') %></div>
-                                    <%}else{%>
-                                        <div class="btn btn-green-gradient"><%= item.typeArm.split('-').join(' ') %></div>
-                                    <%}%>
-                                </div>
-                            </a>
-                        <% }) %>
-                    <% } %>
                 </div>
             </div>
         </div>
@@ -67,52 +51,82 @@
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".owl-carousel1").owlCarousel({
-            autoplay: true,
-            lazyLoad: true,
-            loop: true,
-            responsiveClass: true,
-            autoHeight: true,
-            autoplayTimeout: 7000,
-            smartSpeed: 800,
-            dots: true,
-            nav: false,
-            items: 1,
-        });
-        $(".owl-carousel2").owlCarousel({
-            autoplay: true,
-            lazyLoad: true,
-            loop: true,
-            responsiveClass: true,
-            autoHeight: true,
-            autoplayTimeout: 4000,
-            smartSpeed: 800,
-            nav: true,
-            dots: false,
-            items: 7,
-            margin: 40,
-            responsive: {
-                0: {
-                    items: 1
-                },
 
-                600: {
-                    items: 2
-                },
+<script>
+    $.ajax({
+        url: '/products-type',
+        method: 'get',
+        data: {
 
-                1024: {
-                    items: 4
-                },
-                1199: {
-                    items: 5
-                },
+        },
+        success: function (result) {
+            let language = document.getElementById('example').value;
+            let carousel = document.getElementById('carousel2')
+            result.results.forEach((item)=>{
+                let a = document.createElement('a');
+                a.setAttribute('class','item');
+                a.href = language=='eng'?`/shop?type=${item.type}`:`/shop?type=${item.typeArm}`;
+                a.innerHTML = `
+                <div class="card">
+                <div class="img-area">
+                    <img alt="Card image cap" class="card-img-top" src=" ${item.images[0]} "  >
+                </div>
 
-            },
+                <div class="btn btn-green-gradient">${language=='eng'? item.type.split('-').join(' '):item.typeArm.split('-').join(' ') }</div>
+            </div>
+                `
+                carousel.prepend(a);
+            })
+            $(document).ready(function () {
+                $(".owl-carousel1").owlCarousel({
+                    autoplay: true,
+                    lazyLoad: true,
+                    loop: true,
+                    responsiveClass: true,
+                    autoHeight: true,
+                    autoplayTimeout: 7000,
+                    smartSpeed: 800,
+                    dots: true,
+                    nav: false,
+                    items: 1,
+                });
+                $(".owl-carousel2").owlCarousel({
+                    autoplay: true,
+                    lazyLoad: true,
+                    loop: true,
+                    responsiveClass: true,
+                    autoHeight: true,
+                    autoplayTimeout: 4000,
+                    smartSpeed: 800,
+                    nav: true,
+                    dots: false,
+                    items: 7,
+                    margin: 40,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
 
-        });
-    });
+                        600: {
+                            items: 2
+                        },
+
+                        1024: {
+                            items: 4
+                        },
+                        1199: {
+                            items: 5
+                        },
+
+                    },
+
+                });
+            });
+        },
+        error: function (data) {
+            console.log('User creation failed :' + data);
+        }
+    })
 </script>
 <script type="text/javascript">
     window.onload = function () {
@@ -123,36 +137,6 @@
                 page: 1,
             },
             success: function (result) {
-                // if (result.results.pageCount > 0) {
-                //     document.getElementById('section-brand-3').setAttribute('value', result.results.pageCount);
-                //     let paginationPlace = document.getElementById('pagination');
-                //     for (let i = -1; i < result.results.pageCount + 1; i++) {
-                //         let a = document.createElement('a');
-                //         a.setAttribute('onclick', 'handelChosenPage(this);');
-                //         if (i === -1) {
-                //             a.setAttribute('id', `-1`);
-                //             a.setAttribute('value', `-1`);
-                //             a.setAttribute('class', `page-item`);
-                //             a.innerHTML = `&laquo;`
-                //         } else if (i === 0) {
-                //             a.setAttribute('id', '1');
-                //             a.setAttribute('value', '1');
-                //             a.setAttribute('class', `active`);
-                //             a.innerHTML = '1'
-                //         } else if (i > 0 && i !== result.results.pageCount) {
-                //             a.setAttribute('id', `${i + 1}`);
-                //             a.setAttribute('value', `${i + 1}`);
-                //             a.setAttribute('class', `page-item`);
-                //             a.innerHTML = `${i + 1}`
-                //         } else {
-                //             a.setAttribute('id', `+1`);
-                //             a.setAttribute('value', `+1`);
-                //             a.setAttribute('class', `page-item`);
-                //             a.innerHTML = `&raquo;`
-                //         }
-                //         paginationPlace.append(a);
-                //     }
-                // }
                 $("#brands-render-place").empty();
                 result.results.brands.map((item) => {
                     let brandsRenderPlace = document.getElementById('brands-render-place');
@@ -260,5 +244,6 @@
 
 </body>
 </html>
+
 
 

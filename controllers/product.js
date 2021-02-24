@@ -232,6 +232,44 @@ const getProducts = async (req, res) => {
         return res.status(500).json(err(e.message, res.statusCode));
     }
 }
+const getProductsUniqType = async (req, res) => {
+    logger.info('Start getProductsUniqType - - -');
+    try {
+
+       let template;
+        if(req.session.language == 'eng'){
+          template =  Product.aggregate([
+                {
+                    $group:{
+                        _id:'$type',
+                        "name":{ "$first": '$name'},
+                        "type":{ "$first": '$type'},
+                        "images":{ "$first": '$images'},
+                    }
+                }
+            ])
+        }else{
+           template =  Product.aggregate([
+                {
+                    $group:{
+                        _id:'$typeArm',
+                        "nameArm":{ "$first": '$nameArm'},
+                        "typeArm":{ "$first": '$typeArm'},
+                        "images":{ "$first": '$images'},
+                    }
+                }
+            ])
+        }
+        const data = await template
+        return res.status(200).json(success('Products Data!',
+            data
+        , res.statusCode));
+
+    } catch (e) {
+        logger.error(`Get Products Error: ${e}`);
+        return res.status(500).json(err(e.message, res.statusCode));
+    }
+}
 
 const getProductsShopFilter = async (req, res) => {
     logger.info('Start getProductsShopFilter - - -')
@@ -442,8 +480,10 @@ module.exports = {
     getProducts: getProducts,
     getProductsShopFilter: getProductsShopFilter,
     getProductById: getProductById,
-    getDataSearch: getDataSearch
+    getDataSearch: getDataSearch,
+    getProductsUniqType:getProductsUniqType
 };
+
 
 
 
