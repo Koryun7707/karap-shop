@@ -35,11 +35,11 @@ const upload = multer({
     storage: storage,
     fileFilter: function (req, files, callback) {
         const ext = path.extname(files.originalname);
-        const allowed = ['.png', '.jpg', '.jpeg',];
+        const allowed = ['.png', '.jpg', '.jpeg','.webp'];
         if (allowed.includes(ext)) {
             callback(null, true);
         } else {
-            callback(new Error("Only .png, .jpg, .jpeg"), false);
+            callback(new Error("Only .png, .jpg, .jpeg, .webp"), false);
         }
     },
     limits: {

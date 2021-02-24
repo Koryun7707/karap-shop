@@ -175,6 +175,8 @@ const updateProduct = async (req, res) => {
         product.sizes = value.productSize.split('/');
         if (value.productSale != '' || Number(value.productSale) >= 1) {
             product.sale = value.productSale;
+        }else if(value.productSale == ''){
+            product.sale = undefined
         }
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
