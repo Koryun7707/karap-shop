@@ -14,11 +14,19 @@
                                 </div>
                             <% } %>
                         </div>
+
                         <div class="col-8 col-md-9 col-lg-10">
                             <a id="myImageIdHref" href="<%= product[0].images[1] %>" data-fancybox="images">
                                 <img id="myimage"  width="500" height="500" src="<%= product[0].images[1] %>" />
                             </a>
                         </div>
+                        <% for(let i = 2;i < product[0].images.length;i++){ %>
+                                <a style="display:none;" href="<%= product[0].images[i] %>" data-fancybox="images">
+                                    <img width="500" height="500" src="<%= product[0].images[i] %>" />
+                                </a>
+                        <% } %>
+
+
                     </div>
                 </div>
                 <% } %>
@@ -643,6 +651,7 @@
 </script>
 </body>
 </html>
+
 
 
 
