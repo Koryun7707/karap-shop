@@ -190,6 +190,13 @@
                 page: pageNumber,
             },
             success: function (response) {
+                const language = document.getElementById('example').value === 'eng'?true:false
+                let text
+                if (language ) {
+                    text = 'Shop now'
+                } else {
+                    text = 'Գնել'
+                }
                 $("#brands-section-place").empty();
                 response.results.brands.map((item) => {
                     if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {
@@ -200,9 +207,9 @@
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
-                            ${item.info}
+                            ${language?item.info:item.infoArm}
                         </div>
-                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5">Shop Now</a>
+                        <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5">${text}</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-xl-4">
@@ -257,4 +264,5 @@
 
 </body>
 </html>
+
 
