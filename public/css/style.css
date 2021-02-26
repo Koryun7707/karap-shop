@@ -1395,4 +1395,8 @@ button:focus {
     width: 600px;
     height: 350px;
 }
-
+.fancybox-slide.watermark .fancybox-spaceball {
+    background-image: url('http://fancyapps.com/GJbkSPU.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
