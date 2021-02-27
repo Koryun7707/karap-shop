@@ -254,8 +254,8 @@
                     // style="text-decoration: line-through;"
                     document.getElementById('productStartPrice').style.textDecoration = 'line-through'
                 }
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
-                document.getElementById('total').innerHTML = sum.toFixed(2) + '€';
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice)%1==0?(productPrice - productSalePrice):(productPrice - productSalePrice).toFixed(2)}€`;
+                document.getElementById('total').innerHTML = `${sum%1==0?sum:sum.toFixed(2)}€`;
             } else {
                 countProduct.innerHTML = '0';
                 productStartPrice.innerHTML = '0';
@@ -443,6 +443,7 @@
 
 </body>
 </html>
+
 
 
 
