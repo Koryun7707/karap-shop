@@ -5,7 +5,7 @@
             <% if(product.length){ %>
                 <% if(product[0].images.length){ %>
                 <div class="col-12 col-md-7">
-                    <div class="row justify-content-between">
+                    <div class="row justify-content-between" >
                         <div class="col-2 col-md-3 col-lg-2">
                             <% for(let i = 1;i < product[0].images.length;i++){ %>
                                 <div onmousemove="myMoveFunction(this)" onclick="changeImage(this)"
@@ -20,13 +20,13 @@
                                 <img id="myimage"  width="500" height="500" src="<%= product[0].images[1] %>" />
                             </a>
                         </div>
-                        <% for(let i = 2;i < product[0].images.length;i++){ %>
-                                <a style="display:none;" href="<%= product[0].images[i] %>" data-fancybox="images">
-                                    <img width="500" height="500" src="<%= product[0].images[i] %>" />
+                        <div style="display: none"  id="imagesDiv" value="<%=product[0].images%>">
+                            <% for(let i = 2;i<product[0].images.length;i++){%>
+                                <a href="<%= product[0].images[i] %>" data-fancybox="images">
+                                    <img   width="500" height="500" src="<%= product[0].images[i] %>" />
                                 </a>
-                        <% } %>
-
-
+                            <%}%>
+                        </div>
                     </div>
                 </div>
                 <% } %>
@@ -499,18 +499,31 @@
         const src = element.children[0].getAttribute('src');
         var el = document.getElementById("myimage");
         var el1 = document.getElementById('myImageIdHref');
+        let images = document.getElementById('imagesDiv').getAttribute('value');
+        let array = images.split(',')
+        array.shift()
+        array.splice(array.indexOf(src),1)
+        for(let i = 0;i<array.length;i++){
+                document.getElementById('imagesDiv').children[i].setAttribute('href',array[i]) ;
+                document.getElementById('imagesDiv').children[i].children[0].setAttribute('src',array[i]) ;
+        }
         el1.href = `${src}`
         el.src = `${src}`;
-
     }
     function myMoveFunction(element) {
         const src = element.children[0].getAttribute('src');
         var el = document.getElementById("myimage");
         var el1 = document.getElementById('myImageIdHref');
+        let images = document.getElementById('imagesDiv').getAttribute('value');
+        let array = images.split(',')
+        array.shift()
+        array.splice(array.indexOf(src),1)
+        for(let i = 0;i<array.length;i++){
+            document.getElementById('imagesDiv').children[i].setAttribute('href',array[i]) ;
+            document.getElementById('imagesDiv').children[i].children[0].setAttribute('src',array[i]) ;
+        }
         el1.href = `${src}`
         el.src = `${src}`;
-
-
     }
     function countPrice(element) {
         let count = Number(document.getElementById('qtyValueProduct').value);
