@@ -308,7 +308,7 @@ section h2 {
 .footer-bg {
     /*background: url("../images/footer-bg.png") no-repeat;*/
     background-size: cover;
-    background-color: rgba(196, 170, 157, 0.6);
+    background-color: #d8bfd8;
 }
 
 footer ul li a {

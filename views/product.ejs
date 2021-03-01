@@ -17,7 +17,7 @@
 
                         <div class="col-8 col-md-9 col-lg-10">
                             <a id="myImageIdHref" href="<%= product[0].images[1] %>" data-fancybox="images">
-                                <img id="myimage"  width="500" height="500" src="<%= product[0].images[1] %>" />
+                                <img id="myimage"  width="500" height="600" src="<%= product[0].images[1] %>" />
                             </a>
                         </div>
                         <div style="display: none"  id="imagesDiv" value="<%=product[0].images%>">
@@ -184,8 +184,8 @@
     $('[data-fancybox]').fancybox({
         afterLoad : function( instance, slide ) {
             if ( slide.type === 'image' ) {
-                slide.width  = slide.width  * 2;
-                slide.height = slide.height * 2;
+                slide.width  = slide.width  * 1.5;
+                slide.height = slide.height * 1.5;
             }
         },
         protect: true,
@@ -617,6 +617,7 @@
                             Cardlocal.push({
                                 productId: id.value,
                                 size: productSize,
+                                img:document.getElementById('myimage').getAttribute('src'),
                                 color: productColor,
                                 count: productCount,
                                 existProductCount: response.results.count,
@@ -651,6 +652,7 @@
                                 size: productSize,
                                 color: productColor,
                                 count: productCount,
+                                img:document.getElementById('myimage').getAttribute('src'),
                                 existProductCount: response.results.count,
                             });
                             array = JSON.stringify(array);
@@ -664,6 +666,7 @@
 </script>
 </body>
 </html>
+
 
 
 

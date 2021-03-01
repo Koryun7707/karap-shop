@@ -64,6 +64,7 @@ const createProduct = async (req, res) => {
                 colors: value.productColor.split('/'),
                 productPak3: value.productPak3,
                 productPak6: value.productPak6,
+                complect: value.complect,
                 count: value.productCount,
                 productWeight: value.productWeight,
             });
@@ -82,6 +83,7 @@ const createProduct = async (req, res) => {
                 colors: value.productColor.split('/'),
                 productPak3: value.productPak3,
                 productPak6: value.productPak6,
+                complect: value.complect,
                 count: value.productCount,
                 productWeight: value.productWeight,
             });
@@ -180,8 +182,9 @@ const updateProduct = async (req, res) => {
         }
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
-        productPak3 = value.productPak3;
-        productPak6 = value.productPak6;
+        product.productPak3 = value.productPak3;
+        product.productPak6 = value.productPak6;
+        product.complect =  value.complect;
         product.description = value.productDescription;
         product.descriptionArm = value.productDescriptionArm;
         product.count = value.productCount;
@@ -483,6 +486,7 @@ module.exports = {
     getDataSearch: getDataSearch,
     getProductsUniqType:getProductsUniqType
 };
+
 
 
 
