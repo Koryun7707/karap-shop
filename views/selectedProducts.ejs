@@ -6,7 +6,7 @@
         <div id="message_div"><%- include ('partials/messages') %></div>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
-                <input onclick="selectAll(this)" type="checkbox" id="select-all">
+                <input  autocomplete="off" onclick="selectAll(this)" type="checkbox" id="select-all">
                 <label for="select-all" class=""><%= staticData.select_all %></label>
             </div>
         </div>
@@ -40,7 +40,7 @@
                            style="font-size: 18px; color: #fff; text-transform: capitalize"><%= staticData.checkout_button %></a>
                         <div class="shop-check d-flex justify-content-center">
                             <div class="form-group mr-2">
-                                <input type="checkbox" id="agreeTerms">
+                                <input autocomplete="off" type="checkbox" id="agreeTerms">
                                 <label for="agreeTerms" class=""><%= staticData.i_agree_to_the_website %> <a
                                             href="/termAndConditions"><%= staticData.terms_conditions %> </a> & <a
                                             href="/privacyPolicy"><%= staticData.delevery_returns_product_page %></a></label>
@@ -101,6 +101,7 @@
                     response.results.forEach(function (item) {
                         const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size?true:false;
                         const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color?true:false;
+                        const img = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].img;
                         if (!item.sale) {
                             item.sale = 0;
                         }
@@ -120,6 +121,11 @@
                                 colorPak6 = COLOR
                             }
                         }
+                        let complect = false;
+                     
+                        if(item.complect){
+                            complect = true;
+                        }
                         newDiv.innerHTML = `
                     <div  class="shop-check d-flex flex-1 mb-2 mb-md-0">
                         <div class="form-group mr-2">
@@ -127,7 +133,7 @@
                             <label for="${language ? item.name : item.nameArm}" class=""></label>
                         </div>
                         <div class="img-area mx-2 mx-md-5">
-                            <img id='productImage${item._id}' src="${item.images[1]}" alt="" class="w-100">
+                            <img id='productImage${item._id}' src="${complect?img:item.images[1]}" alt="" class="w-100">
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language ? item.name : item.nameArm}</div>
@@ -254,8 +260,8 @@
                     // style="text-decoration: line-through;"
                     document.getElementById('productStartPrice').style.textDecoration = 'line-through'
                 }
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice).toFixed(2)}€`;
-                document.getElementById('total').innerHTML = sum.toFixed(2) + '€';
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice)%1==0?(productPrice - productSalePrice):(productPrice - productSalePrice).toFixed(2)}€`;
+                document.getElementById('total').innerHTML = `${sum%1==0?sum:sum.toFixed(2)}€`;
             } else {
                 countProduct.innerHTML = '0';
                 productStartPrice.innerHTML = '0';
@@ -443,6 +449,8 @@
 
 </body>
 </html>
+
+
 
 
 

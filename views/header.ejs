@@ -235,8 +235,10 @@
                 method: 'post',
                 data: obj,
                 success: function () {
+                      if(window.location.pathname ==='/shop'){
+                         location.replace(`https://armatconcept.com/shop`)
+                    }else
                     window.location.reload(1);
-                    // location.replace(`https://armatconcept.com`)
                 },
                 error: function (data) {
                     console.log('User creation failed :' + data);
@@ -277,7 +279,6 @@
                                 a.innerHTML = `${item.name} <br/>`;
                                 div.append(a);
                             }
-
                         })
                     }
                     if (products.length) {
@@ -353,6 +354,13 @@
         }
     });
 </script>
-
-
-
+<script>
+    $(window).on("scroll", function() {
+        if($(window).scrollTop() > 90) {
+            $(".header-bg").addClass("active");
+        } else {
+            //remove the background property so it comes transparent again (defined in your css)
+            $(".header-bg").removeClass("active");
+        }
+    });
+</script>

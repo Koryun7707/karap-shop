@@ -69,6 +69,9 @@ const productSchema = new Schema({
     productPak6: {
         type: String,
     },
+    complect: {
+        type: String,
+    },
     date: {
         type: Date,
         default: Date.now
@@ -79,4 +82,5 @@ const productSchema = new Schema({
 productSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Product', productSchema);
+
 

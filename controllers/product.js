@@ -64,6 +64,7 @@ const createProduct = async (req, res) => {
                 colors: value.productColor.split('/'),
                 productPak3: value.productPak3,
                 productPak6: value.productPak6,
+                complect: value.complect,
                 count: value.productCount,
                 productWeight: value.productWeight,
             });
@@ -82,6 +83,7 @@ const createProduct = async (req, res) => {
                 colors: value.productColor.split('/'),
                 productPak3: value.productPak3,
                 productPak6: value.productPak6,
+                complect: value.complect,
                 count: value.productCount,
                 productWeight: value.productWeight,
             });
@@ -175,11 +177,14 @@ const updateProduct = async (req, res) => {
         product.sizes = value.productSize.split('/');
         if (value.productSale != '' || Number(value.productSale) >= 1) {
             product.sale = value.productSale;
+        }else if(value.productSale == ''){
+            product.sale = undefined
         }
         product.productWeight = value.productWeight;
         product.colors = value.productColor.split('/');
-        productPak3 = value.productPak3;
-        productPak6 = value.productPak6;
+        product.productPak3 = value.productPak3;
+        product.productPak6 = value.productPak6;
+        product.complect =  value.complect;
         product.description = value.productDescription;
         product.descriptionArm = value.productDescriptionArm;
         product.count = value.productCount;
@@ -224,6 +229,44 @@ const getProducts = async (req, res) => {
         return res.status(200).json(success('Products Data!', {
             data
         }, res.statusCode));
+
+    } catch (e) {
+        logger.error(`Get Products Error: ${e}`);
+        return res.status(500).json(err(e.message, res.statusCode));
+    }
+}
+const getProductsUniqType = async (req, res) => {
+    logger.info('Start getProductsUniqType - - -');
+    try {
+
+       let template;
+        if(req.session.language == 'eng'){
+          template =  Product.aggregate([
+                {
+                    $group:{
+                        _id:'$type',
+                        "name":{ "$first": '$name'},
+                        "type":{ "$first": '$type'},
+                        "images":{ "$first": '$images'},
+                    }
+                }
+            ])
+        }else{
+           template =  Product.aggregate([
+                {
+                    $group:{
+                        _id:'$typeArm',
+                        "nameArm":{ "$first": '$nameArm'},
+                        "typeArm":{ "$first": '$typeArm'},
+                        "images":{ "$first": '$images'},
+                    }
+                }
+            ])
+        }
+        const data = await template
+        return res.status(200).json(success('Products Data!',
+            data
+        , res.statusCode));
 
     } catch (e) {
         logger.error(`Get Products Error: ${e}`);
@@ -440,8 +483,11 @@ module.exports = {
     getProducts: getProducts,
     getProductsShopFilter: getProductsShopFilter,
     getProductById: getProductById,
-    getDataSearch: getDataSearch
+    getDataSearch: getDataSearch,
+    getProductsUniqType:getProductsUniqType
 };
+
+
 
 
 

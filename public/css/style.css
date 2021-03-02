@@ -9,8 +9,7 @@
     height: 75%;
 }
 .logoStyles {
-    color: #c4b3ab;
-    /*margin: 14px 7px 15px 7px;*/
+    color: #cdc1c5;
     font-style: italic;
     transition: all 0.4s;
     font-family: "Gagalin-Regular", sans-serif;
@@ -21,8 +20,6 @@
 
 }
 .logoStyles:hover {
-
-    /*text-shadow: 1px 3px #c4b3ab;*/
     color: #fff;
     transform: scale(0.8);
 }
@@ -49,10 +46,13 @@ body {
     align-items: center;
     z-index: 99;
 }
+.header-bg.active {
+    background: #000;
+}
 header .nav-item.dropdown select{
     border: 0;
     background-color: transparent;
-    color: #c4aa9d;
+    color: #cdc1c5;
     outline: none;
 }
 
@@ -67,7 +67,7 @@ header .nav-item.dropdown select{
 
 .icon-search-container {
     display: inline-block;
-    border: 1px solid #c4b3ab;
+    border: 1px solid #cdc1c5;
     border-radius: 20px;
     height: 35px;
     width: 35px;
@@ -93,7 +93,7 @@ header .nav-item.dropdown select{
     width: 200px;
 }
 .icon-search-container .fa-search {
-    color: #c4b3ab;
+    color: #cdc1c5;
     font-size: 20px;
     position: absolute;
     top: 8px;
@@ -103,7 +103,7 @@ header .nav-item.dropdown select{
 
 .icon-search-container .fa-times-circle {
     opacity: 0;
-    color: #c4b3ab;
+    color: #cdc1c5;
     font-size: 18px;
     position: absolute;
     top: 7px;
@@ -125,7 +125,7 @@ header .nav-item.dropdown select{
     line-height: 20px;
     background-color: rgba(255, 255, 255, 0);
     transition: width 0.2s ease-out;
-    color: #c4b3ab;
+    color: #cdc1c5;
 }
 /*mobile*/
 .icon-search-container .search-input-mobile {
@@ -141,7 +141,7 @@ header .nav-item.dropdown select{
     line-height: 20px;
     background-color: rgba(255, 255, 255, 0);
     transition: width 0.2s ease-out;
-    color: #c4b3ab;
+    color: #cdc1c5;
 }
 .cart-products-count {
     position: absolute;
@@ -160,7 +160,7 @@ header .nav-item.dropdown select{
 }
 
 .navbar-light .navbar-nav .nav-link {
-    color: #c4b3ab;
+    color: #cdc1c5;
     font-size: 0.9rem;
     font-family: "Georgian";
 }
@@ -231,7 +231,7 @@ section h2 {
 
 .btn-green-gradient-border {
     color: #000000 !important;
-    background: #c4aa9d;
+    background: #cdc1c5;
     border: 1px solid #000000;
     border-radius: 0;
     width: 100%;
@@ -243,7 +243,7 @@ section h2 {
 .btn-green-gradient {
     /*background: linear-gradient(90deg, #033d29, #097814);*/
     background-color: #000000;
-    color: #c4aa9d;
+    color: #cdc1c5;
     border-radius: 0;
     width: 100%;
     border: 1px solid transparent;
@@ -255,7 +255,7 @@ section h2 {
 
 .btn.btn-green-gradient:hover {
     color: #000000 !important;
-    background: #c4aa9d;
+    background: #cdc1c5;
     border: 1px solid #000000;
     text-decoration: none;
     font-family: "Georgian";
@@ -306,9 +306,8 @@ section h2 {
 }
 
 .footer-bg {
-    /*background: url("../images/footer-bg.png") no-repeat;*/
     background-size: cover;
-    background-color: rgba(196, 170, 157, 0.6);
+    background-color: #cdc1c5;
 }
 
 footer ul li a {
@@ -317,7 +316,7 @@ footer ul li a {
     font-family: "Georgian";
 }
 footer ul li a:hover {
-    color: #c4aa9d;
+    color: #fff;
     text-decoration: none;
 }
 .links-for-pages li.active a{
@@ -352,7 +351,7 @@ footer .abs {
 
 /* -----blog----- */
 .rose-bg {
-    background-color: #c4b3ab;
+    background-color: #cdc1c5;
 }
 
 .blog-card h2 {
@@ -362,7 +361,7 @@ footer .abs {
 }
 
 .blog-card .subtitle {
-    color: #c4b3ab;
+    color: #cdc1c5;
     font-size: 40px;
     line-height: 50px;
     font-family: 'MYRIADPRO-REGULAR', sans-serif;
@@ -546,7 +545,7 @@ h1 {
     position: absolute;
     width: 270px;
     height: 112%;
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     top: -6%;
     right: 0;
     z-index: -1;
@@ -585,7 +584,7 @@ h1 {
 }
 
 .owl-slider-about {
-    background-color: #c4b3ab;
+    background-color: #cdc1c5;
     padding: 40px 40px;
 }
 
@@ -700,7 +699,7 @@ h1 {
 .shop-card .title {
     font-size: 17px;
     line-height: 20px;
-    color: #c4aa9d;
+    color: #cdc1c5;
     margin: 0 0 12px;
     text-transform: uppercase;
 }
@@ -804,8 +803,8 @@ h1 {
 .sidebar .form-group label:before {
     content: '';
     -webkit-appearance: none;
-    background-color: #c4aa9d;
-    border: 2px solid #c4aa9d;
+    background-color: #cdc1c5;
+    border: 2px solid #cdc1c5;
     padding: 12px;
     display: inline-block;
     position: relative;
@@ -829,7 +828,7 @@ h1 {
     left: 10px;
     width: 7px;
     height: 16px;
-    border: solid #c4aa9d;
+    border: solid #cdc1c5;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
 }
@@ -847,7 +846,7 @@ h1 {
 /*----contact Us------*/
 .contact-section .title {
     font-size: 20px;
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     color: #ffffff;
     height: 44px;
     display: flex;
@@ -879,13 +878,13 @@ h1 {
 
 .contact-form .btn-green-gradient {
     /*background: linear-gradient(90deg, #52796c, #56a15d);*/
-    background: #c4aa9d;
+    background: #cdc1c5;
 }
 .contact-form .btn-rose{
     background: #000;
 }
 .contact-form .btn-rose:hover{
-    color: #c4aa9d;
+    color: #cdc1c5;
 }
 
 
@@ -906,7 +905,7 @@ h1 {
 }
 
 .btn-rose {
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     color: #ffffff;
     border-radius: 0;
     outline: none;
@@ -949,7 +948,7 @@ button:focus {
 /*modals*/
 .modal-footer a {
     font-size: 16px;
-    color: #c4aa9d;
+    color: #cdc1c5;
 }
 
 /*scroll styles*/
@@ -979,7 +978,7 @@ button:focus {
 
 .shop-page-scroll::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
 }
 
 /* end scroll styles*/
@@ -992,8 +991,8 @@ button:focus {
     justify-content: center;
     align-items: center;
     border-radius: 4px;
-    border: 1px solid #c4aa9d;
-    color: #c4aa9d;
+    border: 1px solid #cdc1c5;
+    color: #cdc1c5;
     background-color: #fff;
 }
 
@@ -1004,8 +1003,8 @@ button:focus {
     justify-content: center;
     align-items: center;
     border-radius: 4px;
-    border: 1px solid #c4aa9d;
-    color: #c4aa9d;
+    border: 1px solid #cdc1c5;
+    color: #cdc1c5;
     background-color: #fff;
     padding: 0 10px;
 }
@@ -1013,7 +1012,7 @@ button:focus {
 .product-color ul li.active,
 .product-size ul li.active {
     color: #fff;
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
 }
 
 .product-section h2 {
@@ -1029,7 +1028,7 @@ button:focus {
 }
 
 .product-name h2 {
-    color: #c4aa9d;
+    color: #cdc1c5;
 }
 
 /*end product page*/
@@ -1065,7 +1064,7 @@ button:focus {
     height: 100%;
     float: left;
     cursor: pointer;
-    color: #c4aa9d;
+    color: #cdc1c5;
 }
 
 .qtySelector .fa.clicked {
@@ -1088,7 +1087,7 @@ button:focus {
     height: 100%;
     float: left;
     text-align: center;
-    color: #c4aa9d;
+    color: #cdc1c5;
 }
 
 /*admin css*/
@@ -1097,7 +1096,7 @@ button:focus {
 }
 
 .admin-header {
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     color: white;
     font-size: 16px;
     font-family: fantasy;
@@ -1140,7 +1139,7 @@ button:focus {
     min-height: 125px;
     margin-bottom: 8px;
     border-radius: 5px;
-    border: 1px solid #c4aa9d;
+    border: 1px solid #cdc1c5;
     flex-wrap: wrap;
     position: relative;
 }
@@ -1178,12 +1177,12 @@ button:focus {
 
 .selected-product-cart .product-size,
 .selected-product-cart .product-color {
-    color: #c4aa9d;
+    color: #cdc1c5;
     font-weight: 400;
     font-size: 21px;
     line-height: 30px;
     border-radius: 4px;
-    border: 1px solid #c4aa9d;
+    border: 1px solid #cdc1c5;
     padding: 0;
     width: 36px;
     height: 30px;
@@ -1195,11 +1194,11 @@ button:focus {
     padding: 10px 16px;
     margin-bottom: 8px;
     border-radius: 5px;
-    border: 1px solid #c4aa9d;
+    border: 1px solid #cdc1c5;
 }
 
 .total-section .title {
-    color: #c4aa9d;
+    color: #cdc1c5;
 }
 
 .total-section .shop-check .form-group label, .sidebar .form-group label {
@@ -1222,7 +1221,7 @@ button:focus {
 }
 
 .pagination a.active {
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     color: white;
 }
 
@@ -1241,8 +1240,8 @@ button:focus {
 #RegistrationModal,
 #forgotPassword,
 #resetPassword {
-    background-color: #c4b3ab42;
-   min-height: 100vh;
+    background-color: #cdc1c542;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1258,7 +1257,7 @@ button:focus {
     padding: 50px 0;
 }
 .text-content-page  h2{
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     margin-top: 30px;
     font-size: 1.8rem;
 }
@@ -1294,7 +1293,7 @@ button:focus {
     color: #fff;
 }
 .checkout-page .bg-rose {
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     padding:0  30px;
     color: #FFFFFF;
 }
@@ -1308,7 +1307,7 @@ button:focus {
     position: relative;
     margin-top: 38px;
     padding: 1px 30px;
-    background-color: #c4b3ab;
+    background-color: #cdc1c5;
     border-radius: 10px;
     max-height: 260px;
     overflow-y: scroll;
@@ -1364,7 +1363,7 @@ button:focus {
 .shop_small_card {
     min-width: 100px;
     height: 36px;
-    background-color: #c4aa9d;
+    background-color: #cdc1c5;
     text-align: center;
     margin-right: 16px;
     display: flex;
@@ -1377,3 +1376,26 @@ button:focus {
     cursor: pointer;
 }
 
+.img-zoom-container {
+    position: relative;
+}
+
+.img-zoom-lens {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    /*set the size of the lens:*/
+    width: 100px;
+    height: 100px;
+}
+
+.img-zoom-result {
+    border: 1px solid #d4d4d4;
+    /*set the size of the result div:*/
+    width: 600px;
+    height: 350px;
+}
+.fancybox-slide.watermark .fancybox-spaceball {
+    background-image: url('http://fancyapps.com/GJbkSPU.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}

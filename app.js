@@ -68,7 +68,7 @@ app.use('/', apiRoutes);
 
 app.get('*', (req, res) => {
     logger.error(`APP INVALID ROUTE ${req.originalUrl}`)
-    res.json({status: 404, description: 'Invalid api address!'})
+    res.redirect('/')
 });
 
 

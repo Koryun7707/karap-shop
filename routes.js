@@ -14,11 +14,12 @@ const {
     getProducts,
     getProductsShopFilter,
     getProductById,
-    getDataSearch
+    getDataSearch,
+    getProductsUniqType
 } = require('./controllers/product');
 const {createShippingAddress, getShippingAddresses, deleteOrder} = require('./controllers/shippingAddress');
 const {createBrand, deleteBrand, updateBrand, getBrands, getAllBrands} = require('./controllers/brand')
-const {checkIsAuthenticated, forwardAuthenticated} = require('./auth/auth');
+const {checkIsAuthenticated, forwardAuthenticated,checkUserIsExist} = require('./auth/auth');
 const {isAdmin} = require('./utils/helper');
 
 //Multer upload image
@@ -35,11 +36,11 @@ const upload = multer({
     storage: storage,
     fileFilter: function (req, files, callback) {
         const ext = path.extname(files.originalname);
-        const allowed = ['.png', '.jpg', '.jpeg',];
+        const allowed = ['.png', '.jpg', '.jpeg','.webp'];
         if (allowed.includes(ext)) {
             callback(null, true);
         } else {
-            callback(new Error("Only .png, .jpg, .jpeg"), false);
+            callback(new Error("Only .png, .jpg, .jpeg, .webp"), false);
         }
     },
     limits: {
@@ -67,6 +68,7 @@ router.post('/login',
 //             failureFlash: true
 //         })(req, res, next);
 //     });
+router.get('/products-type',getProductsUniqType)
 
 router.post('/signup', signUp);
 router.get('/activate-account/:token', activateAccount);
@@ -80,7 +82,8 @@ router.get('/forgotPassword', pagesController.forgotPassword);
 router.post('/forgotPassword', pagesController.sendEmailForgotPassword);
 router.get('/resetPassword/:token', pagesController.resetPassword);
 router.post('/resetPassword', pagesController.userResetPassword);
-router.get('/reset-password', pagesController.getresetPassword);
+router.get('/reset-password',forwardAuthenticated,checkUserIsExist, pagesController.getresetPassword);
+
 
 //send message contact us
 router.post('/sendMessageContactUs', sendMessageContactUs);
@@ -168,4 +171,5 @@ router.get('/cancel', checkIsAuthenticated, paypalCancel);
 router.post('/purchase', checkIsAuthenticated, paymentStripe);
 
 module.exports = router;
+
 

@@ -5,7 +5,7 @@
             <% if(product.length){ %>
                 <% if(product[0].images.length){ %>
                 <div class="col-12 col-md-7">
-                    <div class="row justify-content-between">
+                    <div class="row justify-content-between" >
                         <div class="col-2 col-md-3 col-lg-2">
                             <% for(let i = 1;i < product[0].images.length;i++){ %>
                                 <div onmousemove="myMoveFunction(this)" onclick="changeImage(this)"
@@ -15,19 +15,16 @@
                             <% } %>
                         </div>
                         <div class="col-8 col-md-9 col-lg-10">
-                            <div class="w-100 zoom-area">
-
-                                <!-- Created by Rohan Hapani -->
-<!--                                <div class="zoom-area">-->
-
-                                    <!-- It's container of the magnify glass -->
-                                    <div class="large"></div>
-
-                                    <!-- It's for the small image -->
-                                    <img id="generalImage" class="small" src="<%= product[0].images[1] %>" width="500" height="500" />
-
-<!--                                </div>-->
-                            </div>
+                            <a id="myImageIdHref" href="<%= product[0].images[1] %>" data-fancybox="images">
+                                <img id="myimage" class="img-fluid"  width="500" height="600" src="<%= product[0].images[1] %>" />
+                            </a>
+                        </div>
+                        <div style="display: none"  id="imagesDiv" value="<%=product[0].images%>">
+                            <% for(let i = 2;i<product[0].images.length;i++){%>
+                                <a href="<%= product[0].images[i] %>" data-fancybox="images">
+                                    <img   width="500" height="500" src="<%= product[0].images[i] %>" />
+                                </a>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -77,7 +74,7 @@
                     <% if(product[0].colors[0] != ''){ %>
                         <div class="product-color" id="productColorDiv" value=<%= product[0].colors %>>
                             <h5><%= staticData.product_color %></h5>
-                            <ul class="list-unstyled">
+                            <ul class="d-flex flex-wrap pl-0">
                                 <% if(product[0].colors){ %>
                                    <%if(product[0].productPak3){%>
                                   <%for(let i=0;i<3;i++){%>
@@ -138,9 +135,9 @@
                                 <h5><h5><%= staticData.product_description %></h5></h5>
                             </h5>
                             <% if(language === 'eng'){ %>
-                                <div><%= product[0].description %></div>
+                                <div><%- product[0].description %></div>
                             <% }else{ %>
-                                <div><%= product[0].descriptionArm %></div>
+                                <div><%- product[0].descriptionArm %></div>
                             <% } %>
                         </div>
                     <% } %>
@@ -178,51 +175,34 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.js" integrity="sha512-j7/1CJweOskkQiS5RD9W8zhEG9D9vpgByNGxPIqkO5KrXrwyDAroM9aQ9w8J7oRqwxGyz429hPVk/zR6IOMtSA==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" />
 <script>
-    $(document).ready(function()
-    {
-        var sub_width = 0;
-        var sub_height = 0;
-        $(".large").css("background","url('" + $(".small").attr("src") + "') no-repeat");
-
-        $(".zoom-area").mousemove(function(e){
-            if(!sub_width && !sub_height)
-            {
-                var image_object = new Image();
-                image_object.src = $(".small").attr("src");
-                sub_width = image_object.width;
-                sub_height = image_object.height;
+    $('[data-fancybox]').fancybox({
+        afterLoad : function( instance, slide ) {
+            if ( slide.type === 'image' ) {
+                slide.width  = slide.width  * 1.5;
+                slide.height = slide.height * 1.5;
             }
-            else
-            {
-                var magnify_position = $(this).offset();
-
-                var mx = e.pageX - magnify_position.left;
-                var my = e.pageY - magnify_position.top;
-
-                if(mx < $(this).width() && my < $(this).height() && mx > 0 && my > 0)
-                {
-                    $(".large").fadeIn(100);
-                }
-                else
-                {
-                    $(".large").fadeOut(100);
-                }
-                if($(".large").is(":visible"))
-                {
-                    var rx = Math.round(mx/$(".small").width()*sub_width - $(".large").width()/2)*-1;
-                    var ry = Math.round(my/$(".small").height()*sub_height - $(".large").height()/2)*-1;
-
-                    var bgp = rx + "px " + ry + "px";
-
-                    var px = mx - $(".large").width()/2;
-                    var py = my - $(".large").height()/2;
-
-                    $(".large").css({left: px, top: py, backgroundPosition: bgp});
-                }
-            }
-        })
-    })
+        },
+        protect: true,
+        buttons : [
+            'zoom',
+            'thumbs',
+            'close'
+        ]
+    });
+    $('[data-fancybox="watermark"]').fancybox({
+        protect    : true,
+        slideClass : 'watermark',
+        toolbar    : false,
+        smallBtn   : true
+    });
+    // Preload watermark image
+    // Please, use your own image
+    (new Image()).src = "http://fancyapps.com/GJbkSPU.png";
 </script>
 <script>
     $(function () {
@@ -242,54 +222,6 @@
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
-<script>
-    (function () {
-        // Get all images with the `detail-view` class
-        var zoomBoxes = document.querySelectorAll('.detail-view');
-        // Extract the URL
-        zoomBoxes.forEach(function (image) {
-            var imageCss = window.getComputedStyle(image, false),
-                imageUrl = imageCss.backgroundImage
-                    .slice(4, -1).replace(/['"]/g, '');
-            // Get the original source image
-            var imageSrc = new Image();
-            imageSrc.onload = function () {
-                var imageWidth = imageSrc.naturalWidth,
-                    imageHeight = imageSrc.naturalHeight,
-                    ratio = imageHeight / imageWidth;
-                // Adjust the box to fit the image and to adapt responsively
-                var percentage = ratio * 100 + '%';
-                image.style.paddingBottom = percentage;
-                // Zoom and scan on mousemove
-                image.onmousemove = function (e) {
-                    // Get the width of the thumbnail
-                    var boxWidth = image.clientWidth,
-                        // Get the cursor position, minus element offset
-                        x = e.pageX - this.offsetLeft,
-                        y = e.pageY - this.offsetTop,
-                        // Convert coordinates to % of elem. width & height
-                        xPercent = x / (boxWidth / 100) + '%',
-                        yPercent = y / (boxWidth * ratio / 100) + '%';
-                    // Update styles w/actual size
-                    Object.assign(image.style, {
-                        backgroundPosition: xPercent + ' ' + yPercent,
-                        backgroundSize: imageWidth + 'px'
-                    });
-                };
-                // Reset when mouse leaves
-                image.onmouseleave = function (e) {
-                    Object.assign(image.style, {
-                        backgroundPosition: 'center',
-                        backgroundSize: 'cover'
-                    });
-                };
-            }
-            imageSrc.src = imageUrl;
-        });
-    })();
-</script>
-
-
 <script>
     function addToCardPak3(id){
         //start check product exist or not
@@ -493,7 +425,6 @@
                         shoppingCard++;
                         const productCount = Number(document.getElementById('qtyValueProduct').value);
                         if (Cardlocal && Cardlocal.length) {
-
                             let lang = document.getElementById('example').value;
                             if (lang === 'eng') {
                                 document.getElementById('addToCardButton').innerHTML = 'Added';
@@ -560,15 +491,32 @@
     }
     function changeImage(element) {
         const src = element.children[0].getAttribute('src');
-        $(".large").css("background","url('" + src + "') no-repeat");
-        var el = document.getElementById("generalImage");
+        var el = document.getElementById("myimage");
+        var el1 = document.getElementById('myImageIdHref');
+        let images = document.getElementById('imagesDiv').getAttribute('value');
+        let array = images.split(',')
+        array.shift()
+        array.splice(array.indexOf(src),1)
+        for(let i = 0;i<array.length;i++){
+                document.getElementById('imagesDiv').children[i].setAttribute('href',array[i]) ;
+                document.getElementById('imagesDiv').children[i].children[0].setAttribute('src',array[i]) ;
+        }
+        el1.href = `${src}`
         el.src = `${src}`;
-
     }
     function myMoveFunction(element) {
         const src = element.children[0].getAttribute('src');
-        $(".large").css("background","url('" + src + "') no-repeat");
-        var el = document.getElementById("generalImage");
+        var el = document.getElementById("myimage");
+        var el1 = document.getElementById('myImageIdHref');
+        let images = document.getElementById('imagesDiv').getAttribute('value');
+        let array = images.split(',')
+        array.shift()
+        array.splice(array.indexOf(src),1)
+        for(let i = 0;i<array.length;i++){
+            document.getElementById('imagesDiv').children[i].setAttribute('href',array[i]) ;
+            document.getElementById('imagesDiv').children[i].children[0].setAttribute('src',array[i]) ;
+        }
+        el1.href = `${src}`
         el.src = `${src}`;
     }
     function countPrice(element) {
@@ -646,7 +594,6 @@
                             } else {
                                 document.getElementById('addToCardButton').innerHTML = 'Ավելացված է';
                             }
-
                             if (lang === 'eng') {
                                 setTimeout(() => {
                                     document.getElementById('addToCardButton').innerHTML = 'Add To Card';
@@ -663,6 +610,7 @@
                             Cardlocal.push({
                                 productId: id.value,
                                 size: productSize,
+                                img:document.getElementById('myimage').getAttribute('src'),
                                 color: productColor,
                                 count: productCount,
                                 existProductCount: response.results.count,
@@ -697,6 +645,7 @@
                                 size: productSize,
                                 color: productColor,
                                 count: productCount,
+                                img:document.getElementById('myimage').getAttribute('src'),
                                 existProductCount: response.results.count,
                             });
                             array = JSON.stringify(array);
@@ -708,8 +657,5 @@
         }
     }
 </script>
-
 </body>
 </html>
-
-

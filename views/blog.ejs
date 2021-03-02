@@ -18,7 +18,7 @@
                             <ul class="list-unstyled">
                                 <li style="padding-left: 20px"><%= item.title1 %> </li>
                                 <li style="padding-left: 20px"><%= item.title2 %></li>
-                                <li style="display: none" id="<%= index %>"><%= item.infoBlog %></li>
+                                <li style="display: none" id="<%= index %>"><%- item.infoBlog %></li>
                             </ul>
                             <a class="btn btn-green-gradient" onclick="isOpen(this)"
                                id="but<%= index %>">

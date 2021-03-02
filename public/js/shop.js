@@ -220,7 +220,11 @@ $(document).ready(function () {
                 typesDiv.append(div);
                    localStorage.setItem('types',JSON.stringify(new Array(type)))
             }
-            localStorage.removeItem('brandId')
+            if(!brandId){
+                localStorage.removeItem('brandId')
+            }else{
+                localStorage.setItem('brandId',JSON.stringify(new Array(brandId)))
+            }
             localStorage.removeItem('onSale')
             localStorage.removeItem('pageNumber')
             pageNumber = 0 ;
@@ -863,6 +867,7 @@ function deleteType(element){
         }
     });
 }
+
 
 
 

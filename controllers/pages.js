@@ -57,24 +57,11 @@ module.exports = {
                 const arrayImages = await PageData.findOne({language: 'eng'}).select('homeSliderImages').exec();
                 pageData[0].homeSliderImages = arrayImages.homeSliderImages;
             }
-            let products
-            if (req.session.language === 'eng') {
-                products = await Product.find({}).select('images name type').exec();
-                products = [...new Map(products.map(item =>
-                    [item['type'], item])).values()];
-            } else {
-                products = await Product.find({}).select('images nameArm typeArm').exec();
-                products = [...new Map(products.map(item =>
-                    [item['typeArm'], item])).values()];
-            }
-            const countOfBrands = await Brand.find({}).exec();
             res.render('index', {
                 URL: '/',
                 user: req.session.user,
                 staticData: await getStaticData(req.session.language),
                 pageData: pageData,
-                products: products,
-                pages: countOfBrands.length,
                 language:req.session.language
             });
         } catch (e) {
@@ -129,6 +116,8 @@ module.exports = {
     },//done
     getShopPage: async (req, res) => {
         logger.info('Start Shop get - - -');
+                    console.time('time')
+
         try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
@@ -161,6 +150,8 @@ module.exports = {
             }
             type= type.substring(0,type.length-1)
             const brandId = req.query.brandId || null;
+                        console.timeEnd('time')
+
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
@@ -1280,24 +1271,72 @@ module.exports = {
             }
             const {_id} = user
             const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '5m'});
-            ejs.renderFile("./resetPasswordTemplate.ejs", {
-                name: user.firstName,
-                token:token
-            }, function (err, data) {
-                if (err) {
-                    req.flash("error_msg", err.message);
-                    return res.redirect("/forgotPassword");
+            const content = {
+                from: process.env.MAIL_AUTH_EMAIL,
+                to: email,
+                subject: 'Reset password Armat Concept account',
+                html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Benne&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<table style="max-width: 700px; width: 100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td align="center" >
+            <table  border="0" align="center" cellpadding="0" cellspacing="0" style="margin-right:20px; ">
+                <tbody>
+                <tr>
+                    <td  align="center" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#2a3a4b;padding: 40px 0 20px">
+                        <div style="text-align: left; font-size:14px; line-height: 20px; letter-spacing: 1px;margin-top: 20px; padding-left: 20px">
+                            <div><b>Reset your accout password</b></div>
+                            <div><b>Dear ${user.firstName}</b></div>
+                            <div><b>Someone requested that the password for your Armat Concept account  be reset</b></div>
+                        </div>
+                    </td>
+                </tr>
 
-                } else {
-                    const messageUser = {
-                        from: process.env.MAIL_AUTH_EMAIL,
-                        to: email,
-                        subject: 'Reset password Armat Concept account',
-                        html: data,
-                    }
-                    sendMessageToMail(messageUser)
-                }
-            });
+                <tr>
+                    <td style="text-align: center">
+
+                        <a href="https://armatconcept.com/resetPassword/${token}">
+                            <button class="btn btn-success">
+                                Reset Password
+                            </button>
+                        </a>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td  align="center" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#2a3a4b;padding: 40px 0 20px">
+                        <div style="text-align: left; font-size:14px; line-height: 20px; letter-spacing: 1px;margin-top: 20px; padding-left: 20px">
+                            <div><b>It you didn't request this, you can ignore this email or let us to know.</b></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+`
+            }
+             sendMessageToMail(content);
             if (req.session.language === 'eng') {
                 req.flash('success_msg', 'Link send to email post.');
             } else {
@@ -1735,6 +1774,8 @@ module.exports = {
         }
     },
 };
+
+
 
 
 
