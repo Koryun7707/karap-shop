@@ -201,6 +201,9 @@
 	#generalImage {
      zoom:0.4;
     }
+    .join-section-bg, .about-section-bg, .brand-section-bg, .shop-section-bg, .contact-section-bg {
+        padding: 22% 0 10%;
+    }
 }
 @media screen and (max-width: 470px){
     .logoStyles {
@@ -234,4 +237,3 @@
         margin-left: -10px;
     }
 }
-
