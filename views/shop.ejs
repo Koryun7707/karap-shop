@@ -8,7 +8,7 @@
         </section>
     <% } %>
     <div class="container-fluid">
-          <div class="w-100 d-flex flex-wrap pl-3" id="typesDiv">
+          <div class="w-100 d-flex flex-wrap pl-3 mt-4" id="typesDiv">
 
         </div>
         <div class="row pb-md-5">
@@ -16,19 +16,18 @@
                 <div class="sidebar px-3">
                     <form action="#">
                         <div class="sidebar-title"><%= staticData.shop_search %></div>
-                        <div class="shop-search mb-5">
+                        <div class="shop-search mb-3 mb-md-5">
                             <input value="" type="search" class="form-control "
                                    placeholder="<%= staticData.shop_search %>" autocomplete="off" >
                         </div>
                         <div class="sidebar-title"><%= staticData.shop_product_page %></div>
                         <div class="scrollbar shop-page-scroll">
                             <div class="force-overflow" id="productType" value=<%= type %>>
-                                <ul class="list-unstyled px-4 mb-5">
+                                <ul class="list-unstyled px-4 mb-3 mb-md-5">
                                     <form action="">
 
                                         <% if(productsType.length){ %>
                                             <% productsType.forEach(function(item){ %>
-
                                                 <li class="form-group">
                                                     <% if(item === type){ %>
                                                         <input checked type="checkbox" id="<%= item %>"
@@ -49,7 +48,7 @@
                             </div>
                         </div>
                         <div class="sidebar-title"><%= staticData.shop_sale %></div>
-                        <div class="px-4 mb-5">
+                        <div class="px-4 mb-3 mb-md-5">
                             <div class="form-group">
                                 <input type="checkbox" id="sale" >
                                 <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
@@ -57,8 +56,8 @@
                             </div>
                         </div>
                         <div class="sidebar-title"><%= staticData.shop_price %></div>
-                        <div class="mb-5 d-flex flex-column">
-                            <div class="d-flex align-items-center mb-5">
+                        <div class="mb-3 mb-md-5 d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3 mb-md-5">
                                 <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
                                        value="0"
                                        class="form-control range-slide-input" autocomplete="off" />
@@ -78,7 +77,7 @@
                             </div>
                         </div>
                         <div class="sidebar-title "><%= staticData.shop_brand %></div>
-                        <div class="px-4 mb-5">
+                        <div class="px-4 mb-3 mb-md-5">
                             <div class="scrollbar shop-page-scroll">
                                 <div class="force-overflow">
                                     <% if(brands.length){ %>
@@ -144,14 +143,12 @@
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
-
     $('#priceTo').on('input', function () {
         document.getElementById('priceTo').setAttribute('min', `${$("#priceFrom").val()}`)
         $("#slider-range").slider('values', 1, $(this).val());
         $("#amount").val("€" + $("#slider-range").slider("values", 0) +
             " - €" + $("#slider-range").slider("values", 1));
     });
-
 </script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
@@ -185,18 +182,15 @@
                 0: {
                     items: 1
                 },
-
                 600: {
                     items: 2
                 },
-
                 1024: {
                     items: 3
                 },
                 1199: {
                     items: 5
                 },
-
                 1366: {
                     items: 5
                 }
@@ -209,10 +203,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-

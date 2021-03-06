@@ -204,6 +204,15 @@
     .join-section-bg, .about-section-bg, .brand-section-bg, .shop-section-bg, .contact-section-bg {
         padding: 22% 0 10%;
     }
+    .force-overflow {
+        min-height: 150px;
+    }
+    .price-range-slider {
+        margin-bottom: 20px;
+    }
+    .blog-card-img-left {
+        height: 400px;
+    }
 }
 @media screen and (max-width: 470px){
     .logoStyles {
@@ -235,5 +244,10 @@
         width: max-content;
         min-width: 50px;
         margin-left: -10px;
+    }
+}
+@media screen and (min-width: 992px) and (max-width: 1199px){
+    .shop-card img {
+        height: 300px;
     }
 }

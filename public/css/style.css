@@ -47,7 +47,7 @@ body {
     z-index: 99;
 }
 .header-bg.active {
-    background: #000;
+    background: #8c8c8c;
 }
 header .nav-item.dropdown select{
     border: 0;
@@ -353,7 +353,9 @@ footer .abs {
 .rose-bg {
     background-color: #cdc1c5;
 }
-
+.blog-card-img-left {
+    height: 520px;
+}
 .blog-card h2 {
     color: #000000;
     font-size: 35px;

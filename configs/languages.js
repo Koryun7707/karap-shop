@@ -119,7 +119,7 @@ module.exports =
             delivery: 'Delivery',
             total: 'Total',
             //pay checkouts
-            title_checkout:'You can pay in out website, with two pay type.',
+            title_checkout:'You can payment in out website, with two pay type.',
             delevery_returns_product_page:'Delivery & returns'
 
 
