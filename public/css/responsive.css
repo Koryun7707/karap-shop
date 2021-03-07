@@ -135,6 +135,13 @@
     #generalImage {
      zoom:0.5;
     }
+    .shop-card img {
+	height:250px;
+}
+   #myimage {
+	with:300px;
+	height:350px;
+}
 }
 @media screen and (max-width: 767px){
     .footer-bg {
@@ -214,11 +221,7 @@
         height: 400px;
     }
   .shop-card img {
-        height: 250px;
-    }
-      #myimage {
-        width: 300px;
-        height: 350px;
+        height: 180px;
     }
 }
 @media screen and (max-width: 470px){
