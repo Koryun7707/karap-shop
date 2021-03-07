@@ -152,8 +152,6 @@
                     productsDeliveryFromSpainWeight += Number(item.productWeight);
                 }
             });
-            console.log(productsDeliveryFromArmeniaWeight)
-            console.log(productsDeliveryFromSpainWeight)
             //Armenian registration
             if (productsDeliveryFromArmeniaWeight){
                 if (country === 'France') {
@@ -168,7 +166,7 @@
                     }
                 } else if (country === 'USA' || country ==='Canada') {
                     if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight <= 0.5) {
-                        priceDelivery += 16.7;
+                        priceDelivery += 15.7;
                     } else if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight > 0.5 &&  productsDeliveryFromArmeniaWeight <= 1) {
                         priceDelivery += 24.7;
                     } else if (productsDeliveryFromArmeniaWeight && productsDeliveryFromArmeniaWeight > 1 &&  productsDeliveryFromArmeniaWeight <= 2) {
