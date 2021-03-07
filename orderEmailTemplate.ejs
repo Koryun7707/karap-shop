@@ -59,7 +59,7 @@
     </tr>
     <tr>
         <td style="background-color: #cdc1c5; padding:0 30px 30px; border-top: 2px solid #000" align="center">
-            <table border="0" align="center" cellpadding="0" cellspacing="0" style="border-left: 1px solid #dbd9d9; background-color: #cdc1c5;  border-right: 1px solid #dbd9d9; width: 80% ">
+            <table border="0" align="center" cellpadding="0" cellspacing="0" style=" background-color: #cdc1c5;  width: 80% ">
                 <tbody>
                 <tr>
                     <td style="font-family: 'Benne', serif;font-size: 22px">
@@ -113,5 +113,123 @@
 
 </body>
 </html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Benne&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<table style="background-color: #cdc1c5; color: #000000; max-width: 700px; width: 100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td align="center" style="background-color: #cdc1c5; padding: 30px 30px 50px" >
+            <table  border="0" align="center" cellpadding="0" cellspacing="0" style="margin-left:20px; background-color: #cdc1c5; margin-right:20px; ">
+                <tbody>
+                <tr>
+                    <td  style="font-family: 'Benne', serif; font-size: 18px"  align="center">Welcome to </td>
+                </tr>
+
+                <tr>
+                    <td align="center" style="font-family: 'Benne', serif; font-size:22px; line-height: 10px; font-weight: bold; color:#000; padding-bottom: 40px">
+                        Armat Concept
+                    </td>
+                </tr>
+                <tr>
+                    <td  align="center" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#000; padding-bottom: 30px"><b>ORDER CONFIRMATION</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family: 'Benne', serif;  font-size:18px; color:#000; line-height:18px; font-weight: 300; padding: 0 30px">
+                        Hi <%=name%> <br>
+                        Thank you for your purchase and supporting Armenian Brands.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family: 'Benne', serif; font-size:18px; color:#000; line-height:20px; font-weight: 300; padding: 30px 0 40px">
+                        Your order is being processed for shipping.
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family:  'Benne', serif; font-size:18px; color:#000; line-height:24px; font-weight: 300;">
+                        Order number: <span style="font-family: 'Oswald', sans-serif; font-size:16px;"><%=orderId.toString().substring(0,15)%></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family: 'Benne', serif;  font-size:18px; color:#000; line-height:24px; font-weight: 300;">
+                        Order Date : <span style="font-family: 'Oswald', sans-serif; font-size:16px;"><%=new Date(date).toUTCString()%></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color: #cdc1c5; padding:0 30px 30px; border-top: 2px solid #000" align="center">
+            <table border="0" align="center" cellpadding="0" cellspacing="0" style=" background-color: #cdc1c5;  width: 80% ">
+                <tbody>
+                <tr>
+                    <td style="font-family: 'Benne', serif;font-size: 22px">
+                        <div style="display: flex; align-items: center; justify-content: space-around; margin-top: 12px;">
+                            <span style=" width: 150px; display: inline-block; text-align: left; padding-left: 20px">ITEMS</span>
+                            <span style="font-size: 20px; padding:  0 30px">QTY</span>
+                            <span style="font-size: 20px; padding:  0 30px">PRICE</span>
+                        </div>
+                    </td>
+                </tr>
+                <%order.forEach((item)=>{%>
+                <tr>
+                    <td style="font-size: 18px; vertical-align: top">
+                        <div style="display: flex; align-items: center; justify-content: space-around">
+                            <div style="padding: 0 0 0 20px; width: 150px; display: inline-block; text-align: left">
+                                <img style="" src="cid:<%=item.productId%>" width="69" height="78" alt="icon">
+                            </div>
+                            <div style="font-size: 22px; padding:  0 20px;width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.count%> </div>
+                            <div style="font-size: 22px; padding:  0 5px; width: 100px;height: 50px; display: inline-block; text-align: center"><%=item.priceSale%></div>
+                        </div>
+                    </td>
+                </tr>
+                <%})%>
+                <tr>
+                    <td style="font-family: 'Benne', serif; padding-top: 30px">
+                        <table  border="0" align="right" cellpadding="0" cellspacing="0">
+                            <tbody>
+                            <tr align="center" style="padding-right: 30px; font-size: 18px; font-family: 'Oswald', sans-serif; line-height:30px; color:#000">
+                                <td style="padding-right: 30px"><b>Subtotal </b></td>
+                                <td><%=subTotal%>€</td>
+                            </tr>
+                            <tr align="center" style="padding-right: 30px; font-size: 18px; font-family: 'Oswald', sans-serif; line-height:30px; color:#000">
+                                <td style="padding-right: 30px"><b>Shipping </b></td>
+                                <td><%=shipping%>€</td>
+                            </tr>
+                            <tr align="center" style="padding-right: 30px; font-size: 18px; font-family: 'Oswald', sans-serif; line-height:30px;  color:#000">
+                                <td style="padding-right: 30px"> <b> Total</b></td>
+                                <td><%=total.toFixed(2)%>€</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
 
 

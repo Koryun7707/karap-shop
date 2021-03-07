@@ -9,7 +9,7 @@ const sendMessageContactUs = async (req, res) => {
     try {
         const {email, firstName, message} = req.body
         const content = {
-            from: process.env.MAIL_AUTH_EMAIL,
+            from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
             to: email,
             subject: 'Message to user',
             html: `<h2>${firstName}</h2>
@@ -48,7 +48,7 @@ const signUp = async (req, res, next) => {
                     expiresIn: '5m',
                 },);
                 const content = {
-                    from: process.env.MAIL_AUTH_EMAIL,
+                    from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                     to: user.email,
                     subject: 'Account activation on Armat Concept',
                     html: `<!DOCTYPE html>

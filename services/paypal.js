@@ -129,7 +129,7 @@ const paypalSuccess = (req, res) => {
                             })
                         })
                         const messageUser = {
-                            from: process.env.MAIL_AUTH_EMAIL,
+                            from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                             to: req.session.user.email,
                             subject: 'Thank you for your order',
                             html: data,
@@ -171,7 +171,7 @@ const paypalSuccess = (req, res) => {
                             cid: '2Armatconcept'
                         })
                         const messageAdmin = {
-                            from: process.env.MAIL_AUTH_EMAIL,
+                            from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                             to: process.env.MAIL_AUTH_EMAIL,
                             subject: 'Thank you for your order',
                             html: data,
