@@ -139,7 +139,7 @@ const paymentStripe = (req, res) => {
             localStorage.removeItem(`order${req.session.user._id}`);
             localStorage.removeItem(`shippingAddress${req.session.user._id}`);
             if (req.session.language === 'eng') {
-                req.flash('success_msg', 'Pay Completed.');
+                req.flash('success_msg', 'Payment Completed.');
             } else {
                 req.flash('success_msg', 'Վճարն ավարտված է:');
             }

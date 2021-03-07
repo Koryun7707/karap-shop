@@ -50,13 +50,13 @@
                                     </div>
                                     <div style="margin-bottom: 16px">
                                         <div>Shipping method</div>
-                                        <div><b><%=shippingMethod%></b></div>
+                                        <div><b><%=-shippingMethod%></b></div>
                                     </div>
                                     <div style="margin-bottom: 16px">
                                         <div><b>Track My packge</b></div>
                                     </div>
                                     <div>
-                                        <div><b><%=orderId%></b></div>
+                                        <div><b><%-orderId%></b></div>
                                     </div>
                                 </td>
                                 <td align="left" style="font-size: 18px; line-height: 20px; padding: 0; color: #000">
@@ -106,7 +106,7 @@
                                 <img style="" src="cid:<%=item.productId%>" width="69" height="78" alt="icon">
                             </div>
                             <div style="font-size: 22px; padding:  0 20px;width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.count%> </div>
-                            <div style="font-size: 22px; padding:  0 20px; width: 50px;height: 50px; display: inline-block; text-align: center"><%=item.priceSale%></div>
+                            <div style="font-size: 22px; padding:  0 20px; width: 100px;height: 50px; display: inline-block; text-align: center"><%=item.priceSale%></div>
                         </div>
                     </td>
                 </tr>

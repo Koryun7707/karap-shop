@@ -328,7 +328,6 @@ footer h4 {
     font-size: 1rem;
     line-height: 30px;
     font-family: "Georgian";
-    text-transform: uppercase;
 }
 
 footer .abs {
@@ -689,8 +688,7 @@ h1 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-height: 340px;
-    height:100%;
+    
 }
 
 .shop-card img {
@@ -985,6 +983,10 @@ button:focus {
 
 /* end scroll styles*/
 /*product page*/
+#myimage {
+    width: 500px;
+    height: 660px;
+}
 .product-color ul li,
 .product-size ul li {
     width: 30px;
