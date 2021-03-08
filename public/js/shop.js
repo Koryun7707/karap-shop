@@ -43,35 +43,82 @@ function searchByPrice() {
             },
             success: (response) => {
                 if (response.results.pageCount > 0) {
+                  
                     $('#pagination-place').empty();
+                    let pageNumber = 1
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
-                    let paginationPlace = document.getElementById('pagination-place');
-                    for (let i = -1; i < response.results.pageCount + 1; i++) {
+                    //let paginationPlace = document.getElementById('pagination-place');
+                    let paginatinPlace = document.getElementById('pagination-place');
+                    let a = document.createElement('a');
+
+                    a.setAttribute('id', `-1`);
+                    a.setAttribute('value', `-1`);
+                    a.setAttribute('class', `page-item`);
+                    a.innerHTML = `&laquo;`
+                    a.setAttribute('onclick', 'giveChosenPage(this);');
+                    paginatinPlace.append(a)
+                    if(!pageNumber||pageNumber=='undefined'){
+                        pageNumber = 1
+                    }
+                    var i = (Number(pageNumber) > 4 ? Number(pageNumber) - 3 : 1)
+                    if (i !== 1) {
+                        let a = document.createElement('a');
+                        a.innerHTML = '...'
+                        paginatinPlace.append(a)
+                    }
+                    for (;i <=(Number(pageNumber) + 3) && i <= response.results.pageCount  ; i++) {
                         let a = document.createElement('a');
                         a.setAttribute('onclick', 'giveChosenPage(this);');
-                        if (i === -1) {
-                            a.setAttribute('id', `-1`);
-                            a.setAttribute('value', `-1`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `&laquo;`
-                        } else if (i === 0) {
-                            a.setAttribute('id', '1');
-                            a.setAttribute('value', '1');
+                        if (i ===Number(pageNumber) ){
+                            a.setAttribute('id', `${i}`);
+                            a.setAttribute('value', `${i}`);
                             a.setAttribute('class', `active`);
-                            a.innerHTML = '1'
-                        } else if (i > 0 && i !== response.results.pageCount) {
-                            a.setAttribute('id', `${i + 1}`);
-                            a.setAttribute('value', `${i + 1}`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `${i + 1}`
-                        } else {
-                            a.setAttribute('id', `+1`);
-                            a.setAttribute('value', `+1`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `&raquo;`
+                            a.innerHTML =  `${i}`
+                        } else  {
+                            if (i == Number(pageNumber) + 3 ) {
+                                a.innerHTML =  `...`
+                            }else{
+                                a.setAttribute('id', `${i}`);
+                                a.setAttribute('value', `${i}`);
+                                a.setAttribute('class', `page-item`);
+                                a.innerHTML =  `${i}`
+                            }
                         }
-                        paginationPlace.append(a);
+                        paginatinPlace.append(a);
                     }
+                    let aa = document.createElement('a');
+                    aa.setAttribute('id', `+1`);
+                    aa.setAttribute('value', `+1`);
+                    aa.setAttribute('class', `page-item`);
+                    aa.innerHTML = `&raquo;`
+                    aa.setAttribute('onclick', 'giveChosenPage(this);');
+                    paginatinPlace.append(aa)
+                    // for (let i = -1; i < response.results.pageCount + 1; i++) {
+                    //     let a = document.createElement('a');
+                    //     a.setAttribute('onclick', 'giveChosenPage(this);');
+                    //     if (i === -1) {
+                    //         a.setAttribute('id', `-1`);
+                    //         a.setAttribute('value', `-1`);
+                    //         a.setAttribute('class', `page-item`);
+                    //         a.innerHTML = `&laquo;`
+                    //     } else if (i === 0) {
+                    //         a.setAttribute('id', '1');
+                    //         a.setAttribute('value', '1');
+                    //         a.setAttribute('class', `active`);
+                    //         a.innerHTML = '1'
+                    //     } else if (i > 0 && i !== response.results.pageCount) {
+                    //         a.setAttribute('id', `${i + 1}`);
+                    //         a.setAttribute('value', `${i + 1}`);
+                    //         a.setAttribute('class', `page-item`);
+                    //         a.innerHTML = `${i + 1}`
+                    //     } else {
+                    //         a.setAttribute('id', `+1`);
+                    //         a.setAttribute('value', `+1`);
+                    //         a.setAttribute('class', `page-item`);
+                    //         a.innerHTML = `&raquo;`
+                    //     }
+                    //     paginationPlace.append(a);
+                    // }
                 }
                 let filterDiv = document.getElementById('shopFilter');
                 $("#shopFilter").empty();
@@ -235,44 +282,106 @@ $(document).ready(function () {
             url: '/shop-filter',
             data: bringData,
             success: (response) => {
+              
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
+                   // let paginatinPlace = document.getElementById('pagination-place');
+                   // var item = (Number(pageNumber) > 6 ? Number(pageNumber) - 5: 1)
+                   // let a = document.createElement('a');
+                  //  document.getElementById('pagination-place').innerHTML = ''
+                    //document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
                     let paginatinPlace = document.getElementById('pagination-place');
-                    for (let i = -1; i < response.results.pageCount + 1; i++) {
+                    let a = document.createElement('a');
+
+                    a.setAttribute('id', `-1`);
+                    a.setAttribute('value', `-1`);
+                    a.setAttribute('class', `page-item`);
+                    a.innerHTML = `&laquo;`
+                    a.setAttribute('onclick', 'giveChosenPage(this);');
+                    paginatinPlace.append(a)
+                    if(!pageNumber||pageNumber=='undefined'){
+                        pageNumber = 1
+                    }
+                    var i = (Number(pageNumber) > 4 ? Number(pageNumber) - 3 : 1)
+                    if (i !== 1) {
+                        let a = document.createElement('a');
+                        a.innerHTML = '...'
+                        paginatinPlace.append(a)
+                    }
+                    for (;i <=(Number(pageNumber) + 3) && i <= response.results.pageCount  ; i++) {
                         let a = document.createElement('a');
                         a.setAttribute('onclick', 'giveChosenPage(this);');
-                        if (i === -1) {
-                            a.setAttribute('id', `-1`);
-                            a.setAttribute('value', `-1`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `&laquo;`
-                        } else if (i === 0) {
-                             if(!pageNumber||pageNumber=='undefined'){
-                                a.setAttribute('id', '1');
-                                a.setAttribute('value', '1');
-                                a.setAttribute('class', `active`);
+                        if (i ===Number(pageNumber) ){
+                            a.setAttribute('id', `${i}`);
+                            a.setAttribute('value', `${i}`);
+                            a.setAttribute('class', `active`);
+                            a.innerHTML =  `${i}`
+                        } else  {
+                            if (i == Number(pageNumber) + 3 ) {
+                                a.innerHTML =  `...`
                             }else{
-                                a.setAttribute('id', '1');
-                                a.setAttribute('value', '1');
+                                a.setAttribute('id', `${i}`);
+                                a.setAttribute('value', `${i}`);
+                                a.setAttribute('class', `page-item`);
+                                a.innerHTML =  `${i}`
                             }
-
-                            a.innerHTML = '1'
-                        } else if (i > 0 && i !== response.results.pageCount) {
-                            a.setAttribute('id', `${i + 1}`);
-                            a.setAttribute('value', `${i + 1}`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `${i + 1}`
-                        } else {
-                            a.setAttribute('id', `+1`);
-                            a.setAttribute('value', `+1`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `&raquo;`
-                        }
-                        if(pageNumber&&pageNumber===i+1){
-                            a.setAttribute('class','active');
                         }
                         paginatinPlace.append(a);
                     }
+                    let aa = document.createElement('a');
+                    aa.setAttribute('id', `+1`);
+                    aa.setAttribute('value', `+1`);
+                    aa.setAttribute('class', `page-item`);
+                    aa.innerHTML = `&raquo;`
+                    aa.setAttribute('onclick', 'giveChosenPage(this);');
+                    paginatinPlace.append(aa)
+                    //    a.setAttribute('id', `-1`);
+                    //     a.setAttribute('value', `-1`);
+                    //     a.setAttribute('class', `page-item`);
+                    //     a.innerHTML = `&laquo;`
+                    // paginatinPlace.append(a)
+                    //
+                    // for (let i = 0; i < response.results.pageCount &&item <= (Number(pageNumber) + 5); i++,item++) {
+                    //     let a = document.createElement('a');
+                    //     console.log(1111)
+                    //     a.setAttribute('onclick', 'giveChosenPage(this);');
+                    //
+                    //     if (i === 0) {
+                    //          if(!pageNumber||pageNumber=='undefined'){
+                    //             a.setAttribute('id', '1');
+                    //             a.setAttribute('value', '1');
+                    //             a.setAttribute('class', `active`);
+                    //         }else{
+                    //             a.setAttribute('id', '1');
+                    //             a.setAttribute('value', '1');
+                    //         }
+                    //
+                    //         a.innerHTML = '1'
+                    //     }
+                    //     else if (i >0 && i !== response.results.pageCount) {
+                    //         if (item == Number(pageNumber) + 5) {
+                    //             a.innerHTML = '...'
+                    //         }else {
+                    //             a.setAttribute('id', `${i + 1}`);
+                    //             a.setAttribute('value', `${i + 1}`);
+                    //             a.setAttribute('class', `page-item`);
+                    //             a.innerHTML = `${i + 1}`
+                    //         }
+                    //     }
+                    //     if(pageNumber&&pageNumber===i+1){
+                    //         a.setAttribute('class','active');
+                    //     }
+                    //     paginatinPlace.append(a);
+                    // }
+                    // let aa = document.createElement('a');
+                    // aa.setAttribute('id', `+1`);
+                    // aa.setAttribute('value', `+1`);
+                    // aa.setAttribute('class', `page-item`);
+                    // aa.innerHTML = `&raquo;`
+                    // aa.setAttribute('onclick', 'giveChosenPage(this);');
+                    // paginatinPlace.append(aa)
+
+
                 }
                 let filterDiv = document.getElementById('shopFilter');
                 $("#shopFilter").empty();
@@ -338,7 +447,8 @@ $(document).ready(function () {
         let pageNumber;
         if (elementValue === '-1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
-                if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
+                if(document.getElementById(`${i}`))
+                    if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
                     if (i === 1) {
                         pageNumber = i;
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
@@ -346,7 +456,9 @@ $(document).ready(function () {
                         break;
                     } else {
                         pageNumber = i - 1;
+                        if(document.getElementById(`${i - 1}`))
                         document.getElementById(`${i - 1}`).setAttribute("class", "page-item active");
+                        if(document.getElementById(`${i}`))
                         document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
                         break;
                     }
@@ -354,15 +466,20 @@ $(document).ready(function () {
             }
         } else if (elementValue === '+1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
+                if(document.getElementById(`${i}`))
                 if (document.getElementById(`${i}`).getAttribute('class')?.includes('active')) {
                     if (i === Number(pagesCount)) {
                         pageNumber = i;
+                        if(document.getElementById(`${i}`))
                         document.getElementById(`${i}`).setAttribute("class", "page-item active");
+                        if(document.getElementById(`${elementValue}`))
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item disabled");
                         break;
                     } else {
                         pageNumber = i + 1;
+                        if(document.getElementById(`${i}`))
                         document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
+                        if(document.getElementById(`${i+1}`))
                         document.getElementById(`${i + 1}`).setAttribute("class", "page-item active");
                         break;
                     }
@@ -374,6 +491,7 @@ $(document).ready(function () {
                     if (i === Number(elementValue)) {
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
                     } else {
+                        if( document.getElementById(`${i}`))
                         document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
                     }
                 }
@@ -382,6 +500,7 @@ $(document).ready(function () {
                     if (i === Number(elementValue)) {
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
                     } else {
+                        if( document.getElementById(`${i}`))
                         document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
                     }
                 }
@@ -474,9 +593,54 @@ $(document).ready(function () {
                             <h1>Not result found.</h1>`
 
                 }
-                $("html, body").animate({
-                    scrollTop: 0
-                }, 1000);
+                document.getElementById('pagination-place').innerHTML = ''
+                document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
+                let paginatinPlace = document.getElementById('pagination-place');
+                let a = document.createElement('a');
+
+                a.setAttribute('id', `-1`);
+                    a.setAttribute('value', `-1`);
+                    a.setAttribute('class', `page-item`);
+                    a.innerHTML = `&laquo;`
+                a.setAttribute('onclick', 'giveChosenPage(this);');
+                paginatinPlace.append(a)
+                var i = (Number(pageNumber) > 4 ? Number(pageNumber) - 3 : 1)
+                    if (i !== 1) {
+                        let a = document.createElement('a');
+                        a.innerHTML = '...'
+                        paginatinPlace.append(a)
+                 }
+                for (;i <=(Number(pageNumber) + 3) && i <= response.results.pageCount  ; i++) {
+                    let a = document.createElement('a');
+                    a.setAttribute('onclick', 'giveChosenPage(this);');
+                   if (i ===Number(pageNumber) ) {
+                       a.setAttribute('id', `${i}`);
+                       a.setAttribute('value', `${i}`);
+                       a.setAttribute('class', `active`);
+                        a.innerHTML =  `${i}`
+                    } else  {
+                       if (i == Number(pageNumber) + 3 ) {
+                           a.innerHTML =  `...`
+                       }else{
+                           a.setAttribute('id', `${i}`);
+                           a.setAttribute('value', `${i}`);
+                           a.setAttribute('class', `page-item`);
+                           a.innerHTML =  `${i}`
+                       }
+                    }
+                    paginatinPlace.append(a);
+                }
+                let aa = document.createElement('a');
+                aa.setAttribute('id', `+1`);
+                aa.setAttribute('value', `+1`);
+                aa.setAttribute('class', `page-item`);
+                aa.innerHTML = `&raquo;`
+                aa.setAttribute('onclick', 'giveChosenPage(this);');
+                paginatinPlace.append(aa)
+
+                 $("html, body").animate({
+                     scrollTop: 0
+                 }, 100);
             },
             error: function (data) {
                 console.log('User creation failed :' + data);
@@ -491,6 +655,7 @@ $(document).ready(function () {
         let pageNumber;
         if (elementValue === '-1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
+                if(document.getElementById(`${i}`))
                 if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
                     if (i === 1) {
                         pageNumber = i;
@@ -507,6 +672,7 @@ $(document).ready(function () {
             }
         } else if (elementValue === '+1') {
             for (let i = 1; i <= Number(pagesCount); i++) {
+                if(document.getElementById(`${i}`))
                 if (document.getElementById(`${i}`).getAttribute('class').includes('active')) {
                     if (i === Number(pagesCount)) {
                         pageNumber = i;
@@ -535,6 +701,7 @@ $(document).ready(function () {
                     if (i === Number(elementValue)) {
                         document.getElementById(`${elementValue}`).setAttribute("class", "page-item active");
                     } else {
+                        if(document.getElementById(`${i}`))
                         document.getElementById(`${i}`).setAttribute("class", "page-item disabled");
                     }
                 }
@@ -590,34 +757,80 @@ $(document).ready(function () {
             success: (response) => {
                 $("#pagination-place").empty();
                 if (response.results.pageCount > 0) {
+                 
                     document.getElementById('pagination-place').setAttribute('value', response.results.count);
                     let paginatinPlace = document.getElementById('pagination-place');
-                    for (let i = -1; i < response.results.pageCount + 1; i++) {
+                    //let paginatinPlace = document.getElementById('pagination-place');
+                    let a = document.createElement('a');
+
+                    a.setAttribute('id', `-1`);
+                    a.setAttribute('value', `-1`);
+                    a.setAttribute('class', `page-item`);
+                    a.innerHTML = `&laquo;`
+                    a.setAttribute('onclick', 'givePageNumber(this);');
+                    paginatinPlace.append(a)
+                    if(!pageNumber||pageNumber=='undefined'){
+                        pageNumber = 1
+                    }
+                    var i = (Number(pageNumber) > 4 ? Number(pageNumber) - 3 : 1)
+                    if (i !== 1) {
+                        let a = document.createElement('a');
+                        a.innerHTML = '...'
+                        paginatinPlace.append(a)
+                    }
+                    for (;i <=(Number(pageNumber) + 3) && i <= response.results.pageCount  ; i++) {
                         let a = document.createElement('a');
                         a.setAttribute('onclick', 'givePageNumber(this);');
-                        if (i === -1) {
-                            a.setAttribute('id', `-1`);
-                            a.setAttribute('value', `-1`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `&laquo;`
-                        } else if (i === 0) {
-                            a.setAttribute('id', '1');
-                            a.setAttribute('value', '1');
+                        if (i ===Number(pageNumber) ){
+                            a.setAttribute('id', `${i}`);
+                            a.setAttribute('value', `${i}`);
                             a.setAttribute('class', `active`);
-                            a.innerHTML = '1'
-                        } else if (i > 0 && i !== response.results.pageCount) {
-                            a.setAttribute('id', `${i + 1}`);
-                            a.setAttribute('value', `${i + 1}`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `${i + 1}`
-                        } else {
-                            a.setAttribute('id', `+1`);
-                            a.setAttribute('value', `+1`);
-                            a.setAttribute('class', `page-item`);
-                            a.innerHTML = `&raquo;`
+                            a.innerHTML =  `${i}`
+                        } else  {
+                            if (i == Number(pageNumber) + 3 ) {
+                                a.innerHTML =  `...`
+                            }else{
+                                a.setAttribute('id', `${i}`);
+                                a.setAttribute('value', `${i}`);
+                                a.setAttribute('class', `page-item`);
+                                a.innerHTML =  `${i}`
+                            }
                         }
                         paginatinPlace.append(a);
                     }
+                    let aa = document.createElement('a');
+                    aa.setAttribute('id', `+1`);
+                    aa.setAttribute('value', `+1`);
+                    aa.setAttribute('class', `page-item`);
+                    aa.innerHTML = `&raquo;`
+                    aa.setAttribute('onclick', 'givePageNumber(this);');
+                    paginatinPlace.append(aa)
+                    // for (let i = -1; i < response.results.pageCount + 1; i++) {
+                    //     let a = document.createElement('a');
+                    //     a.setAttribute('onclick', 'givePageNumber(this);');
+                    //     if (i === -1) {
+                    //         a.setAttribute('id', `-1`);
+                    //         a.setAttribute('value', `-1`);
+                    //         a.setAttribute('class', `page-item`);
+                    //         a.innerHTML = `&laquo;`
+                    //     } else if (i === 0) {
+                    //         a.setAttribute('id', '1');
+                    //         a.setAttribute('value', '1');
+                    //         a.setAttribute('class', `active`);
+                    //         a.innerHTML = '1'
+                    //     } else if (i > 0 && i !== response.results.pageCount) {
+                    //         a.setAttribute('id', `${i + 1}`);
+                    //         a.setAttribute('value', `${i + 1}`);
+                    //         a.setAttribute('class', `page-item`);
+                    //         a.innerHTML = `${i + 1}`
+                    //     } else {
+                    //         a.setAttribute('id', `+1`);
+                    //         a.setAttribute('value', `+1`);
+                    //         a.setAttribute('class', `page-item`);
+                    //         a.innerHTML = `&raquo;`
+                    //     }
+                    //     paginatinPlace.append(a);
+                    // }
                 }
                 let filterDiv = document.getElementById('shopFilter');
                 $("#shopFilter").empty();
@@ -731,63 +944,157 @@ $(document).ready(function () {
                 $("#pagination-place").empty();
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
-                    let paginatinPlace = document.getElementById('pagination-place');
+                   // let paginatinPlace = document.getElementById('pagination-place');
+                   
                     if (pageNumber && pageNumber > 0) {
-                        for (let i = -1; i < response.results.pageCount + 1; i++) {
-                            let a = document.createElement('a');
-                            a.setAttribute('onclick', 'givePageNumber(this);');
-                            if (i === -1) {
-                                a.setAttribute('id', `-1`);
-                                a.setAttribute('value', `-1`);
-                                a.setAttribute('class', `page-item`);
-                                a.innerHTML = `&laquo;`
-                            } else if (i >= 0 && i !== response.results.pageCount) {
-                                if (i !== pageNumber - 1) {
-                                    a.setAttribute('id', `${i + 1}`);
-                                    a.setAttribute('value', `${i + 1}`);
-                                    a.setAttribute('class', `page-item`);
-                                    a.innerHTML = `${i + 1}`
-                                } else {
-                                    a.setAttribute('id', `${i + 1}`);
-                                    a.setAttribute('value', `${i + 1}`);
-                                    a.setAttribute('class', `active`);
-                                    a.innerHTML = `${i + 1}`
-                                }
-                            } else {
-                                a.setAttribute('id', `+1`);
-                                a.setAttribute('value', `+1`);
-                                a.setAttribute('class', `page-item`);
-                                a.innerHTML = `&raquo;`
-                            }
-                            paginatinPlace.append(a);
+                        let paginatinPlace = document.getElementById('pagination-place');
+                        let a = document.createElement('a');
+
+                        a.setAttribute('id', `-1`);
+                        a.setAttribute('value', `-1`);
+                        a.setAttribute('class', `page-item`);
+                        a.innerHTML = `&laquo;`
+                        a.setAttribute('onclick', 'givePageNumber(this);');
+                        paginatinPlace.append(a)
+                        if(!pageNumber||pageNumber=='undefined'){
+                            pageNumber = 1
                         }
-                    } else {
-                        for (let i = -1; i < response.results.pageCount + 1; i++) {
+                        var i = (Number(pageNumber) > 4 ? Number(pageNumber) - 3 : 1)
+                        if (i !== 1) {
+                            let a = document.createElement('a');
+                            a.innerHTML = '...'
+                            paginatinPlace.append(a)
+                        }
+                        for (;i <=(Number(pageNumber) + 3) && i <= response.results.pageCount  ; i++) {
                             let a = document.createElement('a');
                             a.setAttribute('onclick', 'givePageNumber(this);');
-                            if (i === -1) {
-                                a.setAttribute('id', `-1`);
-                                a.setAttribute('value', `-1`);
-                                a.setAttribute('class', `page-item`);
-                                a.innerHTML = `&laquo;`
-                            } else if (i === 0) {
-                                a.setAttribute('id', '1');
-                                a.setAttribute('value', '1');
+                            if (i ===Number(pageNumber) ){
+                                a.setAttribute('id', `${i}`);
+                                a.setAttribute('value', `${i}`);
                                 a.setAttribute('class', `active`);
-                                a.innerHTML = '1'
-                            } else if (i > 0 && i !== response.results.pageCount) {
-                                a.setAttribute('id', `${i + 1}`);
-                                a.setAttribute('value', `${i + 1}`);
-                                a.setAttribute('class', `page-item`);
-                                a.innerHTML = `${i + 1}`
-                            } else {
-                                a.setAttribute('id', `+1`);
-                                a.setAttribute('value', `+1`);
-                                a.setAttribute('class', `page-item`);
-                                a.innerHTML = `&raquo;`
+                                a.innerHTML =  `${i}`
+                            } else  {
+                                if (i == Number(pageNumber) + 3 ) {
+                                    a.innerHTML =  `...`
+                                }else{
+                                    a.setAttribute('id', `${i}`);
+                                    a.setAttribute('value', `${i}`);
+                                    a.setAttribute('class', `page-item`);
+                                    a.innerHTML =  `${i}`
+                                }
                             }
                             paginatinPlace.append(a);
                         }
+                        let aa = document.createElement('a');
+                        aa.setAttribute('id', `+1`);
+                        aa.setAttribute('value', `+1`);
+                        aa.setAttribute('class', `page-item`);
+                        aa.innerHTML = `&raquo;`
+                        aa.setAttribute('onclick', 'givePageNumber(this);');
+                        paginatinPlace.append(aa)
+                        // for (let i = -1; i < response.results.pageCount + 1&&item <= (Number(pageNumber) + 4); i++,item++) {
+                        //     let a = document.createElement('a');
+                        //     a.setAttribute('onclick', 'givePageNumber(this);');
+                        //     if (i === -1) {
+                        //         a.setAttribute('id', `-1`);
+                        //         a.setAttribute('value', `-1`);
+                        //         a.setAttribute('class', `page-item`);
+                        //         a.innerHTML = `&laquo;`
+                        //     } else if (i >= 0 && i !== response.results.pageCount) {
+                        //         if (item == Number(pageNumber) + 4 && item < response.results.pageCount) {
+                        //             a.innerHTML = '...'
+                        //         }else
+                        //         if (i !== pageNumber - 1) {
+                        //             a.setAttribute('id', `${i + 1}`);
+                        //             a.setAttribute('value', `${i + 1}`);
+                        //             a.setAttribute('class', `page-item`);
+                        //             a.innerHTML = `${i + 1}`
+                        //         } else {
+                        //             a.setAttribute('id', `${i + 1}`);
+                        //             a.setAttribute('value', `${i + 1}`);
+                        //             a.setAttribute('class', `active`);
+                        //             a.innerHTML = `${i + 1}`
+                        //         }
+                        //     } else {
+                        //         a.setAttribute('id', `+1`);
+                        //         a.setAttribute('value', `+1`);
+                        //         a.setAttribute('class', `page-item`);
+                        //         a.innerHTML = `&raquo;`
+                        //     }
+                        //     paginatinPlace.append(a);
+                        // }
+                    } else {
+                        let paginatinPlace = document.getElementById('pagination-place');
+                        let a = document.createElement('a');
+
+                        a.setAttribute('id', `-1`);
+                        a.setAttribute('value', `-1`);
+                        a.setAttribute('class', `page-item`);
+                        a.innerHTML = `&laquo;`
+                        a.setAttribute('onclick', 'givePageNumber(this);');
+                        paginatinPlace.append(a)
+                        if(!pageNumber||pageNumber=='undefined'){
+                            pageNumber = 1
+                        }
+                        var i = (Number(pageNumber) > 4 ? Number(pageNumber) - 3 : 1)
+                        if (i !== 1) {
+                            let a = document.createElement('a');
+                            a.innerHTML = '...'
+                            paginatinPlace.append(a)
+                        }
+                        for (;i <=(Number(pageNumber) + 3) && i <= response.results.pageCount  ; i++) {
+                            let a = document.createElement('a');
+                            a.setAttribute('onclick', 'givePageNumber(this);');
+                            if (i ===Number(pageNumber) ){
+                                a.setAttribute('id', `${i}`);
+                                a.setAttribute('value', `${i}`);
+                                a.setAttribute('class', `active`);
+                                a.innerHTML =  `${i}`
+                            } else  {
+                                if (i == Number(pageNumber) + 3 ) {
+                                    a.innerHTML =  `...`
+                                }else{
+                                    a.setAttribute('id', `${i}`);
+                                    a.setAttribute('value', `${i}`);
+                                    a.setAttribute('class', `page-item`);
+                                    a.innerHTML =  `${i}`
+                                }
+                            }
+                            paginatinPlace.append(a);
+                        }
+                        let aa = document.createElement('a');
+                        aa.setAttribute('id', `+1`);
+                        aa.setAttribute('value', `+1`);
+                        aa.setAttribute('class', `page-item`);
+                        aa.innerHTML = `&raquo;`
+                        aa.setAttribute('onclick', 'givePageNumber(this);');
+                        paginatinPlace.append(aa)
+                        // for (let i = -1; i < response.results.pageCount + 1; i++) {
+                        //     let a = document.createElement('a');
+                        //     a.setAttribute('onclick', 'givePageNumber(this);');
+                        //     if (i === -1) {
+                        //         a.setAttribute('id', `-1`);
+                        //         a.setAttribute('value', `-1`);
+                        //         a.setAttribute('class', `page-item`);
+                        //         a.innerHTML = `&laquo;`
+                        //     } else if (i === 0) {
+                        //         a.setAttribute('id', '1');
+                        //         a.setAttribute('value', '1');
+                        //         a.setAttribute('class', `active`);
+                        //         a.innerHTML = '1'
+                        //     } else if (i > 0 && i !== response.results.pageCount) {
+                        //         a.setAttribute('id', `${i + 1}`);
+                        //         a.setAttribute('value', `${i + 1}`);
+                        //         a.setAttribute('class', `page-item`);
+                        //         a.innerHTML = `${i + 1}`
+                        //     } else {
+                        //         a.setAttribute('id', `+1`);
+                        //         a.setAttribute('value', `+1`);
+                        //         a.setAttribute('class', `page-item`);
+                        //         a.innerHTML = `&raquo;`
+                        //     }
+                        //     paginatinPlace.append(a);
+                        // }
                     }
                 }
                 let filterDiv = document.getElementById('shopFilter');
@@ -867,6 +1174,7 @@ function deleteType(element){
         }
     });
 }
+
 
 
 
