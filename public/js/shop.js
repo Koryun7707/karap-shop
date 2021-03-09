@@ -166,6 +166,9 @@ function searchByPrice() {
                             <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 1000);
             },
             error: (e) => {
                 console.log(e)
@@ -430,6 +433,9 @@ $(document).ready(function () {
                             <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 1000);
             },
             error: (e) => {
                 console.log(e)
@@ -640,7 +646,7 @@ $(document).ready(function () {
 
                  $("html, body").animate({
                      scrollTop: 0
-                 }, 100);
+                 }, 1000);
             },
             error: function (data) {
                 console.log('User creation failed :' + data);
@@ -878,6 +884,9 @@ $(document).ready(function () {
                             <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 1000);
             },
             error: (e) => {
                 console.log(e)
@@ -1146,6 +1155,9 @@ $(document).ready(function () {
                             <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 1000);
             }
             ,
             error: (e) => {
@@ -1174,6 +1186,7 @@ function deleteType(element){
         }
     });
 }
+
 
 
 
