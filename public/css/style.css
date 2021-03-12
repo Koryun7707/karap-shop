@@ -428,10 +428,10 @@ footer .abs {
     height: 100%;
 }
 #carousel2 .card {
-	background-color: #000000;
+    background-color: #000000;
 }
 #carousel2 a.item {
-	width: 100%;
+    width: 100%;
     height: 100%;
     display: inline-block;
     text-decoration: none;
@@ -1091,7 +1091,7 @@ button:focus {
     height: 100%;
     float: left;
     text-align: center;
-    color: #cdc1c5;
+    color: black;
 }
 
 /*admin css*/
@@ -1307,7 +1307,7 @@ button:focus {
 
 .icon-search-container.active #search-div-mobile,
 .icon-search-container.active #search-div {
-  visibility: visible;
+    visibility: visible;
     position: relative;
     margin-top: 38px;
     padding: 1px 30px;
@@ -1408,3 +1408,4 @@ button:focus {
 #filterIcon.active .fa-angle-down {
     transform: rotate(180deg);
 }
+

@@ -6,7 +6,7 @@
         <div id="message_div"><%- include ('partials/messages') %></div>
         <div class="shop-check d-flex ml-3">
             <div class="form-group mr-2">
-                <input  autocomplete="off" onclick="selectAll(this)" type="checkbox" id="select-all">
+                <input autocomplete="off" onclick="selectAll(this)" type="checkbox" id="select-all">
                 <label for="select-all" class=""><%= staticData.select_all %></label>
             </div>
         </div>
@@ -20,12 +20,12 @@
                     <div class="mb-3 d-flex justify-content-between">
                         <h2 class="title fs-35"><b><%= staticData.subtotal %></b></h2>
                         <div class="product-price">
-                            <h2 id="total" ><b>0 </b></h2>
+                            <h2 id="total"><b>0 </b></h2>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div><%= staticData.quantity %> <span id="countProduct">0</span></div>
-                        <div id="productStartPrice" >0</div>
+                        <div id="productStartPrice">0</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div><%= staticData.you_save %></div>
@@ -79,6 +79,7 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/script.js"></script>
 <script>
+
     if (document.getElementById('message_div').innerHTML.length > 4) {
         localStorage.removeItem('shoppingCard');
         localStorage.removeItem('shippingAddress');
@@ -99,8 +100,8 @@
                 const language = document.getElementById('example').value === 'eng' ? true : false;
                 if (response.results.length) {
                     response.results.forEach(function (item) {
-                        const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size?true:false;
-                        const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color?true:false;
+                        const size = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].size ? true : false;
+                        const color = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color ? true : false;
                         const img = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].img;
                         if (!item.sale) {
                             item.sale = 0;
@@ -109,21 +110,21 @@
                         currentDiv.append(newDiv);
                         newDiv.setAttribute('class', 'selected-product-cart');
                         newDiv.id = item._id;
-                        const PRICE =Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price);
+                        const PRICE = Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count) * Number(item.price);
                         const SALE = ((Number(item.price) - (Number(item.price) * (Number(item.sale))) / 100) * Number(shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].count));
                         const COLOR = shoppingCard[shoppingCard.findIndex(x => x.productId == `${item._id}`)].color
                         let colorPak3
                         let colorPak6
-                        if(Array.isArray(COLOR)){
-                            if(COLOR.length === 3){
+                        if (Array.isArray(COLOR)) {
+                            if (COLOR.length === 3) {
                                 colorPak3 = COLOR
-                            }else{
+                            } else {
                                 colorPak6 = COLOR
                             }
                         }
                         let complect = false;
-                     
-                        if(item.complect){
+
+                        if (item.complect) {
                             complect = true;
                         }
                         newDiv.innerHTML = `
@@ -133,7 +134,7 @@
                             <label for="${language ? item.name : item.nameArm}" class=""></label>
                         </div>
                         <div class="img-area mx-2 mx-md-5">
-                            <img id='productImage${item._id}' src="${complect?img:item.images[1]}" alt="" class="w-100">
+                            <img id='productImage${item._id}' src="${complect ? img : item.images[1]}" alt="" class="w-100">
                         </div>
                         <div>
                             <div id='productName${item._id}' productWeight='${item.productWeight}' registrationAddress='${item.brandId.registrationAddress}' class="product-name">${language ? item.name : item.nameArm}</div>
@@ -154,8 +155,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${PRICE%1==0?PRICE:PRICE.toFixed(2)}€</div>
-                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${SALE%1==0?SALE:SALE.toFixed(2)}€</div>
+                            <div  id="productPriceBasket${item._id}" value=${item.price}  style="text-decoration: line-through" class="product-price mr-3">${PRICE % 1 == 0 ? PRICE : PRICE.toFixed(2)}€</div>
+                            <div style="display: none"  id="saleProductPrice${item._id}" value=${item.sale} class="product-price" >${SALE % 1 == 0 ? SALE : SALE.toFixed(2)}€</div>
 
                         </div>
                     </div>
@@ -165,42 +166,40 @@
                         <button value="${item._id}" class="btn btn-danger py-1 br-0" onclick="deleteProduct(this)" type="submit">x</button>
                     </div>
                `
-                        if(colorPak3){
-                            for(let i=0;i<3;i++){
+                        if (colorPak3) {
+                            for (let i = 0; i < 3; i++) {
                                 let div = document.createElement('div');
-                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.setAttribute('class', `product-color py-2 div2${item._id}`);
                                 div.style.backgroundColor = `${colorPak3[i]}`
                                 document.getElementById(`colorDiv${item._id}`).append(div);
                             }
 
-                        }else
-                        if(colorPak6){
-                            for(let i=0;i<6;i++){
+                        } else if (colorPak6) {
+                            for (let i = 0; i < 6; i++) {
                                 let div = document.createElement('div');
-                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
+                                div.setAttribute('class', `product-color py-2 div2${item._id}`);
                                 div.style.backgroundColor = `${colorPak6[i]}`
                                 document.getElementById(`colorDiv${item._id}`).append(div);
                             }
 
-                        }else
-                        {
+                        } else {
 
-                                let div = document.createElement('div');
-                                div.setAttribute('class',`product-color py-2 div2${item._id}`);
-                                div.style.backgroundColor = COLOR;
-                                document.getElementById(`colorDiv${item._id}`).append(div);
+                            let div = document.createElement('div');
+                            div.setAttribute('class', `product-color py-2 div2${item._id}`);
+                            div.style.backgroundColor = COLOR;
+                            document.getElementById(`colorDiv${item._id}`).append(div);
 
 
                         }
-                        if(!size){
+                        if (!size) {
                             document.getElementById(`div1${item._id}`).style.display = 'none';
                         }
                         // console.log('dssfd',)
-                        if(!color||!COLOR.length){
+                        if (!color || !COLOR.length) {
                             let str = `div2${item._id}`
-                           document.querySelectorAll(`.div2${item._id}`).forEach(item=>{
-                               item.style.display = 'none'
-                           })
+                            document.querySelectorAll(`.div2${item._id}`).forEach(item => {
+                                item.style.display = 'none'
+                            })
                         }
                         if (item.sale) {
                             document.getElementById(`saleProductPrice${item._id}`).style.display = 'block';
@@ -209,10 +208,24 @@
                             document.getElementById(`productPriceBasket${item._id}`).removeAttribute('style');
                         }
                     })
+                     //here
+                    const shoppingCardLocal = JSON.parse(localStorage.getItem('shoppingCard'));
+                    const products = response.results;
+                    const output = shoppingCardLocal.filter(item => products.some(other => item.productId == other._id));
+                        localStorage.setItem('shoppingCard', JSON.stringify(output));
+                        document.getElementById('shoppingCardNumber').innerHTML = output.length;
+                        document.getElementById('shoppingCardNumberS').innerHTML = output.length;
+
+                }else{
+                         localStorage.removeItem('shoppingCard');
+                         document.getElementById('shoppingCardNumber').innerHTML = '0';
+                         document.getElementById('shoppingCardNumberS').innerHTML = '0';
+
+
                 }
             },
             error: (e) => {
-                 console.log(e)
+                console.log(e)
             }
         })
     }
@@ -253,15 +266,15 @@
             }
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${Number(productPrice)%1===0?productPrice:productPrice.toFixed(2)}€`
-                if(Number(productPrice) === Number(sum)){
+                productStartPrice.innerHTML = `${Number(productPrice) % 1 === 0 ? productPrice : productPrice.toFixed(2)}€`
+                if (Number(productPrice) === Number(sum)) {
                     document.getElementById('productStartPrice').removeAttribute('style')
-                }else{
+                } else {
                     // style="text-decoration: line-through;"
                     document.getElementById('productStartPrice').style.textDecoration = 'line-through'
                 }
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice)%1==0?(productPrice - productSalePrice):(productPrice - productSalePrice).toFixed(2)}€`;
-                document.getElementById('total').innerHTML = `${sum%1==0?sum:sum.toFixed(2)}€`;
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice) % 1 == 0 ? (productPrice - productSalePrice) : (productPrice - productSalePrice).toFixed(2)}€`;
+                document.getElementById('total').innerHTML = `${sum % 1 == 0 ? sum : sum.toFixed(2)}€`;
             } else {
                 countProduct.innerHTML = '0';
                 productStartPrice.innerHTML = '0';
@@ -309,9 +322,9 @@
             }
         } else if (!localStorage.getItem('user')) {
             if (lang === 'eng') {
-                alert('Please login for continue to shipping.');
+                alert('Please login to continue.');
             } else {
-                alert('Խնդրում ենք մուտք գործել ՝ առաքումը շարունակելու համար:');
+                alert('Խնդրում ենք մուտք գործել  շարունակելու համար:');
             }
         } else {
 
@@ -336,8 +349,8 @@
                             nameArm: document.getElementById(`nameArm${id}`).innerHTML,
                             registrationAddress: document.getElementById(`productName${id}`).getAttribute('registrationAddress'),
                             productWeight: document.getElementById(`productName${id}`).getAttribute('productWeight'),
-                            size:SIZE,
-                            color:COLOR
+                            size: SIZE,
+                            color: COLOR
                         }
                         values.push(obj);
                     }
@@ -393,8 +406,8 @@
             document.getElementById(`qtyInput${id}`).setAttribute('value', `${basketProductCount}`);
             const price = Number(basketProductCount) * Number(document.getElementById(`productPriceBasket${id}`).getAttribute('value'));
             const saleCount = price - (price * Number(document.getElementById(`saleProductPrice${id}`).getAttribute('value')) / 100);
-            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount%1==0?saleCount:saleCount.toFixed(2)}€`;
-            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price%1==0?price:price.toFixed(2)}€`;
+            document.getElementById(`saleProductPrice${id}`).innerHTML = `${saleCount % 1 == 0 ? saleCount : saleCount.toFixed(2)}€`;
+            document.getElementById(`productPriceBasket${id}`).innerHTML = `${price % 1 == 0 ? price : price.toFixed(2)}€`;
             let sum = 0;
             $.each($('input:checked'), function (index, input) {
                 if (input.id != 'select-all' && input.id != "agreeTerms") {
@@ -411,9 +424,9 @@
             });
             if (sum) {
                 countProduct.innerHTML = `${productCount}`;
-                productStartPrice.innerHTML = `${Number(productPrice)%1==0?productPrice:productPrice.toFixed(2)}€`
-                afterSale.innerHTML = `${Number(productPrice - productSalePrice)%1==0?(productPrice - productSalePrice):(productPrice - productSalePrice).toFixed(2)}€`;
-                document.getElementById('total').innerHTML = `${sum%1==0?sum:sum.toFixed(2)}€`;
+                productStartPrice.innerHTML = `${Number(productPrice) % 1 == 0 ? productPrice : productPrice.toFixed(2)}€`
+                afterSale.innerHTML = `${Number(productPrice - productSalePrice) % 1 == 0 ? (productPrice - productSalePrice) : (productPrice - productSalePrice).toFixed(2)}€`;
+                document.getElementById('total').innerHTML = `${sum % 1 == 0 ? sum : sum.toFixed(2)}€`;
             } else {
                 countProduct.innerHTML = `0`;
                 productStartPrice.innerHTML = `0`
@@ -449,6 +462,7 @@
 
 </body>
 </html>
+
 
 
 

@@ -6,6 +6,7 @@ const ejs = require('ejs')
 const Product = require('../models/product');
 
 const paymentStripe = (req, res) => {
+    
     const {
         address,
         postalCode,

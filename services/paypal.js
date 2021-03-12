@@ -14,7 +14,9 @@ paypal.configure({
 });
 const paymentPaypal = (req, res) => {
     logger.info('Start paymant with paypal - - -');
+    
     const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
+ 
     const {deliveryPrice} = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
     let subTotal = 0;
     order.forEach((item) => {

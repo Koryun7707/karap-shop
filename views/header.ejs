@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="nofollow">
     <meta name="googlebot" content="noindex">
-    <meta name="keywords" content="Armenian Online Storet" />
-   <meta property="og:url" content="https://armatconcept.com/">
-    <meta name="description" content="Armenian Online Store" />
+    <meta name="keywords" content="Armenian Online Storet"/>
+    <meta property="og:url" content="https://armatconcept.com/">
+    <meta name="description" content="Armenian Online Store"/>
     <link rel="icon" href="https://ui-avatars.com/api/?name=Armat+Concept&background=cdc1c5&color=fff&bold=true"
           type="image/x-icon">
     <title>
@@ -24,14 +24,18 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/jq-ui.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BKGGSK73G3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BKGGSK73G3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-  gtag('config', 'G-BKGGSK73G3');
-</script>
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-BKGGSK73G3');
+    </script>
 </head>
 <body>
 
@@ -39,8 +43,8 @@
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light py-0">
             <a class="navbar-brand mr-2 mr-xl-5 header-logo" href="/">
-<!--                <img src="images/logo/pagelogo.png" alt="" width="200">-->
-                               <img src="images/logo/LOGO.png" alt="" style="width: 70px">
+                <!--                <img src="images/logo/pagelogo.png" alt="" width="200">-->
+                <img src="images/logo/LOGO.png" alt="" style="width: 70px">
 
             </a>
             <div class="d-block d-xl-none d-lg-none ml-auto">
@@ -65,7 +69,8 @@
                     </li>
                 </ul>
             </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            <button class="navbar-toggler" onclick="changeBackColor()" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="py-1 px-2"><i class="fa fa-bars text-white"></i></span>
             </button>
@@ -207,10 +212,12 @@
     } else {
         localStorage.removeItem('user');
     }
+
     function userLogOut(element) {
         localStorage.clear('user');
         element.setAttribute('href', '/logout');
     }
+
     function goToSelectedPage(element) {
         let basket;
         if (element.id === 'shoppingCard') {
@@ -223,6 +230,7 @@
             basket.setAttribute('href', '/selectedProducts');
         }
     };
+
     function gup(name, url) {
         if (!url) url = location.href;
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -231,6 +239,7 @@
         var results = regex.exec(url);
         return results == null ? null : results[1];
     }
+
     $(function () {
         document.getElementById('example').addEventListener('change', function () {
             const obj = {
@@ -243,10 +252,10 @@
                 method: 'post',
                 data: obj,
                 success: function () {
-                      if(window.location.pathname ==='/shop'){
-                         location.replace(`https://armatconcept.com/shop`)
-                    }else
-                    window.location.reload(1);
+                    if (window.location.pathname === '/shop') {
+                        location.replace(`https://armatconcept.com/shop`)
+                    } else
+                        window.location.reload(1);
                 },
                 error: function (data) {
                     console.log('User creation failed :' + data);
@@ -266,6 +275,7 @@
         $inputMobile.on('keydown', function () {
             clearTimeout(typingTimer);
         });
+
         function doneTypingMobile() {
             let obj = {
                 search: $inputMobile.val()
@@ -281,7 +291,7 @@
                     $('#search-div-mobile').append(div);
                     if (brands.length) {
                         brands.forEach(function (item) {
-                            if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm'){
+                            if (item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') {
                                 let a = document.createElement(`a`);
                                 a.href = `shop?brandId=${item._id}`
                                 a.innerHTML = `${item.name} <br/>`;
@@ -308,6 +318,7 @@
                 }
             });
         }
+
         //on keyup, start the countdown
         $input.on('keyup', function () {
             document.getElementById('search-div').removeAttribute('style');
@@ -318,6 +329,7 @@
         $input.on('keydown', function () {
             clearTimeout(typingTimer);
         });
+
         function doneTyping() {
             let obj = {
                 search: $input.val()
@@ -333,7 +345,7 @@
                     $('#search-div').append(div);
                     if (brands.length) {
                         brands.forEach(function (item) {
-                            if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm'){
+                            if (item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') {
                                 let a = document.createElement(`a`);
                                 a.href = `shop?brandId=${item._id}`
                                 a.innerHTML = `${item.name} <br/>`;
@@ -363,13 +375,23 @@
     });
 </script>
 <script>
-    $(window).on("scroll", function() {
-        if($(window).scrollTop() > 90) {
+    $(window).on("scroll", function () {
+        if ($(window).scrollTop() > 90) {
             $(".header-bg").addClass("active");
         } else {
             //remove the background property so it comes transparent again (defined in your css)
             $(".header-bg").removeClass("active");
         }
     });
+
+    function changeBackColor() {
+        const navContent = document.getElementById('navbarSupportedContent');
+        if (navContent.getAttribute('class').includes('show')) {
+            $(".header-bg").removeClass("active");
+        } else {
+            $(".header-bg").addClass("active");
+        }
+    }
 </script>
+
 

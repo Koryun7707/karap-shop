@@ -15,14 +15,17 @@
             <div class="owl-slider py-5">
                 <div id="carousel-brand" class="owl-carousel main-item-bg">
                     <% brands.forEach(function(item){ %>
-                        <%if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {%>
-                            <div class="item">
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <img class="card-img-top" src="<%= item.images[0] %>" alt="Card image cap" width="135"
-                                         height="120">
+                        <% if(item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') { %>
+                            <a href="shop?brandId=<%= item._id %>">
+                                <div class="item">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img class="card-img-top" src="<%= item.images[0] %>" alt="Card image cap"
+                                             width="135"
+                                             height="120">
+                                    </div>
                                 </div>
-                            </div>
-                        <%}%>
+                            </a>
+                        <% } %>
                     <% }) %>
                 </div>
             </div>
@@ -84,12 +87,12 @@
                     }
                 }
                 response.results.brands.map((item) => {
-                    if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {
+                    if (item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') {
                         let brandsRenderPlace = document.getElementById('brands-section-place');
                         let text;
-                        const language = document.getElementById('example').value === 'eng'?true:false
+                        const language = document.getElementById('example').value === 'eng' ? true : false
                         console.log(language)
-                        if (language ) {
+                        if (language) {
                             text = 'Shop now'
                         } else {
                             text = 'Գնել'
@@ -100,7 +103,7 @@
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
-                            ${language?item.info:item.infoArm}
+                            ${language ? item.info : item.infoArm}
                         </div>
                         <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5 ">
                                 ${text}
@@ -124,6 +127,7 @@
             }
         });
     };
+
     function handelChosenPage(item) {
         let pagesCount = document.getElementById('brands-section-place').getAttribute('value');
         const elementValue = item.getAttribute('value');
@@ -190,16 +194,16 @@
                 page: pageNumber,
             },
             success: function (response) {
-                const language = document.getElementById('example').value === 'eng'?true:false
+                const language = document.getElementById('example').value === 'eng' ? true : false
                 let text
-                if (language ) {
+                if (language) {
                     text = 'Shop now'
                 } else {
                     text = 'Գնել'
                 }
                 $("#brands-section-place").empty();
                 response.results.brands.map((item) => {
-                    if(item.name!='BooksSpain'&&item.name!='BooksArm'&&item.name!='ToysSpain'&&item.name!='ToysArm') {
+                    if (item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') {
                         let brandsRenderPlace = document.getElementById('brands-section-place');
                         let div = document.createElement('div');
                         div.setAttribute('class', 'row justify-content-between align-items-center flex-wrap py-5 px-md-5 my-5');
@@ -207,7 +211,7 @@
                     <div class="pr-5">
                         <h3 class="title">${item.name}</h3>
                         <div class="info-text">
-                            ${language?item.info:item.infoArm}
+                            ${language ? item.info : item.infoArm}
                         </div>
                         <a href="shop?brandId=${item._id}" class="btn btn-green-gradient px-5">${text}</a>
                     </div>
@@ -264,5 +268,6 @@
 
 </body>
 </html>
+
 
 
