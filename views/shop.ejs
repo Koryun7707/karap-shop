@@ -15,89 +15,96 @@
             <div class="col-md-5 col-lg-4 col-xl-3 col-12">
                 <div class="sidebar px-3">
                     <form action="#">
-                        <div class="sidebar-title"><%= staticData.shop_search %></div>
-                        <div class="shop-search mb-3 mb-md-5">
-                            <input value="" type="search" class="form-control "
-                                   placeholder="<%= staticData.shop_search %>" autocomplete="off" >
+                        <div onclick="showFilters()" class="sidebar-title d-flex justify-content-between align-items-center">
+                            <%= staticData.shop_fil %>
+                            <div id="filterIcon" class="d-md-none d-lg-none">
+                                <i class="fa fa-angle-down"></i>
+                            </div>
                         </div>
-                        <div class="sidebar-title"><%= staticData.shop_product_page %></div>
-                        <div class="scrollbar shop-page-scroll">
-                            <div class="force-overflow" id="productType" value=<%= type %>>
-                                <ul class="list-unstyled px-4 mb-3 mb-md-5">
-                                    <form action="">
+                        <div id="filters" class="d-none d-md-block d-lg-block">
+                            <div class="shop-search mb-3 mb-md-5">
+                                <input value="" type="search" class="form-control "
+                                       placeholder="<%= staticData.shop_search %>" autocomplete="off" >
+                            </div>
+                            <div class="sidebar-title"><%= staticData.shop_product_page %></div>
+                            <div class="scrollbar shop-page-scroll">
+                                <div class="force-overflow" id="productType" value=<%= type %>>
+                                    <ul class="list-unstyled px-4 mb-3 mb-md-5">
+                                        <form action="">
 
-                                        <% if(productsType.length){ %>
-                                            <% productsType.forEach(function(item){ %>
-                                                <li class="form-group">
-                                                    <% if(item === type){ %>
-                                                        <input checked type="checkbox" id="<%= item %>"
-                                                               value=<%= item %>  >
-                                                        <label for="<%= item %>"
-                                                               class="clothing-icon"><%= item.split('-').join(' ') %></label>
-                                                    <% }else{ %>
-                                                        <input type="checkbox" id="<%= item %>"
-                                                               value=<%= item %> >
-                                                        <label for="<%= item %>"
-                                                               class="clothing-icon"><%= item.split('-').join(' ') %></label>
-                                                    <% } %>
-                                                </li>
+                                            <% if(productsType.length){ %>
+                                                <% productsType.forEach(function(item){ %>
+                                                    <li class="form-group">
+                                                        <% if(item === type){ %>
+                                                            <input checked type="checkbox" id="<%= item %>"
+                                                                   value=<%= item %>  >
+                                                            <label for="<%= item %>"
+                                                                   class="clothing-icon"><%= item.split('-').join(' ') %></label>
+                                                        <% }else{ %>
+                                                            <input type="checkbox" id="<%= item %>"
+                                                                   value=<%= item %> >
+                                                            <label for="<%= item %>"
+                                                                   class="clothing-icon"><%= item.split('-').join(' ') %></label>
+                                                        <% } %>
+                                                    </li>
+                                                <% }) %>
+                                            <% } %>
+                                        </form>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sidebar-title"><%= staticData.shop_sale %></div>
+                            <div class="px-4 mb-3 mb-md-5">
+                                <div class="form-group">
+                                    <input type="checkbox" id="sale" >
+                                    <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
+                                        (<%= countSale %>)</label>
+                                </div>
+                            </div>
+                            <div class="sidebar-title"><%= staticData.shop_price %></div>
+                            <div class="mb-3 mb-md-5 d-flex flex-column">
+                                <div class="d-flex align-items-center mb-3 mb-md-5">
+                                    <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
+                                           value="0"
+                                           class="form-control range-slide-input" autocomplete="off" />
+                                    <span class="px-2 fs-12"><%= staticData.to_text %></span>
+                                    <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
+                                           value="<%= maxPrice %>"
+                                           class="form-control range-slide-input" autocomplete="off" />
+                                    <button class="btn-rose border-0 px-3 py-1 ml-2"
+                                            onclick="searchByPrice()"><%= staticData.find %></button>
+                                </div>
+                                <div style="display: none;" id="price-div-message"></div>
+                                <div class="price-range-slider" id="price-range-slider" value="<%= maxPrice %>">
+                                    <p class="range-value">
+                                        <input disabled type="text" id="amount" autocomplete="off" />
+                                    </p>
+                                    <div id="slider-range" class="range-bar"></div>
+                                </div>
+                            </div>
+                            <div class="sidebar-title "><%= staticData.shop_brand %></div>
+                            <div class="px-4 mb-3 mb-md-5">
+                                <div class="scrollbar shop-page-scroll">
+                                    <div class="force-overflow">
+                                        <% if(brands.length){ %>
+                                            <% brands.forEach(function(item){ %>
+                                                <% if(item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') { %>
+                                                    <div class="form-group">
+                                                        <% if(brandId === item._id.toString()){ %>
+                                                            <input checked type="checkbox"
+                                                                   id=<%= item._id %> value="<%= item._id %>brandID"  >
+                                                            <label for="<%= item._id %>"><%= item.name %></label>
+                                                        <% }else{ %>
+                                                            <input type="checkbox"
+                                                                   id="<%= item._id %>" value="<%= item._id %>brandID"  >
+                                                            <label for="<%= item._id %>"><%= item.name %></label>
+                                                        <% } %>
+                                                    </div>
+                                                <% } %>
                                             <% }) %>
                                         <% } %>
-                                    </form>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="sidebar-title"><%= staticData.shop_sale %></div>
-                        <div class="px-4 mb-3 mb-md-5">
-                            <div class="form-group">
-                                <input type="checkbox" id="sale" >
-                                <label for="sale" style="text-transform: capitalize"><%= staticData.shop_sale %>
-                                    (<%= countSale %>)</label>
-                            </div>
-                        </div>
-                        <div class="sidebar-title"><%= staticData.shop_price %></div>
-                        <div class="mb-3 mb-md-5 d-flex flex-column">
-                            <div class="d-flex align-items-center mb-3 mb-md-5">
-                                <input type="number" min="0" max="<%= maxPrice %>" id='priceFrom'
-                                       value="0"
-                                       class="form-control range-slide-input" autocomplete="off" />
-                                <span class="px-2 fs-12"><%= staticData.to_text %></span>
-                                <input type="number" min="0" max="<%= maxPrice %>" id='priceTo'
-                                       value="<%= maxPrice %>"
-                                       class="form-control range-slide-input" autocomplete="off" />
-                                <button class="btn-rose border-0 px-3 py-1 ml-2"
-                                        onclick="searchByPrice()"><%= staticData.find %></button>
-                            </div>
-                            <div style="display: none;" id="price-div-message"></div>
-                            <div class="price-range-slider" id="price-range-slider" value="<%= maxPrice %>">
-                                <p class="range-value">
-                                    <input disabled type="text" id="amount" autocomplete="off" />
-                                </p>
-                                <div id="slider-range" class="range-bar"></div>
-                            </div>
-                        </div>
-                        <div class="sidebar-title "><%= staticData.shop_brand %></div>
-                        <div class="px-4 mb-3 mb-md-5">
-                            <div class="scrollbar shop-page-scroll">
-                                <div class="force-overflow">
-                                    <% if(brands.length){ %>
-                                        <% brands.forEach(function(item){ %>
-                                            <% if(item.name != 'BooksSpain' && item.name != 'BooksArm' && item.name != 'ToysSpain' && item.name != 'ToysArm') { %>
-                                                <div class="form-group">
-                                                    <% if(brandId === item._id.toString()){ %>
-                                                        <input checked type="checkbox"
-                                                               id=<%= item._id %> value="<%= item._id %>brandID"  >
-                                                        <label for="<%= item._id %>"><%= item.name %></label>
-                                                    <% }else{ %>
-                                                        <input type="checkbox"
-                                                               id="<%= item._id %>" value="<%= item._id %>brandID"  >
-                                                        <label for="<%= item._id %>"><%= item.name %></label>
-                                                    <% } %>
-                                                </div>
-                                            <% } %>
-                                        <% }) %>
-                                    <% } %>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -120,6 +127,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    function showFilters () {
+        const filtersDiv = document.getElementById('filters');
+        filtersDiv.classList.toggle("d-none");
+        const filterIcon = document.getElementById('filterIcon');
+        filterIcon.classList.toggle("active");
+    }
+</script>
 <script>
     $(function () {
         const maxPrice = document.getElementById('price-range-slider').getAttribute('value');

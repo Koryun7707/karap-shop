@@ -688,7 +688,7 @@ h1 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    
+
 }
 
 .shop-card img {
@@ -1321,11 +1321,13 @@ button:focus {
 #search-div a{
     color: #ffffff;
     padding: 5px 0;
+    line-height: 30px;
+    text-decoration: underline;
 }
 #search-div-mobile a:hover,
 #search-div a:hover{
     color: #000000;
-    text-decoration: none;
+    text-decoration: underline;
 }
 .image {
     background-position: center;
@@ -1402,4 +1404,7 @@ button:focus {
     background-image: url('http://fancyapps.com/GJbkSPU.png');
     background-size: cover;
     background-repeat: no-repeat;
+}
+#filterIcon.active .fa-angle-down {
+    transform: rotate(180deg);
 }

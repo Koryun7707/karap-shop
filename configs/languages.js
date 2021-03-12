@@ -23,6 +23,7 @@ module.exports =
             home_header: 'YOU CAN FIND THEM ON OUR WEBSITE',
             //shop
             shop_product_page: 'Product Filters',
+            shop_fil:'Filters',
             shop_search: 'Search',
             shop_sale: 'On Sale',
             shop_price: 'Price',
@@ -153,6 +154,7 @@ module.exports =
             to_text: "դեպի",
             shop_price: 'Գինը',
             shop_brand: 'Ապրանքանիշեր',
+            shop_fil:'Ֆիլտրներ',
             //brands
             brand_button: 'Գնել',
             //blog
