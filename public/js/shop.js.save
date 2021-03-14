@@ -892,7 +892,7 @@ $(document).ready(function () {
     }
 
     //page = return givePageNumber function
-    window.handeleOnchangeValue=(page)=> {
+    function handeleOnchangeValue(page) {
         let pageNumber;
         if (page > 0) {
             pageNumber = page;
@@ -948,7 +948,6 @@ $(document).ready(function () {
             },
             success: (response) => {
                 $("#pagination-place").empty();
-                   $("html, body").animate({ scrollTop: 0 }, 1000);
                 if (response.results.pageCount > 0) {
                     document.getElementById('pagination-place').setAttribute('value', response.results.pageCount);
                    // let paginatinPlace = document.getElementById('pagination-place');
@@ -1153,7 +1152,9 @@ $(document).ready(function () {
                             <h1>Not result found.</h1>`
                     filterDiv.append(newDiv);
                 }
-      
+                $("html, body").animate({
+                    scrollTop: 0
+             
             }
             ,
             error: (e) => {
@@ -1177,8 +1178,7 @@ function deleteType(element){
         } else {
             if(input.value === value){
                 input.checked = false
-                 handeleOnchangeValue();
-                //$(`input[type=checkbox]` ).trigger( "change" );
+                $(`input[type=checkbox]` ).trigger( "change" );
             }
         }
     });
