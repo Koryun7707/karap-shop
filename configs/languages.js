@@ -23,6 +23,7 @@ module.exports =
             home_header: 'YOU CAN FIND THEM ON OUR WEBSITE',
             //shop
             shop_product_page: 'Product Filters',
+            shop_fil:'Filters',
             shop_search: 'Search',
             shop_sale: 'On Sale',
             shop_price: 'Price',
@@ -119,7 +120,7 @@ module.exports =
             delivery: 'Delivery',
             total: 'Total',
             //pay checkouts
-            title_checkout:'You can pay in out website, with two pay type.',
+            title_checkout:'Payment options.',
             delevery_returns_product_page:'Delivery & returns'
 
 
@@ -153,6 +154,7 @@ module.exports =
             to_text: "դեպի",
             shop_price: 'Գինը',
             shop_brand: 'Ապրանքանիշեր',
+            shop_fil:'Ֆիլտրներ',
             //brands
             brand_button: 'Գնել',
             //blog
@@ -232,7 +234,7 @@ module.exports =
             delivery: 'Առաքում',
             total: 'Ընդհանուր',
             //pay chechouts
-            title_checkout:'Կարող եք վճարել վճարովի կայք `երկու վճարովի տիպով:'
+            title_checkout:'Վճարման եղանակները:'
         }
     ]
 

@@ -8,13 +8,15 @@ require('dotenv').config();
 
 
 paypal.configure({
-    'mode': 'sandbox', //sandbox or live
+    'mode': 'live', //sandbox or live
     'client_id': process.env.PAYPAL_CLIENT_ID,
     'client_secret': process.env.PAYPAL_CLIENT_SECRET
 });
 const paymentPaypal = (req, res) => {
     logger.info('Start paymant with paypal - - -');
+    
     const order = JSON.parse(localStorage.getItem(`order${req.session.user._id}`));
+ 
     const {deliveryPrice} = JSON.parse(localStorage.getItem(`shippingAddress${req.session.user._id}`));
     let subTotal = 0;
     order.forEach((item) => {
@@ -129,7 +131,7 @@ const paypalSuccess = (req, res) => {
                             })
                         })
                         const messageUser = {
-                            from: process.env.MAIL_AUTH_EMAIL,
+                            from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                             to: req.session.user.email,
                             subject: 'Thank you for your order',
                             html: data,
@@ -171,7 +173,7 @@ const paypalSuccess = (req, res) => {
                             cid: '2Armatconcept'
                         })
                         const messageAdmin = {
-                            from: process.env.MAIL_AUTH_EMAIL,
+                            from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                             to: process.env.MAIL_AUTH_EMAIL,
                             subject: 'Thank you for your order',
                             html: data,
@@ -191,7 +193,7 @@ const paypalSuccess = (req, res) => {
                 localStorage.removeItem(`shippingAddress${req.session.user._id}`);
                 localStorage.removeItem(`amount${req.session.user._id}`);
                 if (req.session.language === 'eng') {
-                    req.flash('success_msg', 'Pay Completed.');
+                    req.flash('success_msg', 'Payment Completed.');
                 } else {
                     req.flash('success_msg', 'Վճարն ավարտված է:');
                 }

@@ -16,20 +16,20 @@
                         </div>
                         <div class="col-8 col-md-9 col-lg-10">
                             <a id="myImageIdHref" href="<%= product[0].images[1] %>" data-fancybox="images">
-                                <img id="myimage" class="img-fluid"  width="500" height="600" src="<%= product[0].images[1] %>" />
+                                <img id="myimage" class="img-fluid"  src="<%= product[0].images[1] %>" />
                             </a>
                         </div>
                         <div style="display: none"  id="imagesDiv" value="<%=product[0].images%>">
                             <% for(let i = 2;i<product[0].images.length;i++){%>
                                 <a href="<%= product[0].images[i] %>" data-fancybox="images">
-                                    <img   width="500" height="500" src="<%= product[0].images[i] %>" />
+                                    <img   width="500" height="600" src="<%= product[0].images[i] %>" />
                                 </a>
                             <%}%>
                         </div>
                     </div>
                 </div>
                 <% } %>
-                <div class="col-12 col-md-5 p-0">
+                <div class="col-12 col-md-5 pl-4 p-md-0">
                     <div class="product-name">
                         <% if(language === 'eng'){ %>
                             <h2 class="mb-2"><%= product[0].name %></h2>

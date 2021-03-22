@@ -1272,7 +1272,7 @@ module.exports = {
             const {_id} = user
             const token = jwt.sign({_id}, process.env.SECRET_KEY, {expiresIn: '5m'});
             const content = {
-                from: process.env.MAIL_AUTH_EMAIL,
+                from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                 to: email,
                 subject: 'Reset password Armat Concept account',
                 html: `<!DOCTYPE html>
@@ -1756,7 +1756,7 @@ module.exports = {
                         cid: '2Armatconcept'
                     })
                     const messageUser = {
-                        from: process.env.MAIL_AUTH_EMAIL,
+                        from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                         to: email,
                         subject: 'Thank you for your order',
                         html: data,

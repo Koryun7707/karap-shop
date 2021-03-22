@@ -6,6 +6,7 @@ const ejs = require('ejs')
 const Product = require('../models/product');
 
 const paymentStripe = (req, res) => {
+    
     const {
         address,
         postalCode,
@@ -78,7 +79,7 @@ const paymentStripe = (req, res) => {
                         })
                     })
                     const messageUser = {
-                        from: process.env.MAIL_AUTH_EMAIL,
+                        from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                         to: req.session.user.email,
                         subject: 'Thank you for your order',
                         html: data,
@@ -121,7 +122,7 @@ const paymentStripe = (req, res) => {
                         cid: '2Armatconcept'
                     })
                     const messageAdmin = {
-                        from: process.env.MAIL_AUTH_EMAIL,
+                        from: `Armat Concept <${process.env.MAIL_AUTH_EMAIL}>`,
                         to: process.env.MAIL_AUTH_EMAIL,
                         subject: 'Thank you for your order',
                         html: data,
@@ -139,7 +140,7 @@ const paymentStripe = (req, res) => {
             localStorage.removeItem(`order${req.session.user._id}`);
             localStorage.removeItem(`shippingAddress${req.session.user._id}`);
             if (req.session.language === 'eng') {
-                req.flash('success_msg', 'Pay Completed.');
+                req.flash('success_msg', 'Payment Completed.');
             } else {
                 req.flash('success_msg', 'Վճարն ավարտված է:');
             }

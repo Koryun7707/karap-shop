@@ -47,7 +47,7 @@ body {
     z-index: 99;
 }
 .header-bg.active {
-    background: #000;
+    background: #8c8c8c;
 }
 header .nav-item.dropdown select{
     border: 0;
@@ -328,7 +328,6 @@ footer h4 {
     font-size: 1rem;
     line-height: 30px;
     font-family: "Georgian";
-    text-transform: uppercase;
 }
 
 footer .abs {
@@ -353,7 +352,9 @@ footer .abs {
 .rose-bg {
     background-color: #cdc1c5;
 }
-
+.blog-card-img-left {
+    height: 520px;
+}
 .blog-card h2 {
     color: #000000;
     font-size: 35px;
@@ -427,10 +428,10 @@ footer .abs {
     height: 100%;
 }
 #carousel2 .card {
-	background-color: #000000;
+    background-color: #000000;
 }
 #carousel2 a.item {
-	width: 100%;
+    width: 100%;
     height: 100%;
     display: inline-block;
     text-decoration: none;
@@ -687,13 +688,12 @@ h1 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-height: 340px;
-    height:100%;
+
 }
 
 .shop-card img {
     width: 100%;
-    height:inherit;
+    height:330px;;
 }
 
 .shop-card .title {
@@ -983,6 +983,10 @@ button:focus {
 
 /* end scroll styles*/
 /*product page*/
+#myimage {
+    width: 500px;
+    height: 600px;
+}
 .product-color ul li,
 .product-size ul li {
     width: 30px;
@@ -1087,7 +1091,7 @@ button:focus {
     height: 100%;
     float: left;
     text-align: center;
-    color: #cdc1c5;
+    color: black;
 }
 
 /*admin css*/
@@ -1303,7 +1307,7 @@ button:focus {
 
 .icon-search-container.active #search-div-mobile,
 .icon-search-container.active #search-div {
-  visibility: visible;
+    visibility: visible;
     position: relative;
     margin-top: 38px;
     padding: 1px 30px;
@@ -1317,11 +1321,13 @@ button:focus {
 #search-div a{
     color: #ffffff;
     padding: 5px 0;
+    line-height: 30px;
+    text-decoration: underline;
 }
 #search-div-mobile a:hover,
 #search-div a:hover{
     color: #000000;
-    text-decoration: none;
+    text-decoration: underline;
 }
 .image {
     background-position: center;
@@ -1399,3 +1405,7 @@ button:focus {
     background-size: cover;
     background-repeat: no-repeat;
 }
+#filterIcon.active .fa-angle-down {
+    transform: rotate(180deg);
+}
+
