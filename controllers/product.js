@@ -247,7 +247,7 @@ const getProductsUniqType = async (req, res) => {
                         _id:'$type',
                         "name":{ "$first": '$name'},
                         "type":{ "$first": '$type'},
-                        "images":{ "$first": '$images'},
+                        "images":{ "$last": '$images'},
                     }
                 }
             ])
@@ -258,7 +258,7 @@ const getProductsUniqType = async (req, res) => {
                         _id:'$typeArm',
                         "nameArm":{ "$first": '$nameArm'},
                         "typeArm":{ "$first": '$typeArm'},
-                        "images":{ "$first": '$images'},
+                        "images":{ "$last": '$images'},
                     }
                 }
             ])

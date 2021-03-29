@@ -192,9 +192,9 @@
                 //Spain registration
                 if (country === 'Spain') {
                     if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 2) {
-                        priceDelivery += 6.5;
+                        priceDelivery +=  6.5;
                     } else {
-                        priceDelivery += Math.floor((productsDeliveryFromSpainWeight - 2)) * 0.5 + 6.5;
+                        priceDelivery += Math.floor((productsDeliveryFromSpainWeight - 2)) * 0.5 +  6.5;
                     }
                 } else if (country === 'USA' || country ==='Canada') {
                     if (productsDeliveryFromSpainWeight && productsDeliveryFromSpainWeight <= 0.5) {

@@ -133,7 +133,7 @@ module.exports = {
             } else {
                 productsType = await Product.find({}).distinct('typeArm').exec();
             }
-            const brands = await Brand.find({}).select('name').exec();
+            const brands = await Brand.find({}).sort({'name':1}).select('name').exec();
             let maxPrice = await Product.find({}).select('-_id price');
             maxPrice = Math.max.apply(Math, maxPrice.map(function (o) {
                 return o.price;
