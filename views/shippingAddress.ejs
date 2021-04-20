@@ -146,10 +146,18 @@
             let productsDeliveryFromSpainWeight = 0;
             const orderArray = JSON.parse(localStorage.getItem('order'));
             orderArray.forEach((item) => {
-                if (item.registrationAddress === 'armenia') {
-                    productsDeliveryFromArmeniaWeight += Number(item.productWeight);
+		 if (item.registrationAddress === 'armenia') {
+                    if (isNaN(Number(item.productWeight)) || Number(item.productWeight) === 0) {
+                        productsDeliveryFromArmeniaWeight += 0.3;
+                    } else {
+                        productsDeliveryFromArmeniaWeight += Number(item.productWeight);
+                    }
                 } else {
-                    productsDeliveryFromSpainWeight += Number(item.productWeight);
+                    if (isNaN(Number(item.productWeight)) || Number(item.productWeight) === 0) {
+                        productsDeliveryFromSpainWeight += 0.3;
+                    } else {
+                        productsDeliveryFromSpainWeight += Number(item.productWeight);
+                    }
                 }
             });
             //Armenian registration
@@ -364,6 +372,15 @@
             productPrice.innerHTML = `${Number(productTotalPrice)%1==0?productTotalPrice:productTotalPrice.toFixed(2)}€`;
         }
         //clear shipping address when page is refresh
+          let country = $("#selectCountry").val();
+        const language = document.getElementById('example').value === 'eng'?true:false;
+        if (country != 'Country/Region' || country != 'Երկիր/տարածաշրջան') {
+            if (language) {
+                $("#selectCountry").val('Country/Region')
+            } else {
+                $("#selectCountry").val('Երկիր/տարածաշրջան')
+            }
+        }
     }
 </script>
 <%- include ('footer') -%>
