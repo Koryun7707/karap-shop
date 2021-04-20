@@ -116,8 +116,7 @@ module.exports = {
     },//done
     getShopPage: async (req, res) => {
         logger.info('Start Shop get - - -');
-                    console.time('time')
-
+                   
         try {
             if (req.session.language === undefined) {
                 req.session.language = 'eng';
@@ -150,8 +149,7 @@ module.exports = {
             }
             type= type.substring(0,type.length-1)
             const brandId = req.query.brandId || null;
-                        console.timeEnd('time')
-
+                        
             res.render('shop', {
                 URL: '/shop',
                 user: req.session.user,
