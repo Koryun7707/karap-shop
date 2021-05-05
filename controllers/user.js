@@ -66,14 +66,14 @@ const signUp = async (req, res, next) => {
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-<table style="max-width: 700px; width: 100%"  border="0" align="center" cellpadding="0" cellspacing="0">
+<table style="max-width: 700px; width: 100%"  border="0" align="left" cellpadding="0" cellspacing="0">
     <tbody>
     <tr>
-        <td align="center" >
-            <table  border="0" align="center" cellpadding="0" cellspacing="0" style="margin-right:20px; ">
+        <td align="left" >
+            <table  border="0" align="left" cellpadding="0" cellspacing="0" style="margin-right:20px; ">
                 <tbody>
                 <tr>
-                    <td  align="center" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#2a3a4b;padding: 40px 0 20px">
+                    <td  align="left" style="font-family: 'Oswald', sans-serif; font-size:22px; letter-spacing: 3px; font-weight: 500; color:#2a3a4b;padding: 40px 0 20px">
                         <div style="text-align: left; font-size:14px; line-height: 20px; letter-spacing: 1px;margin-top: 20px; padding-left: 20px">
                             <div><b>Hi ${user.firstName}</b></div>
                             <div><b>Thank you for registration  with  Armat  Concept</b></div>
@@ -106,9 +106,9 @@ const signUp = async (req, res, next) => {
                 }
                 await sendMessageToMail(content);
                 if (req.session.language == 'eng') {
-                    req.flash('success_msg', 'Activation link sent to email. Please activate to log in.');
+                    req.flash('success_msg', 'Please, check  your email and activate your account via the activation link specified in the email.');
                 } else {
-                    req.flash('success_msg', 'Ակտիվացման հղումը ուղարկվել է էլ. Խնդրում ենք ակտիվացնել ՝ մուտք գործելու համար:');
+                    req.flash('success_msg', 'Խնդրում ենք ստուգել Ձեր  էլ. փոստը և ակտիվացնել Ձեր հաշիվը նշված հղման միջոցով:');
                 }
                 return res.redirect('/signup');
         } catch (e) {
