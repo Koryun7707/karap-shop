@@ -48,3 +48,4 @@ Thumbs.db
 .env
 scratch
 utils/helper.js
+utils/init.js
