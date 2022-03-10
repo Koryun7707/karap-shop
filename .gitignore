@@ -47,4 +47,3 @@ testem.log
 Thumbs.db
 .env
 scratch
-utils/helper.js
